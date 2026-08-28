@@ -27,41 +27,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -412,7 +377,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# Replace with your own 1-5 answers to items 1..18, in order:\nresponses <- c(2, 4, 3, 2, 5, 4,   # items 1-6\n               2, 4, 4, 2, 4, 4,   # items 7-12\n               2, 5, 2, 2, 4, 3)   # items 13-18\n\ncc  <- sum(responses[c(1, 4, 7, 10, 13, 16)])\ndem <- sum(responses[c(2, 5, 8, 11, 14, 17)])\nrel <- sum(responses[c(3, 6, 9, 12, 15, 18)])\n\nscores <- c(\"Command & Control\" = cc, \"Democratic\" = dem, \"Relating\" = rel)\nfor (nm in names(scores)) cat(sprintf(\"%-18s %2d / 30\\n\", nm, scores[nm]))\ncat(sprintf(\"\\nYour dominant style: %s\\n\", names(which.max(scores))))\ncat(\"Remember: the best PMs deliberately use all three depending on the situation.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leadership-score-04","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"team_member <- data.frame(\n  name          = c(\"Priya\", \"Sam\", \"Dev\"),\n  expectancy    = c(0.9, 0.8, 0.4),   # \"if I try, I can hit the target\"\n  instrumentality = c(0.8, 0.3, 0.9), # \"hitting it gets me the reward\"\n  valence       = c(0.7, 0.9, 0.8)    # \"I want that reward\"\n)\nteam_member$motivation <- with(team_member, expectancy * instrumentality * valence)\n\nprint(team_member, row.names = FALSE)\nweakest <- team_member$name[which.min(team_member$motivation)]\ncat(sprintf(\"\\nLowest motivation: %s\\n\", weakest))\ncat(\"Look at which of E, I, V is dragging the product down -- that is where the leader intervenes.\\n\")\ncat(\"(Sam doesn't believe performance leads to the reward; Dev doesn't believe he can hit the target.)\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"expectancy-04","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"# Replace with your own 1-5 answers to items 1..18, in order:\nresponses <- c(2, 4, 3, 2, 5, 4,   # items 1-6\n               2, 4, 4, 2, 4, 4,   # items 7-12\n               2, 5, 2, 2, 4, 3)   # items 13-18\n\ncc  <- sum(responses[c(1, 4, 7, 10, 13, 16)])\ndem <- sum(responses[c(2, 5, 8, 11, 14, 17)])\nrel <- sum(responses[c(3, 6, 9, 12, 15, 18)])\n\nscores <- c(\"Command & Control\" = cc, \"Democratic\" = dem, \"Relating\" = rel)\nfor (nm in names(scores)) cat(sprintf(\"%-18s %2d / 30\\n\", nm, scores[nm]))\ncat(sprintf(\"\\nYour dominant style: %s\\n\", names(which.max(scores))))\ncat(\"Remember: the best PMs deliberately use all three depending on the situation.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leadership-score-04","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"complaints <- data.frame(\n  issue = c(\"Cramped, hot project room\", \"No recognition for hitting the drop-test milestone\",\n            \"Confusing expense policy\", \"Same repetitive CAD cleanup every week\",\n            \"Parking is far from the building\"),\n  type = c(\"Hygiene\", \"Motivator\", \"Hygiene\", \"Motivator\", \"Hygiene\")\n)\nprint(complaints, row.names = FALSE)\n\nfix_first <- complaints$issue[complaints$type == \"Hygiene\"]\ncat(\"\\nFix the hygiene issues to stop dissatisfaction:\\n - \",\n    paste(fix_first, collapse = \"\\n - \"), \"\\n\", sep = \"\")\ncat(\"\\nThen add motivators (recognition, varied/owned work) to actually raise engagement.\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"herzberg-example-04","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"team_member <- data.frame(\n  name          = c(\"Priya\", \"Sam\", \"Dev\"),\n  expectancy    = c(0.9, 0.8, 0.4),   # \"if I try, I can hit the target\"\n  instrumentality = c(0.8, 0.3, 0.9), # \"hitting it gets me the reward\"\n  valence       = c(0.7, 0.9, 0.8)    # \"I want that reward\"\n)\nteam_member$motivation <- with(team_member, expectancy * instrumentality * valence)\n\nprint(team_member, row.names = FALSE)\nweakest <- team_member$name[which.min(team_member$motivation)]\ncat(sprintf(\"\\nLowest motivation: %s\\n\", weakest))\ncat(\"Look at which of E, I, V is dragging the product down -- that is where the leader intervenes.\\n\")\ncat(\"(Sam doesn't believe performance leads to the reward; Dev doesn't believe he can hit the target.)\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"expectancy-04","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2233,33 +2198,6 @@ Note
 </tbody>
 </table>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lm <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">aspect =</span> <span class="fu">c</span>(<span class="st">"Focus"</span>, <span class="st">"Asks"</span>, <span class="st">"Relies on"</span>, <span class="st">"Time horizon"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Handles change by"</span>, <span class="st">"Success is"</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">manager =</span> <span class="fu">c</span>(<span class="st">"Systems &amp; structure"</span>, <span class="st">"How &amp; when"</span>, <span class="st">"Control"</span>, <span class="st">"Short term"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Administering"</span>, <span class="st">"Doing things right"</span>),</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">leader  =</span> <span class="fu">c</span>(<span class="st">"People"</span>, <span class="st">"What &amp; why"</span>, <span class="st">"Trust"</span>, <span class="st">"Longer term"</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Setting direction"</span>, <span class="st">"Doing the right things"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>lm_long <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(lm, <span class="fu">c</span>(manager, leader),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">names_to =</span> <span class="st">"role"</span>, <span class="at">values_to =</span> <span class="st">"text"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>lm_long<span class="sc">$</span>aspect <span class="ot">&lt;-</span> <span class="fu">factor</span>(lm_long<span class="sc">$</span>aspect, <span class="at">levels =</span> <span class="fu">rev</span>(lm<span class="sc">$</span>aspect))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>lm_long<span class="sc">$</span>role <span class="ot">&lt;-</span> <span class="fu">factor</span>(lm_long<span class="sc">$</span>role, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"manager"</span>, <span class="st">"leader"</span>),</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"MANAGER"</span>, <span class="st">"LEADER"</span>))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(lm_long, <span class="fu">aes</span>(role, aspect)) <span class="sc">+</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill =</span> role), <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> text), <span class="at">size =</span> <span class="fl">3.1</span> <span class="sc">*</span> diagram_text_scale, <span class="at">lineheight =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"MANAGER"</span> <span class="ot">=</span> <span class="st">"#AED6F1"</span>, <span class="st">"LEADER"</span> <span class="ot">=</span> <span class="st">"#A9DFBF"</span>),</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Two hats the project manager wears"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span> <span class="sc">*</span> diagram_text_scale, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span> <span class="sc">*</span> diagram_text_scale, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span> <span class="sc">*</span> diagram_text_scale)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-leader-vs-manager-04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2328,30 +2266,6 @@ Figure&nbsp;4.1: Manager and leader emphases. Neither column is ‘bad’ — a 
 </tbody>
 </table>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.35</span>, <span class="fl">0.65</span>, <span class="fl">0.2</span>),</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.8</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"COACHING</span><span class="sc">\n</span><span class="st">(high direction,</span><span class="sc">\n</span><span class="st">high support)"</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SUPPORTING</span><span class="sc">\n</span><span class="st">(low direction,</span><span class="sc">\n</span><span class="st">high support)"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DIRECTING</span><span class="sc">\n</span><span class="st">(high direction,</span><span class="sc">\n</span><span class="st">low support)"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"DELEGATING</span><span class="sc">\n</span><span class="st">(low direction,</span><span class="sc">\n</span><span class="st">low support)"</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sl, <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">42</span>, <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">fill =</span> <span class="st">"#D6EAF8"</span>, <span class="at">color =</span> <span class="st">"#2E86C1"</span>) <span class="sc">+</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> label), <span class="at">size =</span> <span class="fl">2.6</span> <span class="sc">*</span> diagram_text_scale, <span class="at">lineheight =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> <span class="dv">1</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">0</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>)), <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">xend =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">1</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">"cm"</span>)), <span class="at">color =</span> <span class="st">"grey40"</span>) <span class="sc">+</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fl">0.5</span>, <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.08</span>, <span class="at">label =</span> <span class="st">"Directive behaviour  -&gt;"</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">size =</span> <span class="dv">3</span> <span class="sc">*</span> diagram_text_scale) <span class="sc">+</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.06</span>, <span class="at">y =</span> <span class="fl">0.5</span>, <span class="at">label =</span> <span class="st">"Supportive behaviour  -&gt;"</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">*</span> diagram_text_scale) <span class="sc">+</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.12</span>, <span class="fl">1.05</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.12</span>, <span class="fl">1.05</span>)) <span class="sc">+</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Match the style to team readiness"</span>) <span class="sc">+</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span> <span class="sc">*</span> diagram_text_scale,</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-situational-04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2376,28 +2290,6 @@ Figure&nbsp;4.2: Situational leadership: match the style to how ready the team i
 <h2 data-number="4.5" class="anchored" data-anchor-id="building-the-team"><span class="header-section-number">4.5</span> Building the team</h2>
 <p>Teams develop through predictable stages, and the leader’s job changes with each:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stage_x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="at">length.out =</span> <span class="dv">200</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fl">0.4</span> <span class="sc">+</span> <span class="fl">0.15</span> <span class="sc">*</span> <span class="fu">sin</span>(stage_x) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">pmin</span>(<span class="fl">0.5</span>, <span class="fl">0.06</span> <span class="sc">*</span> stage_x) <span class="sc">-</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.22</span> <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>((stage_x <span class="sc">-</span> <span class="fl">2.2</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fl">0.6</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> stage_x, <span class="at">perf =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(perf, <span class="fl">0.1</span>), <span class="dv">1</span>))</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, perf)) <span class="sc">+</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#2E86C1"</span>, <span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">2.4</span>, <span class="fl">4.6</span>, <span class="fl">7.2</span>, <span class="fl">9.4</span>), <span class="at">y =</span> <span class="fl">1.03</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"Forming"</span>, <span class="st">"Storming"</span>, <span class="st">"Norming"</span>, <span class="st">"Performing"</span>, <span class="st">"Adjourning"</span>),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="fl">3.1</span> <span class="sc">*</span> diagram_text_scale) <span class="sc">+</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"segment"</span>, <span class="at">x =</span> <span class="fu">c</span>(<span class="fl">1.7</span>, <span class="fl">3.5</span>, <span class="dv">6</span>, <span class="fl">8.6</span>), <span class="at">xend =</span> <span class="fu">c</span>(<span class="fl">1.7</span>, <span class="fl">3.5</span>, <span class="dv">6</span>, <span class="fl">8.6</span>),</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.1</span>, <span class="at">yend =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">color =</span> <span class="st">"grey60"</span>) <span class="sc">+</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">1.1</span>)) <span class="sc">+</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tuckman's stages of team development"</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Time together"</span>, <span class="at">y =</span> <span class="st">"Team performance"</span>) <span class="sc">+</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span> <span class="sc">*</span> diagram_text_scale, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span> <span class="sc">*</span> diagram_text_scale)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-tuckman-04" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2424,42 +2316,16 @@ Figure&nbsp;4.3: Team performance through Tuckman’s stages. Performance dips d
 <section id="worked-example-1-herzberg-is-this-a-hygiene-problem-or-a-motivator-problem" class="level3" data-number="4.6.1">
 <h3 data-number="4.6.1" class="anchored" data-anchor-id="worked-example-1-herzberg-is-this-a-hygiene-problem-or-a-motivator-problem"><span class="header-section-number">4.6.1</span> Worked Example 1: Herzberg — is this a hygiene problem or a motivator problem?</h3>
 <p>Herzberg splits job factors into <strong>hygiene factors</strong> (pay, conditions, policy, supervision — their <em>absence</em> causes dissatisfaction, but their presence does not motivate) and <strong>motivators</strong> (achievement, recognition, the work itself, responsibility, growth — these drive engagement).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>complaints <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">issue =</span> <span class="fu">c</span>(<span class="st">"Cramped, hot project room"</span>, <span class="st">"No recognition for hitting the drop-test milestone"</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Confusing expense policy"</span>, <span class="st">"Same repetitive CAD cleanup every week"</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Parking is far from the building"</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">"Hygiene"</span>, <span class="st">"Motivator"</span>, <span class="st">"Hygiene"</span>, <span class="st">"Motivator"</span>, <span class="st">"Hygiene"</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(complaints, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fix_first <span class="ot">&lt;-</span> complaints<span class="sc">$</span>issue[complaints<span class="sc">$</span>type <span class="sc">==</span> <span class="st">"Hygiene"</span>]</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Fix the hygiene issues to stop dissatisfaction:</span><span class="sc">\n</span><span class="st"> - "</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(fix_first, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st"> - "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">sep =</span> <span class="st">""</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Then add motivators (recognition, varied/owned work) to actually raise engagement.</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                                              issue      type
-                          Cramped, hot project room   Hygiene
- No recognition for hitting the drop-test milestone Motivator
-                           Confusing expense policy   Hygiene
-             Same repetitive CAD cleanup every week Motivator
-                   Parking is far from the building   Hygiene
-
-Fix the hygiene issues to stop dissatisfaction:
- - Cramped, hot project room
- - Confusing expense policy
- - Parking is far from the building
-
-Then add motivators (recognition, varied/owned work) to actually raise engagement.</code></pre>
-</div>
-</div>
+<p>Live cell — re-classify the complaints, or add your own, and see which get fixed first.</p>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="try-it-yourself-expectancy-theory" class="level3" data-number="4.6.2">
 <h3 data-number="4.6.2" class="anchored" data-anchor-id="try-it-yourself-expectancy-theory"><span class="header-section-number">4.6.2</span> Try it yourself: expectancy theory</h3>
 <p>Vroom’s expectancy model says motivation is the product of three beliefs, each 0–1: <strong>Expectancy</strong> (effort → performance), <strong>Instrumentality</strong> (performance → reward), and <strong>Valence</strong> (how much the person wants the reward).</p>
 <p><span class="math display">\[\text{Motivation} = E \times I \times V\]</span></p>
 <p>Because it is a product, <strong>any factor near zero kills motivation</strong>.</p>
-<div id="qwebr-insertion-location-2"></div>
+<div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 </section>

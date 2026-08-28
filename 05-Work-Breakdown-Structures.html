@@ -27,41 +27,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -412,7 +377,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"packages <- data.frame(\n  id    = c(\"1.1.1\", \"1.2.1\", \"1.3.1\", \"1.3.4\", \"1.4.2\"),\n  name  = c(\"Outer body design\", \"Motor/controller procurement\",\n            \"Prototype assembly\", \"Tighten one fastener\",\n            \"Full regulatory approval campaign\"),\n  hours = c(64, 40, 72, 1.5, 260)\n)\n\nflag <- ifelse(packages$hours > 80, \"TOO BIG  (> 80 h -- split it)\",\n        ifelse(packages$hours < 8,  \"TOO SMALL (< 8 h -- roll it up)\",\n               \"ok\"))\nout <- cbind(packages, verdict = flag)\nprint(out, row.names = FALSE)\n\ncat(sprintf(\"\\n%d of %d packages need re-sizing.\\n\",\n            sum(flag != \"ok\"), nrow(packages)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-decomp-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Work-package costs (direct), grouped by Level-2 deliverable.\nwp <- data.frame(\n  deliverable = c(rep(\"1.1 Body & Frame\", 3),\n                  rep(\"1.2 Drive & Controls\", 2),\n                  rep(\"1.3 Assembly & Test\", 3),\n                  rep(\"1.4 Launch\", 2)),\n  package = c(\"Outer body\", \"Inner frame\", \"Material selection\",\n              \"Motor/controller\", \"Wiring harness\",\n              \"Prototype assembly\", \"Drop test\", \"EMC test\",\n              \"Packaging design\", \"Approvals\"),\n  cost = c(18000, 14000, 6000, 140000, 9000, 21000, 12000, 15000, 8000, 6000)\n)\n\nby_deliverable <- tapply(wp$cost, wp$deliverable, sum)\ncat(\"Roll-up to Level 2:\\n\")\nfor (d in names(by_deliverable))\n  cat(sprintf(\"  %-22s $%s\\n\", d, format(by_deliverable[d], big.mark = \" \")))\n\ncat(sprintf(\"\\nLevel 1 (total project direct cost): $%s\\n\",\n            format(sum(wp$cost), big.mark = \" \")))\ncat(\"\\nThis roll-up only works because the WBS obeys the 100% and\\n\")\ncat(\"mutually-exclusive rules -- every dollar is counted once, and all of them.\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-cost-rollup-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"parent_hours   <- 340\nchildren_hours <- c(\"1.1.1 Outer body design\" = 120,\n                    \"1.1.2 Inner frame design\" = 90,\n                    \"1.1.3 Material selection\" = 70,\n                    \"1.1.4 Design review & release\" = 60)\n\nchild_sum <- sum(children_hours)\ncat(\"Children:\\n\"); print(children_hours)\ncat(sprintf(\"\\nSum of children : %d h\\n\", child_sum))\ncat(sprintf(\"Parent estimate : %d h\\n\", parent_hours))\n\nif (child_sum == parent_hours) {\n  cat(\"OK - the children account for exactly 100% of the parent.\\n\")\n} else if (child_sum < parent_hours) {\n  cat(sprintf(\"GAP - %d h of the parent's scope is not captured by any work package.\\n\",\n              parent_hours - child_sum))\n} else {\n  cat(sprintf(\"OVER - the children exceed the parent by %d h (>100%% -- scope crept in).\\n\",\n              child_sum - parent_hours))\n}","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-rollup-example-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"packages <- data.frame(\n  id    = c(\"1.1.1\", \"1.2.1\", \"1.3.1\", \"1.3.4\", \"1.4.2\"),\n  name  = c(\"Outer body design\", \"Motor/controller procurement\",\n            \"Prototype assembly\", \"Tighten one fastener\",\n            \"Full regulatory approval campaign\"),\n  hours = c(64, 40, 72, 1.5, 260)\n)\n\nflag <- ifelse(packages$hours > 80, \"TOO BIG  (> 80 h -- split it)\",\n        ifelse(packages$hours < 8,  \"TOO SMALL (< 8 h -- roll it up)\",\n               \"ok\"))\nout <- cbind(packages, verdict = flag)\nprint(out, row.names = FALSE)\n\ncat(sprintf(\"\\n%d of %d packages need re-sizing.\\n\",\n            sum(flag != \"ok\"), nrow(packages)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-decomp-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Work-package costs (direct), grouped by Level-2 deliverable.\nwp <- data.frame(\n  deliverable = c(rep(\"1.1 Body & Frame\", 3),\n                  rep(\"1.2 Drive & Controls\", 2),\n                  rep(\"1.3 Assembly & Test\", 3),\n                  rep(\"1.4 Launch\", 2)),\n  package = c(\"Outer body\", \"Inner frame\", \"Material selection\",\n              \"Motor/controller\", \"Wiring harness\",\n              \"Prototype assembly\", \"Drop test\", \"EMC test\",\n              \"Packaging design\", \"Approvals\"),\n  cost = c(18000, 14000, 6000, 140000, 9000, 21000, 12000, 15000, 8000, 6000)\n)\n\nby_deliverable <- tapply(wp$cost, wp$deliverable, sum)\ncat(\"Roll-up to Level 2:\\n\")\nfor (d in names(by_deliverable))\n  cat(sprintf(\"  %-22s $%s\\n\", d, format(by_deliverable[d], big.mark = \" \")))\n\ncat(sprintf(\"\\nLevel 1 (total project direct cost): $%s\\n\",\n            format(sum(wp$cost), big.mark = \" \")))\ncat(\"\\nThis roll-up only works because the WBS obeys the 100% and\\n\")\ncat(\"mutually-exclusive rules -- every dollar is counted once, and all of them.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-cost-rollup-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2179,39 +2144,6 @@ Note
 <section id="the-hierarchy" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="the-hierarchy"><span class="header-section-number">5.3</span> The hierarchy</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">c</span>(<span class="st">"root"</span>, <span class="st">"d1"</span>, <span class="st">"d2"</span>, <span class="st">"d3"</span>, <span class="st">"d4"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"w11"</span>, <span class="st">"w12"</span>, <span class="st">"w21"</span>, <span class="st">"w22"</span>, <span class="st">"w31"</span>, <span class="st">"w41"</span>, <span class="st">"w42"</span>),</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"1.0 RC-Vehicle Replica Project"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1.1 Body &amp; Frame"</span>, <span class="st">"1.2 Drive &amp; Controls"</span>, <span class="st">"1.3 Assembly &amp; Test"</span>, <span class="st">"1.4 Launch"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1.1.1 Outer body</span><span class="sc">\n</span><span class="st">design"</span>, <span class="st">"1.1.2 Inner frame</span><span class="sc">\n</span><span class="st">design"</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1.2.1 Motor/controller</span><span class="sc">\n</span><span class="st">procurement"</span>, <span class="st">"1.2.2 Wiring</span><span class="sc">\n</span><span class="st">harness"</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"1.3.1 Prototype</span><span class="sc">\n</span><span class="st">assembly"</span>, <span class="st">"1.4.1 Packaging</span><span class="sc">\n</span><span class="st">design"</span>, <span class="st">"1.4.2 Compliance</span><span class="sc">\n</span><span class="st">&amp; approvals"</span>),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>,  <span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">6.5</span>, <span class="dv">9</span>,   <span class="fl">0.6</span>, <span class="fl">2.4</span>,  <span class="fl">3.3</span>, <span class="fl">4.7</span>,  <span class="fl">6.5</span>,  <span class="fl">8.2</span>, <span class="fl">9.8</span>),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">3</span>,  <span class="dv">2</span>,   <span class="dv">2</span>, <span class="dv">2</span>,   <span class="dv">2</span>,   <span class="dv">1</span>,   <span class="dv">1</span>,    <span class="dv">1</span>,   <span class="dv">1</span>,    <span class="dv">1</span>,    <span class="dv">1</span>,   <span class="dv">1</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>, <span class="fl">1.5</span>,<span class="fl">1.5</span>, <span class="dv">4</span>,<span class="dv">4</span>, <span class="fl">6.5</span>, <span class="dv">9</span>,<span class="dv">9</span>),</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">2</span>, <span class="dv">2</span>,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>,<span class="dv">2</span>),</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">xend =</span> <span class="fu">c</span>(<span class="fl">1.5</span>,<span class="dv">4</span>,<span class="fl">6.5</span>,<span class="dv">9</span>, <span class="fl">0.6</span>,<span class="fl">2.4</span>, <span class="fl">3.3</span>,<span class="fl">4.7</span>, <span class="fl">6.5</span>, <span class="fl">8.2</span>,<span class="fl">9.8</span>),</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">yend =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">1</span>,<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> edges, <span class="fu">aes</span>(x, y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend),</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"grey55"</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> nodes, <span class="fu">aes</span>(x, y, <span class="at">label =</span> label),</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">2.5</span> <span class="sc">*</span> diagram_text_scale, <span class="at">lineheight =</span> <span class="fl">0.9</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="fu">c</span>(<span class="st">"#1B4F72"</span>, <span class="fu">rep</span>(<span class="st">"#5DADE2"</span>, <span class="dv">4</span>), <span class="fu">rep</span>(<span class="st">"#D6EAF8"</span>, <span class="dv">7</span>)),</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"white"</span>, <span class="fu">rep</span>(<span class="st">"white"</span>, <span class="dv">4</span>), <span class="fu">rep</span>(<span class="st">"black"</span>, <span class="dv">7</span>)),</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">label.size =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"Level 1"</span>, <span class="st">"Level 2"</span>, <span class="st">"Level 3"</span>),</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"italic"</span>, <span class="at">size =</span> <span class="dv">3</span> <span class="sc">*</span> diagram_text_scale, <span class="at">hjust =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="fl">10.6</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">3.5</span>)) <span class="sc">+</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"WBS: project -&gt; deliverables -&gt; work packages"</span>) <span class="sc">+</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span> <span class="sc">*</span> diagram_text_scale,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: The `label.size` argument of `geom_label()` is deprecated as of ggplot2 3.5.0.
 ℹ Please use the `linewidth` argument instead.</code></pre>
@@ -2245,39 +2177,9 @@ Figure&nbsp;5.1: A partial WBS for the RC-vehicle project. Level 1 is the projec
 <section id="worked-example-1-does-this-wbs-roll-up-to-100" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="worked-example-1-does-this-wbs-roll-up-to-100"><span class="header-section-number">5.4.2</span> Worked Example 1: does this WBS roll up to 100 %?</h3>
 <p>The “1.1 Body &amp; Frame” deliverable is estimated at <strong>340 hours</strong>. Its four work packages are estimated at 120, 90, 70, and 60 hours.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>parent_hours   <span class="ot">&lt;-</span> <span class="dv">340</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>children_hours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1.1.1 Outer body design"</span> <span class="ot">=</span> <span class="dv">120</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"1.1.2 Inner frame design"</span> <span class="ot">=</span> <span class="dv">90</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"1.1.3 Material selection"</span> <span class="ot">=</span> <span class="dv">70</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"1.1.4 Design review &amp; release"</span> <span class="ot">=</span> <span class="dv">60</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>child_sum <span class="ot">&lt;-</span> <span class="fu">sum</span>(children_hours)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Children:</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(children_hours)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Sum of children : %d h</span><span class="sc">\n</span><span class="st">"</span>, child_sum))</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Parent estimate : %d h</span><span class="sc">\n</span><span class="st">"</span>, parent_hours))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (child_sum <span class="sc">==</span> parent_hours) {</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"OK - the children account for exactly 100% of the parent.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (child_sum <span class="sc">&lt;</span> parent_hours) {</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"GAP - %d h of the parent's scope is not captured by any work package.</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>              parent_hours <span class="sc">-</span> child_sum))</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"OVER - the children exceed the parent by %d h (&gt;100%% -- scope crept in).</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>              child_sum <span class="sc">-</span> parent_hours))</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Children:
-      1.1.1 Outer body design      1.1.2 Inner frame design 
-                          120                            90 
-     1.1.3 Material selection 1.1.4 Design review &amp; release 
-                           70                            60 
-
-Sum of children : 340 h
-Parent estimate : 340 h
-OK - the children account for exactly 100% of the parent.</code></pre>
-</div>
-</div>
+<p>Live cell — change the parent estimate or the work-package hours and watch the 100 % check.</p>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p>Here the children sum to 340 — the deliverable is fully decomposed with nothing missing and nothing extra.</p>
 </section>
 <section id="mutually-exclusive" class="level3" data-number="5.4.3">
@@ -2307,34 +2209,13 @@ OK - the children account for exactly 100% of the parent.</code></pre>
 </ul>
 <section id="try-it-yourself-decomposition-check" class="level3" data-number="5.5.1">
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="try-it-yourself-decomposition-check"><span class="header-section-number">5.5.1</span> Try it yourself: decomposition check</h3>
-<div id="qwebr-insertion-location-1"></div>
+<div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 </section>
 <section id="why-the-wbs-matters" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="why-the-wbs-matters"><span class="header-section-number">5.6</span> Why the WBS matters</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hub <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>spokes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">1.3</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">1.3</span>),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="fl">1.3</span>, <span class="dv">0</span>),</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"Estimating</span><span class="sc">\n</span><span class="st">(cost &amp; time)"</span>, <span class="st">"Network diagram</span><span class="sc">\n</span><span class="st">(schedule)"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Risk</span><span class="sc">\n</span><span class="st">identification"</span>, <span class="st">"Staffing</span><span class="sc">\n</span><span class="st">&amp; responsibility"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> spokes, <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">xend =</span> x, <span class="at">yend =</span> y),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"grey55"</span>, <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> hub, <span class="fu">aes</span>(x, y), <span class="at">size =</span> <span class="dv">46</span>, <span class="at">color =</span> <span class="st">"#1B4F72"</span>) <span class="sc">+</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">label =</span> <span class="st">"WBS"</span>, <span class="at">color =</span> <span class="st">"white"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">fontface =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">5</span> <span class="sc">*</span> diagram_text_scale) <span class="sc">+</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> spokes, <span class="fu">aes</span>(x, y, <span class="at">label =</span> label),</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span> <span class="sc">*</span> diagram_text_scale, <span class="at">lineheight =</span> <span class="fl">0.9</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> <span class="st">"#D6EAF8"</span>, <span class="at">label.size =</span> <span class="dv">0</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.1</span>, <span class="fl">2.1</span>)) <span class="sc">+</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Everything downstream depends on the WBS"</span>) <span class="sc">+</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span> <span class="sc">*</span> diagram_text_scale,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-wbs-hub-05" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2376,7 +2257,7 @@ Figure&nbsp;5.2: The WBS feeds four downstream planning activities. Get it wrong
 <p>Contracts also commonly contain: excusable delays; allowable costs; <strong>liquidated damages</strong> (non-performance / penalty clauses); inspection criteria; responsibility for correcting defects; and dispute-resolution mechanisms.</p>
 <section id="try-it-yourself-cost-roll-up-from-the-wbs" class="level3" data-number="5.8.1">
 <h3 data-number="5.8.1" class="anchored" data-anchor-id="try-it-yourself-cost-roll-up-from-the-wbs"><span class="header-section-number">5.8.1</span> Try it yourself: cost roll-up from the WBS</h3>
-<div id="qwebr-insertion-location-2"></div>
+<div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 </section>
