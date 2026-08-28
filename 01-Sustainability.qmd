@@ -367,12 +367,12 @@ energy_total <- kg_total * energy_kg
 co2_total    <- kg_total * co2_kg
 
 result <- data.frame(
-  Material      = material,
-  Body_mass_g   = mass_g,
-  Material_t    = round(kg_total / 1000, 1),
-  Cost_$        = round(cost_total),
-  Energy_MWh    = round(energy_total / 3600, 1),
-  CO2e_t        = round(co2_total / 1000, 1)
+  Material     = material,
+  Body_mass_g  = mass_g,
+  Material_t   = round(kg_total / 1000, 1),
+  Cost_usd     = round(cost_total),
+  Energy_MWh   = round(energy_total / 3600, 1),
+  CO2e_t       = round(co2_total / 1000, 1)
 )
 print(result, row.names = FALSE)
 
