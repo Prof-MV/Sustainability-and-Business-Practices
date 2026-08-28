@@ -4,6 +4,10 @@ project:
 
 execute:
   freeze: auto
+  # Hide the R source that generates figures and tables by default. Chunks that
+  # should show their code (the static worked examples and practice solutions)
+  # set `echo=TRUE` explicitly, and interactive {webr-r} cells are unaffected.
+  echo: false
 
 knitr:
   opts_chunk:
