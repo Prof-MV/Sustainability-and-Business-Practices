@@ -1,0 +1,155 @@
+```{r setup-index, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
+source("R/helpers.R")
+# include the required packages to make sure the page can be built.
+source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
+inject_jquery()
+```
+
+# Welcome {-}
+
+This book is the lecture-note companion for **MGMT-3105 -- Sustainability and
+Business Practices**, a second-year course that introduces the philosophy of
+*sustainability* and the discipline of *project management* to students in
+electromechanical and mechanical engineering technology programs.
+
+You are training for careers in the **automotive**, **food-processing**, and
+**defense** industries. In every one of those sectors you will, sooner than you
+expect, be handed a slice of a project: a line retrofit, a new product
+introduction, a validation campaign, a plant move. This course is about the
+structure that keeps such work on scope, on schedule, and on budget --- and
+about doing it in a way that does not quietly borrow from the future to pay for
+the present.
+
+## Why a course that pairs sustainability with project management? {-}
+
+At first glance they look like two subjects stapled together. They are not.
+Every project consumes resources --- materials, energy, money, human effort ---
+and every project leaves something behind: a product, a process, a waste stream,
+a set of habits in the organization. **Project management is the set of tools
+that decides how those resources are spent, and sustainability is the lens that
+asks whether that spend was worth it beyond the next quarter.** A project
+manager who can build a work breakdown structure but cannot reason about
+lifecycle impact is only doing half the job.
+
+```{r video-intro-pm, echo=FALSE, results='asis'}
+embed_youtube("Jk-JwtScIlw", "What Is Project Management? (Association for Project Management)")
+```
+
+```{r video-intro-sustainability, echo=FALSE, results='asis'}
+embed_youtube("7V8oFI4GYMY", "What Is Sustainable Development? (FN-sambandet)")
+```
+
+## Course map {-}
+
+```{r fig-course-map, echo=FALSE, fig.cap="How the thirteen chapters of this book track the MGMT-3105 lecture sequence, grouped by project phase.", fig.align='center', fig.width=10, fig.height=6}
+phases <- data.frame(
+  chapter = 1:13,
+  title = c(
+    "Sustainability", "Intro & Communication", "Scope & Org. Structures",
+    "Leadership & the PM", "Work Breakdown Structure", "Network Diagrams (AON)",
+    "Risk Management", "Project Scheduling", "Cost Estimation & Budgeting",
+    "Negotiation & Conflict", "Resource Management", "Project Control Systems",
+    "Closeout & Termination"
+  ),
+  phase = c(
+    "Foundations", "Foundations", "Initiation", "Initiation",
+    "Planning", "Planning", "Planning", "Planning", "Planning",
+    "Execution", "Execution", "Monitoring & Control", "Closing"
+  )
+)
+phases$phase <- factor(phases$phase, levels = c(
+  "Foundations", "Initiation", "Planning", "Execution",
+  "Monitoring & Control", "Closing"
+))
+phases$row <- ave(phases$chapter, phases$phase, FUN = seq_along)
+
+ggplot(phases, aes(x = phase, y = -row)) +
+  geom_tile(aes(fill = phase), width = 0.9, height = 0.9,
+            color = "white", linewidth = 1.2) +
+  geom_text(aes(label = paste0(chapter, ". ", title)),
+            color = "white", fontface = "bold", lineheight = 0.9,
+            size = 2.9 * diagram_text_scale) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(title = "MGMT-3105 at a glance", x = NULL, y = NULL) +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(size = 10 * diagram_text_scale, face = "bold",
+                               margin = margin(t = 6))
+  )
+```
+
+## Course learning outcomes {-}
+
+On successful completion of MGMT-3105 you will be able to reliably:
+
+1. Communicate the philosophy of project selection, including the Net Present Value method.
+2. Communicate the theory of budgeting and scheduling.
+3. Connect project-management concepts to real-world examples.
+4. Identify the consequences to society of poor project planning.
+5. Communicate the theory of progress management.
+6. Discuss the problems of managing people and levelling allocated resources.
+7. Communicate the organizational implications of closing a project.
+8. Communicate negotiation theory.
+9. Communicate effectively in a global environment.
+10. Identify the use of sustainability in designs and in project management.
+
+## The running project {-}
+
+Throughout the book we return to one worked scenario, taken from the MGMT-3105
+term project: your company designs and manages the launch of a **1/18-scale
+radio-controlled vehicle replica** for the toy market, then wins a contract to
+manufacture 100 000+ units for the following holiday season. You choose the
+vehicle, the body and frame materials (steel, aluminium, or carbon fibre), and
+one of two Canadian motor/control-system suppliers. Every chapter uses a piece
+of that project --- its scope, its WBS, its schedule, its budget, its risks, its
+closeout --- so the tools connect to a single concrete thing rather than a dozen
+disconnected examples.
+
+## How the book is organized {-}
+
+Each chapter opens with measurable **learning objectives** and a real-world
+**hook**, develops the theory with plain-language explanations and LaTeX
+equations, and illustrates it with R-generated figures. Worked examples are
+shown step by step; wherever an example is a self-contained calculation, it is
+offered as a **live, editable R cell** you can run and modify in your browser.
+Collapsible `Practice` and `Discussion` blocks let you test yourself before
+revealing the answer, and each chapter closes with **curated YouTube videos**
+for a second explanation in a different voice.
+
+## Assessment (for the live course) {-}
+
+| Component            | Timing   | Weight |
+|----------------------|----------|-------:|
+| Midterm test         | Week 7   |   25 % |
+| Final test           | Week 14  |   25 % |
+| Weekly quizzes       | Weekly   |   12 % |
+| Weekly case studies  | Weekly   |   12 % |
+| Assignment Phase A   | Week 7   |   10 % |
+| Assignment Phase B   | Week 11  |   10 % |
+| Assignment Phase C   | Week 14  |    6 % |
+
+: MGMT-3105 grade breakdown {tbl-colwidths="[55,25,20]"}
+
+Quizzes and case studies require attendance. Tests are cumulative, closed-book
+with a handwritten aid sheet, and kit calculators are permitted. To pass, you
+need an overall grade of 50 % **and** completion of the mandatory work.
+
+## A note on academic integrity {-}
+
+Write your reports and answers in your own words. Whenever you take an idea or a
+passage from another author --- including a classmate, a previous year's work, or
+an AI tool --- acknowledge it with quotation marks where appropriate and a proper
+citation. If you are unsure how to credit shared work, ask **before** you
+submit. By submitting, you put your name to the integrity of the work.
+
+```{r write-pkg-bib, include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown', 'dplyr', 'ggplot2', 'kableExtra'
+), 'packages.bib')
+```

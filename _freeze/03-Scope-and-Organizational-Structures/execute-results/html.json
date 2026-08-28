@@ -1,0 +1,19 @@
+{
+  "hash": "b2a063f9e156367637cc45ab9bfc4d9f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Project Scope, Charter, and Organizational Structures\n\n\n\n::: {.callout-note}\nThis chapter is in preparation. It will be built from **Lecture 3 -- Scope and\nOrganizational Structures** of MGMT-3105 and the course's Project Charter and\nProject Scope templates, following the same structure as\n[Chapter 1](01-Sustainability.qmd) and\n[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).\n:::\n\n## Learning objectives (planned)\n\nBy the end of this chapter you will be able to:\n\n- Write a project charter and explain what authority it grants the project manager.\n- Develop a scope statement: deliverables, acceptance criteria, exclusions, constraints, and assumptions.\n- Distinguish product scope from project scope.\n- Recognise and control scope creep, and run a change-control process.\n- Compare functional, projectized, and matrix (weak/balanced/strong) organizational structures.\n- Evaluate the trade-offs each structure imposes on authority, resource availability, and cost.\n\n## Topic outline\n\n1. Project selection and the business case (payback, NPV preview).\n2. The project charter: purpose, contents, sign-off.\n3. Scope definition and the scope statement.\n4. Scope creep, gold-plating, and change control.\n5. Organizational structures: functional, matrix, projectized.\n6. The project management office (PMO).\n7. Running case: charter and scope statement for the RC-vehicle project.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"site_libs/jquery-3.6.0/jquery-3.6.0.min.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

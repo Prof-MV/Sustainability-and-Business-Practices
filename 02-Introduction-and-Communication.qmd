@@ -1,0 +1,39 @@
+# Introduction to Project Management and Communication
+
+```{r setup-02, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 2 --
+Introduction and Communication** of MGMT-3105 and the Week 2 case study
+("Orion Tech's communication dilemma"), following the same structure as
+[Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Define a *project*, a *program*, and *operations*, and explain what makes project work different from routine work.
+- Describe the project life cycle (initiation, planning, execution, monitoring and control, closing).
+- Identify the triple constraint (scope, time, cost) and its relationship to quality.
+- Build a stakeholder register and a project communication plan.
+- Select appropriate communication methods (formal/informal, written/verbal, push/pull) for a given audience.
+- Apply active-listening techniques and recognise barriers such as selective listening and cultural/language differences.
+- Explain why performance reporting (status, progress, forecasting) matters to stakeholders.
+
+## Topic outline
+
+1. What is a project? History and evolution of project management.
+2. The project life cycle and the process groups.
+3. The triple constraint and competing demands.
+4. Stakeholders: identification, analysis, and engagement.
+5. Communication planning: the 5W + H of a communication plan.
+6. Communication methods and channels; the channel-count formula $n(n-1)/2$.
+7. Listening skills and communication barriers.
+8. Performance reporting and feedback loops.
+9. Running case: setting up the communication plan for the RC-vehicle project.

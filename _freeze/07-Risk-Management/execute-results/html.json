@@ -1,0 +1,19 @@
+{
+  "hash": "d62f0b6e8ab3ebe472b67873b945c745",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Risk Management\n\n\n\n::: {.callout-note}\nThis chapter is in preparation. It will be built from **Lecture 7 -- Risk\nManagement** of MGMT-3105 and the Risk Brainstorming Session Worksheet template,\nfollowing the same structure as [Chapter 1](01-Sustainability.qmd) and\n[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).\n:::\n\n## Learning objectives (planned)\n\nBy the end of this chapter you will be able to:\n\n- Distinguish risk from uncertainty, and threats from opportunities.\n- Run a structured risk-identification session and write a well-formed risk statement.\n- Perform qualitative analysis with a probability-impact matrix.\n- Perform quantitative analysis: expected monetary value (EMV) and decision trees.\n- Select response strategies (avoid, transfer, mitigate, accept; exploit, share, enhance).\n- Build and maintain a risk register and set contingency and management reserves.\n\n## Topic outline\n\n1. What risk is, and why projects have more of it early.\n2. Risk identification: brainstorming, checklists, SWOT, assumptions analysis.\n3. Qualitative analysis: probability and impact scales, the P-I matrix.\n4. Quantitative analysis: EMV, decision trees, sensitivity.\n5. Response planning for threats and opportunities.\n6. Contingency reserve vs. management reserve.\n7. Monitoring: risk reviews, triggers, and the risk register.\n8. Running case: the risk register for the RC-vehicle project (unproven supplier, labour negotiations, new assembly line).\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"site_libs/jquery-3.6.0/jquery-3.6.0.min.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

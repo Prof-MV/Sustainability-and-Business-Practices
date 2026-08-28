@@ -1,0 +1,36 @@
+# Resource Management
+
+```{r setup-11, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 11 -- Resource
+Management** of MGMT-3105, following the same structure as
+[Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Distinguish time-constrained from resource-constrained scheduling.
+- Build a resource histogram and identify over-allocation.
+- Apply resource levelling and resource smoothing, and explain their effect on the critical path and float.
+- Explain the theory-of-constraints view of a project (critical chain, buffers).
+- Plan for procurement of materials and outsourced work.
+- Manage the sustainability dimension of resources: material efficiency, energy, and waste.
+
+## Topic outline
+
+1. Types of project resources: labour, equipment, material, facilities.
+2. Resource loading and the resource histogram.
+3. Over-allocation and the levelling problem.
+4. Resource levelling vs. smoothing; splitting and multitasking costs.
+5. Critical chain and buffer management.
+6. Procurement and make-or-buy.
+7. Sustainable resource use: circular-economy principles applied to the project.
+8. Running case: levelling the RC-vehicle project team and tooling.

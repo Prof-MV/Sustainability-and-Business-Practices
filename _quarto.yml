@@ -1,0 +1,56 @@
+project:
+  type: book
+  output-dir: docs
+
+execute:
+  freeze: auto
+
+knitr:
+  opts_chunk:
+    results: hold
+
+book:
+  title: "Sustainability and Business Practices"
+  subtitle: "An Introduction to Project Management (MGMT-3105)"
+  author: "Martin Volkening"
+  date: today
+  description: "Lecture notes accompanying MGMT-3105 - Sustainability and Business Practices."
+  site-url: https://prof-mv.github.io/Sustainability-and-Business-Practices/
+  repo-url: https://github.com/Prof-MV/Sustainability-and-Business-Practices
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - 01-Sustainability.qmd
+    - 02-Introduction-and-Communication.qmd
+    - 03-Scope-and-Organizational-Structures.qmd
+    - 04-Leadership-and-the-Project-Manager.qmd
+    - 05-Work-Breakdown-Structures.qmd
+    - 06-Network-Diagrams-and-AON.qmd
+    - 07-Risk-Management.qmd
+    - 08-Project-Scheduling.qmd
+    - 09-Cost-Estimation-and-Budgeting.qmd
+    - 10-Negotiation-and-Conflict-Management.qmd
+    - 11-Resource-Management.qmd
+    - 12-Project-Control-Systems.qmd
+    - 13-Project-Closeout-and-Termination.qmd
+
+bibliography: [references.bib, packages.bib]
+link-citations: true
+
+format:
+  html:
+    theme: cosmo
+    css: style.css
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+  pdf:
+    documentclass: book
+    pdf-engine: xelatex
+    cite-method: natbib
+    keep-tex: true
+    toc: true
+    number-sections: true
+    include-in-header: preamble.tex
+  epub:
+    toc: true

@@ -1,0 +1,19 @@
+{
+  "hash": "a7ee3a108a0390295226990b7e2da8ef",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Introduction to Project Management and Communication\n\n\n\n::: {.callout-note}\nThis chapter is in preparation. It will be built from **Lecture 2 --\nIntroduction and Communication** of MGMT-3105 and the Week 2 case study\n(\"Orion Tech's communication dilemma\"), following the same structure as\n[Chapter 1](01-Sustainability.qmd) and\n[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).\n:::\n\n## Learning objectives (planned)\n\nBy the end of this chapter you will be able to:\n\n- Define a *project*, a *program*, and *operations*, and explain what makes project work different from routine work.\n- Describe the project life cycle (initiation, planning, execution, monitoring and control, closing).\n- Identify the triple constraint (scope, time, cost) and its relationship to quality.\n- Build a stakeholder register and a project communication plan.\n- Select appropriate communication methods (formal/informal, written/verbal, push/pull) for a given audience.\n- Apply active-listening techniques and recognise barriers such as selective listening and cultural/language differences.\n- Explain why performance reporting (status, progress, forecasting) matters to stakeholders.\n\n## Topic outline\n\n1. What is a project? History and evolution of project management.\n2. The project life cycle and the process groups.\n3. The triple constraint and competing demands.\n4. Stakeholders: identification, analysis, and engagement.\n5. Communication planning: the 5W + H of a communication plan.\n6. Communication methods and channels; the channel-count formula $n(n-1)/2$.\n7. Listening skills and communication barriers.\n8. Performance reporting and feedback loops.\n9. Running case: setting up the communication plan for the RC-vehicle project.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"site_libs/jquery-3.6.0/jquery-3.6.0.min.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

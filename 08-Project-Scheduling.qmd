@@ -1,0 +1,35 @@
+# Project Scheduling
+
+```{r setup-08, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 8 -- Project
+Schedule** of MGMT-3105 and the `SampleGantt better.xlsx` and `gantt-chart_L.xlsx`
+worksheets, following the same structure as [Chapter 1](01-Sustainability.qmd)
+and [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Convert a network and duration estimates into a Gantt chart and a schedule baseline.
+- Apply three-point (PERT) estimating: $t_e = (o + 4m + p)/6$ and activity variance.
+- Compute the probability of meeting a target date using the project standard deviation.
+- Compress a schedule with crashing and fast-tracking, and find the least-cost crash sequence.
+- Explain resource-limited scheduling and schedule risk.
+- Read and maintain a schedule: milestones, baselines, and slippage.
+
+## Topic outline
+
+1. From AON to a time-scaled schedule.
+2. Deterministic vs. probabilistic durations; PERT.
+3. Probability of on-time completion.
+4. Milestones and the schedule baseline.
+5. Schedule compression: crashing and fast-tracking, and their costs and risks.
+6. Gantt charts and tracking Gantts.
+7. Running case: the schedule for the RC-vehicle project.

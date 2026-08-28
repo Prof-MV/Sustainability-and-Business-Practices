@@ -1,0 +1,35 @@
+# Negotiation and Conflict Management
+
+```{r setup-10, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 10 --
+Negotiation and Conflict Management** of MGMT-3105 (and its answer deck),
+following the same structure as [Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Explain why conflict is normal on projects and distinguish functional from dysfunctional conflict.
+- Apply the Thomas-Kilmann modes (competing, collaborating, compromising, avoiding, accommodating) to a situation.
+- Prepare for a negotiation: interests vs. positions, BATNA, ZOPA, reservation and target points.
+- Apply principled negotiation (separate people from problem; focus on interests; invent options; use objective criteria).
+- Manage conflict with suppliers, functional managers, and team members.
+- Recognise cultural and ethical dimensions of negotiation in a global supply chain.
+
+## Topic outline
+
+1. Sources of project conflict across the life cycle.
+2. Conflict-handling modes and when each is appropriate.
+3. Distributive vs. integrative negotiation.
+4. Preparation: BATNA, ZOPA, anchoring.
+5. Principled negotiation.
+6. Difficult conversations and escalation paths.
+7. Running case: negotiating the motor/control-system supply contract for the RC-vehicle project.

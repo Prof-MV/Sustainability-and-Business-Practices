@@ -1,0 +1,34 @@
+# Network Diagrams and Activity-on-Node (AON)
+
+```{r setup-06, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 6 -- Network
+Diagrams** of MGMT-3105 and the `Critical-Path-Diagram.xlsx` worksheet,
+following the same structure as [Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Build an activity-on-node (AON) network from a precedence table.
+- Distinguish the four dependency types (FS, SS, FF, SF) and use lead and lag.
+- Perform the forward pass and backward pass to find ES, EF, LS, LF.
+- Calculate total float and free float and identify the critical path.
+- Explain how the critical path changes when durations or dependencies change.
+
+## Topic outline
+
+1. From WBS activities to a precedence table.
+2. AON notation; predecessors and successors.
+3. Dependency types, leads, and lags.
+4. Forward pass: earliest start and finish.
+5. Backward pass: latest start and finish.
+6. Float, the critical path, and near-critical paths.
+7. Running case: the AON network for the RC-vehicle project.

@@ -1,0 +1,35 @@
+# Leadership and the Project Manager
+
+```{r setup-04, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 4 -- Leadership
+and Project Management** of MGMT-3105, following the same structure as
+[Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Distinguish management from leadership in a project context.
+- Describe the sources of a project manager's power (legitimate, reward, coercive, expert, referent).
+- Apply situational leadership: matching style (directing, coaching, supporting, delegating) to team maturity.
+- Explain the stages of team development (forming, storming, norming, performing, adjourning).
+- Identify the competencies and ethical responsibilities of an effective project manager.
+- Use motivation theory (Maslow, Herzberg, expectancy) to diagnose team performance issues.
+
+## Topic outline
+
+1. The project manager's role across the life cycle.
+2. Power, influence, and authority without ownership of resources.
+3. Leadership styles and situational leadership.
+4. Building and developing the project team.
+5. Motivation and engagement.
+6. Emotional intelligence and ethics.
+7. Running case: staffing and leading the RC-vehicle project team.

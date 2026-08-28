@@ -1,0 +1,36 @@
+# Project Closeout and Termination
+
+```{r setup-13, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. It will be built from **Lecture 12 -- Project
+Closeout and Termination** of MGMT-3105, following the same structure as
+[Chapter 1](01-Sustainability.qmd) and
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Distinguish the ways a project ends: completion, extinction, addition, integration, starvation.
+- Run an orderly administrative closeout: deliverable acceptance, contract closure, financial closure.
+- Release resources and transition the product to operations or the customer.
+- Facilitate a lessons-learned review and write to the organizational knowledge base.
+- Explain the organizational and human implications of closing a project (team dispersal, morale).
+- Recognise when to terminate a troubled project early, and how to do it responsibly.
+
+## Topic outline
+
+1. Types of project termination.
+2. The closeout checklist: scope verification, punch list, sign-off.
+3. Contract and procurement closure.
+4. Financial closure and final cost accounting.
+5. Lessons learned and the post-implementation review.
+6. Resource release and team transition.
+7. Early termination: decision criteria and stakeholder communication.
+8. Running case: closing out the RC-vehicle prototype project and handing off to manufacturing.

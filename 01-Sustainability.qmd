@@ -1,0 +1,788 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
+# Sustainability
+
+```{r setup-01, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
+source("R/helpers.R")
+# include the required packages to make sure the page can be built.
+source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
+inject_jquery()
+```
+
+## Learning Objectives
+
+By the end of this chapter you will be able to:
+
+1. **Define** sustainability and sustainable design, and explain the three pillars (social, economic, ecological) and the "triple bottom line."
+2. **Identify** the four points of the sustainability platform --- recycling, bio-based/biodegradable polymers, material reduction, and design for recyclability --- and give an engineering example of each.
+3. **Interpret** the seven plastic recycling codes and distinguish post-consumer from post-industrial recyclate.
+4. **Analyze** the trade-off between recyclability and biodegradability, using the corn-based PLA container case as the worked example.
+5. **Calculate** the material, energy, and carbon consequences of a design decision (material substitution, wall-thickness reduction) for a production run.
+6. **Evaluate** a product on whole-life cost, and explain why "cheaper to buy" and "cheaper to own" often disagree.
+7. **Apply** a sustainability checklist to a project: supplier selection, contract clauses, impact assessment, circular-economy principles, and sustainability KPIs.
+
+<details>
+<summary>Before we begin: think of the last thing you threw away today</summary>
+
+Where did its materials come from? How long did you use it before it became
+waste? Where is it now --- landfill, recycling stream, incinerator? Could a
+different design decision, made years ago by an engineer you will never meet,
+have changed that answer? Keep the object in mind; we will come back to it.
+
+</details>
+
+## Introduction: every gram, multiplied by a hundred thousand
+
+Here is the situation that runs through this whole book. Your company designs
+and manages the launch of a **1/18-scale radio-controlled vehicle replica** for
+the toy market. If the prototype is accepted, you win a contract to build
+**100 000+ units** for the next holiday season. Early on, you must choose the
+body material --- **steel, aluminium, or carbon fibre** --- and the frame
+material --- aluminium or carbon fibre.
+
+That single choice is not just a strength-and-weight problem. Multiply it by
+100 000 units and it becomes a decision about:
+
+- how many tonnes of raw material leave the ground,
+- how many megajoules of energy are spent turning that material into parts,
+- how much scrap and packaging waste the line produces every shift,
+- whether the finished toy can be recycled when a child outgrows it in three years,
+- and whether your customer --- a large retailer with its own public sustainability targets --- will even put it on the shelf.
+
+This is why **sustainability** belongs at the front of a project-management
+course, not tacked on at the end. The tools you meet in later chapters --- scope,
+WBS, schedule, budget, risk --- all decide how resources get spent. Sustainability
+is the question of whether that spend was worth it once you look past the launch
+date.
+
+::: {.callout-note}
+**Industry snapshot.** General Motors' CAMI Assembly plant in Ingersoll,
+Ontario --- an hour from where this course is taught --- runs **landfill-free**:
+every waste stream from daily operations is reused, recycled, or converted to
+energy. That is not a marketing slogan bolted onto an existing plant; it is a
+set of thousands of small design and process decisions of exactly the kind this
+chapter is about.
+:::
+
+```{r video-story-of-stuff, echo=FALSE, results='asis'}
+embed_youtube("9GorqroigqM", "The Story of Stuff (Annie Leonard) - the materials economy in 20 minutes")
+```
+
+## What sustainability means
+
+The most quoted definition comes from the 1987 Brundtland report and is used
+almost word-for-word by the U.S. Environmental Protection Agency:
+
+> Sustainability is *"meeting the needs of the present without compromising the
+> ability of future generations to meet their own needs."*
+
+The idea is older than the word. Thomas Jefferson expressed the same principle
+in financial terms: **do not leave a debt for future generations to pay.**
+Swap "debt" for "depleted resources, degraded ecosystems, and accumulated
+waste" and you have the modern version.
+
+**Sustainable design** applies that principle to the things engineers actually
+produce. Wikipedia's working definition is useful: *the philosophy of designing
+physical objects, the built environment, and services to comply with the
+principles of social, economic, and ecological sustainability.* The intent is to
+*minimize negative environmental impact through skilful, sensitive design* while
+holding a **dynamic balance between economy and society**.
+
+### The three pillars and the triple bottom line
+
+Sustainability is usually drawn as three overlapping domains. A decision is
+sustainable only where all three overlap: it has to be **socially** acceptable,
+**economically** viable, and **ecologically** sound at the same time.
+
+```{r fig-three-pillars-01, fig.cap="The three pillars of sustainability. Only decisions in the central overlap are genuinely sustainable; the pairwise overlaps (bearable, equitable, viable) each miss one dimension.", fig.align='center', fig.width=9, fig.height=6.5}
+circles <- data.frame(
+  x0 = c(-0.55, 0.55, 0),
+  y0 = c(0.35, 0.35, -0.6),
+  r  = rep(1.05, 3),
+  pillar = c("Social\n(bearable)", "Economic\n(viable)", "Ecological\n(sound)"),
+  fill = c("#2E86C1", "#F39C12", "#27AE60")
+)
+
+ggplot(circles) +
+  ggforce::geom_circle(aes(x0 = x0, y0 = y0, r = r, fill = fill),
+                       alpha = 0.35, linewidth = 0.8, color = "grey30") +
+  scale_fill_identity() +
+  annotate("text", x = -0.95, y = 0.9, label = "SOCIAL",
+           fontface = "bold", size = 4.5 * diagram_text_scale, color = "#1B4F72") +
+  annotate("text", x = 0.95, y = 0.9, label = "ECONOMIC",
+           fontface = "bold", size = 4.5 * diagram_text_scale, color = "#9C640C") +
+  annotate("text", x = 0, y = -1.55, label = "ECOLOGICAL",
+           fontface = "bold", size = 4.5 * diagram_text_scale, color = "#186A3B") +
+  annotate("text", x = 0, y = 0.55, label = "bearable",
+           size = 3.2 * diagram_text_scale, fontface = "italic") +
+  annotate("text", x = -0.7, y = -0.35, label = "equitable",
+           size = 3.2 * diagram_text_scale, fontface = "italic") +
+  annotate("text", x = 0.7, y = -0.35, label = "viable",
+           size = 3.2 * diagram_text_scale, fontface = "italic") +
+  annotate("text", x = 0, y = -0.1, label = "SUSTAINABLE",
+           fontface = "bold", size = 3.6 * diagram_text_scale, color = "grey15") +
+  coord_equal() +
+  labs(title = "Sustainability lives in the overlap") +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold", hjust = 0.5)
+  )
+```
+
+<details>
+<summary>Discussion: which pillar does each of these decisions serve --- and which does it ignore?</summary>
+
+- A supplier offers motors 20 % cheaper, made in a plant with a poor safety record. *(economic yes; social no)*
+- You switch the body to recycled aluminium, adding \$0.40 per unit. *(ecological yes; economic maybe)*
+- You keep an inefficient old assembly line running because retraining staff on a new one is disruptive. *(social short-term yes; ecological and economic long-term no)*
+
+The point of the diagram is that a "win" on one pillar is not a win. You have
+to check all three.
+
+</details>
+
+## The four points of the sustainability platform
+
+For a product engineer, sustainability comes down to four levers:
+
+1. **Recycling** --- can the material be recovered and used again?
+2. **Bio-based or biodegradable polymers** --- can the material come from a renewable source, or return safely to the environment?
+3. **Material reduction** --- can the product do its job with less material in the first place?
+4. **Designing for recyclability** --- is the product built so that recovery is actually practical, not just theoretically possible?
+
+The rest of the chapter takes these one at a time, then widens out to what
+sustainability means when you are managing a whole project rather than designing
+one part.
+
+### Sustainable design principles
+
+The design literature expands the four levers into a set of working principles:
+
+| Principle | What it means in practice |
+|---|---|
+| **Low-impact materials** | Non-toxic, sustainably produced or recycled materials that need less energy to process. |
+| **Energy efficiency** | Choose manufacturing processes --- and design products --- that require less energy over their life. |
+| **Emotionally durable design** | Build things people want to keep. A product kept for ten years instead of three cuts consumption and waste by more than any recycling scheme. |
+| **Design for reuse and recycling** | Design for a commercial "afterlife" --- but without compromising performance or service life to get there. It is a balancing act. |
+
+Notice the tension already built in: "make it last" and "make it recyclable"
+pull in opposite directions, and "use less material" can fight "make it
+durable." Good sustainable design is the art of resolving those tensions, not
+pretending they do not exist.
+
+## Recycling codes
+
+Most rigid plastics carry one of seven **resin identification codes** --- the
+number inside the chasing-arrows triangle. The code tells a sorting facility
+what polymer it is looking at. The three most commonly recycled are **PET
+(#1)**, **HDPE (#2)**, and **PP (#5)**.
+
+```{r tbl-recycling-codes-01}
+recycling_codes <- data.frame(
+  Code = 1:7,
+  Abbreviation = c("PETE / PET", "HDPE", "PVC / V", "LDPE", "PP", "PS", "OTHER"),
+  Polymer = c(
+    "Polyethylene terephthalate", "High-density polyethylene",
+    "Polyvinyl chloride", "Low-density polyethylene",
+    "Polypropylene", "Polystyrene",
+    "Acrylic, polycarbonate, PLA, nylon, multi-layer"
+  ),
+  `Typical products` = c(
+    "Drink bottles, food jars",
+    "Milk jugs, detergent bottles, piping",
+    "Pipe, window frames, cable insulation",
+    "Films, bags, squeeze bottles",
+    "Bumpers, battery cases, living hinges, tubs",
+    "Foam packaging, disposable cups, CD cases",
+    "Eyewear, headlamp lenses, RC-car bodies, PLA parts"
+  ),
+  `Recycled easily?` = c("Yes", "Yes", "Rarely", "Sometimes", "Yes", "Rarely", "Rarely"),
+  check.names = FALSE
+)
+
+knitr::kable(recycling_codes, align = c("c", "l", "l", "l", "c"),
+             caption = "The seven resin identification codes.") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(1, bold = TRUE) |>
+  kableExtra::row_spec(c(1, 2, 5), background = "#EAF6EC")
+```
+
+Two grades of recyclate matter to a manufacturer:
+
+- **Post-industrial** (a.k.a. regrind): clean scrap from your own or a supplier's process --- runners, sprues, start-up shots, off-spec parts. Easy to reuse because you know exactly what it is.
+- **Post-consumer**: material that has been through a consumer's hands. It must be collected, sorted, washed, ground, and often re-pelletized, and it can carry metal, labels, food residue, and other polymers. Much harder to work with, but it is the stream that actually diverts waste from landfill.
+
+<details>
+<summary>Think about it: your RC-car body is moulded from a glass-filled ABS/PC blend. Which recycling code does it carry, and what does that tell you?</summary>
+
+It carries **#7 (OTHER)** --- any multi-polymer blend or filled material that is
+not one of codes 1--6 lands here. In practice, #7 is rarely recycled through
+curbside programs: the blend cannot be melted back into a single clean polymer.
+If recyclability matters for this product, that is a signal to reconsider the
+material *before* tooling is cut, not after.
+
+</details>
+
+## Recyclable vs. biodegradable: a real tension
+
+Years ago the plastics industry pursued two waste strategies at once ---
+**recycling** and **biodegradability** --- and they turned out to be partly
+opposed. If you make a part from recyclate and want it to last (think plastic
+lumber, or a pallet), the last thing you want is biodegradable material mixed
+in, causing the part to fail early. Contaminate a recycling stream with enough
+compostable polymer and the whole batch can become unusable.
+
+The industry chose recycling. But with fossil-fuel prices and supply security
+back in the spotlight, **biopolymers** have returned. Some of the earliest
+plastics were bio-based (cellulosics, natural rubber); many new ones are built
+from **corn or potato starch**. **Polylactic acid (PLA)** is made from corn
+starch and behaves a lot like PET, but it is harder to process and degrades
+faster at elevated temperature.
+
+And "biodegradable" has an asterisk. Degradation is done by **microbes**, which
+need **oxygen and moisture**. A modern landfill is compacted, dry, and
+low-oxygen --- almost nothing degrades well there. You can dig up decades-old
+newspaper and still read it.
+
+::: {.callout-important}
+**Case study --- EcoPlast Packaging (MGMT-3105, Week 1).** EcoPlast launched
+corn-based PLA food containers. Then: customers found them brittle in the cold
+and warped in heat; recyclers reported PLA contaminating conventional-plastic
+batches; consumers wanted eco-friendly *and* the same durability as regular
+plastic; and environmental groups argued the containers mostly ended up in
+landfill, where they did not meaningfully biodegrade --- calling it "green
+marketing."
+:::
+
+<details>
+<summary>Discussion (Week 1 case): was it unreasonably risky for EcoPlast to trade durability for sustainability, and what would you change?</summary>
+
+**Model answer.** A product that fails in real-world use creates *more* waste,
+erodes consumer trust, and undermines the point of sustainability --- so yes, the
+trade-off as executed was unreasonably risky. Consumers share *some*
+responsibility for unrealistic expectations, but the company had a duty to
+manage those expectations and to test properly before launch. Rushing to market
+compromised quality.
+
+What to change: (1) real R&D and performance testing across the actual
+temperature and handling range before launch; (2) an accurate **caution** label
+("not suitable for hot liquids") --- a danger label would be excessive; (3)
+consumer education on correct disposal (industrial compost, not curbside or
+landfill); (4) stop marketing the product as fully "sustainable" until there is
+evidence of an environmental benefit in real disposal conditions --- otherwise
+the claim is exposed to a misleading-marketing challenge.
+
+</details>
+
+```{r video-tshirt-lifecycle, echo=FALSE, results='asis'}
+embed_youtube("BiSYoeqb_VY", "The Life Cycle of a T-Shirt (TED-Ed) - why 'where does it go?' is the hard question")
+```
+
+## Material reduction
+
+Reducing the material that goes into a product --- at the **design stage**, by
+thinning walls, removing bosses, right-sizing ribs, or substituting a lighter
+material --- pays off several times over:
+
+- the product **costs less** (less material bought per unit),
+- there is **less to recycle or dispose of** at end of life,
+- **more material is left** for other uses,
+- and **less energy** is spent producing *and transporting* every unit.
+
+The catch: you cannot thin your way past the product's functional requirements.
+Material reduction is enabled by better material properties, better processes,
+and better analysis --- not by wishful thinking.
+
+### Worked Example 1: thinning the RC-car body
+
+Your baseline RC-car body is injection-moulded ABS with a mass of **48 g**.
+Simulation says you can drop the nominal wall from 2.5 mm to 2.1 mm and still
+pass the drop test, cutting body mass to **41 g**. The contract run is
+**120 000 units**. ABS costs **\$3.10/kg**, its production embodied energy is
+about **90 MJ/kg**, and its cradle-to-gate carbon intensity is about
+**3.4 kg CO2e/kg**.
+
+```{r material-reduction-example-01, echo=TRUE}
+mass_before_g <- 48
+mass_after_g  <- 41
+units         <- 120000
+abs_cost_per_kg   <- 3.10
+abs_energy_MJ_kg  <- 90
+abs_co2e_kg_kg    <- 3.4
+
+saved_kg <- (mass_before_g - mass_after_g) / 1000 * units
+
+cost_saved   <- saved_kg * abs_cost_per_kg
+energy_saved <- saved_kg * abs_energy_MJ_kg
+co2_saved    <- saved_kg * abs_co2e_kg_kg
+
+cat("Mass removed per unit :", mass_before_g - mass_after_g, "g\n")
+cat("Material saved over the run :", format(round(saved_kg), big.mark = " "), "kg\n")
+cat("Material cost saved :", sprintf("$%s", format(round(cost_saved), big.mark = " ")), "\n")
+cat("Production energy saved :", format(round(energy_saved), big.mark = " "), "MJ",
+    sprintf("(~%s kWh)", format(round(energy_saved / 3.6), big.mark = " ")), "\n")
+cat("Cradle-to-gate CO2e avoided :", format(round(co2_saved), big.mark = " "), "kg",
+    sprintf("(~%.1f t)", co2_saved / 1000), "\n")
+```
+
+A 7 g decision, taken once on a screen, moves almost a tonne of material and
+several tonnes of CO2e once it is multiplied by the production run --- before
+counting the lighter shipping weight.
+
+### Try it yourself: the material-choice decision
+
+Now compare the three candidate body materials head to head. The live cell below
+holds rough figures for **steel**, **aluminium**, and **carbon-fibre composite**
+bodies of the mass each material would need for equal stiffness. Change the
+numbers, add a recycled-content option, or change the run size and see what
+happens to cost, energy, and carbon.
+
+```{webr-r}
+#| label: material-choice-compare-01
+# Rough per-unit body mass for equal stiffness, and cradle-to-gate factors.
+material <- c("Steel", "Aluminium", "Carbon-fibre")
+mass_g   <- c(140,      70,          38)          # grams per body
+cost_kg  <- c(1.20,     3.00,        28.00)       # $ per kg
+energy_kg<- c(25,       155,         300)         # MJ per kg (primary)
+co2_kg   <- c(2.0,      11.0,        24.0)        # kg CO2e per kg
+
+units <- 120000
+
+kg_total     <- mass_g / 1000 * units
+cost_total   <- kg_total * cost_kg
+energy_total <- kg_total * energy_kg
+co2_total    <- kg_total * co2_kg
+
+result <- data.frame(
+  Material      = material,
+  Body_mass_g   = mass_g,
+  Material_t    = round(kg_total / 1000, 1),
+  Cost_$        = round(cost_total),
+  Energy_MWh    = round(energy_total / 3600, 1),
+  CO2e_t        = round(co2_total / 1000, 1)
+)
+print(result, row.names = FALSE)
+
+cat("\nLightest body:", material[which.min(mass_g)], "\n")
+cat("Lowest material cost:", material[which.min(cost_total)], "\n")
+cat("Lowest cradle-to-gate CO2e:", material[which.min(co2_total)], "\n")
+```
+
+<details>
+<summary>What the numbers usually show --- and why the "greenest" answer is not obvious</summary>
+
+Carbon fibre gives the lightest body, which cuts shipping energy and, in a real
+vehicle, fuel over the whole service life. But its *production* energy and carbon
+per kilogram are the highest of the three, and it is the hardest to recycle
+(code #7, thermoset matrix). Steel is cheap and highly recycled but heavy.
+Aluminium sits in between and is excellent if you can get **recycled** stock ---
+secondary aluminium uses roughly 5 % of the energy of primary.
+
+For a *toy* that is shipped once and never driven under its own power for
+thousands of kilometres, the use-phase fuel saving from carbon fibre never
+arrives --- so the decision tilts back toward recycled aluminium or steel. The
+lesson: **the right material depends on where the impact actually lands in the
+life cycle.**
+
+</details>
+
+## Designing for recyclability
+
+Recyclability is designed in, not hoped for. The checklist a plastics engineer
+can actually influence:
+
+- Make the assembly from a **single material**, or from **compatible** materials that can be recycled together.
+- Make it **easy to disassemble**.
+- Prefer **snap-fits and press-fits** over screws and metal fasteners.
+- **Reduce the part count.**
+- **Avoid labels** (or use same-polymer labels / in-mould labelling).
+- Keep **thermosets** out of thermoplastic assemblies --- use thermoplastic elastomers instead of rubber seals where you can.
+
+You may not have the final word on a design, but you can always **offer the
+greener alternative**. And the mindset has shifted: products used to be designed
+for *end of life* --- last for period X, then done. Now good products are designed
+for **next life**: what can this material become *after* its first use?
+
+<details>
+<summary>Try it: redesign the RC-car battery door for recyclability</summary>
+
+**Current design:** ABS door, two stainless M2 screws, a printed polyester
+label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.
+
+**One redesign:**
+
+- Replace the two screws with a **living hinge + snap latch** moulded into the door (same ABS) --- removes two dissimilar-metal fasteners and a driver operation on the line.
+- Replace the adhesive polyester label with **in-mould labelling** in an ABS-compatible film, or mould the text into the part.
+- Replace the steel spring with a **moulded ABS cantilever spring** if the cycle life allows.
+- Keep the TPE gasket but make it a **removable press-in** part in a recycling-compatible grade, or switch to a moulded-in flexible ABS lip if the seal spec allows.
+
+Result: the door goes from five materials and two fasteners to essentially one
+polymer, snaps apart by hand, and carries no adhesive.
+
+</details>
+
+## The consumer's perspective
+
+Sustainable design has to survive contact with real buyers. Market research is
+consistent on two points:
+
+1. Environmentally conscious consumers **will pay marginally more** and **accept marginally lower fit and finish** for a product that is genuinely more environmentally friendly.
+2. They have **zero tolerance** for a drop in **performance/functionality** or in **service life**. They bought the product to do a job. If a "sustainable" design wears out sooner, it just gets replaced sooner --- consuming more resources and defeating the purpose.
+
+```{r fig-consumer-tolerance-01, fig.cap="Consumer tolerance for trade-offs made in the name of sustainability: some room on price and cosmetics, essentially none on how well the product works or how long it lasts.", fig.align='center', fig.width=9, fig.height=5}
+tol <- data.frame(
+  attribute = c("Higher price", "Cosmetic fit & finish",
+                "Core performance", "Service life / durability"),
+  tolerance = c(0.55, 0.45, 0.03, 0.05)
+)
+tol$attribute <- factor(tol$attribute, levels = rev(tol$attribute))
+tol$kind <- ifelse(tol$tolerance > 0.2, "Some tolerance", "Near-zero tolerance")
+
+ggplot(tol, aes(x = tolerance, y = attribute, fill = kind)) +
+  geom_col(width = 0.65) +
+  geom_text(aes(label = scales::percent(tolerance, accuracy = 1)),
+            hjust = -0.15, size = 3.8 * diagram_text_scale) +
+  scale_x_continuous(labels = scales::percent, limits = c(0, 0.7),
+                     expand = expansion(mult = c(0, 0.05))) +
+  scale_fill_manual(values = c("Some tolerance" = "#27AE60",
+                               "Near-zero tolerance" = "#C0392B")) +
+  labs(title = "Where consumers will --- and will not --- give ground",
+       x = "Approximate share of consumers willing to accept a trade-off",
+       y = NULL, fill = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+### Whole-life cost: cheaper to buy vs. cheaper to own
+
+This is where **planned obsolescence** enters. A business may have a commercial
+reason to limit a product's life --- it protects repeat sales. Sustainable design
+pushes the other way: make it last. The buyer's own wallet is often on the side
+of durability, even when the sticker price is higher.
+
+The live cell compares a **cheap** version of a product (low price, short life,
+replaced repeatedly) with a **durable** version (higher price, lasts the whole
+period). Change the prices, lifetimes, and horizon and watch which one wins on
+**total cost of ownership** --- and on **units sent to landfill**.
+
+```{webr-r}
+#| label: whole-life-cost-01
+horizon_years <- 10
+
+# Cheap option
+cheap_price     <- 18
+cheap_life_yrs  <- 2
+
+# Durable option
+durable_price     <- 42
+durable_life_yrs  <- 10
+
+cheap_purchases   <- ceiling(horizon_years / cheap_life_yrs)
+durable_purchases <- ceiling(horizon_years / durable_life_yrs)
+
+cheap_tco   <- cheap_purchases   * cheap_price
+durable_tco <- durable_purchases * durable_price
+
+cat(sprintf("Over %d years:\n", horizon_years))
+cat(sprintf("  Cheap  : %d purchases x $%d  = $%d   (%d units to landfill)\n",
+            cheap_purchases, cheap_price, cheap_tco, cheap_purchases))
+cat(sprintf("  Durable: %d purchase(s) x $%d = $%d   (%d unit to landfill)\n",
+            durable_purchases, durable_price, durable_tco, durable_purchases))
+
+better <- if (durable_tco < cheap_tco) "Durable" else "Cheap"
+cat(sprintf("\nLower total cost of ownership: %s (saves $%d)\n",
+            better, abs(cheap_tco - durable_tco)))
+```
+
+<details>
+<summary>Where does the cheap option actually win?</summary>
+
+Shorten the horizon (you only need the product for a year), or make the durable
+version's premium extreme relative to its extra life, and "cheap" wins on cost.
+But the **waste count** almost always favours durable: five landfilled units
+versus one. Whole-life thinking means putting *both* numbers --- dollars and
+units --- in front of the decision-maker, not just the sticker price.
+
+</details>
+
+## Sustainability in project management
+
+Everything above was about designing a *part*. When you are running a *project*,
+sustainability becomes a set of management actions spread across the whole life
+cycle. The MGMT-3105 checklist:
+
+**Procurement and contracts**
+
+- Choose **eco-friendly and ethical suppliers**; audit them for compliance.
+- Put **sustainability clauses** in contracts.
+- Perform an **Environmental & Social Impact Assessment (ESIA)**.
+
+**Design and materials**
+
+- Minimize raw-material use; prioritize **recyclable, renewable, and local** resources.
+- Design for **energy and water efficiency**.
+- Apply **circular-economy** principles: reuse, refurbish, recycle.
+- Plan the **product/service lifecycle** --- what happens to it after the project ends.
+
+**Operations**
+
+- Reduce **carbon emissions** from transport and operations.
+- Use **digital tools** to cut paper and travel.
+- Run proper **waste management**: segregation, recycling, safe disposal.
+
+**People and governance**
+
+- Safeguard **health, safety, and well-being** of the team and the community.
+- Support **social responsibility**: local hiring, fair wages, training.
+- Track **sustainability KPIs**: carbon footprint, waste-reduction %, energy saved.
+- Monitor suppliers and contractors; **identify and mitigate** environmental and social risks; run **sustainability audits** when needed.
+
+### The circular economy
+
+The circular economy is the alternative to the linear **take --- make --- use ---
+dispose** model. Instead, material is kept in use through loops of increasing
+size: maintain and reuse first, then refurbish and remanufacture, then recycle,
+with disposal as the last resort.
+
+```{r fig-circular-economy-01, fig.cap="The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.", fig.align='center', fig.width=9, fig.height=7}
+stages <- data.frame(
+  label = c("Design", "Make", "Distribute", "Use", "Maintain / Reuse",
+            "Refurbish / Remanufacture", "Recycle"),
+  angle = seq(90, 90 - 360 + 360/7, length.out = 7) * pi / 180
+)
+stages$x <- cos(stages$angle)
+stages$y <- sin(stages$angle)
+
+seg <- data.frame(
+  x    = stages$x,
+  y    = stages$y,
+  xend = stages$x[c(2:7, 1)],
+  yend = stages$y[c(2:7, 1)]
+)
+
+ggplot() +
+  geom_curve(data = seg, aes(x = x, y = y, xend = xend, yend = yend),
+             curvature = -0.25, linewidth = 0.9, color = "#27AE60",
+             arrow = arrow(length = unit(0.18, "cm"), type = "closed")) +
+  geom_point(data = stages, aes(x = x, y = y), size = 20, color = "#EAF6EC") +
+  geom_point(data = stages, aes(x = x, y = y), size = 20, shape = 1, color = "#27AE60") +
+  geom_text(data = stages, aes(x = x, y = y, label = label),
+            size = 3 * diagram_text_scale, fontface = "bold",
+            lineheight = 0.9, color = "grey15") +
+  annotate("text", x = 0, y = 0, label = "keep materials\nin use",
+           size = 3.2 * diagram_text_scale, fontface = "italic", color = "grey40") +
+  coord_equal(xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4)) +
+  labs(title = "Design out waste; circulate materials") +
+  theme_void() +
+  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+                                  face = "bold", hjust = 0.5))
+```
+
+```{r video-circular-economy, echo=FALSE, results='asis'}
+embed_youtube("zCRKvDyyHmI", "Explaining the Circular Economy (Ellen MacArthur Foundation)")
+```
+
+### Try it yourself: a sustainability KPI snapshot
+
+Sustainability only gets managed if it gets measured. The live cell computes a
+few of the KPIs from the checklist for the RC-vehicle project: carbon footprint
+per unit, waste-diversion rate, and recycled-content share. Adjust the inputs to
+your own project assumptions.
+
+```{webr-r}
+#| label: sustainability-kpi-01
+units            <- 120000
+
+# Carbon
+material_co2_t   <- 71      # tonnes CO2e, cradle-to-gate materials
+process_co2_t    <- 18      # tonnes CO2e, moulding + assembly energy
+transport_co2_t  <- 26      # tonnes CO2e, inbound + outbound freight
+
+# Waste
+process_waste_t  <- 9.0     # tonnes of scrap + packaging generated
+waste_diverted_t <- 8.1     # tonnes reused / recycled / to-energy
+
+# Materials
+recycled_input_t <- 15.5    # tonnes of recycled feedstock
+total_input_t    <- 62.0    # tonnes of material input
+
+total_co2_t <- material_co2_t + process_co2_t + transport_co2_t
+
+cat(sprintf("Carbon footprint      : %.1f t CO2e total,  %.3f kg CO2e per unit\n",
+            total_co2_t, total_co2_t * 1000 / units))
+cat(sprintf("Waste diversion rate  : %.1f %%  (target: >= 90 %%)\n",
+            100 * waste_diverted_t / process_waste_t))
+cat(sprintf("Landfilled waste      : %.2f t\n", process_waste_t - waste_diverted_t))
+cat(sprintf("Recycled content      : %.1f %%  of material input\n",
+            100 * recycled_input_t / total_input_t))
+
+status <- if (100 * waste_diverted_t / process_waste_t >= 90) "PASS" else "BELOW TARGET"
+cat(sprintf("\nWaste KPI status: %s\n", status))
+```
+
+## Key Takeaways
+
+- **Sustainability** = meeting present needs without compromising future generations' ability to meet theirs. **Sustainable design** applies that across social, economic, and ecological pillars at once --- a "win" on one pillar is not a win.
+- The four levers for a product engineer: **recycle, bio-source/biodegrade, reduce material, design for recyclability.**
+- The **seven resin codes** tell a sorter what a plastic is; PET (#1), HDPE (#2), and PP (#5) recycle well, #7 (blends/PLA/filled) rarely does. **Post-consumer** recyclate diverts real waste but is hard to process; **post-industrial** regrind is easy.
+- **Recyclable and biodegradable can conflict**, and "biodegradable" does little in a dry, compacted landfill --- the EcoPlast case shows what happens when that asterisk is ignored.
+- A small **material-reduction** decision, multiplied by the production run, moves tonnes of material, energy, and CO2e. The "greenest" material depends on **where in the life cycle the impact lands** --- use phase vs. production vs. end of life.
+- Consumers give ground on **price and cosmetics** but not on **performance or durability**; **whole-life cost** usually favours the durable design on both dollars and landfill count.
+- In **project management**, sustainability is a checklist across procurement, design, operations, and governance --- backed by **circular-economy** loops and tracked with **KPIs** (carbon per unit, waste diversion, recycled content).
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Packaging substitution (food industry)</summary>
+
+A food-processing client ships 2.4 million meal trays a year. The current tray
+is 22 g of black CPET (#1, but often rejected by sorters because black plastic
+is invisible to optical sorting). A proposed natural-coloured PP (#5) tray
+weighs 19 g, costs \$0.006/g versus \$0.005/g for the CPET, and is accepted by
+the client's regional recycler.
+
+(a) What is the annual change in material mass and material cost?
+(b) Give two non-cost arguments for switching, and one argument against.
+
+**Solution.**
+
+```{r p1-packaging-solution-01, echo=TRUE}
+trays        <- 2.4e6
+mass_cpet_g  <- 22
+mass_pp_g    <- 19
+cost_cpet    <- 0.005
+cost_pp      <- 0.006
+
+mass_change_kg <- (mass_pp_g - mass_cpet_g) / 1000 * trays
+cost_change    <- (mass_pp_g * cost_pp - mass_cpet_g * cost_cpet) * trays
+
+cat("Annual material mass change :", format(round(mass_change_kg), big.mark = " "), "kg",
+    "(a reduction)\n")
+cat("Annual material cost change : ",
+    sprintf("$%s", format(round(cost_change), big.mark = " ")),
+    " (an increase)\n", sep = "")
+```
+
+(a) About 7 200 kg less plastic per year, but roughly \$3 700/yr more spent on
+material because PP costs more per gram here and the 3 g saving does not fully
+offset it.
+
+(b) *For:* the natural-coloured PP is actually recovered by the recycler
+(black CPET usually is not), and PP trays tolerate reheating better. *Against:*
+higher material spend, and a tooling change is needed --- capital plus a
+qualification run.
+
+</details>
+
+<details>
+<summary>Problem 2: Recycled-aluminium body (automotive/toy)</summary>
+
+Switching the RC-car body from primary to **recycled** aluminium keeps the mass
+at 70 g/unit but changes the cradle-to-gate energy from 155 MJ/kg to 8 MJ/kg and
+the carbon from 11 kg CO2e/kg to 0.6 kg CO2e/kg. Recycled stock costs \$0.25/kg
+more. Run size 120 000 units.
+
+Estimate the energy saved, the CO2e avoided, and the extra material cost.
+
+**Solution.**
+
+```{r p2-recycled-al-solution-01, echo=TRUE}
+mass_kg   <- 70 / 1000
+units     <- 120000
+kg_total  <- mass_kg * units
+
+energy_saved <- kg_total * (155 - 8)
+co2_saved    <- kg_total * (11 - 0.6)
+extra_cost   <- kg_total * 0.25
+
+cat("Aluminium in the run :", format(round(kg_total), big.mark = " "), "kg\n")
+cat("Production energy saved :", format(round(energy_saved), big.mark = " "), "MJ",
+    sprintf("(~%s kWh)\n", format(round(energy_saved / 3.6), big.mark = " ")))
+cat("CO2e avoided :", format(round(co2_saved), big.mark = " "), "kg",
+    sprintf("(~%.1f t)\n", co2_saved / 1000))
+cat("Extra material cost :",
+    sprintf("$%s\n", format(round(extra_cost), big.mark = " ")))
+```
+
+Roughly 1.2 million MJ (about 340 000 kWh) and 87 t of CO2e avoided for about
+\$2 100 of extra material cost --- one of the highest-leverage sustainability
+moves available on this project.
+
+</details>
+
+<details>
+<summary>Problem 3: Design-for-recyclability audit (defense)</summary>
+
+A defense client requires that field-returned electronic enclosures be
+**materially recoverable**. You are handed this enclosure: glass-filled nylon
+(#7) housing, 6 zinc-plated steel screws, a bonded aluminium RFI shield, a
+polyurethane potting compound over the PCB, and two adhesive asset-tracking
+labels.
+
+List, in priority order, the four changes that would most improve material
+recovery, and note the functional risk of each.
+
+**Model answer.**
+
+1. **Replace the potting compound** with a removable conformal coating or a
+   gasketed enclosure. *Risk:* reduced shock/moisture protection --- must
+   re-qualify to the environmental spec.
+2. **Eliminate the bonded aluminium shield**; use a conductive coating on the
+   nylon or a snap-in shield of the same-family metal. *Risk:* RFI performance
+   must be re-verified.
+3. **Swap the 6 steel screws** for moulded snap features or same-metal
+   fasteners. *Risk:* fewer re-assembly cycles; captive-hardware requirement may
+   forbid it.
+4. **Drop adhesive labels** for moulded-in or laser-etched marking. *Risk:*
+   contrast/legibility and traceability sign-off.
+
+The housing polymer itself (#7 glass-filled) is hard to change if the structural
+spec depends on it --- note it as a known limitation rather than a quick fix.
+
+</details>
+
+<details>
+<summary>Problem 4 (discussion): planned obsolescence vs. sustainable design</summary>
+
+"Sustainable design requires that our products last as long as possible. But
+business decisions may deliberately shorten product life to protect repeat
+sales --- planned obsolescence. Which do you prefer, and how would you reconcile
+the two in a company that has to stay profitable?"
+
+There is no single right answer --- this is a position you argue. Strong answers
+usually land on **service and circular business models**: the manufacturer keeps
+revenue through repair, upgrades, refurbishment, take-back, or
+product-as-a-service, so "make it last" and "keep earning" stop being opposites.
+Weak answers just pick a side and ignore the constraint on the other.
+
+</details>
+
+## Further Resources
+
+- **U.S. EPA --- Learn About Sustainability:** <https://www.epa.gov/sustainability/learn-about-sustainability>
+- **Brundtland Report (*Our Common Future*, 1987):** <https://sustainabledevelopment.un.org/content/documents/5987our-common-future.pdf>
+- **Ellen MacArthur Foundation --- Circular Economy Introduction:** <https://www.ellenmacarthurfoundation.org/topics/circular-economy-introduction/overview>
+
+```{r video-resources-01, echo=FALSE, results='asis'}
+embed_youtube("9GorqroigqM", "The Story of Stuff")
+embed_youtube("zCRKvDyyHmI", "Explaining the Circular Economy (Ellen MacArthur Foundation)")
+embed_youtube("7V8oFI4GYMY", "What Is Sustainable Development?")
+```

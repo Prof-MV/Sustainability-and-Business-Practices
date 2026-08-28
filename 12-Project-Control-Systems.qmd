@@ -1,0 +1,36 @@
+# Project Control Systems
+
+```{r setup-12, include=FALSE}
+source("R/helpers.R")
+source("R/required_packages.R")
+inject_jquery()
+```
+
+::: {.callout-note}
+This chapter is in preparation. The MGMT-3105 course map lists a *Control
+Systems* lecture in this slot; the chapter will be built from project-control
+fundamentals and the course's Project Manager Report and Team Member Report
+templates, following the same structure as [Chapter 1](01-Sustainability.qmd)
+and [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
+:::
+
+## Learning objectives (planned)
+
+By the end of this chapter you will be able to:
+
+- Describe the monitoring-and-control loop: measure, compare to baseline, analyse variance, act.
+- Compute earned-value metrics: PV, EV, AC, SV, CV, SPI, CPI.
+- Forecast with EAC, ETC, and TCPI, and interpret the results.
+- Build and read an S-curve of planned vs. earned vs. actual cost.
+- Run integrated change control and keep the baseline meaningful.
+- Report status honestly: the "watermelon" trap and leading vs. lagging indicators.
+
+## Topic outline
+
+1. What "control" means: closed-loop management.
+2. The performance measurement baseline (scope + schedule + cost).
+3. Earned value management: the three curves and the six core metrics.
+4. Variance analysis and forecasting (EAC scenarios, TCPI).
+5. Change control and configuration management.
+6. Status reporting, dashboards, and honest metrics.
+7. Running case: an earned-value snapshot of the RC-vehicle project at week 8.
