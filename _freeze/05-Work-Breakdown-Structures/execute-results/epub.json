@@ -1,0 +1,21 @@
+{
+  "hash": "9c44bf7cfd7d51c8f4aa0a2eb2fd2da1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "# Work Breakdown Structures (WBS)\n\n\n\n::: {.callout-note}\nThis chapter is in preparation. It will be built from **Lecture 5 -- Work\nBreakdown Structures** of MGMT-3105, the WBS Dictionary template, and the\n`work-breakdown-structure.xlsx` worksheet, following the same structure as\n[Chapter 1](01-Sustainability.qmd) and\n[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).\n:::\n\n## Learning objectives (planned)\n\nBy the end of this chapter you will be able to:\n\n- Explain the purpose of a WBS and how it links scope, schedule, and budget.\n- Decompose a project into deliverables, work packages, and activities.\n- Apply the 100 % rule and choose an appropriate level of decomposition.\n- Number a WBS and build a WBS dictionary entry for a work package.\n- Distinguish a deliverable-oriented WBS from a phase-oriented or organizational (OBS) breakdown.\n- Assign responsibility with a RACI / responsibility-assignment matrix.\n\n## Topic outline\n\n1. From scope statement to WBS.\n2. Decomposition: deliverables, work packages, activities.\n3. The 100 % rule; how far to decompose (the 8/80 guideline).\n4. WBS numbering and the WBS dictionary.\n5. Control accounts and the link to cost and schedule baselines.\n6. Responsibility assignment (RACI).\n7. Running case: building the WBS for the RC-vehicle project.\n",
+    "supporting": [
+      "05-Work-Breakdown-Structures_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {
+      "knitr": [
+        "{\"type\":\"list\",\"attributes\":{},\"value\":[]}"
+      ]
+    },
+    "preserve": null,
+    "postProcess": false
+  }
+}
