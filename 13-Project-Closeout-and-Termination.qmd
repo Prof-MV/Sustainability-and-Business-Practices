@@ -148,7 +148,10 @@ A project has already spent **\$480 000** (sunk). Finishing it needs another
 **\$260 000**. The product, if delivered, is now worth an estimated
 **\$300 000** in benefit --- the market moved while you were building.
 
-```{r cancel-decision-13, echo=TRUE}
+Live cell --- change the cost to finish or the remaining benefit.
+
+```{webr-r}
+#| label: cancel-decision-13
 sunk            <- 480000     # already spent -- IRRELEVANT to the decision
 cost_to_finish  <- 260000
 remaining_benefit <- 300000

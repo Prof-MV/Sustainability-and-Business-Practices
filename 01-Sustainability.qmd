@@ -315,7 +315,10 @@ pass the drop test, cutting body mass to **41 g**. The contract run is
 about **90 MJ/kg**, and its cradle-to-gate carbon intensity is about
 **3.4 kg CO2e/kg**.
 
-```{r material-reduction-example-01, echo=TRUE}
+Live cell --- change the mass reduction, the run size, or the material's cost and energy factors.
+
+```{webr-r}
+#| label: material-reduction-example-01
 mass_before_g <- 48
 mass_after_g  <- 41
 units         <- 120000

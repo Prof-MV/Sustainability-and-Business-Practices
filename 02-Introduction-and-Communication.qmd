@@ -248,7 +248,10 @@ The core project has the PM, 4 team members, an accountant, and a sponsor liaiso
 --- **7 people**. The extended stakeholder circle adds 2 supplier contacts, a
 retailer contact, and a compliance officer --- **11 people**.
 
-```{r channels-example-02, echo=TRUE}
+Live cell --- try different core-team and extended-circle sizes.
+
+```{webr-r}
+#| label: channels-example-02
 core <- 7
 extended <- 11
 

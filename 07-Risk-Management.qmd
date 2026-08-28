@@ -150,7 +150,10 @@ simulation (run the network thousands of times with sampled durations/costs).
 The "new assembly line learning curve" risk: a **40 %** chance it adds
 **\$120 000** of rework and overtime; otherwise \$0.
 
-```{r emv-example-07, echo=TRUE}
+Live cell --- change the probability or the impact of the risk.
+
+```{webr-r}
+#| label: emv-example-07
 p_occurs <- 0.40
 impact   <- 120000
 

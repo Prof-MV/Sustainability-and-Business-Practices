@@ -127,7 +127,10 @@ children equals the parent**, and nothing outside the scope appears.
 The "1.1 Body & Frame" deliverable is estimated at **340 hours**. Its four work
 packages are estimated at 120, 90, 70, and 60 hours.
 
-```{r wbs-rollup-example-05, echo=TRUE}
+Live cell --- change the parent estimate or the work-package hours and watch the 100 % check.
+
+```{webr-r}
+#| label: wbs-rollup-example-05
 parent_hours   <- 340
 children_hours <- c("1.1.1 Outer body design" = 120,
                     "1.1.2 Inner frame design" = 90,

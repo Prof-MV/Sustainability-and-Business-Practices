@@ -167,7 +167,10 @@ $$
 Baseline budget **BAC = \$620 000**. By week 8 the plan said **35 %** of the
 work should be done; **30 %** is actually done; **\$210 000** has been spent.
 
-```{r evm-example-12, echo=TRUE}
+Live cell --- change the planned %, the actual %, or the actual cost.
+
+```{webr-r}
+#| label: evm-example-12
 BAC <- 620000
 planned_pct <- 0.35
 actual_pct  <- 0.30

@@ -112,7 +112,7 @@ successors flowing **out** is a **burst**.
 
 Ten activities (a simplified slice of the project):
 
-```{r cpm-setup-06, echo=TRUE}
+```{r cpm-setup-06}
 acts <- data.frame(
   id = LETTERS[1:10],
   dur = c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5),
@@ -143,8 +143,20 @@ $$FLT = LS - ES = LF - EF$$
 Activities with **zero float** cannot slip without delaying the whole project ---
 together they form the **critical path**.
 
-```{r cpm-solve-06, echo=TRUE}
-# A small critical-path solver (base R + data.frame).
+Live cell --- a base-R critical-path solver. Run it, then change a duration or a
+predecessor in `acts` and watch the project duration and the critical path move.
+
+```{webr-r}
+#| label: cpm-solve-06
+# The ten activities: id, duration, and comma-separated predecessors.
+acts <- data.frame(
+  id = LETTERS[1:10],
+  dur = c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5),
+  pred = c("", "A", "B", "A", "C", "C", "D,E", "F", "G", "H,I"),
+  stringsAsFactors = FALSE
+)
+
+# A small critical-path solver (base R only).
 cpm <- function(df) {
   df$pred <- strsplit(df$pred, ",")
   n <- nrow(df); id <- df$id
@@ -175,6 +187,32 @@ res <- cpm(acts)
 print(res, row.names = FALSE)
 cat(sprintf("\nProject duration: %d days\n", max(res$EF)))
 cat("Critical path:", paste(res$Activity[res$Float == 0], collapse = " - "), "\n")
+```
+
+```{r cpm-knitr-06, include=FALSE}
+# Same solver, run in the page-build session so the float figure below and the
+# Practice Problem 1 solution can reuse cpm() and res. (webR cells run only in
+# the reader's browser and can't feed later figures.)
+cpm <- function(df) {
+  df$pred <- strsplit(df$pred, ",")
+  n <- nrow(df); id <- df$id
+  ES <- EF <- LS <- LF <- setNames(rep(NA_real_, n), id)
+  for (i in seq_len(n)) {
+    p <- df$pred[[i]]; p <- p[p != ""]
+    ES[i] <- if (length(p) == 0) 0 else max(EF[p])
+    EF[i] <- ES[i] + df$dur[i]
+  }
+  proj <- max(EF)
+  for (i in rev(seq_len(n))) {
+    succ <- id[sapply(df$pred, function(pp) id[i] %in% pp)]
+    LF[i] <- if (length(succ) == 0) proj else min(LS[succ])
+    LS[i] <- LF[i] - df$dur[i]
+  }
+  data.frame(Activity = id, Dur = df$dur, ES = ES, EF = EF, LS = LS, LF = LF,
+             Float = LS - ES,
+             Critical = ifelse(LS - ES == 0, "  <- critical", ""))
+}
+res <- cpm(acts)
 ```
 
 ```{r fig-cpm-float-06, echo=FALSE, fig.cap="Total float per activity. The zero-float bars (A, B, C, E, G, I, J) are the critical path; D has 12 days of slack, F and H have 2.", fig.align='center', fig.width=10, fig.height=4.5}

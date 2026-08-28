@@ -122,7 +122,10 @@ the cost of the risk it carries) puts your **reservation price at \$168 000** --
 you would not pay MCS more than that. MCS's floor, given their costs and other
 customers, is **\$150 000**.
 
-```{r zopa-example-10, echo=TRUE}
+Live cell --- move either side's reservation price and see whether a deal still exists.
+
+```{webr-r}
+#| label: zopa-example-10
 buyer_reservation  <- 168000   # most you will pay
 seller_reservation <- 150000   # least they will accept
 

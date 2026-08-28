@@ -127,7 +127,10 @@ When you must choose which activity to move, work through them in this order:
 Day 12 needs 10 people against a limit of 9. Four activities are running that
 day:
 
-```{r leveling-example-11, echo=TRUE}
+Live cell --- change the float, duration, successors, or people for each task.
+
+```{webr-r}
+#| label: leveling-example-11
 running_day12 <- data.frame(
   task = c("D", "E", "H", "J"),
   float = c(12, 0, 0, 5),

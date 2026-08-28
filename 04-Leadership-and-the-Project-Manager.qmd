@@ -223,7 +223,10 @@ supervision --- their *absence* causes dissatisfaction, but their presence does 
 motivate) and **motivators** (achievement, recognition, the work itself,
 responsibility, growth --- these drive engagement).
 
-```{r herzberg-example-04, echo=TRUE}
+Live cell --- re-classify the complaints, or add your own, and see which get fixed first.
+
+```{webr-r}
+#| label: herzberg-example-04
 complaints <- data.frame(
   issue = c("Cramped, hot project room", "No recognition for hitting the drop-test milestone",
             "Confusing expense policy", "Same repetitive CAD cleanup every week",

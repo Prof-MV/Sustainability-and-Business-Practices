@@ -144,7 +144,10 @@ The "Design body & frame" work package needs **1 mechanical designer for
 materials for prototypes are \$4 500. The company applies indirect cost at
 **35 %** of direct cost.
 
-```{r cost-wp-example-09, echo=TRUE}
+Live cell --- change the hours, rates, materials, or the indirect rate.
+
+```{webr-r}
+#| label: cost-wp-example-09
 designer_hours <- 220; designer_rate <- 46
 junior_hours   <- 120; junior_rate   <- 32
 direct_materials <- 4500

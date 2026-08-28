@@ -81,7 +81,10 @@ The project needs **\$450 000** up front (tooling, setup, approvals). Once the
 100 000-unit contract runs, it returns an estimated **\$180 000** of net cash
 per year.
 
-```{r payback-example-03, echo=TRUE}
+Live cell --- change the outlay, the annual cash flow, or the horizon.
+
+```{webr-r}
+#| label: payback-example-03
 initial   <- 450000
 annual_cf <- 180000
 horizon   <- 5

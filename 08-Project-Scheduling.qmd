@@ -126,7 +126,10 @@ $$\mu_{\text{project}} = \sum t_e, \qquad \sigma^2_{\text{project}} = \sum \sigm
 
 The critical path is A--B--C--D--E with these three-point estimates:
 
-```{r pert-project-08, echo=TRUE}
+Live cell --- change any activity's optimistic, most-likely, or pessimistic estimate.
+
+```{webr-r}
+#| label: pert-project-08
 cp <- data.frame(
   id = c("A", "B", "C", "D", "E"),
   o  = c(12, 7, 15, 9, 24),
