@@ -1,36 +1,350 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Resource Management
 
 ```{r setup-11, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 11 -- Resource
-Management** of MGMT-3105, following the same structure as
-[Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Distinguish time-constrained from resource-constrained scheduling.
-- Build a resource histogram and identify over-allocation.
-- Apply resource levelling and resource smoothing, and explain their effect on the critical path and float.
-- Explain the theory-of-constraints view of a project (critical chain, buffers).
-- Plan for procurement of materials and outsourced work.
-- Manage the sustainability dimension of resources: material efficiency, energy, and waste.
+1. **Name** the constraint types on a project and focus on the resource constraints.
+2. **Build** a resource histogram and spot over-allocation.
+3. **Apply** resource **leveling** and the heuristics that decide which task moves first.
+4. **Distinguish** time-constrained from resource-constrained scheduling.
+5. **Apply** resource **smoothing** within available float.
+6. **Explain** the multi-project resource problem and the priority rules used to resolve it.
+7. **Quantify** the cost of multitasking on effective capacity.
 
-## Topic outline
+<details>
+<summary>Before we begin: your plan assumed the person was free --- were they?</summary>
 
-1. Types of project resources: labour, equipment, material, facilities.
-2. Resource loading and the resource histogram.
-3. Over-allocation and the levelling problem.
-4. Resource levelling vs. smoothing; splitting and multitasking costs.
-5. Critical chain and buffer management.
-6. Procurement and make-or-buy.
-7. Sustainable resource use: circular-economy principles applied to the project.
-8. Running case: levelling the RC-vehicle project team and tooling.
+Almost every first-draft project schedule is built as if the organization has
+unlimited trained people standing by. It never does. This chapter is what
+happens when the plan meets the staffing reality.
+
+</details>
+
+## Introduction: the optimism of the first schedule
+
+The RC-vehicle schedule from [Chapter 8](08-Project-Scheduling.qmd) quietly
+assumed every resource was available exactly when needed. Reality: there is **one
+CMM** for validation, the **millwrights** are shared with production, the design
+engineers are **borrowed** from a functional department, and the new assembly
+line has a **learning curve**. *Building plans under the assumption of unlimited
+resources inevitably leads to schedule slippage and extra cost as reality
+overtakes the optimism.*
+
+Projects run inside three kinds of constraint --- **technical**, **physical**, and
+**resource** --- and this chapter is about the last one: **people, materials,
+space, money, equipment.**
+
+::: {.callout-note}
+**Industry snapshot.** An automotive company with one set of climate chambers
+watches validation projects stack up behind that single resource --- the classic
+bottleneck. A food plant schedules every project around the *one* weekend
+sanitation window. A defense program's cleared personnel are a fixed pool, so
+every new task is a reallocation, not an addition.
+:::
+
+```{r video-resource-leveling-11, echo=FALSE, results='asis'}
+embed_youtube("JlUXah6fsLI", "Resource Allocation and Leveling: Tutorial and Example (AF Math & Engineering)")
+```
+
+## Resource loading and the histogram
+
+A **resource histogram** plots how much of a resource is required over time.
+Stack each activity's demand day by day and the over-allocations jump out ---
+provided you remember the chart assumes each person is available **100 % of the
+time**, which is rarely true.
+
+```{r fig-histogram-11, fig.cap="Resource histogram before and after leveling, against a limit of 9 people/day. Leveling shifts a task with float so the peak on day 12 no longer breaches the limit -- without extending the project.", fig.align='center', fig.width=10, fig.height=5}
+days <- 1:14
+before <- c(6,6,6,6,6, 9,9,9,9,10, 8,10,9,7)
+after  <- c(6,6,6,6,6, 9,9,9,9,9,  9,9,9,7)
+df <- data.frame(
+  day = rep(days, 2),
+  people = c(before, after),
+  state = rep(c("Before leveling", "After leveling"), each = length(days))
+)
+df$state <- factor(df$state, levels = c("Before leveling", "After leveling"))
+
+ggplot(df, aes(day, people)) +
+  geom_col(aes(fill = people > 9), width = 0.75) +
+  geom_hline(yintercept = 9, linetype = "dashed", color = "#C0392B", linewidth = 0.9) +
+  annotate("text", x = 2, y = 9.6, label = "limit = 9/day",
+           color = "#C0392B", size = 3 * diagram_text_scale, hjust = 0) +
+  scale_fill_manual(values = c("FALSE" = "#5DADE2", "TRUE" = "#C0392B"), guide = "none") +
+  facet_wrap(~state, ncol = 1) +
+  scale_x_continuous(breaks = days) +
+  labs(title = "Leveling removes the over-allocation peak",
+       x = "Project day", y = "People required") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    strip.text = element_text(size = 11 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 9.5 * diagram_text_scale)
+  )
+```
+
+## Resource leveling
+
+> **PMBOK:** *a technique in which start and finish dates are adjusted based on
+> resource constraints, with the goal of balancing demand for resources against
+> the available supply.*
+
+Two objectives: (1) make sure resources are available at the right time, and
+(2) let each activity run with the **smoothest possible transitions** across
+resource-usage levels.
+
+When you must choose which activity to move, work through them in this order:
+
+1. Activities with the **smallest float**
+2. Activities with the **smallest duration**
+3. Activities with the **lowest ID** (earliest in the WBS)
+4. Activities with the **most successors**
+5. Activities requiring the **most resources**
+
+### Worked Example 1: which task do you move?
+
+Day 12 needs 10 people against a limit of 9. Four activities are running that
+day:
+
+```{r leveling-example-11, echo=TRUE}
+running_day12 <- data.frame(
+  task = c("D", "E", "H", "J"),
+  float = c(12, 0, 0, 5),
+  duration = c(6, 6, 7, 3),
+  successors = c(1, 2, 1, 0),
+  people = c(3, 3, 3, 1)
+)
+print(running_day12, row.names = FALSE)
+
+# Only tasks with float can move without extending the project.
+movable <- running_day12[running_day12$float > 0, ]
+# Among movable tasks, prefer smallest float, then smallest duration.
+pick <- movable[order(movable$float, movable$duration), ][1, ]
+cat(sprintf("\nMovable tasks: %s\n", paste(movable$task, collapse = ", ")))
+cat(sprintf("Move first: task %s (float %d, duration %d) -- shift it later within its slack.\n",
+            pick$task, pick$float, pick$duration))
+cat("E and H are on the critical path (float 0) -- moving them would extend the project.\n")
+```
+
+## Time-constrained vs. resource-constrained
+
+- **Time-constrained**: the end date is fixed; you add or reassign resources to protect it (this is closer to *smoothing*).
+- **Resource-constrained**: the resource limit is fixed; if leveling within float is not enough, **the project duration extends** (undesirable, but sometimes unavoidable).
+
+## Resource smoothing
+
+Smoothing is done **after** leveling and **never extends the project duration**.
+It uses available **float** to even out resource usage --- filling the valleys
+from the peaks.
+
+### Try it yourself: smooth a resource within its float
+
+```{webr-r}
+#| label: smoothing-11
+# Weekly demand for one resource, and the resource's weekly limit.
+weekly_demand <- c(52, 30, 61, 24, 45, 20, 58)
+limit <- 45
+
+peak <- max(weekly_demand)
+total_work <- sum(weekly_demand)
+weeks <- length(weekly_demand)
+ideal_flat <- total_work / weeks
+
+cat(sprintf("Peak week demand   : %d  (limit %d -> %d over)\n", peak, limit, max(0, peak - limit)))
+cat(sprintf("Total work         : %d resource-weeks over %d weeks\n", total_work, weeks))
+cat(sprintf("Perfectly smooth   : %.1f per week\n", ideal_flat))
+
+if (ideal_flat <= limit) {
+  cat("\nThe work FITS within the limit if spread evenly -> smoothing can solve this\n")
+  cat("by shifting tasks into their float, no schedule change needed.\n")
+} else {
+  cat(sprintf("\nEven perfectly smoothed (%.1f/wk) still exceeds the limit -> this needs\n", ideal_flat))
+  cat("leveling (extend duration) or more resource, not just smoothing.\n")
+}
+```
+
+## Splitting a task
+
+**Splitting** means interrupting continuous work on an activity, moving that
+resource to another activity, then returning. It helps *only* when there are no
+large **start-up or shutdown costs**, and **only some tasks can be split** at all
+(you cannot pause a concrete pour).
+
+## The multi-project resource problem
+
+Organizations rarely buy new resources for each project --- they **share** them
+across projects. The core challenge is **interdependency**: a resource decision
+in one project ripples into others. Common problems:
+
+- Inefficient use of resources
+- Resource **bottlenecks**
+- **Ripple effects**
+- Heightened pressure on people to **multitask**
+
+Any multi-project scheduling system tries to minimize three things:
+
+1. **Schedule slippage** --- often carrying real financial penalty clauses per day late.
+2. **Resource utilization** losses --- the unused-capacity gap; the goal is to fill it with other projects' work.
+3. **In-process inventory (WIP)** --- work waiting on an unavailable resource, stacked behind a bottleneck (e.g. one shared climate chamber).
+
+```{r fig-utilization-11, fig.cap="Resource utilization across a project. The shaded area is capacity the project does not use -- in a multi-project shop it should be filled with concurrent projects' work rather than left idle.", fig.align='center', fig.width=10, fig.height=4.8}
+wk <- 1:14
+used <- c(3,4,5,6,6,7,7,6,5,5,4,3,3,2)
+cap  <- 8
+df <- data.frame(wk, used, unused = cap - used)
+df_long <- tidyr::pivot_longer(df, c(used, unused), names_to = "kind", values_to = "res")
+df_long$kind <- factor(df_long$kind, levels = c("unused", "used"),
+                        labels = c("Unused capacity", "Used by this project"))
+
+ggplot(df_long, aes(wk, res, fill = kind)) +
+  geom_col(width = 0.8) +
+  geom_hline(yintercept = cap, linetype = "dashed", color = "grey30") +
+  scale_fill_manual(values = c("Used by this project" = "#5DADE2",
+                               "Unused capacity" = "#F5CBA7"), name = NULL) +
+  scale_x_continuous(breaks = wk) +
+  labs(title = "Where is the idle capacity?",
+       x = "Project week", y = "Resource units") +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+### Priority rules for allocating shared resources
+
+| Rule | Logic |
+|---|---|
+| **First in line** (first come, first served) | Simplest --- follow the master calendar; ignores priority and commercial value |
+| **Greatest resource demand** | Schedule the most resource-hungry project first so bottlenecks surface early |
+| **Greatest resource utilization** (most resource *types*) | Schedule the project that uses the widest mix of resources first, keeping all of them busy |
+| **Minimum late finish** (earliest finish first) | Prioritize the project with the earliest late-finish date |
+| **Mathematical programming** | Optimize (minimize total time / utilization loss / lateness); powerful but complex and slow for large problems |
+
+### Try it yourself: "40 hours is not one week's work"
+
+```{webr-r}
+#| label: multitask-11
+nominal_hours <- 40
+# Each additional concurrent project imposes a context-switching loss.
+switch_loss_per_extra_project <- 0.15   # 15% of capacity lost per extra project
+
+for (projects in 1:4) {
+  extras <- projects - 1
+  effective <- nominal_hours * (1 - switch_loss_per_extra_project * extras)
+  effective <- max(effective, 0)
+  cat(sprintf("On %d project(s): %.0f 'nominal' hours -> %.1f effective hours (%.0f%% productive)\n",
+              projects, nominal_hours, effective, 100 * effective / nominal_hours))
+}
+cat("\nAssigning a person to a project at '40 hours' while they carry two others\n")
+cat("is really assigning maybe 28 -- which is how resource-leveled plans still slip.\n")
+```
+
+## Sustainability and resources
+
+Resource management is not only about people-hours. The **circular-economy**
+thinking from [Chapter 1](01-Sustainability.qmd) applies directly: minimize raw
+material use, prefer recyclable and local inputs, design the project so
+equipment and tooling can be reused on the next program, and track material and
+energy as managed resources with their own KPIs --- not just labour and money.
+
+## Key Takeaways
+
+- Projects run inside **technical, physical, and resource** constraints; resources are people, materials, space, money, equipment.
+- A **resource histogram** exposes **over-allocation** (against a 100 %-availability assumption).
+- **Leveling** shifts tasks within their **float** to respect a resource limit; move tasks in order of **smallest float → smallest duration → lowest ID → most successors → most resources**. Critical-path tasks have no float, so moving them extends the project.
+- **Time-constrained** protects the date with resources; **resource-constrained** may extend the date.
+- **Smoothing** happens after leveling, uses float, and **never** extends duration.
+- **Splitting** helps only when start-up/shutdown costs are low and the task can be split.
+- Multi-project sharing creates **bottlenecks, ripple effects, and multitasking pressure**; minimize **slippage, utilization loss, and WIP**, and pick a **priority rule** deliberately.
+- **Multitasking is not free** --- "40 hours" of nominal capacity is far less once someone carries several projects.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Level to the limit</summary>
+
+Day 10 requires 10 people; the limit is 9. Running that day: task C (float 4,
+duration 5, 4 people), task D (float 0, duration 6, 3 people), task F (float 0,
+duration 6, 3 people). Which task moves, and what is the risk if none can?
+
+**Solution.**
+
+```{r p1-level-11, echo=TRUE}
+d10 <- data.frame(task = c("C", "D", "F"),
+                  float = c(4, 0, 0), dur = c(5, 6, 6), ppl = c(4, 3, 3))
+mov <- d10[d10$float > 0, ]
+cat("Only task with float:", mov$task, "\n")
+cat("Move C into its 4 days of slack -> day-10 demand drops to 6, under the limit.\n")
+cat("If C could not move (no split, hard dependency), the project duration extends.\n")
+```
+
+</details>
+
+<details>
+<summary>Problem 2: Does this need leveling or smoothing?</summary>
+
+A resource has a 40 h/week limit. Weekly demand over 6 weeks is
+55, 20, 48, 15, 50, 22 h. Total 210 h.
+
+**Solution.**
+
+```{r p2-smooth-11, echo=TRUE}
+demand <- c(55, 20, 48, 15, 50, 22); limit <- 40
+flat <- sum(demand) / length(demand)
+cat(sprintf("Even spread: %.1f h/week vs limit %d\n", flat, limit))
+cat(ifelse(flat <= limit,
+           "Fits if spread evenly -> smoothing (shift within float) can solve it.\n",
+           "Still over even when flat -> leveling (extend) or add resource.\n"))
+```
+
+35 h/week average is under the 40 h limit, so **smoothing** within float can
+solve it without extending the project.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): the shared CMM bottleneck</summary>
+
+Three projects, including yours, all need the single CMM for final validation in
+the same two-week window. Using the priority rules, how would you decide the
+order, and what could reduce the bottleneck?
+
+**Discussion points.** Apply a rule and be explicit about it: **minimum late
+finish** (whichever project has the tightest deadline goes first) is defensible
+if one launch date is immovable; **greatest resource demand** surfaces the
+bottleneck earliest. Reduce it by: staggering the validation tasks into each
+project's float, renting a second CMM for the peak, outsourcing some measurement
+to a metrology lab, or moving non-CMM checks off the critical window so the CMM
+time is used only for what truly needs it.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-11, echo=FALSE, results='asis'}
+embed_youtube("iSGWSGfG65U", "What Is Resource Leveling in Project Management?")
+```

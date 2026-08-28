@@ -1,36 +1,328 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Project Closeout and Termination
 
 ```{r setup-13, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 12 -- Project
-Closeout and Termination** of MGMT-3105, following the same structure as
-[Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Distinguish the ways a project ends: completion, extinction, addition, integration, starvation.
-- Run an orderly administrative closeout: deliverable acceptance, contract closure, financial closure.
-- Release resources and transition the product to operations or the customer.
-- Facilitate a lessons-learned review and write to the organizational knowledge base.
-- Explain the organizational and human implications of closing a project (team dispersal, morale).
-- Recognise when to terminate a troubled project early, and how to do it responsibly.
+1. **State** what project termination provides and distinguish its types --- extinction, addition, integration, starvation.
+2. **Work through** the seven elements of closeout.
+3. **Explain** what commonly prevents effective closeout.
+4. **Recognize** the early warning signs of project failure.
+5. **Apply** the cancel/continue decision using sunk cost, cost-to-complete, and remaining benefit.
+6. **Reconcile** a completed project: planned vs. actual schedule and cost.
+7. **Draw** the common lessons from famous project failures.
 
-## Topic outline
+<details>
+<summary>Before we begin: which is harder --- starting a project or finishing one?</summary>
 
-1. Types of project termination.
-2. The closeout checklist: scope verification, punch list, sign-off.
-3. Contract and procurement closure.
-4. Financial closure and final cost accounting.
-5. Lessons learned and the post-implementation review.
-6. Resource release and team transition.
-7. Early termination: decision criteria and stakeholder communication.
-8. Running case: closing out the RC-vehicle prototype project and handing off to manufacturing.
+Starting has energy and a blank page. Finishing has a tired team, a client
+eager to move on, and a next project already calling. Closeout is *"the most
+difficult phase to complete effectively and has the most impact on future
+projects."*
+
+</details>
+
+## Introduction: planning for extinction
+
+A defining feature of a project is a **finite life**. When you plan a project,
+you are also *"planning for its extinction."* The RC-vehicle prototype project
+will end --- and if it succeeds, its team likely rolls straight into supporting
+the 100 000-unit production run. That is a real, named way for a project to end,
+not an afterthought.
+
+**Project termination** provides for:
+
+- **Acceptance** of the project by the sponsor
+- **Completion** of the project records
+- **Final revision and issue** of documentation to its as-built condition
+- **Retention** of the essential documentation --- above all, the **lessons learned**
+
+```{r video-closeout-13, echo=FALSE, results='asis'}
+embed_youtube("0HVtpstAT7M", "Unlock the Secrets to Easy Project Closure (Association for Project Management)")
+```
+
+## Types of termination
+
+```{r fig-termination-types-13, fig.cap="Four ways a project ends. Extinction, addition, and integration are normal; starvation is a slow, deliberate neglect.", fig.align='center', fig.width=10, fig.height=4.5}
+tt <- data.frame(
+  type = c("Extinction", "Addition", "Integration", "Starvation"),
+  x = 1:4,
+  desc = c("Stopped -- success or failure.\nBudget audited, team\nreassigned, assets dispersed.",
+           "Institutionalized as a\npermanent part of the\norganization (project team\n-> production support team).",
+           "Resources and team\nreabsorbed into the existing\nstructure / functional\ndepartments.",
+           "Budget quietly cut until\nthe project cannot survive.\nOften political -- a 'pet\nproject' kept on the books.")
+)
+ggplot(tt, aes(x, 0)) +
+  geom_label(aes(label = type), nudge_y = 0.55, size = 3.6 * diagram_text_scale,
+             fontface = "bold", fill = c("#A9DFBF", "#A9DFBF", "#A9DFBF", "#F5B7B1"),
+             label.size = 0) +
+  geom_text(aes(label = desc), size = 2.6 * diagram_text_scale, lineheight = 0.95,
+            vjust = 1) +
+  coord_cartesian(xlim = c(0.4, 4.6), ylim = c(-1.1, 1)) +
+  theme_void()
+```
+
+- **Extinction** --- the project is stopped, successfully or not. The final budget is audited, team members get new assignments, material assets are dispersed or transferred per company/contract terms.
+- **Addition** --- a successful project is made a **formal part of the organization**. An automaker that has launched a new vehicle keeps the project team on as a **production support team**.
+- **Integration** --- the team and resources are **reabsorbed** into the existing structure. Common but complicated --- and organizations often **lose key people** here, who leave for fresh project challenges rather than return to the old department.
+- **Starvation** --- not really a termination act but *"a willful form of neglect"*: the budget is decreased slowly until the project cannot remain viable. Kept "on the books" for political reasons, a powerful sponsor's pet project, or so it can be reactivated when budgets recover.
+
+## The seven elements of closeout
+
+```{r tbl-closeout-13}
+close <- data.frame(
+  `#` = 1:7,
+  Element = c("Verify scope", "Closeout contracts", "Closeout administration",
+              "Conduct a lessons-learned review", "Build a project history file",
+              "Create the final project report", "Celebrate success"),
+  What = c(
+    "Compare to the original scope statement; resolve discrepancies; confirm every deliverable is present; assess customer satisfaction.",
+    "Resolve all open issues with the customer; return or destroy proprietary documents as directed; receive final payments. The client is a future customer -- leave them feeling good.",
+    "Return all loaned personnel; complete performance evaluations.",
+    "Survey everyone who was on the project; hold the meeting; be critical -- dissect what went wrong and why, not what went right.",
+    "Document planned vs. actual schedule and cost (with reasons), approved changes, meeting minutes, WBS, risk plans, subcontractor and customer-satisfaction records, reviews.",
+    "Document overall success, project organization, recommended changes for similar projects, techniques used to overcome obstacles, strengths and weaknesses, team recommendations, projected vs. actual impact, team members.",
+    "Involve everyone who played a role; hold it away from the workplace; personally recognize outstanding performers. This is about the team, not the PM."
+  ),
+  check.names = FALSE
+)
+knitr::kable(close, align = c("c", "l", "l"),
+             caption = "The seven elements of project closeout.") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(2, bold = TRUE)
+```
+
+### What prevents effective closeout
+
+- Getting the project **signed off** discourages the other closeout activities.
+- The **assumed urgency** of every project pressures the team to cut corners on the back end.
+- Closeout is given **low priority** and easily ignored.
+- **Lessons learned** is dismissed as a bookkeeping chore.
+- People assume that because every project is unique, **carryover is minimal**.
+- People just want to **move on** to the next challenge.
+
+## Project failure
+
+**Failure** = the project does not deliver what was required, judged against the
+**acceptance criteria** of the sponsor and customer, and can be triggered by
+changes in **scope, cost, or time**.
+
+**Early warning signs:**
+
+- Lack of viable **commercial objectives**
+- Lack of sufficient **decision-making authority**
+- **Market volatility**
+- **Low priority** assigned to the project
+
+**When to consider cancelling:**
+
+- Costs **exceed the business benefits**
+- The project no longer meets **strategic-fit** criteria
+- **Deadlines** keep being missed
+- **Technology evolves** beyond the project's scope
+
+### Worked Example 1: continue or cancel?
+
+A project has already spent **\$480 000** (sunk). Finishing it needs another
+**\$260 000**. The product, if delivered, is now worth an estimated
+**\$300 000** in benefit --- the market moved while you were building.
+
+```{r cancel-decision-13, echo=TRUE}
+sunk            <- 480000     # already spent -- IRRELEVANT to the decision
+cost_to_finish  <- 260000
+remaining_benefit <- 300000
+
+net_if_continue <- remaining_benefit - cost_to_finish
+cat(sprintf("Sunk cost (ignore it)        : $%s\n", format(sunk, big.mark = " ")))
+cat(sprintf("Cost to finish               : $%s\n", format(cost_to_finish, big.mark = " ")))
+cat(sprintf("Benefit if finished          : $%s\n", format(remaining_benefit, big.mark = " ")))
+cat(sprintf("Net from *here*              : $%s\n", format(net_if_continue, big.mark = " ")))
+cat(ifelse(net_if_continue > 0,
+           "\n-> CONTINUE: the remaining benefit still beats the remaining cost.\n",
+           "\n-> CANCEL: finishing loses money from here, regardless of the $480k already gone.\n"))
+```
+
+The \$480 000 is a **sunk cost** --- it is spent whether you continue or not, so
+it must not enter the decision. From here, spending \$260 000 to get \$300 000 is
+still worth \$40 000. (The sunk-cost fallacy --- "we've come too far to stop" ---
+is what keeps doomed projects alive.)
+
+### Try it yourself: the cancel decision under uncertainty
+
+```{webr-r}
+#| label: cancel-decision-13b
+sunk           <- 480000
+cost_to_finish <- 260000
+
+# The remaining benefit is uncertain -- try a range of market outcomes.
+for (benefit in c(150000, 250000, 300000, 400000)) {
+  net <- benefit - cost_to_finish
+  verdict <- ifelse(net > 0, "CONTINUE", "CANCEL")
+  cat(sprintf("If remaining benefit = $%s  ->  net from here $%+d  ->  %s\n",
+              format(benefit, big.mark = " "), net, verdict))
+}
+cat(sprintf("\nBreak-even benefit: $%s. Below that, finishing destroys value\n",
+            format(cost_to_finish, big.mark = " ")))
+cat("-- no matter how much has already been spent.\n")
+```
+
+## Lessons from spectacular failures
+
+```{r fig-overruns-13, fig.cap="Cost overrun as a multiple of the original budget for three well-documented failures. Project Taurus (London Stock Exchange) ran to roughly 132 times its first budget before being abandoned after 11 years.", fig.align='center', fig.width=9.5, fig.height=4.8}
+ov <- data.frame(
+  project = c("Channel Tunnel", "Canadian Firearms Registry", "Project Taurus (LSE)"),
+  multiple = c(1.85, 8.4, 132)
+)
+ov$project <- factor(ov$project, levels = rev(ov$project))
+ggplot(ov, aes(multiple, project)) +
+  geom_col(fill = "#C0392B", width = 0.6) +
+  geom_text(aes(label = paste0(multiple, "x")), hjust = -0.2,
+            size = 3.8 * diagram_text_scale) +
+  scale_x_continuous(trans = "log10", limits = c(1, 300),
+                     breaks = c(1, 2, 5, 10, 30, 100, 300),
+                     expand = expansion(mult = c(0, 0.05))) +
+  labs(title = "Final cost as a multiple of the original budget (log scale)",
+       x = "Overrun multiple", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 13 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+- **Bank of America "MasterNet"** (1984) --- trust-department automation. Over budget by \$35M, rising toward \$80M; a 1988 failure meant loss of control over billions in trust accounts, all eventually recovered, but the **entire 255-person department was let go** as depositors fled. *Cause: scope and complexity understood far too late.*
+- **Future Imagery Architecture** (US spy satellites, 1997) --- bid won by a contractor that had never built an imaging satellite; internal estimate already predicted a \$4B overrun. **Testing was cut to save money**; a subcontractor's undisclosed manufacturing change caused gyroscope defects undiscovered for three years; costs reached ~\$18B by 2005. *Cause: unqualified bidder, cut testing, uncontrolled change.*
+- **Canadian Firearms Registry** (1995) --- estimated at \$119M to implement; a 2002 audit projected ~**\$1B**. *Causes: scope not understood, no plan for inter-agency cooperation, inconsistent data criteria, cost cover-up, no measurement of whether the registry actually worked.*
+- **Channel Tunnel** (budgeted 1979, opened 1994, one year late) --- final cost roughly **double** the original budget.
+- **Project Taurus** (London Stock Exchange paperless settlement, 1983) --- abandoned after **11 years** at ~**132 times** its original budget after switching to an incompatible US system that clashed with British finance law.
+
+**The recurring threads:** scope not truly understood; optimism and cost
+concealment; cutting testing to save money; no plan for the interfaces between
+organizations; and pressing on past every off-ramp because of sunk cost.
+
+### Try it yourself: the final project reconciliation
+
+```{webr-r}
+#| label: reconciliation-13
+# Planned vs actual for the RC-vehicle prototype project at closeout.
+planned_weeks <- 30;      actual_weeks <- 34
+planned_cost  <- 620000;  actual_cost  <- 703000
+planned_scope_items <- 12; delivered_items <- 12   # all deliverables met
+
+sched_var_pct <- 100 * (actual_weeks - planned_weeks) / planned_weeks
+cost_var_pct  <- 100 * (actual_cost - planned_cost) / planned_cost
+
+cat(sprintf("Schedule : planned %d wk, actual %d wk  (%+.1f%%)\n",
+            planned_weeks, actual_weeks, sched_var_pct))
+cat(sprintf("Cost     : planned $%s, actual $%s  (%+.1f%%)\n",
+            format(planned_cost, big.mark = " "),
+            format(actual_cost, big.mark = " "), cost_var_pct))
+cat(sprintf("Scope    : %d of %d deliverables accepted\n",
+            delivered_items, planned_scope_items))
+
+verdict <- if (delivered_items == planned_scope_items && cost_var_pct < 20 && sched_var_pct < 20)
+  "SUCCESS with overruns -- document the causes in the history file and lessons learned."
+else "TROUBLED -- the lessons-learned review is the priority deliverable."
+cat("\n", verdict, "\n", sep = "")
+```
+
+## Closing out the RC-vehicle project
+
+- **Verify scope** against the signed scope statement: all body options delivered, drop and EMC tests passed, compliance approvals in hand, retailer satisfaction confirmed.
+- **Closeout contracts**: settle final invoices with MCS/Paragon and the carbon-fibre supplier; return the customer's proprietary artwork.
+- **Administration**: return the borrowed design engineers and millwrights to their functional managers with completed performance reviews.
+- **Lessons learned**: the new-line learning curve and the unproven-supplier risk are the two entries that matter most for the next program.
+- **Termination by addition**: the prototype team transitions into the **production support team** for the 100 000-unit run.
+- **Celebrate** --- away from the plant, with everyone who contributed.
+
+## Key Takeaways
+
+- Termination provides **sponsor acceptance, complete records, as-built documentation, and retained lessons learned.**
+- Types: **extinction** (stopped), **addition** (becomes permanent), **integration** (reabsorbed), **starvation** (slow deliberate neglect).
+- Work the **seven elements**: verify scope, close contracts, close administration, lessons learned, history file, final report, celebrate.
+- Closeout fails because sign-off feels like "done", the next project is louder, and lessons learned is treated as bookkeeping. Resist all three.
+- **Cancel** when the **cost to complete exceeds the remaining benefit** --- the money already spent is **sunk** and irrelevant to that decision.
+- Famous failures share the same causes: **scope not understood, cost concealed, testing cut, interfaces unplanned, sunk-cost momentum.**
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Sunk cost trap</summary>
+
+A project has consumed \$1.2M of a \$1.5M budget. Finishing needs \$500 000
+(the last \$300 000 of budget plus a \$200 000 overrun). The delivered product
+is now worth \$350 000. The sponsor says "we've spent \$1.2M --- we can't stop
+now." Evaluate.
+
+**Solution.**
+
+```{r p1-sunk-13, echo=TRUE}
+cost_to_finish <- 500000
+remaining_benefit <- 350000
+cat(sprintf("Net from here: $%s - $%s = $%s\n",
+            format(remaining_benefit, big.mark = " "),
+            format(cost_to_finish, big.mark = " "),
+            format(remaining_benefit - cost_to_finish, big.mark = " ")))
+```
+
+Finishing turns \$500 000 of new spend into \$350 000 of value --- a \$150 000
+loss **from today**. The \$1.2M is gone either way. Cancel (or de-scope until
+the remaining cost drops below \$350 000). "We can't stop now" is the sunk-cost
+fallacy.
+
+</details>
+
+<details>
+<summary>Problem 2: Which termination type?</summary>
+
+1. The RC-vehicle prototype team becomes the production line's support team. → **Addition.**
+2. A cancelled R&D project's engineers return to the design department. → **Integration.**
+3. A failed pilot is shut down, its budget audited, its test rig sold. → **Extinction.**
+4. A VP's favourite project keeps a \$1/year budget so it stays "active" on paper. → **Starvation.**
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): the team wants to skip lessons learned</summary>
+
+The RC-vehicle project delivered late and over budget but the product passed.
+The exhausted team wants to skip the lessons-learned review and start on the
+production ramp. As PM, what do you do and why?
+
+**Discussion points.** This is exactly the moment the review matters most --- a
+troubled project is where the carryover value is highest, and the next program
+will hit the *same* new-line learning curve and *same* supplier risk. Keep it
+short and structured, focus on **what went wrong and why** (not blame), capture
+2--3 concrete, assigned actions, and put it in the history file before the team
+disperses and the memory fades. Skipping it guarantees the next project repeats
+the overrun.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-13, echo=FALSE, results='asis'}
+embed_youtube("Jk-JwtScIlw", "What Is Project Management? (Association for Project Management)")
+```

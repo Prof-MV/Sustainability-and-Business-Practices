@@ -1,35 +1,356 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Negotiation and Conflict Management
 
 ```{r setup-10, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 10 --
-Negotiation and Conflict Management** of MGMT-3105 (and its answer deck),
-following the same structure as [Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Explain why conflict is normal on projects and distinguish functional from dysfunctional conflict.
-- Apply the Thomas-Kilmann modes (competing, collaborating, compromising, avoiding, accommodating) to a situation.
-- Prepare for a negotiation: interests vs. positions, BATNA, ZOPA, reservation and target points.
-- Apply principled negotiation (separate people from problem; focus on interests; invent options; use objective criteria).
-- Manage conflict with suppliers, functional managers, and team members.
-- Recognise cultural and ethical dimensions of negotiation in a global supply chain.
+1. **Identify** what a project manager negotiates and with whom.
+2. **Prepare** for a negotiation: interests vs. positions, BATNA, reservation point, ZOPA.
+3. **Apply** the principled-negotiation mindset (separate people from problem; focus on interests; win-win or no win).
+4. **Determine** whether a zone of possible agreement exists and how wide it is.
+5. **Classify** project conflict (goal-oriented, administrative, interpersonal) and its organizational vs. interpersonal causes.
+6. **Select** a conflict-resolution method (confronting, compromising, withdrawal, smoothing, forcing) for a situation.
+7. **Score** a multi-criteria supplier choice.
 
-## Topic outline
+<details>
+<summary>Before we begin: recall a negotiation you "won" but regretted</summary>
 
-1. Sources of project conflict across the life cycle.
-2. Conflict-handling modes and when each is appropriate.
-3. Distributive vs. integrative negotiation.
-4. Preparation: BATNA, ZOPA, anchoring.
-5. Principled negotiation.
-6. Difficult conversations and escalation paths.
-7. Running case: negotiating the motor/control-system supply contract for the RC-vehicle project.
+Did you win the point and lose the relationship? Most project negotiations are
+with people you will work with again next week. That constraint changes
+everything.
+
+</details>
+
+## Introduction: the project manager negotiates every day
+
+As a project manager your day is full of negotiation, inside and outside the
+organization. You negotiate for or with:
+
+- **Resources** --- material, time, equipment, money
+- **Contractors** --- costs, delivery schedules, quality of material, hours of work
+- **Department managers** --- manpower, schedules
+
+On the RC-vehicle project the sharp negotiations are obvious: the **motor and
+control-system supply contract** (trusted MCS, now moving production to Mexico,
+vs. unproven Paragon four hours away with staff negotiating a first labour
+contract), and the recurring fight with **functional managers** over which
+engineers you get and for how long.
+
+::: {.callout-note}
+**Industry snapshot.** An automotive buyer negotiating a multi-year harness
+contract is really negotiating the *whole package* --- price, tooling ownership,
+capacity guarantees, engineering support, payment terms. A defense subcontract
+negotiation is bounded by regulation (allowable cost, audit rights). In a food
+company, the PM negotiating a sanitation window with operations is negotiating
+*downtime*, which is money.
+:::
+
+```{r video-negotiation-10, echo=FALSE, results='asis'}
+embed_youtube("MTnQX11Xey0", "Project Management Negotiations: ZOPA, BATNA, and Win-Win (Parallel Project Training)")
+```
+
+## The negotiation mindset
+
+- **Separate the people from the problem.** Everyone has ego, fears, insecurities --- do not tap into the other side's, or you lose control of both sides.
+- **Stick to business.** Keep personalities out of it; a charm offensive fools no one.
+- **Put yourself in their shoes.** Nobody likes a direct attack; it is counter-productive.
+- **Win-win or no win.** Talk money **last** if possible; a negotiation is about the whole package, not just the number.
+
+## Getting ready
+
+There are three stages --- **before, during, after** --- and **before should be the
+biggest.**
+
+**Gather information about the other side:** their vital interests, goals,
+costs, strategies, positions, needs; their product strengths; concession
+patterns; past negotiating style; their **bottom line**; corporate deadlines and
+time constraints; their **budget**; geographic limits. Also know your own
+position, the players, and **who holds the power** --- including people behind the
+scenes.
+
+**Develop strategy:** aim high (with more than one win-win scenario in mind); be
+realistic; rank your objectives by priority; know your **bottom line**; decide
+whether deadlock or termination are tolerable outcomes; separate the
+**necessary** items from the **expendable**; have a few **red herrings** ready;
+plan how to help the other side sell the deal internally; find where your
+interests and theirs intersect.
+
+**Write the plan and an agenda:** your interests and theirs; your desired
+outcomes and your estimate of theirs; your authority limits and theirs; any
+fact sheet either side needs. The agenda names the meeting's goal, is published
+in advance, and lists invitees and location.
+
+### The three questions --- and who controls the room
+
+Every negotiator should ask: **How much power do I have? What time pressure is
+there? Do I trust the other side?**
+
+And: *who controls a conversation?* **Generally the person asking the questions**,
+because they set the direction. Aim to ask most of the questions --- politely ---
+and recognise when it is being done to you.
+
+## BATNA, reservation point, and ZOPA
+
+- **BATNA** --- your Best Alternative To a Negotiated Agreement. What you will do if this deal falls through. A strong BATNA is your real source of power.
+- **Reservation point** --- the worst deal you would still accept (a buyer's *maximum* price, a seller's *minimum* price), set by your BATNA.
+- **ZOPA** --- the Zone Of Possible Agreement: the overlap between the two reservation points. If there is no overlap, **no deal is possible** at those terms.
+
+### Worked Example 1: is there a ZOPA?
+
+You are buying the motor/controller package. Your BATNA (Paragon's quote plus
+the cost of the risk it carries) puts your **reservation price at \$168 000** ---
+you would not pay MCS more than that. MCS's floor, given their costs and other
+customers, is **\$150 000**.
+
+```{r zopa-example-10, echo=TRUE}
+buyer_reservation  <- 168000   # most you will pay
+seller_reservation <- 150000   # least they will accept
+
+if (seller_reservation <= buyer_reservation) {
+  zopa_low  <- seller_reservation
+  zopa_high <- buyer_reservation
+  cat(sprintf("ZOPA exists: $%s to $%s  (width $%s)\n",
+              format(zopa_low, big.mark = " "),
+              format(zopa_high, big.mark = " "),
+              format(zopa_high - zopa_low, big.mark = " ")))
+  cat("Any agreed price in that band beats both sides' alternatives.\n")
+} else {
+  cat("No ZOPA -- the seller's floor is above the buyer's ceiling. Change the package or walk.\n")
+}
+```
+
+### Try it yourself: reservation points from a BATNA
+
+```{webr-r}
+#| label: zopa-calc-10
+# Buyer's side: BATNA is Paragon at $150k, but carrying $25k of extra risk cost.
+paragon_price   <- 150000
+paragon_risk    <- 25000
+buyer_reservation <- paragon_price + paragon_risk   # indifference point vs MCS
+
+# Seller's side (MCS): cost to make + minimum acceptable margin.
+mcs_cost   <- 132000
+mcs_margin <- 15000
+seller_reservation <- mcs_cost + mcs_margin
+
+cat(sprintf("Buyer reservation (max)  : $%s\n", format(buyer_reservation, big.mark = " ")))
+cat(sprintf("Seller reservation (min) : $%s\n", format(seller_reservation, big.mark = " ")))
+
+if (seller_reservation <= buyer_reservation) {
+  cat(sprintf("ZOPA width: $%s -- a deal is possible.\n",
+              format(buyer_reservation - seller_reservation, big.mark = " ")))
+  cat(sprintf("A midpoint settlement would be about $%s.\n",
+              format(round((buyer_reservation + seller_reservation) / 2), big.mark = " ")))
+} else {
+  cat("No ZOPA. Improve your BATNA, expand the package, or walk away.\n")
+}
+```
+
+<details>
+<summary>Why does improving your BATNA move the whole negotiation?</summary>
+
+Your reservation point is set by your BATNA. If you pre-qualify a credible
+second supplier (a better BATNA), your reservation price drops --- you can
+credibly walk at a lower number --- which shifts the ZOPA and the likely
+settlement in your favour, *without* saying a word at the table. The best
+negotiating move often happens before the meeting, in the form of a real
+alternative.
+
+</details>
+
+## Language and tells
+
+A few sample moves: *"My colleagues and I cannot settle for that"* (establish
+power early); *"What are you looking for in these negotiations?"* (make them open
+first); *"Do you have the authority to commit to that?"* (probe their authority);
+*"Let's set that aside and come back to it"* (avoid a hard no).
+
+And listen past the words. *"To be brutally honest..."* and *"To tell you the
+truth..."* often precede a lie. *"Off the record..."* --- nothing is off the
+record; the negotiation is always on. Watch **congruence**: when words and body
+language disagree, believe the body language.
+
+## Conflict management
+
+Conflict *"begins when you perceive that someone has frustrated, or is about to
+frustrate, a major concern of yours."* It is **perceptual** (it doesn't matter
+whether a wrong was actually done, only that it is perceived) and **dynamic**
+(the original cause may no longer matter, yet the conflict persists).
+
+Three types on projects:
+
+- **Goal-oriented** --- disagreement over end results, scope outcomes, specs, priorities. Fuelled by vague goals that let people fill in their own interpretation (and hidden agendas).
+- **Administrative** --- who has authority or control over functions, tasks, and decisions. The **matrix** structure breeds this --- everyone has two bosses.
+- **Interpersonal** --- personality differences: work ethic, behavioural style, ego, personalities that don't mesh.
+
+### Three views of conflict
+
+| School | View | Response |
+|---|---|---|
+| **Traditional** | All conflict is bad | Suppress and eliminate it, fast |
+| **Behavioral** | Conflict is natural and inevitable | Accept it and manage it well |
+| **Interactionist** | A *controlled* amount of conflict is *beneficial* | Encourage some --- it prevents stagnation and drives innovation; too little = inertia, too much = chaos |
+
+### Sources, ranked by intensity
+
+```{r fig-conflict-sources-10, fig.cap="Sources of project conflict ranked by typical intensity (from PMBOK data). Schedules, priorities, and resources dominate; personality is last -- it is usually the first thing blamed and rarely the real cause.", fig.align='center', fig.width=9.5, fig.height=5}
+cs <- data.frame(
+  source = c("Schedules", "Project priorities", "Resources", "Technical opinions",
+             "Administrative procedures", "Cost", "Personality"),
+  intensity = 7:1
+)
+cs$source <- factor(cs$source, levels = rev(cs$source))
+ggplot(cs, aes(intensity, source)) +
+  geom_col(fill = "#5DADE2", width = 0.68) +
+  geom_text(aes(label = intensity), hjust = -0.4, size = 3.6 * diagram_text_scale) +
+  scale_x_continuous(limits = c(0, 8), expand = expansion(mult = c(0, 0.02))) +
+  labs(title = "What project teams actually fight about",
+       x = "Relative intensity (7 = highest)", y = NULL) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+**Organizational causes:** reward systems (functional managers hoard their best
+people), scarce resources, uncertainty (weak matrix --- unclear who is in
+charge), different mindsets among departments. **Interpersonal causes:**
+misconceptions about others' behaviour, faulty communication (often *style*, not
+content), personal grudges.
+
+> *"It only becomes personal when the root cause of the conflict is not
+> resolved. Personality is very frequently the first diagnosis"* --- and usually
+> the wrong one.
+
+### Conflict-resolution methods (PMBOK)
+
+| Method | What it is | Best when |
+|---|---|---|
+| **Confronting** (problem-solving) | Solve the real, underlying problem | There is time and goodwill; the durable fix |
+| **Compromising** | Each side gives something; partial satisfaction for both | Positions are far apart and a deadline looms |
+| **Withdrawal / avoidance** | Retreat or postpone | The issue is trivial, or emotions need to cool |
+| **Smoothing** | Emphasize agreement, play down differences | Preserving the relationship matters more right now |
+| **Forcing** | Push one view at the other's expense | A true emergency, or a matter of safety/ethics |
+
+### Try it yourself: score the supplier choice
+
+Multi-criteria scoring turns "MCS feels safer" into a defensible number.
+
+```{webr-r}
+#| label: supplier-scoring-10
+criteria <- c("Quality record", "Delivery reliability", "Price",
+              "Technical capability", "Supply-chain risk")
+weight   <- c(0.30, 0.25, 0.15, 0.15, 0.15)   # must sum to 1
+
+# Score each supplier 1 (poor) to 5 (excellent) on each criterion.
+mcs     <- c(5, 4, 3, 3, 2)   # trusted, but production moving to Mexico
+paragon <- c(3, 3, 4, 5, 3)   # unproven, new tech, plant 4 h away, labour talks
+
+mcs_total     <- sum(weight * mcs)
+paragon_total <- sum(weight * paragon)
+
+tab <- data.frame(Criterion = criteria, Weight = weight,
+                  MCS = mcs, Paragon = paragon)
+print(tab, row.names = FALSE)
+cat(sprintf("\nWeighted score  MCS: %.2f   Paragon: %.2f\n", mcs_total, paragon_total))
+cat(sprintf("Recommended: %s\n", ifelse(mcs_total >= paragon_total, "MCS", "Paragon")))
+cat("Change the weights to your project's priorities and watch the answer move.\n")
+```
+
+## Key Takeaways
+
+- PMs negotiate constantly --- for resources, with contractors, with functional managers. **Before** is the biggest stage; prepare more than you think you need.
+- **Separate people from the problem**, focus on **interests** not positions, aim for **win-win or no win**, and talk money last.
+- **BATNA** sets your **reservation point**; the overlap of both reservation points is the **ZOPA**. No ZOPA, no deal --- improve your BATNA or change the package.
+- The person **asking the questions** usually controls the conversation.
+- Project conflict is **perceptual and dynamic**. Types: **goal-oriented, administrative, interpersonal**. The **interactionist** view holds that a controlled amount of conflict is healthy.
+- Teams fight most about **schedules, priorities, and resources** --- **personality** is last and is usually a misdiagnosis of an unresolved root cause.
+- Match the resolution method --- **confronting, compromising, withdrawal, smoothing, forcing** --- to the situation; confronting is the durable fix.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Name the cause of conflict</summary>
+
+Which cause does each statement point to?
+
+1. "I can't talk to her after what her son said to my son." → **Personal grudge** (interpersonal).
+2. "Sales management here are lazy --- they always leave by 4:00." → **Different mindsets among departments** (organizational).
+3. "She barely looked at my report; she's already decided to ignore it." → **Misconceptions about others' behaviour** (interpersonal).
+4. "Our computers are slow because their division always gets the best ones." → **Scarce resources** (organizational).
+5. "The worse your project does at year-end, the better mine looks." → **Reward systems** (organizational).
+6. "Why should I do that for the PM if my functional manager didn't tell me?" → **Uncertainty / two bosses** (organizational, matrix).
+
+</details>
+
+<details>
+<summary>Problem 2: ZOPA and a walk-away</summary>
+
+You will pay at most \$95 000 for a tooling package (your BATNA: build it
+in-house for \$98 000). The vendor's floor is \$102 000.
+
+(a) Is there a ZOPA? (b) What are your options?
+
+**Solution.**
+
+```{r p2-zopa-10, echo=TRUE}
+buyer_max  <- 95000
+seller_min <- 102000
+cat(ifelse(seller_min <= buyer_max, "ZOPA exists", "No ZOPA"), "\n")
+cat(sprintf("Gap to close: $%s\n", format(seller_min - buyer_max, big.mark = " ")))
+```
+
+(a) No --- the vendor's floor is \$7 000 above your ceiling. (b) Exercise your
+BATNA (build in-house at \$98 000), expand the package so the vendor's per-unit
+economics improve, split tooling ownership, or find a third vendor.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): the functional manager skips your stand-up</summary>
+
+The maintenance supervisor on your project has missed the first two morning
+meetings. How could this signal *each* of: reward systems, scarce resources,
+uncertainty, different mindsets, misconceptions, faulty communication, personal
+grudge?
+
+**Discussion points.** *Reward systems*: their boss doesn't value project work,
+so they deprioritize it. *Scarce resources*: they are triple-booked and the
+meeting lost. *Uncertainty*: they are not sure the meeting applies to them.
+*Different mindsets*: maintenance culture sees planning meetings as talk, not
+work. *Misconceptions*: they think you have already sidelined their input.
+*Faulty communication*: the invite never reached them, or the time was
+ambiguous. *Grudge*: a past project soured them on you. The point: **do not
+jump to the grudge** --- confront it by asking, and you will usually find one of
+the structural causes.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-10, echo=FALSE, results='asis'}
+embed_youtube("JEoFHePrp6k", "Negotiation Strategy: ZOPA (Mediator Academy)")
+embed_youtube("kJWF2oYzTq0", "BATNA and ZOPA in Negotiations")
+```

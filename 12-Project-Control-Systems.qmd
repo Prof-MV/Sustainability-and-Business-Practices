@@ -1,36 +1,357 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Project Control Systems
 
 ```{r setup-12, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. The MGMT-3105 course map lists a *Control
-Systems* lecture in this slot; the chapter will be built from project-control
-fundamentals and the course's Project Manager Report and Team Member Report
-templates, following the same structure as [Chapter 1](01-Sustainability.qmd)
-and [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Describe the monitoring-and-control loop: measure, compare to baseline, analyse variance, act.
-- Compute earned-value metrics: PV, EV, AC, SV, CV, SPI, CPI.
-- Forecast with EAC, ETC, and TCPI, and interpret the results.
-- Build and read an S-curve of planned vs. earned vs. actual cost.
-- Run integrated change control and keep the baseline meaningful.
-- Report status honestly: the "watermelon" trap and leading vs. lagging indicators.
+1. **Describe** the monitoring-and-control loop and the performance measurement baseline.
+2. **Read** the three earned-value curves: planned value (PV), earned value (EV), and actual cost (AC).
+3. **Compute** schedule and cost variance and the SPI / CPI performance indices.
+4. **Forecast** with EAC, ETC, VAC, and TCPI, and interpret them.
+5. **Run** integrated change control so the baseline stays meaningful.
+6. **Report** status honestly and recognize the "watermelon" trap.
 
-## Topic outline
+<details>
+<summary>Before we begin: the project has spent 60 % of its money --- is it 60 % done?</summary>
 
-1. What "control" means: closed-loop management.
-2. The performance measurement baseline (scope + schedule + cost).
-3. Earned value management: the three curves and the six core metrics.
-4. Variance analysis and forecasting (EAC scenarios, TCPI).
-5. Change control and configuration management.
-6. Status reporting, dashboards, and honest metrics.
-7. Running case: an earned-value snapshot of the RC-vehicle project at week 8.
+Almost certainly not. "Percent of budget spent" and "percent of work finished"
+are different numbers, and the gap between them is the whole subject of this
+chapter.
+
+</details>
+
+## Introduction: from a plan to a control system
+
+You have planned the RC-vehicle project --- scope, WBS, schedule, budget. It is
+now **week 8**. The sponsor asks the only question that matters at this stage:
+**are we on track, and if not, how far off, and what will it cost to finish?**
+
+Answering that needs a **control system**: a closed loop that **measures**
+progress, **compares** it to the baseline, **analyzes** the variance, and drives
+a corrective **action** --- then measures again.
+
+```{r fig-control-loop-12, fig.cap="The monitoring-and-control loop. Without the 'compare to baseline' step, status reporting is just activity; with it, you get variance you can act on.", fig.align='center', fig.width=9, fig.height=4.5}
+loop <- data.frame(
+  x = c(0, 2.2, 4.4, 6.6),
+  y = 0,
+  label = c("MEASURE\nprogress & cost", "COMPARE\nto baseline",
+            "ANALYZE\nvariance", "ACT\ncorrective action")
+)
+ggplot(loop, aes(x, y)) +
+  geom_label(aes(label = label), size = 3 * diagram_text_scale, lineheight = 0.9,
+             fill = "#D6EAF8", label.size = 0, fontface = "bold") +
+  annotate("segment", x = c(0.95, 3.15, 5.35), xend = c(1.55, 3.75, 5.95),
+           y = 0, yend = 0, arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
+  annotate("curve", x = 6.6, y = -0.35, xend = 0, yend = -0.35,
+           curvature = 0.25, arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
+  annotate("text", x = 3.3, y = -0.62, label = "repeat every reporting period",
+           size = 2.8 * diagram_text_scale, fontface = "italic", color = "grey45") +
+  coord_cartesian(xlim = c(-0.9, 7.5), ylim = c(-0.9, 0.6)) +
+  theme_void()
+```
+
+The reference for "compare" is the **performance measurement baseline** --- the
+approved **scope + schedule + cost** locked in at the end of planning
+([Chapter 9](09-Cost-Estimation-and-Budgeting.qmd)'s S-curve is its cost
+dimension).
+
+::: {.callout-note}
+**Industry snapshot.** Earned value management is **contractually mandated** on
+large U.S. defense programs (EIA-748). Automotive programs run a lighter version
+at the milestone level. A food-plant capital project tracks committed vs. spent
+vs. installed. The math below is the same at every scale.
+:::
+
+```{r video-evm-12, echo=FALSE, results='asis'}
+embed_youtube("x0EgZnXdunw", "What Is Earned Value? (Ricardo Vargas)")
+```
+
+## The three curves
+
+Earned value management tracks three cumulative quantities against time:
+
+| Term | Also called | Meaning |
+|---|---|---|
+| **PV** --- Planned Value | BCWS | The budgeted cost of the work **scheduled** to be done by now |
+| **EV** --- Earned Value | BCWP | The budgeted cost of the work **actually done** by now |
+| **AC** --- Actual Cost | ACWP | What has actually been **spent** to do that work |
+
+**BAC** (Budget At Completion) is the total baseline budget --- where the PV curve
+ends.
+
+```{r fig-evm-curves-12, fig.cap="The three curves through week 8 of the RC-vehicle project (BAC = $620 000, off the top of this view). By the status date EV sits below PV -- behind schedule -- and AC sits above EV -- over cost. The vertical gaps at week 8 are the schedule and cost variances.", fig.align='center', fig.width=10, fig.height=6}
+cutoff <- 8
+wk <- seq(0, cutoff, by = 0.25)
+# S-shaped ramps scaled to pass through the week-8 values in Worked Example 1.
+shape <- function(t, k) (t / cutoff)^k
+df <- data.frame(
+  wk = wk,
+  PV = 217000 * shape(wk, 1.8),
+  EV = 186000 * shape(wk, 2.0),
+  AC = 210000 * shape(wk, 1.7)
+)
+
+ggplot() +
+  geom_line(data = df, aes(wk, PV, color = "PV (planned value)"), linewidth = 1.4) +
+  geom_line(data = df, aes(wk, EV, color = "EV (earned value)"), linewidth = 1.4) +
+  geom_line(data = df, aes(wk, AC, color = "AC (actual cost)"), linewidth = 1.4) +
+  geom_vline(xintercept = cutoff, linetype = "dotted", color = "grey40") +
+  geom_point(data = data.frame(m = c("PV", "EV", "AC"), y = c(217000, 186000, 210000)),
+             aes(x = cutoff, y = y, color = m), size = 3, show.legend = FALSE) +
+  annotate("text", x = cutoff + 0.12, y = 228000, hjust = 0,
+           label = "PV  $217 000", size = 3 * diagram_text_scale, color = "#2E86C1") +
+  annotate("text", x = cutoff + 0.12, y = 205000, hjust = 0,
+           label = "AC  $210 000", size = 3 * diagram_text_scale, color = "#C0392B") +
+  annotate("text", x = cutoff + 0.12, y = 178000, hjust = 0,
+           label = "EV  $186 000", size = 3 * diagram_text_scale, color = "#27AE60") +
+  annotate("text", x = cutoff - 0.25, y = 45000, hjust = 1,
+           label = "status date\n(week 8)", size = 3 * diagram_text_scale, lineheight = 0.9) +
+  scale_color_manual(values = c("PV (planned value)" = "#2E86C1",
+                                "EV (earned value)" = "#27AE60",
+                                "AC (actual cost)" = "#C0392B",
+                                "PV" = "#2E86C1", "EV" = "#27AE60", "AC" = "#C0392B"),
+                     breaks = c("PV (planned value)", "EV (earned value)", "AC (actual cost)"),
+                     name = NULL) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = " ")) +
+  coord_cartesian(xlim = c(0, 9.7)) +
+  labs(title = "Earned value: planned vs. earned vs. actual",
+       x = "Project week", y = "Cumulative cost") +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+## The six core metrics
+
+$$
+\begin{aligned}
+\text{Schedule Variance} \quad SV &= EV - PV \\
+\text{Cost Variance} \quad CV &= EV - AC \\
+\text{Schedule Performance Index} \quad SPI &= EV / PV \\
+\text{Cost Performance Index} \quad CPI &= EV / AC
+\end{aligned}
+$$
+
+| Reading | Schedule | Cost |
+|---|---|---|
+| **Ahead / under** | $SV > 0$, $SPI > 1$ | $CV > 0$, $CPI > 1$ |
+| **On plan** | $SV = 0$, $SPI = 1$ | $CV = 0$, $CPI = 1$ |
+| **Behind / over** | $SV < 0$, $SPI < 1$ | $CV < 0$, $CPI < 1$ |
+
+### Worked Example 1: the RC-vehicle project at week 8
+
+Baseline budget **BAC = \$620 000**. By week 8 the plan said **35 %** of the
+work should be done; **30 %** is actually done; **\$210 000** has been spent.
+
+```{r evm-example-12, echo=TRUE}
+BAC <- 620000
+planned_pct <- 0.35
+actual_pct  <- 0.30
+AC <- 210000
+
+PV <- planned_pct * BAC
+EV <- actual_pct  * BAC
+
+SV  <- EV - PV
+CV  <- EV - AC
+SPI <- EV / PV
+CPI <- EV / AC
+
+cat(sprintf("PV  = $%s      EV  = $%s      AC  = $%s\n",
+            format(PV, big.mark = " "), format(EV, big.mark = " "),
+            format(AC, big.mark = " ")))
+cat(sprintf("SV  = $%s  (%s schedule)\n", format(SV, big.mark = " "),
+            ifelse(SV < 0, "behind", "ahead")))
+cat(sprintf("CV  = $%s  (%s budget)\n", format(CV, big.mark = " "),
+            ifelse(CV < 0, "over", "under")))
+cat(sprintf("SPI = %.3f   (getting %.0f cents of schedule per planned dollar)\n",
+            SPI, SPI * 100))
+cat(sprintf("CPI = %.3f   (getting %.0f cents of work per dollar spent)\n",
+            CPI, CPI * 100))
+```
+
+The project is **behind schedule and over cost** --- and this is visible in week 8,
+while there is still time to act, instead of as a surprise at the end.
+
+## Forecasting
+
+| Forecast | Formula | Meaning |
+|---|---|---|
+| **EAC** (Estimate At Completion) | $BAC / CPI$ | Total cost if current cost efficiency holds |
+| EAC (schedule too) | $AC + \dfrac{BAC - EV}{CPI \times SPI}$ | If both cost *and* schedule performance persist |
+| EAC (one-off overrun) | $AC + (BAC - EV)$ | If the overrun so far was a one-time event |
+| **ETC** (Estimate To Complete) | $EAC - AC$ | Money still needed from here |
+| **VAC** (Variance At Completion) | $BAC - EAC$ | Projected total over/under budget |
+| **TCPI** (To-Complete Performance Index) | $\dfrac{BAC - EV}{BAC - AC}$ | The cost efficiency the *remaining* work must hit to still land on BAC |
+
+### Try it yourself: EAC scenarios
+
+```{webr-r}
+#| label: eac-scenarios-12
+BAC <- 620000
+EV  <- 186000
+AC  <- 210000
+PV  <- 217000
+CPI <- EV / AC
+SPI <- EV / PV
+
+eac_cpi       <- BAC / CPI
+eac_oneoff    <- AC + (BAC - EV)
+eac_cost_sched<- AC + (BAC - EV) / (CPI * SPI)
+
+cat(sprintf("CPI = %.3f   SPI = %.3f\n\n", CPI, SPI))
+cat(sprintf("EAC, cost efficiency continues : $%s\n", format(round(eac_cpi), big.mark = " ")))
+cat(sprintf("EAC, overrun was a one-off     : $%s\n", format(round(eac_oneoff), big.mark = " ")))
+cat(sprintf("EAC, cost AND schedule persist : $%s\n", format(round(eac_cost_sched), big.mark = " ")))
+
+etc  <- eac_cpi - AC
+vac  <- BAC - eac_cpi
+tcpi <- (BAC - EV) / (BAC - AC)
+cat(sprintf("\nETC (money still needed)  : $%s\n", format(round(etc), big.mark = " ")))
+cat(sprintf("VAC (projected overrun)   : $%s\n", format(round(vac), big.mark = " ")))
+cat(sprintf("TCPI (efficiency needed)  : %.3f  ", tcpi))
+cat(ifelse(tcpi > 1.10, "-- that is a big ask; the BAC is likely unrealistic now.\n",
+    ifelse(tcpi > 1.0, "-- recoverable, but the team must run leaner than planned.\n",
+           "-- achievable.\n")))
+```
+
+<details>
+<summary>Which EAC formula should you actually report?</summary>
+
+It depends on *why* you are over. If a one-time event caused it (a failed test
+you have since fixed), $AC + (BAC - EV)$ is fair. If the overrun reflects how the
+team is fundamentally working (rates, productivity), $BAC/CPI$ is the honest
+number. If you are *also* behind schedule and recovery will cost overtime, the
+$CPI \times SPI$ version is the most conservative. Report the one your evidence
+supports --- and say which assumption you made.
+
+</details>
+
+## Reading the S-curve honestly
+
+- **Spend is not progress.** A project can be on budget (AC ≈ PV) and badly behind (EV ≪ PV) --- it just has not done the work yet.
+- **The "watermelon" report** --- green on the outside, red on the inside. High-level status shows green because spend matches plan, while the earned value underneath is red.
+- **Leading vs. lagging indicators.** SPI and CPI are somewhat lagging. Leading signals --- rising defect find-rate, slipping sub-milestones, key staff leaving --- warn you earlier. Watch both.
+
+## Integrated change control
+
+Control only works against a **meaningful baseline**. Every change request goes
+through the same gate as in [Chapter 3](03-Scope-and-Organizational-Structures.qmd):
+assess the impact on scope, schedule, and cost; approve or reject; and if
+approved, **re-baseline** so future variance is measured against the new plan ---
+not the old one you can no longer hit. **Configuration management** keeps the
+product definition (drawings, specs, software versions) in step with the
+approved baseline.
+
+## Status reporting
+
+The course's **Project Manager Report** and **Team Member Report** templates are
+the reporting instruments: they roll up progress, cost, schedule, risks, and
+issues on a fixed cadence. Good reporting is **honest** (report the red while it
+is still fixable), **consistent** (same metrics every period so trends are
+visible), and **actionable** (every variance has an owner and a next step). A
+dashboard that only ever shows green is not a control system --- it is a
+comfort blanket.
+
+## Key Takeaways
+
+- **Control** is a closed loop: **measure → compare to baseline → analyze variance → act**, every reporting period.
+- Track **PV** (work scheduled), **EV** (work done), **AC** (money spent), all in budget dollars, against **BAC**.
+- $SV = EV - PV$, $CV = EV - AC$, $SPI = EV/PV$, $CPI = EV/AC$. Below 1 / negative = behind / over.
+- Forecast with **EAC** ($BAC/CPI$ is the common honest form), **ETC** $= EAC - AC$, **VAC** $= BAC - EAC$, **TCPI** $= (BAC-EV)/(BAC-AC)$.
+- **Spend is not progress.** Beware the **watermelon** report; watch **leading** indicators, not just SPI/CPI.
+- Keep the **baseline meaningful** through integrated change control and configuration management.
+- Report **honestly, consistently, and actionably** --- every variance gets an owner.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Full EVM snapshot</summary>
+
+BAC = \$400 000. At the status date: PV = \$180 000, EV = \$150 000,
+AC = \$165 000. Compute SV, CV, SPI, CPI, EAC (BAC/CPI), ETC, VAC, TCPI, and
+state the project's condition in one sentence.
+
+**Solution.**
+
+```{r p1-evm-12, echo=TRUE}
+BAC <- 400000; PV <- 180000; EV <- 150000; AC <- 165000
+SV <- EV - PV; CV <- EV - AC; SPI <- EV / PV; CPI <- EV / AC
+EAC <- BAC / CPI; ETC <- EAC - AC; VAC <- BAC - EAC
+TCPI <- (BAC - EV) / (BAC - AC)
+cat(sprintf("SV=$%s  CV=$%s  SPI=%.3f  CPI=%.3f\n",
+            format(SV, big.mark=" "), format(CV, big.mark=" "), SPI, CPI))
+cat(sprintf("EAC=$%s  ETC=$%s  VAC=$%s  TCPI=%.3f\n",
+            format(round(EAC), big.mark=" "), format(round(ETC), big.mark=" "),
+            format(round(VAC), big.mark=" "), TCPI))
+```
+
+Behind schedule (SPI 0.83) and over cost (CPI 0.91); projected to finish about
+\$40 000 over budget, and the remaining work must run at TCPI ≈ 1.06 to still
+hit BAC.
+
+</details>
+
+<details>
+<summary>Problem 2: On budget but in trouble</summary>
+
+A project reports PV = \$500 000, EV = \$400 000, AC = \$400 000. The sponsor
+sees "spend exactly matches earned value --- CPI = 1.0 --- we're fine." Are they?
+
+**Answer.** Cost efficiency is fine (CPI = 1.0), but **SPI = EV/PV = 0.80** ---
+the project has completed only 80 % of the work it should have by now. It is
+**20 % behind schedule** and will either finish late or need to spend more
+(overtime, added staff) to catch up, which will then push CPI below 1. This is
+the classic watermelon: the cost view is green, the schedule view is red.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): re-baseline or not?</summary>
+
+At week 8 the RC-vehicle project is forecast (EAC) at \$700 000 against a
+\$620 000 BAC, mostly because the retailer added a second body colourway
+(an approved scope change) and the new line's learning curve ran longer than
+planned. Should you re-baseline?
+
+**Discussion points.** Split the two causes. The **approved scope change** is a
+legitimate reason to re-baseline --- the extra colourway was authorised, so the
+budget and schedule should be formally updated and future variance measured
+against the new plan. The **learning-curve overrun** is *performance* against
+the plan, not a change to the plan --- that stays as variance you must recover or
+explain. Re-baselining to bury performance problems ("we'll just move the
+goalposts") destroys the value of the control system; re-baselining for
+authorised changes keeps it honest.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-12, echo=FALSE, results='asis'}
+embed_youtube("EEIu8-87nAY", "Earned Value Management Explained: PV, EV, AC, CPI, SPI")
+embed_youtube("7DLyZjsrG14", "Earned Value Analysis Calculations Tutorial (CPI, SPI, CV, SV, EAC, ETC, TCPI)")
+```
