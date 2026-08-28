@@ -1,0 +1,692 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Sustainability and Business Practices",
+    "section": "",
+    "text": "Welcome\nThis book is the lecture-note companion for MGMT-3105 – Sustainability and Business Practices, a second-year course that introduces the philosophy of sustainability and the discipline of project management to students in electromechanical and mechanical engineering technology programs.\nYou are training for careers in the automotive, food-processing, and defense industries. In every one of those sectors you will, sooner than you expect, be handed a slice of a project: a line retrofit, a new product introduction, a validation campaign, a plant move. This course is about the structure that keeps such work on scope, on schedule, and on budget — and about doing it in a way that does not quietly borrow from the future to pay for the present.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#why-a-course-that-pairs-sustainability-with-project-management",
+    "href": "index.html#why-a-course-that-pairs-sustainability-with-project-management",
+    "title": "Sustainability and Business Practices",
+    "section": "Why a course that pairs sustainability with project management?",
+    "text": "Why a course that pairs sustainability with project management?\nAt first glance they look like two subjects stapled together. They are not. Every project consumes resources — materials, energy, money, human effort — and every project leaves something behind: a product, a process, a waste stream, a set of habits in the organization. Project management is the set of tools that decides how those resources are spent, and sustainability is the lens that asks whether that spend was worth it beyond the next quarter. A project manager who can build a work breakdown structure but cannot reason about lifecycle impact is only doing half the job.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#course-map",
+    "href": "index.html#course-map",
+    "title": "Sustainability and Business Practices",
+    "section": "Course map",
+    "text": "Course map\n\n\n\n\n\n\n\n\nFigure 1: How the thirteen chapters of this book track the MGMT-3105 lecture sequence, grouped by project phase.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#course-learning-outcomes",
+    "href": "index.html#course-learning-outcomes",
+    "title": "Sustainability and Business Practices",
+    "section": "Course learning outcomes",
+    "text": "Course learning outcomes\nOn successful completion of MGMT-3105 you will be able to reliably:\n\nCommunicate the philosophy of project selection, including the Net Present Value method.\nCommunicate the theory of budgeting and scheduling.\nConnect project-management concepts to real-world examples.\nIdentify the consequences to society of poor project planning.\nCommunicate the theory of progress management.\nDiscuss the problems of managing people and levelling allocated resources.\nCommunicate the organizational implications of closing a project.\nCommunicate negotiation theory.\nCommunicate effectively in a global environment.\nIdentify the use of sustainability in designs and in project management.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#the-running-project",
+    "href": "index.html#the-running-project",
+    "title": "Sustainability and Business Practices",
+    "section": "The running project",
+    "text": "The running project\nThroughout the book we return to one worked scenario, taken from the MGMT-3105 term project: your company designs and manages the launch of a 1/18-scale radio-controlled vehicle replica for the toy market, then wins a contract to manufacture 100 000+ units for the following holiday season. You choose the vehicle, the body and frame materials (steel, aluminium, or carbon fibre), and one of two Canadian motor/control-system suppliers. Every chapter uses a piece of that project — its scope, its WBS, its schedule, its budget, its risks, its closeout — so the tools connect to a single concrete thing rather than a dozen disconnected examples.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#how-the-book-is-organized",
+    "href": "index.html#how-the-book-is-organized",
+    "title": "Sustainability and Business Practices",
+    "section": "How the book is organized",
+    "text": "How the book is organized\nEach chapter opens with measurable learning objectives and a real-world hook, develops the theory with plain-language explanations and LaTeX equations, and illustrates it with R-generated figures. Worked examples are shown step by step; wherever an example is a self-contained calculation, it is offered as a live, editable R cell you can run and modify in your browser. Collapsible Practice and Discussion blocks let you test yourself before revealing the answer, and each chapter closes with curated YouTube videos for a second explanation in a different voice.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#assessment-for-the-live-course",
+    "href": "index.html#assessment-for-the-live-course",
+    "title": "Sustainability and Business Practices",
+    "section": "Assessment (for the live course)",
+    "text": "Assessment (for the live course)\n\nMGMT-3105 grade breakdown\n\n\n\n\n\n\n\nComponent\nTiming\nWeight\n\n\n\n\nMidterm test\nWeek 7\n25 %\n\n\nFinal test\nWeek 14\n25 %\n\n\nWeekly quizzes\nWeekly\n12 %\n\n\nWeekly case studies\nWeekly\n12 %\n\n\nAssignment Phase A\nWeek 7\n10 %\n\n\nAssignment Phase B\nWeek 11\n10 %\n\n\nAssignment Phase C\nWeek 14\n6 %\n\n\n\nQuizzes and case studies require attendance. Tests are cumulative, closed-book with a handwritten aid sheet, and kit calculators are permitted. To pass, you need an overall grade of 50 % and completion of the mandatory work.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "index.html#a-note-on-academic-integrity",
+    "href": "index.html#a-note-on-academic-integrity",
+    "title": "Sustainability and Business Practices",
+    "section": "A note on academic integrity",
+    "text": "A note on academic integrity\nWrite your reports and answers in your own words. Whenever you take an idea or a passage from another author — including a classmate, a previous year’s work, or an AI tool — acknowledge it with quotation marks where appropriate and a proper citation. If you are unsure how to credit shared work, ask before you submit. By submitting, you put your name to the integrity of the work.",
+    "crumbs": [
+      "Welcome"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html",
+    "href": "01-Sustainability.html",
+    "title": "1  Sustainability",
+    "section": "",
+    "text": "1.1 Learning Objectives\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#learning-objectives",
+    "href": "01-Sustainability.html#learning-objectives",
+    "title": "1  Sustainability",
+    "section": "",
+    "text": "Define sustainability and sustainable design, and explain the three pillars (social, economic, ecological) and the “triple bottom line.”\nIdentify the four points of the sustainability platform — recycling, bio-based/biodegradable polymers, material reduction, and design for recyclability — and give an engineering example of each.\nInterpret the seven plastic recycling codes and distinguish post-consumer from post-industrial recyclate.\nAnalyze the trade-off between recyclability and biodegradability, using the corn-based PLA container case as the worked example.\nCalculate the material, energy, and carbon consequences of a design decision (material substitution, wall-thickness reduction) for a production run.\nEvaluate a product on whole-life cost, and explain why “cheaper to buy” and “cheaper to own” often disagree.\nApply a sustainability checklist to a project: supplier selection, contract clauses, impact assessment, circular-economy principles, and sustainability KPIs.\n\n\n\nBefore we begin: think of the last thing you threw away today\n\nWhere did its materials come from? How long did you use it before it became waste? Where is it now — landfill, recycling stream, incinerator? Could a different design decision, made years ago by an engineer you will never meet, have changed that answer? Keep the object in mind; we will come back to it.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#introduction-every-gram-multiplied-by-a-hundred-thousand",
+    "href": "01-Sustainability.html#introduction-every-gram-multiplied-by-a-hundred-thousand",
+    "title": "1  Sustainability",
+    "section": "1.2 Introduction: every gram, multiplied by a hundred thousand",
+    "text": "1.2 Introduction: every gram, multiplied by a hundred thousand\nHere is the situation that runs through this whole book. Your company designs and manages the launch of a 1/18-scale radio-controlled vehicle replica for the toy market. If the prototype is accepted, you win a contract to build 100 000+ units for the next holiday season. Early on, you must choose the body material — steel, aluminium, or carbon fibre — and the frame material — aluminium or carbon fibre.\nThat single choice is not just a strength-and-weight problem. Multiply it by 100 000 units and it becomes a decision about:\n\nhow many tonnes of raw material leave the ground,\nhow many megajoules of energy are spent turning that material into parts,\nhow much scrap and packaging waste the line produces every shift,\nwhether the finished toy can be recycled when a child outgrows it in three years,\nand whether your customer — a large retailer with its own public sustainability targets — will even put it on the shelf.\n\nThis is why sustainability belongs at the front of a project-management course, not tacked on at the end. The tools you meet in later chapters — scope, WBS, schedule, budget, risk — all decide how resources get spent. Sustainability is the question of whether that spend was worth it once you look past the launch date.\n\n\n\n\n\n\nNote\n\n\n\nIndustry snapshot. General Motors’ CAMI Assembly plant in Ingersoll, Ontario — an hour from where this course is taught — runs landfill-free: every waste stream from daily operations is reused, recycled, or converted to energy. That is not a marketing slogan bolted onto an existing plant; it is a set of thousands of small design and process decisions of exactly the kind this chapter is about.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#what-sustainability-means",
+    "href": "01-Sustainability.html#what-sustainability-means",
+    "title": "1  Sustainability",
+    "section": "1.3 What sustainability means",
+    "text": "1.3 What sustainability means\nThe most quoted definition comes from the 1987 Brundtland report and is used almost word-for-word by the U.S. Environmental Protection Agency:\n\nSustainability is “meeting the needs of the present without compromising the ability of future generations to meet their own needs.”\n\nThe idea is older than the word. Thomas Jefferson expressed the same principle in financial terms: do not leave a debt for future generations to pay. Swap “debt” for “depleted resources, degraded ecosystems, and accumulated waste” and you have the modern version.\nSustainable design applies that principle to the things engineers actually produce. Wikipedia’s working definition is useful: the philosophy of designing physical objects, the built environment, and services to comply with the principles of social, economic, and ecological sustainability. The intent is to minimize negative environmental impact through skilful, sensitive design while holding a dynamic balance between economy and society.\n\n1.3.1 The three pillars and the triple bottom line\nSustainability is usually drawn as three overlapping domains. A decision is sustainable only where all three overlap: it has to be socially acceptable, economically viable, and ecologically sound at the same time.\n\ncircles &lt;- data.frame(\n  x0 = c(-0.55, 0.55, 0),\n  y0 = c(0.35, 0.35, -0.6),\n  r  = rep(1.05, 3),\n  pillar = c(\"Social\\n(bearable)\", \"Economic\\n(viable)\", \"Ecological\\n(sound)\"),\n  fill = c(\"#2E86C1\", \"#F39C12\", \"#27AE60\")\n)\n\nggplot(circles) +\n  ggforce::geom_circle(aes(x0 = x0, y0 = y0, r = r, fill = fill),\n                       alpha = 0.35, linewidth = 0.8, color = \"grey30\") +\n  scale_fill_identity() +\n  annotate(\"text\", x = -0.95, y = 0.9, label = \"SOCIAL\",\n           fontface = \"bold\", size = 4.5 * diagram_text_scale, color = \"#1B4F72\") +\n  annotate(\"text\", x = 0.95, y = 0.9, label = \"ECONOMIC\",\n           fontface = \"bold\", size = 4.5 * diagram_text_scale, color = \"#9C640C\") +\n  annotate(\"text\", x = 0, y = -1.55, label = \"ECOLOGICAL\",\n           fontface = \"bold\", size = 4.5 * diagram_text_scale, color = \"#186A3B\") +\n  annotate(\"text\", x = 0, y = 0.55, label = \"bearable\",\n           size = 3.2 * diagram_text_scale, fontface = \"italic\") +\n  annotate(\"text\", x = -0.7, y = -0.35, label = \"equitable\",\n           size = 3.2 * diagram_text_scale, fontface = \"italic\") +\n  annotate(\"text\", x = 0.7, y = -0.35, label = \"viable\",\n           size = 3.2 * diagram_text_scale, fontface = \"italic\") +\n  annotate(\"text\", x = 0, y = -0.1, label = \"SUSTAINABLE\",\n           fontface = \"bold\", size = 3.6 * diagram_text_scale, color = \"grey15\") +\n  coord_equal() +\n  labs(title = \"Sustainability lives in the overlap\") +\n  theme_void() +\n  theme(\n    legend.position = \"none\",\n    plot.title = element_text(size = 14 * diagram_text_scale, face = \"bold\", hjust = 0.5)\n  )\n\n\n\n\n\n\n\nFigure 1.1: The three pillars of sustainability. Only decisions in the central overlap are genuinely sustainable; the pairwise overlaps (bearable, equitable, viable) each miss one dimension.\n\n\n\n\n\n\n\nDiscussion: which pillar does each of these decisions serve — and which does it ignore?\n\n\nA supplier offers motors 20 % cheaper, made in a plant with a poor safety record. (economic yes; social no)\nYou switch the body to recycled aluminium, adding $0.40 per unit. (ecological yes; economic maybe)\nYou keep an inefficient old assembly line running because retraining staff on a new one is disruptive. (social short-term yes; ecological and economic long-term no)\n\nThe point of the diagram is that a “win” on one pillar is not a win. You have to check all three.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#the-four-points-of-the-sustainability-platform",
+    "href": "01-Sustainability.html#the-four-points-of-the-sustainability-platform",
+    "title": "1  Sustainability",
+    "section": "1.4 The four points of the sustainability platform",
+    "text": "1.4 The four points of the sustainability platform\nFor a product engineer, sustainability comes down to four levers:\n\nRecycling — can the material be recovered and used again?\nBio-based or biodegradable polymers — can the material come from a renewable source, or return safely to the environment?\nMaterial reduction — can the product do its job with less material in the first place?\nDesigning for recyclability — is the product built so that recovery is actually practical, not just theoretically possible?\n\nThe rest of the chapter takes these one at a time, then widens out to what sustainability means when you are managing a whole project rather than designing one part.\n\n1.4.1 Sustainable design principles\nThe design literature expands the four levers into a set of working principles:\n\n\n\n\n\n\n\nPrinciple\nWhat it means in practice\n\n\n\n\nLow-impact materials\nNon-toxic, sustainably produced or recycled materials that need less energy to process.\n\n\nEnergy efficiency\nChoose manufacturing processes — and design products — that require less energy over their life.\n\n\nEmotionally durable design\nBuild things people want to keep. A product kept for ten years instead of three cuts consumption and waste by more than any recycling scheme.\n\n\nDesign for reuse and recycling\nDesign for a commercial “afterlife” — but without compromising performance or service life to get there. It is a balancing act.\n\n\n\nNotice the tension already built in: “make it last” and “make it recyclable” pull in opposite directions, and “use less material” can fight “make it durable.” Good sustainable design is the art of resolving those tensions, not pretending they do not exist.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#recycling-codes",
+    "href": "01-Sustainability.html#recycling-codes",
+    "title": "1  Sustainability",
+    "section": "1.5 Recycling codes",
+    "text": "1.5 Recycling codes\nMost rigid plastics carry one of seven resin identification codes — the number inside the chasing-arrows triangle. The code tells a sorting facility what polymer it is looking at. The three most commonly recycled are PET (#1), HDPE (#2), and PP (#5).\n\nrecycling_codes &lt;- data.frame(\n  Code = 1:7,\n  Abbreviation = c(\"PETE / PET\", \"HDPE\", \"PVC / V\", \"LDPE\", \"PP\", \"PS\", \"OTHER\"),\n  Polymer = c(\n    \"Polyethylene terephthalate\", \"High-density polyethylene\",\n    \"Polyvinyl chloride\", \"Low-density polyethylene\",\n    \"Polypropylene\", \"Polystyrene\",\n    \"Acrylic, polycarbonate, PLA, nylon, multi-layer\"\n  ),\n  `Typical products` = c(\n    \"Drink bottles, food jars\",\n    \"Milk jugs, detergent bottles, piping\",\n    \"Pipe, window frames, cable insulation\",\n    \"Films, bags, squeeze bottles\",\n    \"Bumpers, battery cases, living hinges, tubs\",\n    \"Foam packaging, disposable cups, CD cases\",\n    \"Eyewear, headlamp lenses, RC-car bodies, PLA parts\"\n  ),\n  `Recycled easily?` = c(\"Yes\", \"Yes\", \"Rarely\", \"Sometimes\", \"Yes\", \"Rarely\", \"Rarely\"),\n  check.names = FALSE\n)\n\nknitr::kable(recycling_codes, align = c(\"c\", \"l\", \"l\", \"l\", \"c\"),\n             caption = \"The seven resin identification codes.\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::column_spec(1, bold = TRUE) |&gt;\n  kableExtra::row_spec(c(1, 2, 5), background = \"#EAF6EC\")\n\n\n\nTable 1.1: The seven resin identification codes.\n\n\n\n\n\n\nCode\nAbbreviation\nPolymer\nTypical products\nRecycled easily?\n\n\n\n\n1\nPETE / PET\nPolyethylene terephthalate\nDrink bottles, food jars\nYes\n\n\n2\nHDPE\nHigh-density polyethylene\nMilk jugs, detergent bottles, piping\nYes\n\n\n3\nPVC / V\nPolyvinyl chloride\nPipe, window frames, cable insulation\nRarely\n\n\n4\nLDPE\nLow-density polyethylene\nFilms, bags, squeeze bottles\nSometimes\n\n\n5\nPP\nPolypropylene\nBumpers, battery cases, living hinges, tubs\nYes\n\n\n6\nPS\nPolystyrene\nFoam packaging, disposable cups, CD cases\nRarely\n\n\n7\nOTHER\nAcrylic, polycarbonate, PLA, nylon, multi-layer\nEyewear, headlamp lenses, RC-car bodies, PLA parts\nRarely\n\n\n\n\n\n\n\n\nTwo grades of recyclate matter to a manufacturer:\n\nPost-industrial (a.k.a. regrind): clean scrap from your own or a supplier’s process — runners, sprues, start-up shots, off-spec parts. Easy to reuse because you know exactly what it is.\nPost-consumer: material that has been through a consumer’s hands. It must be collected, sorted, washed, ground, and often re-pelletized, and it can carry metal, labels, food residue, and other polymers. Much harder to work with, but it is the stream that actually diverts waste from landfill.\n\n\n\nThink about it: your RC-car body is moulded from a glass-filled ABS/PC blend. Which recycling code does it carry, and what does that tell you?\n\nIt carries #7 (OTHER) — any multi-polymer blend or filled material that is not one of codes 1–6 lands here. In practice, #7 is rarely recycled through curbside programs: the blend cannot be melted back into a single clean polymer. If recyclability matters for this product, that is a signal to reconsider the material before tooling is cut, not after.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#recyclable-vs.-biodegradable-a-real-tension",
+    "href": "01-Sustainability.html#recyclable-vs.-biodegradable-a-real-tension",
+    "title": "1  Sustainability",
+    "section": "1.6 Recyclable vs. biodegradable: a real tension",
+    "text": "1.6 Recyclable vs. biodegradable: a real tension\nYears ago the plastics industry pursued two waste strategies at once — recycling and biodegradability — and they turned out to be partly opposed. If you make a part from recyclate and want it to last (think plastic lumber, or a pallet), the last thing you want is biodegradable material mixed in, causing the part to fail early. Contaminate a recycling stream with enough compostable polymer and the whole batch can become unusable.\nThe industry chose recycling. But with fossil-fuel prices and supply security back in the spotlight, biopolymers have returned. Some of the earliest plastics were bio-based (cellulosics, natural rubber); many new ones are built from corn or potato starch. Polylactic acid (PLA) is made from corn starch and behaves a lot like PET, but it is harder to process and degrades faster at elevated temperature.\nAnd “biodegradable” has an asterisk. Degradation is done by microbes, which need oxygen and moisture. A modern landfill is compacted, dry, and low-oxygen — almost nothing degrades well there. You can dig up decades-old newspaper and still read it.\n\n\n\n\n\n\nImportant\n\n\n\nCase study — EcoPlast Packaging (MGMT-3105, Week 1). EcoPlast launched corn-based PLA food containers. Then: customers found them brittle in the cold and warped in heat; recyclers reported PLA contaminating conventional-plastic batches; consumers wanted eco-friendly and the same durability as regular plastic; and environmental groups argued the containers mostly ended up in landfill, where they did not meaningfully biodegrade — calling it “green marketing.”\n\n\n\n\nDiscussion (Week 1 case): was it unreasonably risky for EcoPlast to trade durability for sustainability, and what would you change?\n\nModel answer. A product that fails in real-world use creates more waste, erodes consumer trust, and undermines the point of sustainability — so yes, the trade-off as executed was unreasonably risky. Consumers share some responsibility for unrealistic expectations, but the company had a duty to manage those expectations and to test properly before launch. Rushing to market compromised quality.\nWhat to change: (1) real R&D and performance testing across the actual temperature and handling range before launch; (2) an accurate caution label (“not suitable for hot liquids”) — a danger label would be excessive; (3) consumer education on correct disposal (industrial compost, not curbside or landfill); (4) stop marketing the product as fully “sustainable” until there is evidence of an environmental benefit in real disposal conditions — otherwise the claim is exposed to a misleading-marketing challenge.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#material-reduction",
+    "href": "01-Sustainability.html#material-reduction",
+    "title": "1  Sustainability",
+    "section": "1.7 Material reduction",
+    "text": "1.7 Material reduction\nReducing the material that goes into a product — at the design stage, by thinning walls, removing bosses, right-sizing ribs, or substituting a lighter material — pays off several times over:\n\nthe product costs less (less material bought per unit),\nthere is less to recycle or dispose of at end of life,\nmore material is left for other uses,\nand less energy is spent producing and transporting every unit.\n\nThe catch: you cannot thin your way past the product’s functional requirements. Material reduction is enabled by better material properties, better processes, and better analysis — not by wishful thinking.\n\n1.7.1 Worked Example 1: thinning the RC-car body\nYour baseline RC-car body is injection-moulded ABS with a mass of 48 g. Simulation says you can drop the nominal wall from 2.5 mm to 2.1 mm and still pass the drop test, cutting body mass to 41 g. The contract run is 120 000 units. ABS costs $3.10/kg, its production embodied energy is about 90 MJ/kg, and its cradle-to-gate carbon intensity is about 3.4 kg CO2e/kg.\n\nmass_before_g &lt;- 48\nmass_after_g  &lt;- 41\nunits         &lt;- 120000\nabs_cost_per_kg   &lt;- 3.10\nabs_energy_MJ_kg  &lt;- 90\nabs_co2e_kg_kg    &lt;- 3.4\n\nsaved_kg &lt;- (mass_before_g - mass_after_g) / 1000 * units\n\ncost_saved   &lt;- saved_kg * abs_cost_per_kg\nenergy_saved &lt;- saved_kg * abs_energy_MJ_kg\nco2_saved    &lt;- saved_kg * abs_co2e_kg_kg\n\ncat(\"Mass removed per unit :\", mass_before_g - mass_after_g, \"g\\n\")\ncat(\"Material saved over the run :\", format(round(saved_kg), big.mark = \" \"), \"kg\\n\")\ncat(\"Material cost saved :\", sprintf(\"$%s\", format(round(cost_saved), big.mark = \" \")), \"\\n\")\ncat(\"Production energy saved :\", format(round(energy_saved), big.mark = \" \"), \"MJ\",\n    sprintf(\"(~%s kWh)\", format(round(energy_saved / 3.6), big.mark = \" \")), \"\\n\")\ncat(\"Cradle-to-gate CO2e avoided :\", format(round(co2_saved), big.mark = \" \"), \"kg\",\n    sprintf(\"(~%.1f t)\", co2_saved / 1000), \"\\n\")\n\nMass removed per unit : 7 g\nMaterial saved over the run : 840 kg\nMaterial cost saved : $2 604 \nProduction energy saved : 75 600 MJ (~21 000 kWh) \nCradle-to-gate CO2e avoided : 2 856 kg (~2.9 t) \n\n\nA 7 g decision, taken once on a screen, moves almost a tonne of material and several tonnes of CO2e once it is multiplied by the production run — before counting the lighter shipping weight.\n\n\n1.7.2 Try it yourself: the material-choice decision\nNow compare the three candidate body materials head to head. The live cell below holds rough figures for steel, aluminium, and carbon-fibre composite bodies of the mass each material would need for equal stiffness. Change the numbers, add a recycled-content option, or change the run size and see what happens to cost, energy, and carbon.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nWhat the numbers usually show — and why the “greenest” answer is not obvious\n\nCarbon fibre gives the lightest body, which cuts shipping energy and, in a real vehicle, fuel over the whole service life. But its production energy and carbon per kilogram are the highest of the three, and it is the hardest to recycle (code #7, thermoset matrix). Steel is cheap and highly recycled but heavy. Aluminium sits in between and is excellent if you can get recycled stock — secondary aluminium uses roughly 5 % of the energy of primary.\nFor a toy that is shipped once and never driven under its own power for thousands of kilometres, the use-phase fuel saving from carbon fibre never arrives — so the decision tilts back toward recycled aluminium or steel. The lesson: the right material depends on where the impact actually lands in the life cycle.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#designing-for-recyclability",
+    "href": "01-Sustainability.html#designing-for-recyclability",
+    "title": "1  Sustainability",
+    "section": "1.8 Designing for recyclability",
+    "text": "1.8 Designing for recyclability\nRecyclability is designed in, not hoped for. The checklist a plastics engineer can actually influence:\n\nMake the assembly from a single material, or from compatible materials that can be recycled together.\nMake it easy to disassemble.\nPrefer snap-fits and press-fits over screws and metal fasteners.\nReduce the part count.\nAvoid labels (or use same-polymer labels / in-mould labelling).\nKeep thermosets out of thermoplastic assemblies — use thermoplastic elastomers instead of rubber seals where you can.\n\nYou may not have the final word on a design, but you can always offer the greener alternative. And the mindset has shifted: products used to be designed for end of life — last for period X, then done. Now good products are designed for next life: what can this material become after its first use?\n\n\nTry it: redesign the RC-car battery door for recyclability\n\nCurrent design: ABS door, two stainless M2 screws, a printed polyester label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.\nOne redesign:\n\nReplace the two screws with a living hinge + snap latch moulded into the door (same ABS) — removes two dissimilar-metal fasteners and a driver operation on the line.\nReplace the adhesive polyester label with in-mould labelling in an ABS-compatible film, or mould the text into the part.\nReplace the steel spring with a moulded ABS cantilever spring if the cycle life allows.\nKeep the TPE gasket but make it a removable press-in part in a recycling-compatible grade, or switch to a moulded-in flexible ABS lip if the seal spec allows.\n\nResult: the door goes from five materials and two fasteners to essentially one polymer, snaps apart by hand, and carries no adhesive.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#the-consumers-perspective",
+    "href": "01-Sustainability.html#the-consumers-perspective",
+    "title": "1  Sustainability",
+    "section": "1.9 The consumer’s perspective",
+    "text": "1.9 The consumer’s perspective\nSustainable design has to survive contact with real buyers. Market research is consistent on two points:\n\nEnvironmentally conscious consumers will pay marginally more and accept marginally lower fit and finish for a product that is genuinely more environmentally friendly.\nThey have zero tolerance for a drop in performance/functionality or in service life. They bought the product to do a job. If a “sustainable” design wears out sooner, it just gets replaced sooner — consuming more resources and defeating the purpose.\n\n\ntol &lt;- data.frame(\n  attribute = c(\"Higher price\", \"Cosmetic fit & finish\",\n                \"Core performance\", \"Service life / durability\"),\n  tolerance = c(0.55, 0.45, 0.03, 0.05)\n)\ntol$attribute &lt;- factor(tol$attribute, levels = rev(tol$attribute))\ntol$kind &lt;- ifelse(tol$tolerance &gt; 0.2, \"Some tolerance\", \"Near-zero tolerance\")\n\nggplot(tol, aes(x = tolerance, y = attribute, fill = kind)) +\n  geom_col(width = 0.65) +\n  geom_text(aes(label = scales::percent(tolerance, accuracy = 1)),\n            hjust = -0.15, size = 3.8 * diagram_text_scale) +\n  scale_x_continuous(labels = scales::percent, limits = c(0, 0.7),\n                     expand = expansion(mult = c(0, 0.05))) +\n  scale_fill_manual(values = c(\"Some tolerance\" = \"#27AE60\",\n                               \"Near-zero tolerance\" = \"#C0392B\")) +\n  labs(title = \"Where consumers will --- and will not --- give ground\",\n       x = \"Approximate share of consumers willing to accept a trade-off\",\n       y = NULL, fill = NULL) +\n  theme_minimal() +\n  theme(\n    legend.position = \"top\",\n    plot.title = element_text(size = 14 * diagram_text_scale, face = \"bold\"),\n    axis.title = element_text(size = 11 * diagram_text_scale),\n    axis.text = element_text(size = 10 * diagram_text_scale)\n  )\n\n\n\n\n\n\n\nFigure 1.2: Consumer tolerance for trade-offs made in the name of sustainability: some room on price and cosmetics, essentially none on how well the product works or how long it lasts.\n\n\n\n\n\n\n1.9.1 Whole-life cost: cheaper to buy vs. cheaper to own\nThis is where planned obsolescence enters. A business may have a commercial reason to limit a product’s life — it protects repeat sales. Sustainable design pushes the other way: make it last. The buyer’s own wallet is often on the side of durability, even when the sticker price is higher.\nThe live cell compares a cheap version of a product (low price, short life, replaced repeatedly) with a durable version (higher price, lasts the whole period). Change the prices, lifetimes, and horizon and watch which one wins on total cost of ownership — and on units sent to landfill.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nWhere does the cheap option actually win?\n\nShorten the horizon (you only need the product for a year), or make the durable version’s premium extreme relative to its extra life, and “cheap” wins on cost. But the waste count almost always favours durable: five landfilled units versus one. Whole-life thinking means putting both numbers — dollars and units — in front of the decision-maker, not just the sticker price.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#sustainability-in-project-management",
+    "href": "01-Sustainability.html#sustainability-in-project-management",
+    "title": "1  Sustainability",
+    "section": "1.10 Sustainability in project management",
+    "text": "1.10 Sustainability in project management\nEverything above was about designing a part. When you are running a project, sustainability becomes a set of management actions spread across the whole life cycle. The MGMT-3105 checklist:\nProcurement and contracts\n\nChoose eco-friendly and ethical suppliers; audit them for compliance.\nPut sustainability clauses in contracts.\nPerform an Environmental & Social Impact Assessment (ESIA).\n\nDesign and materials\n\nMinimize raw-material use; prioritize recyclable, renewable, and local resources.\nDesign for energy and water efficiency.\nApply circular-economy principles: reuse, refurbish, recycle.\nPlan the product/service lifecycle — what happens to it after the project ends.\n\nOperations\n\nReduce carbon emissions from transport and operations.\nUse digital tools to cut paper and travel.\nRun proper waste management: segregation, recycling, safe disposal.\n\nPeople and governance\n\nSafeguard health, safety, and well-being of the team and the community.\nSupport social responsibility: local hiring, fair wages, training.\nTrack sustainability KPIs: carbon footprint, waste-reduction %, energy saved.\nMonitor suppliers and contractors; identify and mitigate environmental and social risks; run sustainability audits when needed.\n\n\n1.10.1 The circular economy\nThe circular economy is the alternative to the linear take — make — use — dispose model. Instead, material is kept in use through loops of increasing size: maintain and reuse first, then refurbish and remanufacture, then recycle, with disposal as the last resort.\n\nstages &lt;- data.frame(\n  label = c(\"Design\", \"Make\", \"Distribute\", \"Use\", \"Maintain / Reuse\",\n            \"Refurbish / Remanufacture\", \"Recycle\"),\n  angle = seq(90, 90 - 360 + 360/7, length.out = 7) * pi / 180\n)\nstages$x &lt;- cos(stages$angle)\nstages$y &lt;- sin(stages$angle)\n\nseg &lt;- data.frame(\n  x    = stages$x,\n  y    = stages$y,\n  xend = stages$x[c(2:7, 1)],\n  yend = stages$y[c(2:7, 1)]\n)\n\nggplot() +\n  geom_curve(data = seg, aes(x = x, y = y, xend = xend, yend = yend),\n             curvature = -0.25, linewidth = 0.9, color = \"#27AE60\",\n             arrow = arrow(length = unit(0.18, \"cm\"), type = \"closed\")) +\n  geom_point(data = stages, aes(x = x, y = y), size = 20, color = \"#EAF6EC\") +\n  geom_point(data = stages, aes(x = x, y = y), size = 20, shape = 1, color = \"#27AE60\") +\n  geom_text(data = stages, aes(x = x, y = y, label = label),\n            size = 3 * diagram_text_scale, fontface = \"bold\",\n            lineheight = 0.9, color = \"grey15\") +\n  annotate(\"text\", x = 0, y = 0, label = \"keep materials\\nin use\",\n           size = 3.2 * diagram_text_scale, fontface = \"italic\", color = \"grey40\") +\n  coord_equal(xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4)) +\n  labs(title = \"Design out waste; circulate materials\") +\n  theme_void() +\n  theme(plot.title = element_text(size = 14 * diagram_text_scale,\n                                  face = \"bold\", hjust = 0.5))\n\n\n\n\n\n\n\nFigure 1.3: The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.\n\n\n\n\n\n\n \n\n\n\n1.10.2 Try it yourself: a sustainability KPI snapshot\nSustainability only gets managed if it gets measured. The live cell computes a few of the KPIs from the checklist for the RC-vehicle project: carbon footprint per unit, waste-diversion rate, and recycled-content share. Adjust the inputs to your own project assumptions.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#key-takeaways",
+    "href": "01-Sustainability.html#key-takeaways",
+    "title": "1  Sustainability",
+    "section": "1.11 Key Takeaways",
+    "text": "1.11 Key Takeaways\n\nSustainability = meeting present needs without compromising future generations’ ability to meet theirs. Sustainable design applies that across social, economic, and ecological pillars at once — a “win” on one pillar is not a win.\nThe four levers for a product engineer: recycle, bio-source/biodegrade, reduce material, design for recyclability.\nThe seven resin codes tell a sorter what a plastic is; PET (#1), HDPE (#2), and PP (#5) recycle well, #7 (blends/PLA/filled) rarely does. Post-consumer recyclate diverts real waste but is hard to process; post-industrial regrind is easy.\nRecyclable and biodegradable can conflict, and “biodegradable” does little in a dry, compacted landfill — the EcoPlast case shows what happens when that asterisk is ignored.\nA small material-reduction decision, multiplied by the production run, moves tonnes of material, energy, and CO2e. The “greenest” material depends on where in the life cycle the impact lands — use phase vs. production vs. end of life.\nConsumers give ground on price and cosmetics but not on performance or durability; whole-life cost usually favours the durable design on both dollars and landfill count.\nIn project management, sustainability is a checklist across procurement, design, operations, and governance — backed by circular-economy loops and tracked with KPIs (carbon per unit, waste diversion, recycled content).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#practice-problems",
+    "href": "01-Sustainability.html#practice-problems",
+    "title": "1  Sustainability",
+    "section": "1.12 Practice Problems",
+    "text": "1.12 Practice Problems\n\n\nProblem 1: Packaging substitution (food industry)\n\nA food-processing client ships 2.4 million meal trays a year. The current tray is 22 g of black CPET (#1, but often rejected by sorters because black plastic is invisible to optical sorting). A proposed natural-coloured PP (#5) tray weighs 19 g, costs $0.006/g versus $0.005/g for the CPET, and is accepted by the client’s regional recycler.\n\nWhat is the annual change in material mass and material cost?\nGive two non-cost arguments for switching, and one argument against.\n\nSolution.\n\ntrays        &lt;- 2.4e6\nmass_cpet_g  &lt;- 22\nmass_pp_g    &lt;- 19\ncost_cpet    &lt;- 0.005\ncost_pp      &lt;- 0.006\n\nmass_change_kg &lt;- (mass_pp_g - mass_cpet_g) / 1000 * trays\ncost_change    &lt;- (mass_pp_g * cost_pp - mass_cpet_g * cost_cpet) * trays\n\ncat(\"Annual material mass change :\", format(round(mass_change_kg), big.mark = \" \"), \"kg\",\n    \"(a reduction)\\n\")\ncat(\"Annual material cost change : \",\n    sprintf(\"$%s\", format(round(cost_change), big.mark = \" \")),\n    \" (an increase)\\n\", sep = \"\")\n\nAnnual material mass change : -7 200 kg (a reduction)\nAnnual material cost change : $9 600 (an increase)\n\n\n\nAbout 7 200 kg less plastic per year, but roughly $3 700/yr more spent on material because PP costs more per gram here and the 3 g saving does not fully offset it.\nFor: the natural-coloured PP is actually recovered by the recycler (black CPET usually is not), and PP trays tolerate reheating better. Against: higher material spend, and a tooling change is needed — capital plus a qualification run.\n\n\n\n\nProblem 2: Recycled-aluminium body (automotive/toy)\n\nSwitching the RC-car body from primary to recycled aluminium keeps the mass at 70 g/unit but changes the cradle-to-gate energy from 155 MJ/kg to 8 MJ/kg and the carbon from 11 kg CO2e/kg to 0.6 kg CO2e/kg. Recycled stock costs $0.25/kg more. Run size 120 000 units.\nEstimate the energy saved, the CO2e avoided, and the extra material cost.\nSolution.\n\nmass_kg   &lt;- 70 / 1000\nunits     &lt;- 120000\nkg_total  &lt;- mass_kg * units\n\nenergy_saved &lt;- kg_total * (155 - 8)\nco2_saved    &lt;- kg_total * (11 - 0.6)\nextra_cost   &lt;- kg_total * 0.25\n\ncat(\"Aluminium in the run :\", format(round(kg_total), big.mark = \" \"), \"kg\\n\")\ncat(\"Production energy saved :\", format(round(energy_saved), big.mark = \" \"), \"MJ\",\n    sprintf(\"(~%s kWh)\\n\", format(round(energy_saved / 3.6), big.mark = \" \")))\ncat(\"CO2e avoided :\", format(round(co2_saved), big.mark = \" \"), \"kg\",\n    sprintf(\"(~%.1f t)\\n\", co2_saved / 1000))\ncat(\"Extra material cost :\",\n    sprintf(\"$%s\\n\", format(round(extra_cost), big.mark = \" \")))\n\nAluminium in the run : 8 400 kg\nProduction energy saved : 1 234 800 MJ (~343 000 kWh)\nCO2e avoided : 87 360 kg (~87.4 t)\nExtra material cost : $2 100\n\n\nRoughly 1.2 million MJ (about 340 000 kWh) and 87 t of CO2e avoided for about $2 100 of extra material cost — one of the highest-leverage sustainability moves available on this project.\n\n\n\nProblem 3: Design-for-recyclability audit (defense)\n\nA defense client requires that field-returned electronic enclosures be materially recoverable. You are handed this enclosure: glass-filled nylon (#7) housing, 6 zinc-plated steel screws, a bonded aluminium RFI shield, a polyurethane potting compound over the PCB, and two adhesive asset-tracking labels.\nList, in priority order, the four changes that would most improve material recovery, and note the functional risk of each.\nModel answer.\n\nReplace the potting compound with a removable conformal coating or a gasketed enclosure. Risk: reduced shock/moisture protection — must re-qualify to the environmental spec.\nEliminate the bonded aluminium shield; use a conductive coating on the nylon or a snap-in shield of the same-family metal. Risk: RFI performance must be re-verified.\nSwap the 6 steel screws for moulded snap features or same-metal fasteners. Risk: fewer re-assembly cycles; captive-hardware requirement may forbid it.\nDrop adhesive labels for moulded-in or laser-etched marking. Risk: contrast/legibility and traceability sign-off.\n\nThe housing polymer itself (#7 glass-filled) is hard to change if the structural spec depends on it — note it as a known limitation rather than a quick fix.\n\n\n\nProblem 4 (discussion): planned obsolescence vs. sustainable design\n\n“Sustainable design requires that our products last as long as possible. But business decisions may deliberately shorten product life to protect repeat sales — planned obsolescence. Which do you prefer, and how would you reconcile the two in a company that has to stay profitable?”\nThere is no single right answer — this is a position you argue. Strong answers usually land on service and circular business models: the manufacturer keeps revenue through repair, upgrades, refurbishment, take-back, or product-as-a-service, so “make it last” and “keep earning” stop being opposites. Weak answers just pick a side and ignore the constraint on the other.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "01-Sustainability.html#further-resources",
+    "href": "01-Sustainability.html#further-resources",
+    "title": "1  Sustainability",
+    "section": "1.13 Further Resources",
+    "text": "1.13 Further Resources\n\nU.S. EPA — Learn About Sustainability: https://www.epa.gov/sustainability/learn-about-sustainability\nBrundtland Report (Our Common Future, 1987): https://sustainabledevelopment.un.org/content/documents/5987our-common-future.pdf\nEllen MacArthur Foundation — Circular Economy Introduction: https://www.ellenmacarthurfoundation.org/topics/circular-economy-introduction/overview",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Sustainability</span>"
+    ]
+  },
+  {
+    "objectID": "02-Introduction-and-Communication.html",
+    "href": "02-Introduction-and-Communication.html",
+    "title": "2  Introduction to Project Management and Communication",
+    "section": "",
+    "text": "2.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Project Management and Communication</span>"
+    ]
+  },
+  {
+    "objectID": "02-Introduction-and-Communication.html#learning-objectives-planned",
+    "href": "02-Introduction-and-Communication.html#learning-objectives-planned",
+    "title": "2  Introduction to Project Management and Communication",
+    "section": "",
+    "text": "Define a project, a program, and operations, and explain what makes project work different from routine work.\nDescribe the project life cycle (initiation, planning, execution, monitoring and control, closing).\nIdentify the triple constraint (scope, time, cost) and its relationship to quality.\nBuild a stakeholder register and a project communication plan.\nSelect appropriate communication methods (formal/informal, written/verbal, push/pull) for a given audience.\nApply active-listening techniques and recognise barriers such as selective listening and cultural/language differences.\nExplain why performance reporting (status, progress, forecasting) matters to stakeholders.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Project Management and Communication</span>"
+    ]
+  },
+  {
+    "objectID": "02-Introduction-and-Communication.html#topic-outline",
+    "href": "02-Introduction-and-Communication.html#topic-outline",
+    "title": "2  Introduction to Project Management and Communication",
+    "section": "2.2 Topic outline",
+    "text": "2.2 Topic outline\n\nWhat is a project? History and evolution of project management.\nThe project life cycle and the process groups.\nThe triple constraint and competing demands.\nStakeholders: identification, analysis, and engagement.\nCommunication planning: the 5W + H of a communication plan.\nCommunication methods and channels; the channel-count formula \\(n(n-1)/2\\).\nListening skills and communication barriers.\nPerformance reporting and feedback loops.\nRunning case: setting up the communication plan for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to Project Management and Communication</span>"
+    ]
+  },
+  {
+    "objectID": "03-Scope-and-Organizational-Structures.html",
+    "href": "03-Scope-and-Organizational-Structures.html",
+    "title": "3  Project Scope, Charter, and Organizational Structures",
+    "section": "",
+    "text": "3.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Project Scope, Charter, and Organizational Structures</span>"
+    ]
+  },
+  {
+    "objectID": "03-Scope-and-Organizational-Structures.html#learning-objectives-planned",
+    "href": "03-Scope-and-Organizational-Structures.html#learning-objectives-planned",
+    "title": "3  Project Scope, Charter, and Organizational Structures",
+    "section": "",
+    "text": "Write a project charter and explain what authority it grants the project manager.\nDevelop a scope statement: deliverables, acceptance criteria, exclusions, constraints, and assumptions.\nDistinguish product scope from project scope.\nRecognise and control scope creep, and run a change-control process.\nCompare functional, projectized, and matrix (weak/balanced/strong) organizational structures.\nEvaluate the trade-offs each structure imposes on authority, resource availability, and cost.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Project Scope, Charter, and Organizational Structures</span>"
+    ]
+  },
+  {
+    "objectID": "03-Scope-and-Organizational-Structures.html#topic-outline",
+    "href": "03-Scope-and-Organizational-Structures.html#topic-outline",
+    "title": "3  Project Scope, Charter, and Organizational Structures",
+    "section": "3.2 Topic outline",
+    "text": "3.2 Topic outline\n\nProject selection and the business case (payback, NPV preview).\nThe project charter: purpose, contents, sign-off.\nScope definition and the scope statement.\nScope creep, gold-plating, and change control.\nOrganizational structures: functional, matrix, projectized.\nThe project management office (PMO).\nRunning case: charter and scope statement for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Project Scope, Charter, and Organizational Structures</span>"
+    ]
+  },
+  {
+    "objectID": "04-Leadership-and-the-Project-Manager.html",
+    "href": "04-Leadership-and-the-Project-Manager.html",
+    "title": "4  Leadership and the Project Manager",
+    "section": "",
+    "text": "4.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Leadership and the Project Manager</span>"
+    ]
+  },
+  {
+    "objectID": "04-Leadership-and-the-Project-Manager.html#learning-objectives-planned",
+    "href": "04-Leadership-and-the-Project-Manager.html#learning-objectives-planned",
+    "title": "4  Leadership and the Project Manager",
+    "section": "",
+    "text": "Distinguish management from leadership in a project context.\nDescribe the sources of a project manager’s power (legitimate, reward, coercive, expert, referent).\nApply situational leadership: matching style (directing, coaching, supporting, delegating) to team maturity.\nExplain the stages of team development (forming, storming, norming, performing, adjourning).\nIdentify the competencies and ethical responsibilities of an effective project manager.\nUse motivation theory (Maslow, Herzberg, expectancy) to diagnose team performance issues.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Leadership and the Project Manager</span>"
+    ]
+  },
+  {
+    "objectID": "04-Leadership-and-the-Project-Manager.html#topic-outline",
+    "href": "04-Leadership-and-the-Project-Manager.html#topic-outline",
+    "title": "4  Leadership and the Project Manager",
+    "section": "4.2 Topic outline",
+    "text": "4.2 Topic outline\n\nThe project manager’s role across the life cycle.\nPower, influence, and authority without ownership of resources.\nLeadership styles and situational leadership.\nBuilding and developing the project team.\nMotivation and engagement.\nEmotional intelligence and ethics.\nRunning case: staffing and leading the RC-vehicle project team.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Leadership and the Project Manager</span>"
+    ]
+  },
+  {
+    "objectID": "05-Work-Breakdown-Structures.html",
+    "href": "05-Work-Breakdown-Structures.html",
+    "title": "5  Work Breakdown Structures (WBS)",
+    "section": "",
+    "text": "5.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Work Breakdown Structures (WBS)</span>"
+    ]
+  },
+  {
+    "objectID": "05-Work-Breakdown-Structures.html#learning-objectives-planned",
+    "href": "05-Work-Breakdown-Structures.html#learning-objectives-planned",
+    "title": "5  Work Breakdown Structures (WBS)",
+    "section": "",
+    "text": "Explain the purpose of a WBS and how it links scope, schedule, and budget.\nDecompose a project into deliverables, work packages, and activities.\nApply the 100 % rule and choose an appropriate level of decomposition.\nNumber a WBS and build a WBS dictionary entry for a work package.\nDistinguish a deliverable-oriented WBS from a phase-oriented or organizational (OBS) breakdown.\nAssign responsibility with a RACI / responsibility-assignment matrix.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Work Breakdown Structures (WBS)</span>"
+    ]
+  },
+  {
+    "objectID": "05-Work-Breakdown-Structures.html#topic-outline",
+    "href": "05-Work-Breakdown-Structures.html#topic-outline",
+    "title": "5  Work Breakdown Structures (WBS)",
+    "section": "5.2 Topic outline",
+    "text": "5.2 Topic outline\n\nFrom scope statement to WBS.\nDecomposition: deliverables, work packages, activities.\nThe 100 % rule; how far to decompose (the 8/80 guideline).\nWBS numbering and the WBS dictionary.\nControl accounts and the link to cost and schedule baselines.\nResponsibility assignment (RACI).\nRunning case: building the WBS for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Work Breakdown Structures (WBS)</span>"
+    ]
+  },
+  {
+    "objectID": "06-Network-Diagrams-and-AON.html",
+    "href": "06-Network-Diagrams-and-AON.html",
+    "title": "6  Network Diagrams and Activity-on-Node (AON)",
+    "section": "",
+    "text": "6.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Network Diagrams and Activity-on-Node (AON)</span>"
+    ]
+  },
+  {
+    "objectID": "06-Network-Diagrams-and-AON.html#learning-objectives-planned",
+    "href": "06-Network-Diagrams-and-AON.html#learning-objectives-planned",
+    "title": "6  Network Diagrams and Activity-on-Node (AON)",
+    "section": "",
+    "text": "Build an activity-on-node (AON) network from a precedence table.\nDistinguish the four dependency types (FS, SS, FF, SF) and use lead and lag.\nPerform the forward pass and backward pass to find ES, EF, LS, LF.\nCalculate total float and free float and identify the critical path.\nExplain how the critical path changes when durations or dependencies change.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Network Diagrams and Activity-on-Node (AON)</span>"
+    ]
+  },
+  {
+    "objectID": "06-Network-Diagrams-and-AON.html#topic-outline",
+    "href": "06-Network-Diagrams-and-AON.html#topic-outline",
+    "title": "6  Network Diagrams and Activity-on-Node (AON)",
+    "section": "6.2 Topic outline",
+    "text": "6.2 Topic outline\n\nFrom WBS activities to a precedence table.\nAON notation; predecessors and successors.\nDependency types, leads, and lags.\nForward pass: earliest start and finish.\nBackward pass: latest start and finish.\nFloat, the critical path, and near-critical paths.\nRunning case: the AON network for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Network Diagrams and Activity-on-Node (AON)</span>"
+    ]
+  },
+  {
+    "objectID": "07-Risk-Management.html",
+    "href": "07-Risk-Management.html",
+    "title": "7  Risk Management",
+    "section": "",
+    "text": "7.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Risk Management</span>"
+    ]
+  },
+  {
+    "objectID": "07-Risk-Management.html#learning-objectives-planned",
+    "href": "07-Risk-Management.html#learning-objectives-planned",
+    "title": "7  Risk Management",
+    "section": "",
+    "text": "Distinguish risk from uncertainty, and threats from opportunities.\nRun a structured risk-identification session and write a well-formed risk statement.\nPerform qualitative analysis with a probability-impact matrix.\nPerform quantitative analysis: expected monetary value (EMV) and decision trees.\nSelect response strategies (avoid, transfer, mitigate, accept; exploit, share, enhance).\nBuild and maintain a risk register and set contingency and management reserves.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Risk Management</span>"
+    ]
+  },
+  {
+    "objectID": "07-Risk-Management.html#topic-outline",
+    "href": "07-Risk-Management.html#topic-outline",
+    "title": "7  Risk Management",
+    "section": "7.2 Topic outline",
+    "text": "7.2 Topic outline\n\nWhat risk is, and why projects have more of it early.\nRisk identification: brainstorming, checklists, SWOT, assumptions analysis.\nQualitative analysis: probability and impact scales, the P-I matrix.\nQuantitative analysis: EMV, decision trees, sensitivity.\nResponse planning for threats and opportunities.\nContingency reserve vs. management reserve.\nMonitoring: risk reviews, triggers, and the risk register.\nRunning case: the risk register for the RC-vehicle project (unproven supplier, labour negotiations, new assembly line).",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Risk Management</span>"
+    ]
+  },
+  {
+    "objectID": "08-Project-Scheduling.html",
+    "href": "08-Project-Scheduling.html",
+    "title": "8  Project Scheduling",
+    "section": "",
+    "text": "8.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Project Scheduling</span>"
+    ]
+  },
+  {
+    "objectID": "08-Project-Scheduling.html#learning-objectives-planned",
+    "href": "08-Project-Scheduling.html#learning-objectives-planned",
+    "title": "8  Project Scheduling",
+    "section": "",
+    "text": "Convert a network and duration estimates into a Gantt chart and a schedule baseline.\nApply three-point (PERT) estimating: \\(t_e = (o + 4m + p)/6\\) and activity variance.\nCompute the probability of meeting a target date using the project standard deviation.\nCompress a schedule with crashing and fast-tracking, and find the least-cost crash sequence.\nExplain resource-limited scheduling and schedule risk.\nRead and maintain a schedule: milestones, baselines, and slippage.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Project Scheduling</span>"
+    ]
+  },
+  {
+    "objectID": "08-Project-Scheduling.html#topic-outline",
+    "href": "08-Project-Scheduling.html#topic-outline",
+    "title": "8  Project Scheduling",
+    "section": "8.2 Topic outline",
+    "text": "8.2 Topic outline\n\nFrom AON to a time-scaled schedule.\nDeterministic vs. probabilistic durations; PERT.\nProbability of on-time completion.\nMilestones and the schedule baseline.\nSchedule compression: crashing and fast-tracking, and their costs and risks.\nGantt charts and tracking Gantts.\nRunning case: the schedule for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Project Scheduling</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html",
+    "href": "09-Cost-Estimation-and-Budgeting.html",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "",
+    "text": "9.1 Learning Objectives\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#learning-objectives",
+    "href": "09-Cost-Estimation-and-Budgeting.html#learning-objectives",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "",
+    "text": "List the common sources of project cost and classify any cost against the four cost dichotomies (direct/indirect, fixed/variable, normal/expedited, recurring/non-recurring).\nCalculate direct labour cost from a rate and hours, and apply an indirect-cost percentage.\nSelect an estimating method (ballpark, parametric, feasibility, definitive) appropriate to the project stage, and state its expected accuracy.\nExplain how planning horizon, duration, people, structure, padding, and organizational culture affect estimate quality.\nCompare top-down and bottom-up budgeting and build a bottom-up budget from a work breakdown structure using activity-based costing.\nConstruct a time-phased budget and plot the cumulative cost baseline (the S-curve).\nSize a contingency reserve and distinguish it from a management reserve.\n\n\n\nBefore we begin: you have been asked for “a number” before you have any details\n\nA stakeholder corners you: “Ballpark it — what will this project cost?” You have a one-page concept and nothing else. What do you say, and how do you say it so the number does not follow you around for the next six months as a commitment? Hold that thought.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#introduction-the-number-that-decides-whether-the-project-happens",
+    "href": "09-Cost-Estimation-and-Budgeting.html#introduction-the-number-that-decides-whether-the-project-happens",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.2 Introduction: the number that decides whether the project happens",
+    "text": "9.2 Introduction: the number that decides whether the project happens\nBack to the running project. Your company must present a budget to Senior Management before the Scope and Charter are approved. The project brief hands you rough ranges to work from:\n\nSelected budget ranges from the RC-vehicle project brief\n\n\nItem\nRange\n\n\n\n\nProject Manager (salary)\n$60 000 – $80 000\n\n\nTeam members (salary, each)\n$30 000 – $45 000\n\n\nSundry / overhead (per hour)\n$8.00 – $15.00\n\n\nMotor / controller\n$100 000 – $175 000\n\n\nCarbon fibre\n$120 000 – $200 000\n\n\nAluminium\n$50 000 – $115 000\n\n\nTooling\n$100 000 – $180 000\n\n\nTesting\n$25 000 – $100 000\n\n\nGovernment approval (CSA, CE, MTO)\n$2 000 – $10 000\n\n\nPackaging / shipping\n$5 000 – $25 000\n\n\n\nCost estimation is the first step in building a budget, and the budget determines whether the project is feasible at all. Two principles run through everything below:\n\nThe more clearly you define each cost element up front, the fewer budgeting errors you make.\nThe more accurate your initial estimate, the more your budget reflects reality — and the less likely a painful overrun later.\n\n\n\n\n\n\n\nNote\n\n\n\nIndustry snapshot. A defense contractor bidding a firm-fixed-price contract must submit a definitive estimate (±5 %): if the real cost comes in higher, the contractor eats the difference. A food company scoping a new retort line at the concept stage lives with a ballpark (±30 %) and revises as quotes arrive. Same tools, very different tolerance for error — driven by where in the project you are standing.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#where-project-cost-comes-from",
+    "href": "09-Cost-Estimation-and-Budgeting.html#where-project-cost-comes-from",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.3 Where project cost comes from",
+    "text": "9.3 Where project cost comes from\nCost management starts in the planning phase, when you identify the project’s human and material resources and lay out a time-phased budget that reflects when each will be used. The common sources of cost:\n\nLabour — the project team and anyone charging time to the project.\nMaterials — everything consumed to build the deliverable.\nSubcontractors — external vendors, and internal support departments (test lab, drafting) that cross-charge.\nEquipment and facilities — purchased, leased, or allocated.\nTravel.\nShipping — inbound and outbound, normal and expedited.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#the-eight-cost-types",
+    "href": "09-Cost-Estimation-and-Budgeting.html#the-eight-cost-types",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.4 The eight cost types",
+    "text": "9.4 The eight cost types\nEvery cost gets sorted into one or more of eight categories, arranged as four either/or pairs. A single cost usually carries two or three labels at once.\n\ncost_types &lt;- data.frame(\n  Dichotomy = c(\"Direct vs. Indirect\", \"\", \"Fixed vs. Variable\", \"\",\n                \"Normal vs. Expedited\", \"\", \"Recurring vs. Non-recurring\", \"\"),\n  Type = c(\"Direct\", \"Indirect\", \"Fixed\", \"Variable\",\n           \"Normal\", \"Expedited\", \"Recurring\", \"Non-recurring\"),\n  Meaning = c(\n    \"Clearly generated by the project (project labour, project materials, POs).\",\n    \"Overhead: rent, property tax, benefits, utilities, depreciation, admin. Often applied as 20--50 % of direct cost.\",\n    \"Does not change with usage (a 6-month equipment lease at a flat fee).\",\n    \"Proportional to usage (machine-hour charges, fuel, mileage).\",\n    \"Incurred during normal operation and working hours; includes overtime that was already scheduled.\",\n    \"Unplanned cost to go faster: rush freight, extra hires, premium to a supplier for priority.\",\n    \"Happens again through the project life: utilities, logistics, ongoing labour, monthly maintenance.\",\n    \"One-time, usually at the start or end: training, prototype tooling, initial market analysis.\"\n  )\n)\nknitr::kable(cost_types, align = c(\"l\", \"l\", \"l\"),\n             caption = \"The four cost dichotomies (eight types).\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::column_spec(2, bold = TRUE)\n\n\n\nTable 9.1: The four cost dichotomies (eight types).\n\n\n\n\n\n\nDichotomy\nType\nMeaning\n\n\n\n\nDirect vs. Indirect\nDirect\nClearly generated by the project (project labour, project materials, POs).\n\n\n\nIndirect\nOverhead: rent, property tax, benefits, utilities, depreciation, admin. Often applied as 20--50 % of direct cost.\n\n\nFixed vs. Variable\nFixed\nDoes not change with usage (a 6-month equipment lease at a flat fee).\n\n\n\nVariable\nProportional to usage (machine-hour charges, fuel, mileage).\n\n\nNormal vs. Expedited\nNormal\nIncurred during normal operation and working hours; includes overtime that was already scheduled.\n\n\n\nExpedited\nUnplanned cost to go faster: rush freight, extra hires, premium to a supplier for priority.\n\n\nRecurring vs. Non-recurring\nRecurring\nHappens again through the project life: utilities, logistics, ongoing labour, monthly maintenance.\n\n\n\nNon-recurring\nOne-time, usually at the start or end: training, prototype tooling, initial market analysis.\n\n\n\n\n\n\n\n\n\n9.4.1 Direct labour cost\nThe core calculation is simple:\n\\[\\text{Total Direct Labour Cost} = \\text{Direct Labour Rate} \\times \\text{Hours Spent}\\]\nIndirect cost is harder to pin to a task, so many organizations apply it as a percentage of direct cost:\n\\[\\text{Indirect Cost} = \\text{Indirect Rate} \\times \\text{Direct Cost}, \\qquad \\text{Indirect Rate} \\approx 20\\%\\text{--}50\\%\\]\n\n\n9.4.2 Worked Example 1: fully-burdened cost of a work package\nThe “Design body & frame” work package needs 1 mechanical designer for 220 h at $46/h and 1 junior engineer for 120 h at $32/h. Direct materials for prototypes are $4 500. The company applies indirect cost at 35 % of direct cost.\n\ndesigner_hours &lt;- 220; designer_rate &lt;- 46\njunior_hours   &lt;- 120; junior_rate   &lt;- 32\ndirect_materials &lt;- 4500\nindirect_rate &lt;- 0.35\n\ndirect_labour &lt;- designer_hours * designer_rate + junior_hours * junior_rate\ndirect_cost   &lt;- direct_labour + direct_materials\nindirect_cost &lt;- indirect_rate * direct_cost\ntotal_cost    &lt;- direct_cost + indirect_cost\n\ncat(\"Direct labour  :\", sprintf(\"$%s\", format(direct_labour, big.mark = \" \")), \"\\n\")\ncat(\"Direct materials:\", sprintf(\"$%s\", format(direct_materials, big.mark = \" \")), \"\\n\")\ncat(\"Direct cost    :\", sprintf(\"$%s\", format(direct_cost, big.mark = \" \")), \"\\n\")\ncat(\"Indirect (35%) :\", sprintf(\"$%s\", format(indirect_cost, big.mark = \" \")), \"\\n\")\ncat(\"-----\\n\")\ncat(\"Fully-burdened work-package cost:\",\n    sprintf(\"$%s\", format(round(total_cost), big.mark = \" \")), \"\\n\")\n\nDirect labour  : $13 960 \nDirect materials: $4 500 \nDirect cost    : $18 460 \nIndirect (35%) : $6 461 \n-----\nFully-burdened work-package cost: $24 921 \n\n\n\n\nPractice: classify the cost (from the MGMT-3105 budgeting case study)\n\nFor each item, give up to three labels from: A Direct, B Indirect, C Fixed, D Variable, E Recurring, F Non-recurring, G Normal, H Expedited.\n\n\n\n\n\n\n\n\n#\nCost item\nAnswer\n\n\n\n\n1\nTechnician’s hourly wages for project assembly\nA Direct, D Variable, G Normal\n\n\n2\nOffice rent for company headquarters\nB Indirect, C Fixed, E Recurring\n\n\n3\nOne-time purchase of specialized testing software\nA Direct, F Non-recurring\n\n\n4\nElectricity used by production equipment\nD Variable, E Recurring, B Indirect\n\n\n6\nHiring extra workers to meet a tight deadline\nH Expedited, A Direct\n\n\n9\nRush shipment of components to meet schedule\nH Expedited, A Direct\n\n\n12\nCost of the project manager’s salary\nC Fixed, E Recurring, A Direct\n\n\n17\nRoutine monthly maintenance of equipment\nF … (trick: this is E Recurring, B Indirect)\n\n\n23\nEquipment lease for six months (flat fee)\nB Indirect, C Fixed, E Recurring\n\n\n40\nOne-time cost for prototype tooling\nA Direct, F Non-recurring, C Fixed\n\n\n\nThe pattern: anything charged straight to the project is Direct; overhead is Indirect; anything you pay to go faster is Expedited; anything paid once is Non-recurring. Most items are genuinely two or three of these at once.\n\n\n\n9.4.3 The dichotomies on the running project\n\nFixed vs. variable. The 6-month lease on the CMM is fixed — the fee is the same whether you measure 50 parts or 5 000. The machine-hour charge on the rented moulding press is variable. Leasing an expensive machine is a real PM judgement call: will the usage justify the flat fee?\nNormal vs. expedited. Air-freighting circuit boards from the supplier to recover a slipped date is expedited and direct. The overtime you planned into the schedule from day one is still normal.\nRecurring vs. non-recurring. Prototype tooling and the initial market analysis are non-recurring. Utilities, logistics, and the team’s salaries are recurring — and it matters which is which the moment you build a time-phased budget.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#estimating-methods-and-their-accuracy",
+    "href": "09-Cost-Estimation-and-Budgeting.html#estimating-methods-and-their-accuracy",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.5 Estimating methods and their accuracy",
+    "text": "9.5 Estimating methods and their accuracy\nThe method you can use depends on how much you know, which depends on how far into the project you are.\n\nmethods &lt;- data.frame(\n  Method = c(\"Ballpark / order-of-magnitude\", \"Comparative / parametric\",\n             \"Feasibility\", \"Definitive\"),\n  `When` = c(\n    \"Very early; scarce time/resources; deciding whether to even bid.\",\n    \"A genuinely similar past project exists, with reliable archived actuals.\",\n    \"Scope is clear and first supplier quotes are back (common in construction).\",\n    \"Most design is complete; major POs can be written; detail is known.\"\n  ),\n  Accuracy = c(\"+/- 30 %\", \"+/- 15 %\", \"+/- 10 %\", \"+/- 5 %\"),\n  check.names = FALSE\n)\nknitr::kable(methods, align = c(\"l\", \"l\", \"c\"),\n             caption = \"Estimating methods by project stage and typical accuracy.\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::column_spec(3, bold = TRUE)\n\n\n\nTable 9.2: Estimating methods by project stage and typical accuracy.\n\n\n\n\n\n\nMethod\nWhen\nAccuracy\n\n\n\n\nBallpark / order-of-magnitude\nVery early; scarce time/resources; deciding whether to even bid.\n+/- 30 %\n\n\nComparative / parametric\nA genuinely similar past project exists, with reliable archived actuals.\n+/- 15 %\n\n\nFeasibility\nScope is clear and first supplier quotes are back (common in construction).\n+/- 10 %\n\n\nDefinitive\nMost design is complete; major POs can be written; detail is known.\n+/- 5 %\n\n\n\n\n\n\n\n\nThis is the cone of uncertainty: the possible range around an estimate is widest at the concept stage and narrows as the project is defined.\n\ncone &lt;- data.frame(\n  stage = factor(c(\"Ballpark\", \"Parametric\", \"Feasibility\", \"Definitive\"),\n                 levels = c(\"Ballpark\", \"Parametric\", \"Feasibility\", \"Definitive\")),\n  x = 1:4,\n  err = c(0.30, 0.15, 0.10, 0.05)\n)\npoint_estimate &lt;- 1.0  # $M\n\nggplot(cone, aes(x = x)) +\n  geom_ribbon(aes(ymin = point_estimate * (1 - err),\n                  ymax = point_estimate * (1 + err)),\n              fill = \"#5DADE2\", alpha = 0.35) +\n  geom_line(aes(y = point_estimate * (1 + err)), linewidth = 1, color = \"#2E86C1\") +\n  geom_line(aes(y = point_estimate * (1 - err)), linewidth = 1, color = \"#2E86C1\") +\n  annotate(\"segment\", x = 0.7, xend = 4.3, y = point_estimate, yend = point_estimate,\n           linetype = \"dashed\", color = \"grey30\") +\n  annotate(\"text\", x = 4.3, y = point_estimate, label = \"point estimate  $1.0M\",\n           hjust = 1, vjust = -0.7, size = 3.3 * diagram_text_scale) +\n  geom_point(aes(y = point_estimate * (1 + err)), size = 2.5, color = \"#1B4F72\") +\n  geom_point(aes(y = point_estimate * (1 - err)), size = 2.5, color = \"#1B4F72\") +\n  geom_text(aes(y = point_estimate * (1 + err),\n                label = paste0(\"+\", scales::percent(err, accuracy = 1))),\n            vjust = -0.8, size = 3.2 * diagram_text_scale) +\n  geom_text(aes(y = point_estimate * (1 - err),\n                label = paste0(\"-\", scales::percent(err, accuracy = 1))),\n            vjust = 1.6, size = 3.2 * diagram_text_scale) +\n  scale_x_continuous(breaks = 1:4, labels = levels(cone$stage)) +\n  scale_y_continuous(labels = scales::dollar_format(suffix = \"M\", big.mark = \" \")) +\n  labs(title = \"The cone of uncertainty\", x = NULL, y = \"Estimated project cost\") +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(size = 14 * diagram_text_scale, face = \"bold\"),\n    axis.title = element_text(size = 11 * diagram_text_scale),\n    axis.text = element_text(size = 10 * diagram_text_scale)\n  )\n\n\n\n\n\n\n\nFigure 9.1: The cone of uncertainty. Early estimates can be off by +/- 30 %; the range narrows to +/- 5 % only once most design decisions are locked. The same $1.0M point estimate means very different things at each stage.\n\n\n\n\n\n\n9.5.1 Try it yourself: parametric estimate and the accuracy band\nA parametric estimate uses a cost-estimating relationship (CER) from history — for example, “past RC-vehicle projects cost about $14.50 per assembled part plus $85 000 of fixed project cost.” The live cell builds the estimate and shows the band each method would put around it.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nWhy quote a range at all — why not just give “the number”?\n\nBecause a single number reads as a commitment. If you say “$1.8M” at the concept stage and the definitive estimate later lands at $2.0M, you have “overrun by $200k” — even though $2.0M was always inside the ±30 % ballpark band. Quoting “$1.3M–$2.3M, ballpark” sets the expectation honestly and buys you room to refine. A clear distinction between an estimate and a commitment is one of the most important things a PM can establish early.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#what-makes-estimates-good-or-bad",
+    "href": "09-Cost-Estimation-and-Budgeting.html#what-makes-estimates-good-or-bad",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.6 What makes estimates good or bad",
+    "text": "9.6 What makes estimates good or bad\n\n\n\n\n\n\n\nFactor\nEffect on estimate quality\n\n\n\n\nPlanning horizon\nEstimates of near-term work are close to 100 % accurate; accuracy falls the further out the task sits.\n\n\nProject duration\nLong projects and new technology add uncertainty, especially if the scope statement is weak.\n\n\nPeople\nThe closer the estimator’s experience matches the work, the better. Teams that have worked together before form faster. Staff turnover hurts.\n\n\nStructure\nDedicated teams deliver faster but tie up people full-time. Matrix organizations are more cost-efficient but slower.\n\n\nPadding\nEstimators add a safety margin. If everyone pads a little, the project total is badly overstated and stops reflecting reality.\n\n\nOrganizational culture\nSome cultures reward padding; others prize accuracy. The consequences an estimator faces for a miss shape the number they give.\n\n\nOther\nEquipment downtime, sickness, vacation, holidays, legal limits, and project priority all leak into the estimate.\n\n\n\n\n9.6.1 The cost of padding\nPadding feels prudent per task. Watch what it does across a whole project.\n\nset.seed(2025)\nn_tasks &lt;- 40\ntrue_mean &lt;- 40           # hours, honest most-likely per task\n# Honest estimates vary around the truth; padded estimates add 15% on top.\nhonest  &lt;- rnorm(n_tasks, true_mean, 6)\npadded  &lt;- honest * 1.15\n\ndf &lt;- data.frame(\n  task = 1:n_tasks,\n  honest_cum = cumsum(honest),\n  padded_cum = cumsum(padded)\n)\n\nggplot(df, aes(x = task)) +\n  geom_line(aes(y = honest_cum, color = \"Honest estimate\"), linewidth = 1.1) +\n  geom_line(aes(y = padded_cum, color = \"Every task padded 15%\"), linewidth = 1.1) +\n  annotate(\"text\", x = n_tasks, y = df$padded_cum[n_tasks],\n           label = paste0(\"+\", round(100 * (df$padded_cum[n_tasks] /\n                          df$honest_cum[n_tasks] - 1)), \"% on the total\"),\n           hjust = 1, vjust = -0.6, size = 3.4 * diagram_text_scale) +\n  scale_color_manual(values = c(\"Honest estimate\" = \"#27AE60\",\n                                \"Every task padded 15%\" = \"#C0392B\")) +\n  labs(title = \"Per-task padding compounds into a meaningless total\",\n       x = \"Cumulative task count\", y = \"Cumulative estimated hours\",\n       color = NULL) +\n  theme_minimal() +\n  theme(\n    legend.position = \"top\",\n    plot.title = element_text(size = 14 * diagram_text_scale, face = \"bold\"),\n    axis.title = element_text(size = 11 * diagram_text_scale),\n    axis.text = element_text(size = 10 * diagram_text_scale)\n  )\n\n\n\n\n\n\n\nFigure 9.2: A 15 % ‘just to be safe’ pad added to every one of 40 tasks does not add 15 % to the project — it adds 15 % to the mean, but the padded total sits far above any realistic outcome because the pads do not all get used.\n\n\n\n\n\nThe fix is not “ban all safety margin” — it is to remove padding from the work packages and hold a single, visible contingency reserve at the project level (covered below).\n\n\n9.6.2 Guidelines for estimating (cost and time)\n\nResponsibility: the person who will do the task makes the estimate (except for highly specialised work). It uses their experience and builds their buy-in.\nUse several estimators: independent estimates from knowledgeable people, reconciled, remove the extremes.\nAssume normal conditions: normal hours, normal resource levels — and write the assumptions down.\nDefine the time units and the estimating base.\nEstimate each task independently; be careful with chains of dependent tasks, and keep one estimator per task.\nKeep contingencies out of the work packages. Contingency is a separate, managed fund.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#budgeting-top-down-and-bottom-up",
+    "href": "09-Cost-Estimation-and-Budgeting.html#budgeting-top-down-and-bottom-up",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.7 Budgeting: top-down and bottom-up",
+    "text": "9.7 Budgeting: top-down and bottom-up\nThe budget and the schedule are built in tandem — the budget decides whether the schedule’s milestones are reachable.\n\napproaches &lt;- data.frame(\n  Aspect = c(\"How it starts\", \"Advantages\", \"Disadvantages\"),\n  `Top-down` = c(\n    \"Senior management sets the overall budget and major work-package figures from experience; the numbers are pushed down the hierarchy and refined.\",\n    \"Management aggregate estimates are often quite accurate; imposes budget discipline and cost control.\",\n    \"Creates friction: lower levels must fit management's fixed total. Turns into a zero-sum game between functions.\"\n  ),\n  `Bottom-up` = c(\n    \"Start from the WBS; apply direct and indirect cost to each activity; sum up to work package, deliverable, then project.\",\n    \"Forces detailed planning; improves PM--functional-manager communication; gives management a clear basis for prioritizing scarce resources.\",\n    \"Reduces management's control to oversight rather than initiation; can misalign project goals with company goals; fine-tuning is time-consuming.\"\n  ),\n  check.names = FALSE\n)\nknitr::kable(approaches, align = c(\"l\", \"l\", \"l\"),\n             caption = \"Top-down vs. bottom-up budgeting.\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::column_spec(1, bold = TRUE)\n\n\n\nTable 9.3: Top-down vs. bottom-up budgeting.\n\n\n\n\n\n\nAspect\nTop-down\nBottom-up\n\n\n\n\nHow it starts\nSenior management sets the overall budget and major work-package figures from experience; the numbers are pushed down the hierarchy and refined.\nStart from the WBS; apply direct and indirect cost to each activity; sum up to work package, deliverable, then project.\n\n\nAdvantages\nManagement aggregate estimates are often quite accurate; imposes budget discipline and cost control.\nForces detailed planning; improves PM--functional-manager communication; gives management a clear basis for prioritizing scarce resources.\n\n\nDisadvantages\nCreates friction: lower levels must fit management's fixed total. Turns into a zero-sum game between functions.\nReduces management's control to oversight rather than initiation; can misalign project goals with company goals; fine-tuning is time-consuming.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#activity-based-costing-abc",
+    "href": "09-Cost-Estimation-and-Budgeting.html#activity-based-costing-abc",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.8 Activity-based costing (ABC)",
+    "text": "9.8 Activity-based costing (ABC)\nABC treats a project as a series of activities, each of which consumes resources. Cost the activities and you have costed the project. Four steps:\n\nIdentify the activities that consume resources and assign costs to them.\nIdentify the cost drivers for each activity (personnel, materials, machine time…).\nCompute a cost rate per driver unit (e.g. labour $/hour).\nAssign cost = rate × units the project uses. (Example: an engineer at $60/h working 80 h = $4 800.)\n\n\n9.8.1 A preliminary ABC budget\nSplitting each activity into its direct and overhead components:\n\nabc &lt;- data.frame(\n  Activity   = c(\"Survey\", \"Design\", \"Clear site\", \"Foundation\", \"Framing\", \"Plumb & wire\"),\n  Direct     = c(3500, 7000, 3500, 6750, 8000, 3750),\n  Overhead   = c(500, 1000, 500, 750, 2000, 1250)\n)\nabc$Total &lt;- abc$Direct + abc$Overhead\nabc &lt;- rbind(abc, data.frame(Activity = \"TOTAL\",\n                             Direct = sum(abc$Direct),\n                             Overhead = sum(abc$Overhead),\n                             Total = sum(abc$Total)))\n\nknitr::kable(abc, align = c(\"l\", \"r\", \"r\", \"r\"),\n             format.args = list(big.mark = \" \"),\n             caption = \"Preliminary ABC budget: direct vs. overhead by activity.\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::row_spec(nrow(abc), bold = TRUE)\n\n\n\nTable 9.4: Preliminary ABC budget: direct vs. overhead by activity.\n\n\n\n\n\n\nActivity\nDirect\nOverhead\nTotal\n\n\n\n\nSurvey\n3 500\n500\n4 000\n\n\nDesign\n7 000\n1 000\n8 000\n\n\nClear site\n3 500\n500\n4 000\n\n\nFoundation\n6 750\n750\n7 500\n\n\nFraming\n8 000\n2 000\n10 000\n\n\nPlumb & wire\n3 750\n1 250\n5 000\n\n\nTOTAL\n32 500\n6 000\n38 500\n\n\n\n\n\n\n\n\n\n\n9.8.2 Try it yourself: cost an activity, then a variance\nThe live cell costs a single activity from its drivers, then compares planned vs. actual to get the variance. Change the rates, hours, or actuals.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\n\n\n\n\nWarning\n\n\n\nCommon mistake. Contingency is not built into an ABC budget. ABC costs the activities as they are planned to run; the contingency reserve is added afterward, on top of the total.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#the-time-phased-budget-and-the-s-curve",
+    "href": "09-Cost-Estimation-and-Budgeting.html#the-time-phased-budget-and-the-s-curve",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.9 The time-phased budget and the S-curve",
+    "text": "9.9 The time-phased budget and the S-curve\nA time-phased budget spreads each activity’s cost across the calendar periods when it will actually be spent. Summing down the columns gives monthly planned spend; the running total is the cumulative cost baseline — the S-curve you will track the project against in Chapter 12.\n\nphased &lt;- data.frame(\n  month = factor(c(\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\"),\n                 levels = c(\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\")),\n  Survey       = c(4000, 3000,     0,     0,    0),\n  Design       = c(   0, 5000,  8000,     0,    0),\n  ClearSite    = c(   0, 1000,  4000,  2000,    0),\n  Foundation   = c(   0,    0,  3000,  4000,    0),\n  Framing      = c(   0,    0,     0,  3000, 4000),\n  PlumbWire    = c(   0,    0,     0,     0, 2000)\n)\nphased$monthly &lt;- rowSums(phased[, -1])\nphased$cumulative &lt;- cumsum(phased$monthly)\n\nscale_factor &lt;- max(phased$cumulative) / max(phased$monthly)\n\nggplot(phased, aes(x = month)) +\n  geom_col(aes(y = monthly), fill = \"#5DADE2\", width = 0.6) +\n  geom_line(aes(y = cumulative / scale_factor, group = 1),\n            color = \"#C0392B\", linewidth = 1.2) +\n  geom_point(aes(y = cumulative / scale_factor), color = \"#C0392B\", size = 3) +\n  geom_text(aes(y = cumulative / scale_factor,\n                label = scales::dollar(cumulative, big.mark = \" \")),\n            vjust = -1, size = 3.2 * diagram_text_scale, color = \"#C0392B\") +\n  scale_y_continuous(\n    name = \"Planned spend this month\",\n    labels = scales::dollar_format(big.mark = \" \"),\n    sec.axis = sec_axis(~ . * scale_factor, name = \"Cumulative baseline (S-curve)\",\n                        labels = scales::dollar_format(big.mark = \" \"))\n  ) +\n  labs(title = \"Time-phased budget and cumulative cost baseline\", x = NULL) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(size = 14 * diagram_text_scale, face = \"bold\"),\n    axis.title = element_text(size = 11 * diagram_text_scale),\n    axis.text = element_text(size = 10 * diagram_text_scale)\n  )\n\n\n\n\n\n\n\nFigure 9.3: Time-phased budget for a six-activity project. Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.\n\n\n\n\n\nMatching the cost baseline to the schedule baseline is what lets you set milestones for both schedule and budget and later tell whether a project that has spent 60 % of its money is 60 %, 40 %, or 80 % done.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#contingency-reserves",
+    "href": "09-Cost-Estimation-and-Budgeting.html#contingency-reserves",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.10 Contingency reserves",
+    "text": "9.10 Contingency reserves\nA budget contingency is extra money set aside to cover the uncertainty that every estimate carries — because even the best budget is only an estimate and something unforeseen always happens. Key points:\n\nAdded after all costs are identified, as a cushion on top of the calculated total (commonly 10–15 %; the MGMT-3105 Costs Chart uses 15 %).\nNot included in an ABC budget — it sits on top.\nThe PM controls a project contingency fund; separately, top management holds a management reserve for genuinely unknown-unknown events.\n\nWhy stakeholders push back: the percentage can look arbitrary, or feel like being asked to pay for the vendor’s poor cost control. Decide early — and write into the scope statement — whether contingency applies across all tasks or is held for the tasks critical to project success.\n\nreserves &lt;- data.frame(\n  Feature = c(\"Covers\", \"Owned by\", \"Part of the cost baseline?\", \"Typical size\"),\n  `Contingency reserve` = c(\n    \"Identified risks / \\\"known-unknowns\\\" (small scope adjustments, iteration, Murphy's Law).\",\n    \"Project manager.\",\n    \"Yes --- inside the baseline.\",\n    \"10--15 % of estimated cost (project-dependent).\"\n  ),\n  `Management reserve` = c(\n    \"Unidentified risks / \\\"unknown-unknowns.\\\"\",\n    \"Senior management / sponsor.\",\n    \"No --- outside the baseline; released by management.\",\n    \"Set by organizational policy.\"\n  ),\n  check.names = FALSE\n)\nknitr::kable(reserves, align = c(\"l\", \"l\", \"l\"),\n             caption = \"Contingency reserve vs. management reserve.\") |&gt;\n  kableExtra::kable_styling(bootstrap_options = c(\"striped\", \"hover\", \"condensed\"),\n                            full_width = FALSE) |&gt;\n  kableExtra::column_spec(1, bold = TRUE)\n\n\n\nTable 9.5: Contingency reserve vs. management reserve.\n\n\n\n\n\n\nFeature\nContingency reserve\nManagement reserve\n\n\n\n\nCovers\nIdentified risks / \"known-unknowns\" (small scope adjustments, iteration, Murphy's Law).\nUnidentified risks / \"unknown-unknowns.\"\n\n\nOwned by\nProject manager.\nSenior management / sponsor.\n\n\nPart of the cost baseline?\nYes --- inside the baseline.\nNo --- outside the baseline; released by management.\n\n\nTypical size\n10--15 % of estimated cost (project-dependent).\nSet by organizational policy.\n\n\n\n\n\n\n\n\n\n9.10.1 Try it yourself: build the RC-vehicle project budget\nThe live cell builds a rough bottom-up budget from the project brief’s ranges (using a pick inside each range), rolls up labour and materials, and adds a contingency. Change the picks or the contingency rate and watch the total — then check it against what Senior Management is likely to approve.\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.\n\n\nHow would top-down vs. bottom-up change this number?\n\nThe cell above is bottom-up: it sums the pieces and lets the total fall out. A top-down pass would start with a figure Senior Management is willing to fund — say “$650k, no more” — and force each line to fit. In practice you do both: build bottom-up for defensibility, compare to the top-down ceiling, and negotiate the gap before the Charter is signed. If bottom-up comes in well over the ceiling, that is a feasibility finding, not a rounding problem.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#key-takeaways",
+    "href": "09-Cost-Estimation-and-Budgeting.html#key-takeaways",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.11 Key Takeaways",
+    "text": "9.11 Key Takeaways\n\nCost management starts in planning. Sources: labour, materials, subcontractors, equipment/facilities, travel, shipping.\nEvery cost carries two or three of the eight labels: direct/indirect, fixed/variable, normal/expedited, recurring/non-recurring. Direct labour cost = rate × hours; indirect is often 20–50 % of direct.\nEstimating method follows project stage: ballpark ±30 %, parametric ±15 %, feasibility ±10 %, definitive ±5 % — the cone of uncertainty. Always quote a range, and keep “estimate” separate from “commitment.”\nEstimate quality is driven by planning horizon, duration, people, structure, culture, and padding — which compounds into a meaningless total. Remove pads from work packages; hold one visible contingency.\nTop-down imposes discipline but breeds friction; bottom-up (via activity-based costing on the WBS) forces real planning. ABC = identify activities → cost drivers → rate per unit → rate × units.\nA time-phased budget produces the cumulative cost baseline (S-curve) you track against later.\nContingency reserve (10–15 %, PM-owned, inside the baseline, covers known-unknowns) is distinct from the management reserve (sponsor-owned, outside the baseline, covers unknown-unknowns). Contingency is added after ABC, never inside it.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#practice-problems",
+    "href": "09-Cost-Estimation-and-Budgeting.html#practice-problems",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.12 Practice Problems",
+    "text": "9.12 Practice Problems\n\n\nProblem 1: Fully-burdened labour and an indirect-rate swing\n\nA test campaign needs 2 technicians for 3 weeks (37.5 h/week each) at $34/h, plus $6 200 of consumables. Compute the fully-burdened cost at an indirect rate of 25 %, and again at 45 %. How much does the indirect-rate assumption alone move the number?\nSolution.\n\ntechs &lt;- 2; weeks &lt;- 3; hrs_week &lt;- 37.5; rate &lt;- 34\nconsumables &lt;- 6200\n\ndirect_labour &lt;- techs * weeks * hrs_week * rate\ndirect_cost   &lt;- direct_labour + consumables\n\nfor (ir in c(0.25, 0.45)) {\n  total &lt;- direct_cost * (1 + ir)\n  cat(sprintf(\"Indirect %2.0f%%:  direct $%s  +  indirect $%s  =  $%s\\n\",\n              ir * 100,\n              format(direct_cost, big.mark = \" \"),\n              format(round(direct_cost * ir), big.mark = \" \"),\n              format(round(total), big.mark = \" \")))\n}\ncat(sprintf(\"\\nSwing from the indirect-rate assumption alone: $%s\\n\",\n            format(round(direct_cost * (0.45 - 0.25)), big.mark = \" \")))\n\nIndirect 25%:  direct $13 850  +  indirect $3 462  =  $17 312\nIndirect 45%:  direct $13 850  +  indirect $6 232  =  $20 082\n\nSwing from the indirect-rate assumption alone: $2 770\n\n\nThe direct cost is fixed at $21 500, but the burdened total moves by $4 300 — 20 % of direct — purely on the overhead assumption. Always state the indirect rate you used.\n\n\n\nProblem 2: Which estimating method, and what range?\n\nFor each situation, name the method and give the ± band around a $500 000 point estimate.\n\nA retailer asks, in a hallway, roughly what a new product line will cost. You have a concept sketch.\nYou have run three near-identical RC-vehicle launches in the last four years with clean cost records.\nAll major POs are drafted and 90 % of the design is released for a firm-fixed-price defense bid.\n\nSolution.\n\n\nBallpark, ±30 % → $350 000 – $650 000.\n\n\nComparative/parametric, ±15 % → $425 000 – $575 000.\n\n\nDefinitive, ±5 % → $475 000 – $525 000. (Anything looser is a bad idea on a fixed-price bid.)\n\n\n\n\n\nProblem 3: Variance analysis on the ABC budget\n\nUsing the preliminary ABC budget above (total planned $63 250), the project finishes with these actuals: Survey $4 250, Design $8 000, Clear site $3 500, Foundation $8 500, Framing $11 250, Plumb & wire $5 150. Find the variance per activity and overall, and flag the activities that need a post-mortem.\nSolution.\n\nplanned &lt;- c(Survey = 4000, Design = 8000, `Clear site` = 4000,\n             Foundation = 7500, Framing = 10000, `Plumb & wire` = 5000)\nactual  &lt;- c(4250, 8000, 3500, 8500, 11250, 5150)\n\nvariance &lt;- planned - actual            # + = under budget\ntab &lt;- data.frame(Activity = names(planned),\n                  Planned = as.integer(planned),\n                  Actual = as.integer(actual),\n                  Variance = as.integer(variance),\n                  Pct = round(100 * variance / planned, 1))\nprint(tab, row.names = FALSE)\n\ncat(sprintf(\"\\nTOTAL planned $%s  actual $%s  variance $%s (%.1f%%)\\n\",\n            format(sum(planned), big.mark = \" \"),\n            format(sum(actual),  big.mark = \" \"),\n            format(sum(variance), big.mark = \" \"),\n            100 * sum(variance) / sum(planned)))\n\n     Activity Planned Actual Variance   Pct\n       Survey    4000   4250     -250  -6.2\n       Design    8000   8000        0   0.0\n   Clear site    4000   3500      500  12.5\n   Foundation    7500   8500    -1000 -13.3\n      Framing   10000  11250    -1250 -12.5\n Plumb & wire    5000   5150     -150  -3.0\n\nTOTAL planned $38 500  actual $40 650  variance $-2 150 (-5.6%)\n\n\nDesign and (roughly) Survey held. Foundation (-13 %) and Framing (-13 %) blew through and drove the whole project $2 150 (3.4 %) over — those two get the post-mortem.\n\n\n\nProblem 4 (discussion): sizing contingency for the RC-vehicle project\n\nThe project brief flags several live risks: one candidate motor supplier is unproven, that supplier’s staff are negotiating a first labour contract, the carbon-fibre supplier is mid-restructuring after an acquisition, and a new assembly line would carry a learning curve. The subtotal budget is $620 000.\nWould you size the contingency at 10 %, 15 %, or 20 %? Would you spread it across all tasks or ring-fence it for specific ones? Defend your answer.\nDiscussion points. With that many concentrated, plausible risks, 10 % is light; 15 % is defensible and matches the course’s Costs Chart; 20 % is arguable if the unproven-supplier and new-line risks are both realised. A strong answer ring-fences most of the reserve against the supplier and assembly-line line items (the tasks critical to success) rather than smearing it evenly, and states that split in the scope statement so stakeholders are not surprised when it is drawn down.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "09-Cost-Estimation-and-Budgeting.html#further-resources",
+    "href": "09-Cost-Estimation-and-Budgeting.html#further-resources",
+    "title": "9  Cost Estimation and Budgeting",
+    "section": "9.13 Further Resources",
+    "text": "9.13 Further Resources\n\nCost estimating techniques (analogous, parametric, bottom-up): curated explainer videos below.\nPreview of Chapter 12 — Project Control Systems: the S-curve you built here becomes the baseline for earned value analysis.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Cost Estimation and Budgeting</span>"
+    ]
+  },
+  {
+    "objectID": "10-Negotiation-and-Conflict-Management.html",
+    "href": "10-Negotiation-and-Conflict-Management.html",
+    "title": "10  Negotiation and Conflict Management",
+    "section": "",
+    "text": "10.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Negotiation and Conflict Management</span>"
+    ]
+  },
+  {
+    "objectID": "10-Negotiation-and-Conflict-Management.html#learning-objectives-planned",
+    "href": "10-Negotiation-and-Conflict-Management.html#learning-objectives-planned",
+    "title": "10  Negotiation and Conflict Management",
+    "section": "",
+    "text": "Explain why conflict is normal on projects and distinguish functional from dysfunctional conflict.\nApply the Thomas-Kilmann modes (competing, collaborating, compromising, avoiding, accommodating) to a situation.\nPrepare for a negotiation: interests vs. positions, BATNA, ZOPA, reservation and target points.\nApply principled negotiation (separate people from problem; focus on interests; invent options; use objective criteria).\nManage conflict with suppliers, functional managers, and team members.\nRecognise cultural and ethical dimensions of negotiation in a global supply chain.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Negotiation and Conflict Management</span>"
+    ]
+  },
+  {
+    "objectID": "10-Negotiation-and-Conflict-Management.html#topic-outline",
+    "href": "10-Negotiation-and-Conflict-Management.html#topic-outline",
+    "title": "10  Negotiation and Conflict Management",
+    "section": "10.2 Topic outline",
+    "text": "10.2 Topic outline\n\nSources of project conflict across the life cycle.\nConflict-handling modes and when each is appropriate.\nDistributive vs. integrative negotiation.\nPreparation: BATNA, ZOPA, anchoring.\nPrincipled negotiation.\nDifficult conversations and escalation paths.\nRunning case: negotiating the motor/control-system supply contract for the RC-vehicle project.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Negotiation and Conflict Management</span>"
+    ]
+  },
+  {
+    "objectID": "11-Resource-Management.html",
+    "href": "11-Resource-Management.html",
+    "title": "11  Resource Management",
+    "section": "",
+    "text": "11.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Resource Management</span>"
+    ]
+  },
+  {
+    "objectID": "11-Resource-Management.html#learning-objectives-planned",
+    "href": "11-Resource-Management.html#learning-objectives-planned",
+    "title": "11  Resource Management",
+    "section": "",
+    "text": "Distinguish time-constrained from resource-constrained scheduling.\nBuild a resource histogram and identify over-allocation.\nApply resource levelling and resource smoothing, and explain their effect on the critical path and float.\nExplain the theory-of-constraints view of a project (critical chain, buffers).\nPlan for procurement of materials and outsourced work.\nManage the sustainability dimension of resources: material efficiency, energy, and waste.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Resource Management</span>"
+    ]
+  },
+  {
+    "objectID": "11-Resource-Management.html#topic-outline",
+    "href": "11-Resource-Management.html#topic-outline",
+    "title": "11  Resource Management",
+    "section": "11.2 Topic outline",
+    "text": "11.2 Topic outline\n\nTypes of project resources: labour, equipment, material, facilities.\nResource loading and the resource histogram.\nOver-allocation and the levelling problem.\nResource levelling vs. smoothing; splitting and multitasking costs.\nCritical chain and buffer management.\nProcurement and make-or-buy.\nSustainable resource use: circular-economy principles applied to the project.\nRunning case: levelling the RC-vehicle project team and tooling.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Resource Management</span>"
+    ]
+  },
+  {
+    "objectID": "12-Project-Control-Systems.html",
+    "href": "12-Project-Control-Systems.html",
+    "title": "12  Project Control Systems",
+    "section": "",
+    "text": "12.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Project Control Systems</span>"
+    ]
+  },
+  {
+    "objectID": "12-Project-Control-Systems.html#learning-objectives-planned",
+    "href": "12-Project-Control-Systems.html#learning-objectives-planned",
+    "title": "12  Project Control Systems",
+    "section": "",
+    "text": "Describe the monitoring-and-control loop: measure, compare to baseline, analyse variance, act.\nCompute earned-value metrics: PV, EV, AC, SV, CV, SPI, CPI.\nForecast with EAC, ETC, and TCPI, and interpret the results.\nBuild and read an S-curve of planned vs. earned vs. actual cost.\nRun integrated change control and keep the baseline meaningful.\nReport status honestly: the “watermelon” trap and leading vs. lagging indicators.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Project Control Systems</span>"
+    ]
+  },
+  {
+    "objectID": "12-Project-Control-Systems.html#topic-outline",
+    "href": "12-Project-Control-Systems.html#topic-outline",
+    "title": "12  Project Control Systems",
+    "section": "12.2 Topic outline",
+    "text": "12.2 Topic outline\n\nWhat “control” means: closed-loop management.\nThe performance measurement baseline (scope + schedule + cost).\nEarned value management: the three curves and the six core metrics.\nVariance analysis and forecasting (EAC scenarios, TCPI).\nChange control and configuration management.\nStatus reporting, dashboards, and honest metrics.\nRunning case: an earned-value snapshot of the RC-vehicle project at week 8.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Project Control Systems</span>"
+    ]
+  },
+  {
+    "objectID": "13-Project-Closeout-and-Termination.html",
+    "href": "13-Project-Closeout-and-Termination.html",
+    "title": "13  Project Closeout and Termination",
+    "section": "",
+    "text": "13.1 Learning objectives (planned)\nBy the end of this chapter you will be able to:",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project Closeout and Termination</span>"
+    ]
+  },
+  {
+    "objectID": "13-Project-Closeout-and-Termination.html#learning-objectives-planned",
+    "href": "13-Project-Closeout-and-Termination.html#learning-objectives-planned",
+    "title": "13  Project Closeout and Termination",
+    "section": "",
+    "text": "Distinguish the ways a project ends: completion, extinction, addition, integration, starvation.\nRun an orderly administrative closeout: deliverable acceptance, contract closure, financial closure.\nRelease resources and transition the product to operations or the customer.\nFacilitate a lessons-learned review and write to the organizational knowledge base.\nExplain the organizational and human implications of closing a project (team dispersal, morale).\nRecognise when to terminate a troubled project early, and how to do it responsibly.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project Closeout and Termination</span>"
+    ]
+  },
+  {
+    "objectID": "13-Project-Closeout-and-Termination.html#topic-outline",
+    "href": "13-Project-Closeout-and-Termination.html#topic-outline",
+    "title": "13  Project Closeout and Termination",
+    "section": "13.2 Topic outline",
+    "text": "13.2 Topic outline\n\nTypes of project termination.\nThe closeout checklist: scope verification, punch list, sign-off.\nContract and procurement closure.\nFinancial closure and final cost accounting.\nLessons learned and the post-implementation review.\nResource release and team transition.\nEarly termination: decision criteria and stakeholder communication.\nRunning case: closing out the RC-vehicle prototype project and handing off to manufacturing.",
+    "crumbs": [
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project Closeout and Termination</span>"
+    ]
+  }
+]
