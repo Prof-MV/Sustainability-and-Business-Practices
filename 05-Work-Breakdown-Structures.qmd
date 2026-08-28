@@ -1,36 +1,361 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Work Breakdown Structures (WBS)
 
 ```{r setup-05, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 5 -- Work
-Breakdown Structures** of MGMT-3105, the WBS Dictionary template, and the
-`work-breakdown-structure.xlsx` worksheet, following the same structure as
-[Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Explain the purpose of a WBS and how it links scope, schedule, and budget.
-- Decompose a project into deliverables, work packages, and activities.
-- Apply the 100 % rule and choose an appropriate level of decomposition.
-- Number a WBS and build a WBS dictionary entry for a work package.
-- Distinguish a deliverable-oriented WBS from a phase-oriented or organizational (OBS) breakdown.
-- Assign responsibility with a RACI / responsibility-assignment matrix.
+1. **Explain** what a WBS is and how it links scope, schedule, and budget.
+2. **Decompose** a project into deliverables, work packages, and activities.
+3. **Apply** the 100 % rule, the mutually-exclusive rule, and "plan outcomes, not actions."
+4. **Choose** an appropriate level of decomposition using the 8/80 and single-reporting-period rules of thumb.
+5. **Number** a WBS and write a WBS dictionary entry for a work package.
+6. **Roll up** cost and effort from work packages to the total project.
+7. **State** the six requirements of a valid project contract and the purpose of work authorization.
 
-## Topic outline
+<details>
+<summary>Before we begin: how do you eat an elephant?</summary>
 
-1. From scope statement to WBS.
-2. Decomposition: deliverables, work packages, activities.
-3. The 100 % rule; how far to decompose (the 8/80 guideline).
-4. WBS numbering and the WBS dictionary.
-5. Control accounts and the link to cost and schedule baselines.
-6. Responsibility assignment (RACI).
-7. Running case: building the WBS for the RC-vehicle project.
+One bite at a time. *"Project managers cannot manage projects. Project managers
+manage pieces of projects."* The WBS is how you cut the elephant into bites.
+
+</details>
+
+## Introduction: from a scope statement to something you can manage
+
+You have a signed scope statement for the RC-vehicle replica. It is still far
+too big to schedule, budget, or assign. The **work breakdown structure** is the
+bridge: it takes the total scope and breaks it into **deliverables**, then
+**work packages**, then **activities** small enough that one person can own each
+one and you can put a real number on it.
+
+> **Definition.** A WBS is a **deliverable-oriented** grouping of project
+> components that organizes and defines the **total scope** of the project.
+
+A well-built WBS lets the team **plan every step**, **collect and organize** the
+information each task needs, and **assign** manageable chunks to team members. It
+also enables the **WBS dictionary**, which pins down the requirements for each
+task.
+
+::: {.callout-note}
+**Industry snapshot.** An automotive program WBS separates *body*, *powertrain
+integration*, *electrical*, *validation*, and *launch* --- each a deliverable, not
+an action. A food-plant install WBS breaks out *utilities*, *process equipment*,
+*controls*, *sanitation qualification*, and *commissioning*. A defense contract
+WBS follows a mandated standard (MIL-STD-881) so the customer can track cost
+against the exact same structure the contractor uses.
+:::
+
+```{r video-wbs-05, echo=FALSE, results='asis'}
+embed_youtube("B8q4uz5XiZc", "Work Breakdown Structure (WBS) Explained")
+```
+
+## The hierarchy
+
+```{r fig-wbs-tree-05, fig.cap="A partial WBS for the RC-vehicle project. Level 1 is the project; Level 2 the major deliverables; Level 3 the work packages. Numbering encodes the hierarchy.", fig.align='center', fig.width=11, fig.height=6}
+nodes <- data.frame(
+  id = c("root", "d1", "d2", "d3", "d4",
+         "w11", "w12", "w21", "w22", "w31", "w41", "w42"),
+  label = c("1.0 RC-Vehicle Replica Project",
+            "1.1 Body & Frame", "1.2 Drive & Controls", "1.3 Assembly & Test", "1.4 Launch",
+            "1.1.1 Outer body\ndesign", "1.1.2 Inner frame\ndesign",
+            "1.2.1 Motor/controller\nprocurement", "1.2.2 Wiring\nharness",
+            "1.3.1 Prototype\nassembly", "1.4.1 Packaging\ndesign", "1.4.2 Compliance\n& approvals"),
+  x = c(5,  1.5, 4, 6.5, 9,   0.6, 2.4,  3.3, 4.7,  6.5,  8.2, 9.8),
+  y = c(3,  2,   2, 2,   2,   1,   1,    1,   1,    1,    1,   1)
+)
+edges <- data.frame(
+  x = c(5,5,5,5, 1.5,1.5, 4,4, 6.5, 9,9),
+  y = c(3,3,3,3, 2,2, 2,2, 2, 2,2),
+  xend = c(1.5,4,6.5,9, 0.6,2.4, 3.3,4.7, 6.5, 8.2,9.8),
+  yend = c(2,2,2,2, 1,1, 1,1, 1, 1,1)
+)
+ggplot() +
+  geom_segment(data = edges, aes(x, y, xend = xend, yend = yend),
+               color = "grey55", linewidth = 0.6) +
+  geom_label(data = nodes, aes(x, y, label = label),
+             size = 2.5 * diagram_text_scale, lineheight = 0.9,
+             fill = c("#1B4F72", rep("#5DADE2", 4), rep("#D6EAF8", 7)),
+             color = c("white", rep("white", 4), rep("black", 7)),
+             fontface = "bold", label.size = 0) +
+  annotate("text", x = -0.2, y = c(3, 2, 1),
+           label = c("Level 1", "Level 2", "Level 3"),
+           fontface = "italic", size = 3 * diagram_text_scale, hjust = 1) +
+  coord_cartesian(xlim = c(-1.2, 10.6), ylim = c(0.5, 3.5)) +
+  labs(title = "WBS: project -> deliverables -> work packages") +
+  theme_void() +
+  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+                                  face = "bold", hjust = 0.5))
+```
+
+- **Level 1** --- the project. *What is the project?*
+- **Level 2** --- the summary level: the project's major deliverables.
+- **Level 3** --- the start of the **work package** level (more levels if the package is complex).
+
+The same content can be shown as a **tree** (good for communicating structure)
+or a **tabular / indented list** (good for working). Both carry the numbering.
+
+## Design principles
+
+### The 100 % rule
+
+The WBS includes **100 % of the work** in the scope --- all deliverables, internal,
+external, and interim --- and **no more**. At every level, the **sum of the
+children equals the parent**, and nothing outside the scope appears.
+
+### Worked Example 1: does this WBS roll up to 100 %?
+
+The "1.1 Body & Frame" deliverable is estimated at **340 hours**. Its four work
+packages are estimated at 120, 90, 70, and 60 hours.
+
+```{r wbs-rollup-example-05, echo=TRUE}
+parent_hours   <- 340
+children_hours <- c("1.1.1 Outer body design" = 120,
+                    "1.1.2 Inner frame design" = 90,
+                    "1.1.3 Material selection" = 70,
+                    "1.1.4 Design review & release" = 60)
+
+child_sum <- sum(children_hours)
+cat("Children:\n"); print(children_hours)
+cat(sprintf("\nSum of children : %d h\n", child_sum))
+cat(sprintf("Parent estimate : %d h\n", parent_hours))
+
+if (child_sum == parent_hours) {
+  cat("OK - the children account for exactly 100% of the parent.\n")
+} else if (child_sum < parent_hours) {
+  cat(sprintf("GAP - %d h of the parent's scope is not captured by any work package.\n",
+              parent_hours - child_sum))
+} else {
+  cat(sprintf("OVER - the children exceed the parent by %d h (>100%% -- scope crept in).\n",
+              child_sum - parent_hours))
+}
+```
+
+Here the children sum to 340 --- the deliverable is fully decomposed with nothing
+missing and nothing extra.
+
+### Mutually exclusive
+
+**No overlap** between WBS elements. Overlap causes duplicated work, confusion
+over who is responsible, and messy cost accounting. If element names are
+ambiguous, the **WBS dictionary** disambiguates them.
+
+### Plan outcomes, not actions
+
+Define elements as **results** ("Training module completed"), not **actions**
+("write script", "record video", "upload"). Action lists always capture too many
+or too few steps --- breaking the 100 % rule --- and they over-prescribe *how* the
+work is done, killing the team's ingenuity.
+
+## Level of detail
+
+A work package at the **activity level** is a task that:
+
+- can be **realistically and confidently estimated**;
+- makes no practical sense to break down further;
+- produces a **measurable deliverable**; and
+- forms a unique package that **could be outsourced or contracted out**.
+
+**Rules of thumb for how far to decompose:**
+
+- **80-hour rule** --- no work package (single deliverable at the lowest level) exceeds ~80 hours of effort.
+- **One reporting period** --- no package is longer than a single progress-reporting period (if you report monthly, nothing runs longer than a month).
+- **8-hour floor** --- generally do not define a task below ~8 hours; below that you are micromanaging.
+- **"If it makes sense"** --- apply common sense.
+
+### Try it yourself: decomposition check
+
+```{webr-r}
+#| label: wbs-decomp-05
+packages <- data.frame(
+  id    = c("1.1.1", "1.2.1", "1.3.1", "1.3.4", "1.4.2"),
+  name  = c("Outer body design", "Motor/controller procurement",
+            "Prototype assembly", "Tighten one fastener",
+            "Full regulatory approval campaign"),
+  hours = c(64, 40, 72, 1.5, 260)
+)
+
+flag <- ifelse(packages$hours > 80, "TOO BIG  (> 80 h -- split it)",
+        ifelse(packages$hours < 8,  "TOO SMALL (< 8 h -- roll it up)",
+               "ok"))
+out <- cbind(packages, verdict = flag)
+print(out, row.names = FALSE)
+
+cat(sprintf("\n%d of %d packages need re-sizing.\n",
+            sum(flag != "ok"), nrow(packages)))
+```
+
+## Why the WBS matters
+
+```{r fig-wbs-hub-05, fig.cap="The WBS feeds four downstream planning activities. Get it wrong and the estimate, the schedule, the staffing plan, and the risk register are all built on sand.", fig.align='center', fig.width=9, fig.height=5.5}
+hub <- data.frame(x = 0, y = 0)
+spokes <- data.frame(
+  x = c(0, 1.3, 0, -1.3),
+  y = c(1.3, 0, -1.3, 0),
+  label = c("Estimating\n(cost & time)", "Network diagram\n(schedule)",
+            "Risk\nidentification", "Staffing\n& responsibility")
+)
+ggplot() +
+  geom_segment(data = spokes, aes(x = 0, y = 0, xend = x, yend = y),
+               color = "grey55", linewidth = 0.7) +
+  geom_point(data = hub, aes(x, y), size = 46, color = "#1B4F72") +
+  annotate("text", x = 0, y = 0, label = "WBS", color = "white",
+           fontface = "bold", size = 5 * diagram_text_scale) +
+  geom_label(data = spokes, aes(x, y, label = label),
+             size = 3 * diagram_text_scale, lineheight = 0.9,
+             fill = "#D6EAF8", label.size = 0, fontface = "bold") +
+  coord_equal(xlim = c(-2.2, 2.2), ylim = c(-2.1, 2.1)) +
+  labs(title = "Everything downstream depends on the WBS") +
+  theme_void() +
+  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+                                  face = "bold", hjust = 0.5))
+```
+
+## The WBS dictionary
+
+The dictionary is used to **control what work is done and when**, **prevent scope
+creep**, and **capture the effort** for each task. Physically, teams post the
+work packages on a wall in logical work-flow order; **removing them in numerical
+order generates the dictionary**. Each entry --- a **task description** --- records:
+
+- Task description (what work is authorized)
+- Quantified objectives and deliverables (cross-referenced to the charter)
+- Product description; acceptance criteria (how the owner checks their own work)
+- Assumptions; resources assigned; duration; cost; due date
+- Interdependencies (before this task / after this task)
+- Project manager approval and date
+
+## Work authorization and contracts
+
+Once the scope is decomposed into work packages, stakeholders formally agree on
+project content --- the **work authorization**. If the client is external, this
+includes the **contract sign-off**.
+
+A valid project-management contract requires all six of:
+
+1. The legal **right** to contract
+2. Legal **age** (18 in Ontario and Quebec; 19 or 21 elsewhere in Canada)
+3. **Sound mind** at signing
+4. Valid, legal **consideration** for both parties
+5. A **legal scope of work**
+6. **Offer and acceptance**
+
+Contracts also commonly contain: excusable delays; allowable costs; **liquidated
+damages** (non-performance / penalty clauses); inspection criteria;
+responsibility for correcting defects; and dispute-resolution mechanisms.
+
+### Try it yourself: cost roll-up from the WBS
+
+```{webr-r}
+#| label: wbs-cost-rollup-05
+# Work-package costs (direct), grouped by Level-2 deliverable.
+wp <- data.frame(
+  deliverable = c(rep("1.1 Body & Frame", 3),
+                  rep("1.2 Drive & Controls", 2),
+                  rep("1.3 Assembly & Test", 3),
+                  rep("1.4 Launch", 2)),
+  package = c("Outer body", "Inner frame", "Material selection",
+              "Motor/controller", "Wiring harness",
+              "Prototype assembly", "Drop test", "EMC test",
+              "Packaging design", "Approvals"),
+  cost = c(18000, 14000, 6000, 140000, 9000, 21000, 12000, 15000, 8000, 6000)
+)
+
+by_deliverable <- tapply(wp$cost, wp$deliverable, sum)
+cat("Roll-up to Level 2:\n")
+for (d in names(by_deliverable))
+  cat(sprintf("  %-22s $%s\n", d, format(by_deliverable[d], big.mark = " ")))
+
+cat(sprintf("\nLevel 1 (total project direct cost): $%s\n",
+            format(sum(wp$cost), big.mark = " ")))
+cat("\nThis roll-up only works because the WBS obeys the 100% and\n")
+cat("mutually-exclusive rules -- every dollar is counted once, and all of them.\n")
+```
+
+## Key Takeaways
+
+- A **WBS** is a **deliverable-oriented** decomposition of the **total scope** into deliverables → work packages → activities. PMs manage the pieces.
+- **Numbering** encodes the hierarchy: Level 1 project, Level 2 deliverables, Level 3+ work packages.
+- Obey the three design rules: **100 % rule** (children sum to the parent, never more), **mutually exclusive** (no overlap), and **plan outcomes, not actions**.
+- Size work packages with the **8/80 rule** and the **one-reporting-period** rule; below ~8 h you are micromanaging, above ~80 h you cannot estimate confidently.
+- The WBS feeds **estimating, scheduling, staffing, and risk** --- errors propagate to all four.
+- The **WBS dictionary** locks down each task's description, acceptance criteria, resources, and interdependencies, and helps prevent scope creep.
+- **Work authorization** formalizes agreement on content; a valid contract needs all **six** legal elements and usually carries **liquidated-damages** and dispute clauses.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Fix the 100 % rule violation</summary>
+
+The "1.3 Assembly & Test" deliverable is estimated at 300 h. Its packages are
+listed as: Prototype assembly (110 h), Drop test (60 h), EMC test (70 h),
+Prototype assembly rework (40 h), Write the test report (30 h), *and* "General
+project management (50 h)."
+
+What is wrong, and how do you fix it?
+
+**Solution.** The children sum to 360 h --- 60 h **over** 100 % of the parent. Two
+problems: "Prototype assembly rework" overlaps "Prototype assembly" (not
+mutually exclusive --- fold rework into the assembly package or make it a
+contingency), and "General project management" is **not part of this
+deliverable's scope** --- PM effort belongs in its own Level-2 element (e.g.
+"1.0.1 Project Management"), not smuggled into a technical deliverable.
+
+</details>
+
+<details>
+<summary>Problem 2: Outcome or action?</summary>
+
+Rewrite these action-style entries as outcome-style WBS elements:
+
+1. "Call three carbon-fibre suppliers and get quotes"
+2. "Run the mould 20 times and measure the parts"
+3. "Email the drawings to the customer for approval"
+
+**Model answers.** 1 → "Carbon-fibre supplier selected and quoted." 2 →
+"Moulding process capability established." 3 → "Customer design approval
+obtained." Each is a result you can mark done or not done, and it does not
+dictate the method.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): how deep should the RC-vehicle WBS go?</summary>
+
+Your draft WBS has a work package "Design the outer body" estimated at 180 h and
+spanning 6 weeks, and another, "Deburr the frame jig", estimated at 2 h. Using
+the rules of thumb, what do you do with each?
+
+**Discussion points.** "Design the outer body" breaks both the 80-hour rule and
+(if you report every 2 weeks) the single-reporting-period rule --- split it into
+concept, detailed CAD, and design-release packages. "Deburr the frame jig" is
+below the 8-hour floor --- roll it into the jig-fabrication package rather than
+tracking it as its own line.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-05, echo=FALSE, results='asis'}
+embed_youtube("akO2Lf1fHmM", "What Is a Work Breakdown Structure? (Online PM Courses)")
+embed_youtube("_7R_jjxVpK4", "Work Breakdown Structure Basics")
+```

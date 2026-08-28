@@ -1,35 +1,338 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Leadership and the Project Manager
 
 ```{r setup-04, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 4 -- Leadership
-and Project Management** of MGMT-3105, following the same structure as
-[Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Distinguish management from leadership in a project context.
-- Describe the sources of a project manager's power (legitimate, reward, coercive, expert, referent).
-- Apply situational leadership: matching style (directing, coaching, supporting, delegating) to team maturity.
-- Explain the stages of team development (forming, storming, norming, performing, adjourning).
-- Identify the competencies and ethical responsibilities of an effective project manager.
-- Use motivation theory (Maslow, Herzberg, expectancy) to diagnose team performance issues.
+1. **Distinguish** leadership from management in a project context.
+2. **Explain** the four foundations of a project partnership and Bennis's four competencies of the "new project leader."
+3. **Match** a leadership style (command & control, relating, democratic, hands-on, coaching) to a team situation, and state each style's downside.
+4. **Score** a leadership self-assessment and interpret the result.
+5. **Describe** the stages of team development and what the leader does in each.
+6. **Apply** motivation theory --- Maslow, Herzberg, and expectancy --- to diagnose a performance problem.
+7. **Identify** the five components of emotional intelligence and why they matter to a project leader.
 
-## Topic outline
+<details>
+<summary>Before we begin: recall a team you would follow anywhere</summary>
 
-1. The project manager's role across the life cycle.
-2. Power, influence, and authority without ownership of resources.
-3. Leadership styles and situational leadership.
-4. Building and developing the project team.
-5. Motivation and engagement.
-6. Emotional intelligence and ethics.
-7. Running case: staffing and leading the RC-vehicle project team.
+Who led it, and what did they *do* --- not what title they held? Most people
+describe behaviour, not authority. That is the whole chapter in one observation.
+
+</details>
+
+## Introduction: the project manager as mini-CEO
+
+Leading the RC-vehicle project means more than tracking a Gantt chart. The brief
+has your team learning a **new assembly line** with a real learning curve,
+working with an **unproven supplier**, and racing a **holiday deadline**. The PM
+*"encapsulates the role of a mini-CEO"* --- expected to manage holistically from
+start to finish: acquiring resources, motivating and building the team, holding
+a vision *and* fighting fires, and communicating relentlessly. *"A PM cannot get
+up in the morning and think 'I don't want to communicate today.'"*
+
+::: {.callout-note}
+**Industry snapshot.** On an automotive launch, the line lead who can only give
+orders stalls the moment a novel problem appears; the one who has built a team
+that raises issues early hits the job-one date. In food processing, a
+sanitation crew that understands *why* the changeover procedure matters follows
+it at 3 a.m. when no one is watching. Leadership is what fills the gap between
+the procedure and reality.
+:::
+
+```{r video-leaders-safe-04, echo=FALSE, results='asis'}
+embed_youtube("lmyZMtPVodo", "Why Good Leaders Make You Feel Safe (Simon Sinek, TED)")
+```
+
+## Leadership versus management
+
+**Leadership** is *the ability to inspire confidence and support among the
+people needed to achieve organizational goals.* A **manager** holds a title that
+lets them *plan, organize, direct, and control* others. Leadership may be part
+of the manager's job, but the other roles are more administrative.
+
+Leaders create a sense of **partnership**. Four things build it:
+
+| Foundation | What it means |
+|---|---|
+| **Exchange of purpose** | Every member knows the project's goals and vision. |
+| **A right to say "no"** | Members can voice professional disagreement. *Losing an argument is acceptable; losing the right to disagree is not.* |
+| **Joint accountability** | Every member owns the project's outcomes --- good or bad. |
+| **Absolute honesty** | All information becomes community information. |
+
+```{r fig-leader-vs-manager-04, fig.cap="Manager and leader emphases. Neither column is 'bad' --- a project manager needs both, but leans on the right-hand behaviours during execution.", fig.align='center', fig.width=10, fig.height=5}
+lm <- data.frame(
+  aspect = c("Focus", "Asks", "Relies on", "Time horizon",
+             "Handles change by", "Success is"),
+  manager = c("Systems & structure", "How & when", "Control", "Short term",
+              "Administering", "Doing things right"),
+  leader  = c("People", "What & why", "Trust", "Longer term",
+              "Setting direction", "Doing the right things")
+)
+lm_long <- tidyr::pivot_longer(lm, c(manager, leader),
+                               names_to = "role", values_to = "text")
+lm_long$aspect <- factor(lm_long$aspect, levels = rev(lm$aspect))
+lm_long$role <- factor(lm_long$role, levels = c("manager", "leader"),
+                       labels = c("MANAGER", "LEADER"))
+
+ggplot(lm_long, aes(role, aspect)) +
+  geom_tile(aes(fill = role), color = "white", linewidth = 1.5) +
+  geom_text(aes(label = text), size = 3.1 * diagram_text_scale, lineheight = 0.9) +
+  scale_fill_manual(values = c("MANAGER" = "#AED6F1", "LEADER" = "#A9DFBF"),
+                    guide = "none") +
+  labs(title = "Two hats the project manager wears", x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.text.x = element_text(size = 11 * diagram_text_scale, face = "bold"),
+    axis.text.y = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+### Bennis's four competencies of the new project leader
+
+1. **The power of appreciation** --- recognize and reward others' talent; your job is not to outshine the team but to let it develop.
+2. **Keep reminding people what's important** --- amid the noise of problems, keep everyone's eye on the prize.
+3. **Generate and sustain trust** --- through authenticity, fairness, honesty, and caring. Honesty is the trait people look for most.
+4. **The leader and the led are intimate allies** --- leadership supports the team's effort; it does not dominate it.
+
+## The five leadership styles
+
+Effective PMs switch styles to fit the person and the situation.
+
+| Style | Use it when | The downside if overused |
+|---|---|---|
+| **Command & control** | You know the best way and the other person doesn't; beginners; a crisis | Team feels devalued; learned helplessness; kills creativity and initiative |
+| **Relating** | Building rapport, bonding the team, focusing people on common goals | Can't make tough calls or take charge in a crisis; seen as weak |
+| **Democratic** | *Planning* --- getting buy-in and reality-based plans from those who will execute | *Execution* often needs autocracy; consensus-building wastes a critical deadline |
+| **Hands-on** | You must step in and model the way to get a stuck task done | Disempowering; low morale; you become the bottleneck |
+| **Coaching** | Long-term development; asking questions that lead people to their own solutions | Slow for short-term objectives --- but it is the style most managers most need to build |
+
+```{r fig-situational-04, fig.cap="Situational leadership: match the style to how ready the team is. New or struggling teams need direction; capable, committed teams need delegation.", fig.align='center', fig.width=9, fig.height=6}
+sl <- data.frame(
+  x = c(0.8, 0.35, 0.65, 0.2),
+  y = c(0.8, 0.8, 0.3, 0.3),
+  label = c("COACHING\n(high direction,\nhigh support)",
+            "SUPPORTING\n(low direction,\nhigh support)",
+            "DIRECTING\n(high direction,\nlow support)",
+            "DELEGATING\n(low direction,\nlow support)")
+)
+ggplot(sl, aes(x, y)) +
+  geom_point(size = 42, shape = 21, fill = "#D6EAF8", color = "#2E86C1") +
+  geom_text(aes(label = label), size = 2.6 * diagram_text_scale, lineheight = 0.9) +
+  annotate("segment", x = 0, xend = 1, y = 0, yend = 0,
+           arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
+  annotate("segment", x = 0, xend = 0, y = 0, yend = 1,
+           arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
+  annotate("text", x = 0.5, y = -0.08, label = "Directive behaviour  ->",
+           size = 3 * diagram_text_scale) +
+  annotate("text", x = -0.06, y = 0.5, label = "Supportive behaviour  ->",
+           angle = 90, size = 3 * diagram_text_scale) +
+  coord_equal(xlim = c(-0.12, 1.05), ylim = c(-0.12, 1.05)) +
+  labs(title = "Match the style to team readiness") +
+  theme_void() +
+  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+                                  face = "bold", hjust = 0.5))
+```
+
+### Try it yourself: the leadership self-assessment
+
+The course quiz has 18 statements rated 1 (strongly disagree) to 5 (strongly
+agree). Items **1, 4, 7, 10, 13, 16** sum to a **command & control** score;
+items **2, 5, 8, 11, 14, 17** to a **democratic** score; items **3, 6, 9, 12,
+15, 18** to a **relating** score. Enter your 18 answers and run.
+
+```{webr-r}
+#| label: leadership-score-04
+# Replace with your own 1-5 answers to items 1..18, in order:
+responses <- c(2, 4, 3, 2, 5, 4,   # items 1-6
+               2, 4, 4, 2, 4, 4,   # items 7-12
+               2, 5, 2, 2, 4, 3)   # items 13-18
+
+cc  <- sum(responses[c(1, 4, 7, 10, 13, 16)])
+dem <- sum(responses[c(2, 5, 8, 11, 14, 17)])
+rel <- sum(responses[c(3, 6, 9, 12, 15, 18)])
+
+scores <- c("Command & Control" = cc, "Democratic" = dem, "Relating" = rel)
+for (nm in names(scores)) cat(sprintf("%-18s %2d / 30\n", nm, scores[nm]))
+cat(sprintf("\nYour dominant style: %s\n", names(which.max(scores))))
+cat("Remember: the best PMs deliberately use all three depending on the situation.\n")
+```
+
+## Building the team
+
+Teams develop through predictable stages, and the leader's job changes with each:
+
+```{r fig-tuckman-04, fig.cap="Team performance through Tuckman's stages. Performance dips during storming before rising; a leader who expects the dip manages it instead of panicking.", fig.align='center', fig.width=10, fig.height=5}
+stage_x <- seq(0, 10, length.out = 200)
+perf <- 0.4 + 0.15 * sin(stage_x) +
+        pmin(0.5, 0.06 * stage_x) -
+        0.22 * exp(-((stage_x - 2.2)^2) / 0.6)
+df <- data.frame(x = stage_x, perf = pmin(pmax(perf, 0.1), 1))
+
+ggplot(df, aes(x, perf)) +
+  geom_line(color = "#2E86C1", linewidth = 1.2) +
+  annotate("text", x = c(1, 2.4, 4.6, 7.2, 9.4), y = 1.03,
+           label = c("Forming", "Storming", "Norming", "Performing", "Adjourning"),
+           fontface = "bold", size = 3.1 * diagram_text_scale) +
+  annotate("segment", x = c(1.7, 3.5, 6, 8.6), xend = c(1.7, 3.5, 6, 8.6),
+           y = 0.1, yend = 1, linetype = "dotted", color = "grey60") +
+  coord_cartesian(ylim = c(0.1, 1.1)) +
+  labs(title = "Tuckman's stages of team development",
+       x = "Time together", y = "Team performance") +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale)
+  )
+```
+
+- **Forming** --- polite, uncertain. Leader: **direct** --- clarify goals, roles, the charter.
+- **Storming** --- conflict over approach and authority; performance dips. Leader: **coach** --- surface conflict, don't suppress it.
+- **Norming** --- norms settle, trust builds. Leader: **support**.
+- **Performing** --- the team runs itself. Leader: **delegate**.
+- **Adjourning** --- the project ends; recognize contributions and manage the transition (see [Chapter 13](13-Project-Closeout-and-Termination.qmd)).
+
+## Motivating the team
+
+### Worked Example 1: Herzberg --- is this a hygiene problem or a motivator problem?
+
+Herzberg splits job factors into **hygiene factors** (pay, conditions, policy,
+supervision --- their *absence* causes dissatisfaction, but their presence does not
+motivate) and **motivators** (achievement, recognition, the work itself,
+responsibility, growth --- these drive engagement).
+
+```{r herzberg-example-04, echo=TRUE}
+complaints <- data.frame(
+  issue = c("Cramped, hot project room", "No recognition for hitting the drop-test milestone",
+            "Confusing expense policy", "Same repetitive CAD cleanup every week",
+            "Parking is far from the building"),
+  type = c("Hygiene", "Motivator", "Hygiene", "Motivator", "Hygiene")
+)
+print(complaints, row.names = FALSE)
+
+fix_first <- complaints$issue[complaints$type == "Hygiene"]
+cat("\nFix the hygiene issues to stop dissatisfaction:\n - ",
+    paste(fix_first, collapse = "\n - "), "\n", sep = "")
+cat("\nThen add motivators (recognition, varied/owned work) to actually raise engagement.\n")
+```
+
+### Try it yourself: expectancy theory
+
+Vroom's expectancy model says motivation is the product of three beliefs, each
+0--1: **Expectancy** (effort → performance), **Instrumentality** (performance →
+reward), and **Valence** (how much the person wants the reward).
+
+$$\text{Motivation} = E \times I \times V$$
+
+Because it is a product, **any factor near zero kills motivation**.
+
+```{webr-r}
+#| label: expectancy-04
+team_member <- data.frame(
+  name          = c("Priya", "Sam", "Dev"),
+  expectancy    = c(0.9, 0.8, 0.4),   # "if I try, I can hit the target"
+  instrumentality = c(0.8, 0.3, 0.9), # "hitting it gets me the reward"
+  valence       = c(0.7, 0.9, 0.8)    # "I want that reward"
+)
+team_member$motivation <- with(team_member, expectancy * instrumentality * valence)
+
+print(team_member, row.names = FALSE)
+weakest <- team_member$name[which.min(team_member$motivation)]
+cat(sprintf("\nLowest motivation: %s\n", weakest))
+cat("Look at which of E, I, V is dragging the product down -- that is where the leader intervenes.\n")
+cat("(Sam doesn't believe performance leads to the reward; Dev doesn't believe he can hit the target.)\n")
+```
+
+## Emotional intelligence
+
+Goleman: *the most effective leaders all have a high degree of emotional
+intelligence* --- IQ and technical skill are just the entry ticket. Five
+components:
+
+- **Self-awareness** --- a clear view of your strengths, weaknesses, drives, and ego needs.
+- **Self-regulation** --- keeping yourself under control; think before you act.
+- **Motivation** --- driven to your own potential *and* to drawing the best from each team member.
+- **Empathy** --- weighing team members' feelings when making a decision.
+- **Social skill** --- managing relationships with purpose.
+
+## Key Takeaways
+
+- **Management** administers systems; **leadership** inspires people. A PM needs both and leans on leadership during execution.
+- Partnership rests on **exchange of purpose, the right to say no, joint accountability, and absolute honesty**. Bennis: **appreciate, remind what matters, build trust, be an ally.**
+- Switch among the **five styles** --- command & control, relating, democratic, hands-on, coaching --- by situation. Plan democratically; often execute autocratically. Every style overused has a cost.
+- Teams move through **forming → storming → norming → performing → adjourning**; performance dips in storming --- expect it and coach through it.
+- Diagnose motivation with **Herzberg** (fix hygiene to stop dissatisfaction, add motivators to raise engagement) and **expectancy** ($E \times I \times V$ --- any factor near zero kills it).
+- **Emotional intelligence** --- self-awareness, self-regulation, motivation, empathy, social skill --- separates effective project leaders from merely competent ones.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Pick the style</summary>
+
+Which leadership style fits each moment on the RC-vehicle project?
+
+1. Kicking off planning for the WBS with the whole team. → **Democratic** (buy-in, reality-based plan).
+2. A moulding press fails at 2 a.m. and the launch date is at risk. → **Command & control** (crisis; take charge).
+3. A capable senior designer is bored and thinking of leaving. → **Coaching** (long-term development; varied, owned work).
+4. A brand-new co-op student has never used the company's PLM system. → **Command & control** initially, moving to **coaching**.
+5. The team has gelled and is hitting milestones on its own. → **Delegating / supporting** --- stay out of the way.
+
+</details>
+
+<details>
+<summary>Problem 2: Expectancy diagnosis</summary>
+
+A skilled technician has stopped putting in effort on validation testing. In a
+one-on-one you learn they are certain the extra effort won't change the delivery
+date because "purchasing will be late anyway." Which expectancy factor is
+broken, and what do you do?
+
+**Answer.** **Instrumentality** --- they no longer believe performance leads to
+the outcome. Restoring it means making the link visible again: show how the test
+results actually gate the next milestone, remove the purchasing blocker or
+re-sequence around it, and close the loop when their work does move the date.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): the hands-on trap</summary>
+
+You are the strongest CAD modeller on the team, and every time someone struggles
+you take the model over and finish it yourself. The work gets done and is
+high-quality. Why is this a leadership failure, and what should you do instead?
+
+**Discussion points.** Taking over is the **hands-on** style overused: it is
+disempowering, tanks morale, stops people learning, and makes you the
+bottleneck --- the project's throughput is now capped by your personal hours. The
+**coaching** move is to ask questions that lead the person to the fix, sit with
+them while they do it, and follow up --- slower once, faster forever.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-04, echo=FALSE, results='asis'}
+embed_youtube("ReRcHdeUG9Y", "Why Leaders Eat Last (Simon Sinek, 99U)")
+```

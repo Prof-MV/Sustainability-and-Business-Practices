@@ -1,36 +1,436 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Project Scope, Charter, and Organizational Structures
 
 ```{r setup-03, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 3 -- Scope and
-Organizational Structures** of MGMT-3105 and the course's Project Charter and
-Project Scope templates, following the same structure as
-[Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Write a project charter and explain what authority it grants the project manager.
-- Develop a scope statement: deliverables, acceptance criteria, exclusions, constraints, and assumptions.
-- Distinguish product scope from project scope.
-- Recognise and control scope creep, and run a change-control process.
-- Compare functional, projectized, and matrix (weak/balanced/strong) organizational structures.
-- Evaluate the trade-offs each structure imposes on authority, resource availability, and cost.
+1. **Evaluate** a candidate project with payback period and net present value (NPV).
+2. **Write** a project charter and explain what authority its sign-off grants.
+3. **Identify** the five inputs to a charter and the benefits of using one.
+4. **Build** a stakeholder register and place stakeholders on a power--interest grid.
+5. **Develop** a scope statement --- deliverables, acceptance criteria, exclusions, constraints, assumptions --- and distinguish product scope from project scope.
+6. **Recognize** scope creep and run a change-control process.
+7. **Compare** functional, projectized, and matrix (weak/balanced/strong) structures and the trade-offs each imposes on the project manager.
 
-## Topic outline
+<details>
+<summary>Before we begin: who told you it was okay to start?</summary>
 
-1. Project selection and the business case (payback, NPV preview).
-2. The project charter: purpose, contents, sign-off.
-3. Scope definition and the scope statement.
-4. Scope creep, gold-plating, and change control.
-5. Organizational structures: functional, matrix, projectized.
-6. The project management office (PMO).
-7. Running case: charter and scope statement for the RC-vehicle project.
+On your last group project, was there a moment where everyone agreed *this is
+what we are building and this is who signed off*? Or did work just... start? The
+charter is that moment, written down.
+
+</details>
+
+## Introduction: nothing official without a charter
+
+Your company must get **Senior Management to approve the Scope and Charter
+before work begins** on the RC-vehicle replica. That is not bureaucracy --- it is
+the difference between a project and a hobby. *"There is no official project
+without an approved Project Charter."*
+
+Two questions come first: **should we do this project at all** (selection), and
+**exactly what are we committing to** (scope). Then the organization's shape ---
+functional, projectized, or matrix --- decides how much authority you actually
+have to deliver it.
+
+::: {.callout-note}
+**Industry snapshot.** In automotive new-product introduction, a project cannot
+pass its first gate without a signed charter and a business case showing
+positive NPV. A food company scoping a new line writes a **statement of work**
+that names the throughput, the allergen controls, and what is explicitly *out*.
+A defense contractor's **SOW** is a contract exhibit --- every deliverable and
+exclusion in it is legally enforceable.
+:::
+
+```{r video-scope-03, echo=FALSE, results='asis'}
+embed_youtube("DZr3ZMWGGwc", "What Is Scope in Project Management?")
+```
+
+## Project selection: is it worth doing?
+
+### Payback period
+
+The simplest screen: how long until the project's net cash inflows repay the
+initial outlay?
+
+$$\text{Payback} = \text{years until cumulative cash flow} \ge 0$$
+
+### Worked Example 1: payback on the RC-vehicle tooling investment
+
+The project needs **\$450 000** up front (tooling, setup, approvals). Once the
+100 000-unit contract runs, it returns an estimated **\$180 000** of net cash
+per year.
+
+```{r payback-example-03, echo=TRUE}
+initial   <- 450000
+annual_cf <- 180000
+horizon   <- 5
+
+cum <- cumsum(rep(annual_cf, horizon)) - initial
+year_paid <- which(cum >= 0)[1]
+# Fractional year within the payback year:
+prev <- if (year_paid == 1) -initial else cum[year_paid - 1]
+frac <- -prev / annual_cf
+
+cat("Cumulative cash flow by year:", paste0("$", format(cum, big.mark = " ")), "\n")
+cat(sprintf("Payback period: %.2f years\n", (year_paid - 1) + frac))
+```
+
+Payback is quick to compute but ignores the **time value of money** and anything
+that happens after the payback point. NPV fixes both.
+
+### Net present value
+
+NPV discounts every future cash flow back to today's dollars at the
+organization's required rate of return $r$, then subtracts the initial outlay.
+A positive NPV means the project earns more than that hurdle rate.
+
+$$NPV = -C_0 + \sum_{t=1}^{n} \frac{CF_t}{(1 + r)^t}$$
+
+### Try it yourself: NPV of the project
+
+```{webr-r}
+#| label: npv-calc-03
+initial   <- 450000
+cash_flows<- c(180000, 180000, 180000, 120000, 90000)  # years 1..5
+r         <- 0.12   # required rate of return
+
+t   <- seq_along(cash_flows)
+pv  <- cash_flows / (1 + r)^t
+npv <- sum(pv) - initial
+
+cat("Year   Cash flow     Present value\n")
+for (i in t) {
+  cat(sprintf(" %d    $%s    $%s\n", i,
+              format(cash_flows[i], big.mark = " "),
+              format(round(pv[i]), big.mark = " ")))
+}
+cat(sprintf("\nSum of PVs : $%s\n", format(round(sum(pv)), big.mark = " ")))
+cat(sprintf("Less outlay: $%s\n", format(initial, big.mark = " ")))
+cat(sprintf("NPV        : $%s  -> %s\n",
+            format(round(npv), big.mark = " "),
+            ifelse(npv > 0, "ACCEPT (beats the 12% hurdle)", "REJECT")))
+```
+
+<details>
+<summary>What happens to NPV if the hurdle rate rises to 18 %?</summary>
+
+Raise `r` in the cell and re-run. Higher discount rates punish cash flows that
+arrive later, so NPV falls --- a project that clears a 12 % hurdle may fail an
+18 % one. This is why a company with expensive capital (or a risky project that
+demands a risk premium) is choosier about which projects it starts. Course
+Learning Outcome 1 is exactly this: *communicate the philosophy of project
+selection using the NPV method.*
+
+</details>
+
+## The project charter
+
+> **PMI:** developing a document that formally **authorizes** a project and
+> documents the initial requirements that satisfy the stakeholders' needs and
+> expectations. **Approval of the charter formally initiates the project.**
+
+### Five inputs to a charter
+
+1. **Project Statement of Work** --- the high-level "project brief": business need and product scope, fewer details than the scope statement.
+2. **Business Case** --- why the project is being done (the NPV/payback story).
+3. **Contract** (if the client is external).
+4. **Enterprise Environmental Factors (EEFs)** --- conditions you cannot control (market, regulation, weather).
+5. **Organizational Process Assets (OPAs)** --- the company's plans, processes, policies, and accumulated knowledge.
+
+### What a charter contains
+
+Title and description; business case; pre-assigned resources; stakeholders and
+their known requirements; product deliverables and the end result; measurable
+objectives tied to strategy; a **summary** milestone schedule; a **summary**
+budget (gross only --- the real budget comes after planning); approval
+requirements and who signs off; high-level risks; and **signatures**.
+
+### Why bother
+
+- Stakeholders are clearly defined
+- Communication channels are defined
+- Roles and responsibilities are outlined
+- Scope is defined --- helping prevent **scope creep**
+- Better project processes in later phases
+- Higher probability of success
+- **Buy-in** from the team
+
+The charter is a **living document**: update it as the project moves. Used well,
+it is *"the single most important tool the project manager uses to manage the
+expectations of the sponsor and all other stakeholders."*
+
+## Stakeholders
+
+A **stakeholder** is any individual or group with an active interest in the
+project who can affect it.
+
+| Internal | External |
+|---|---|
+| Senior management, accountant, team members, IT department | Client, competitors, suppliers, environmental agencies, government agencies, research labs |
+
+Managing them is a loop: **identify → gather information → determine strengths
+and weaknesses → predict behaviour → build an engagement strategy → implement**.
+The point of engagement is to **increase support and reduce resistance** --- by
+listening, informing, and helping stakeholders along.
+
+```{r fig-stakeholder-grid-03, fig.cap="Power-interest grid for the RC-vehicle project. Effort goes where power and interest are both high; low-low stakeholders are monitored, not managed.", fig.align='center', fig.width=9, fig.height=6.5}
+sh <- data.frame(
+  who = c("Senior mgmt / sponsor", "Retailer (client)", "Motor supplier",
+          "Carbon-fibre supplier", "Compliance officer", "Assembly team",
+          "Accountant", "Competitors", "Local community"),
+  power    = c(0.92, 0.80, 0.55, 0.45, 0.70, 0.40, 0.50, 0.30, 0.20),
+  interest = c(0.75, 0.85, 0.60, 0.55, 0.65, 0.90, 0.55, 0.65, 0.35)
+)
+
+ggplot(sh, aes(interest, power)) +
+  annotate("rect", xmin = 0.5, xmax = 1, ymin = 0.5, ymax = 1, fill = "#27AE60", alpha = 0.10) +
+  annotate("rect", xmin = 0, xmax = 0.5, ymin = 0.5, ymax = 1, fill = "#F39C12", alpha = 0.10) +
+  annotate("rect", xmin = 0.5, xmax = 1, ymin = 0, ymax = 0.5, fill = "#5DADE2", alpha = 0.10) +
+  annotate("rect", xmin = 0, xmax = 0.5, ymin = 0, ymax = 0.5, fill = "grey70", alpha = 0.12) +
+  geom_point(color = "#1B4F72", size = 3) +
+  geom_text(aes(label = who), size = 2.9 * diagram_text_scale, vjust = -0.8) +
+  annotate("text", x = 0.75, y = 0.97, label = "MANAGE CLOSELY",
+           fontface = "bold", size = 3 * diagram_text_scale, color = "#186A3B") +
+  annotate("text", x = 0.25, y = 0.97, label = "KEEP SATISFIED",
+           fontface = "bold", size = 3 * diagram_text_scale, color = "#9C640C") +
+  annotate("text", x = 0.75, y = 0.03, label = "KEEP INFORMED",
+           fontface = "bold", size = 3 * diagram_text_scale, color = "#1B4F72") +
+  annotate("text", x = 0.25, y = 0.03, label = "MONITOR",
+           fontface = "bold", size = 3 * diagram_text_scale, color = "grey30") +
+  scale_x_continuous(limits = c(0, 1), breaks = c(0.1, 0.9), labels = c("low", "high")) +
+  scale_y_continuous(limits = c(0, 1), breaks = c(0.1, 0.9), labels = c("low", "high")) +
+  labs(title = "Stakeholder power vs. interest", x = "Interest", y = "Power") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+## The scope statement
+
+Written early in **planning**, the scope statement is more detailed than the
+charter and should include:
+
+- The **project statement** (what will be done)
+- **Acceptance criteria** and the **validation/testing plan**
+- **Deliverables**
+- **Exclusions** (what is explicitly *not* in scope)
+- **Constraints** and **assumptions**
+- Project coordination
+- **Signed-off** review with the customer and with corporate management
+
+**Product scope** = the features and functions of the thing you are building.
+**Project scope** = the work needed to deliver it. A scope statement covers
+both, plus boundaries and references to specs. *As the project progresses, scope
+should get clearer and more specific --- and changes here should be avoided,
+though not forbidden.*
+
+### The scope management processes
+
+**Plan scope → collect requirements → define scope → create WBS → validate scope
+(at closing) → control scope (throughout).** The scope management plan is often
+run as an extension of **Management by Objectives (MBO)**: set unambiguous,
+realistic objectives; check periodically whether they are being met; take
+corrective action.
+
+## Scope creep
+
+**Scope creep** is the uncontrolled growth of requirements over the project's
+life:
+
+- one deliverable quietly becomes five
+- three "essential" features become ten
+- mid-project, the customer's needs change and requirements are reopened
+
+Its usual causes are **stakeholders changing requirements** and **internal
+miscommunication**. It is *not always bad* --- customer needs genuinely evolve,
+and refusing all change can deliver the wrong product. The problem is
+**uncontrolled** change. A good PM **expects it and plans for it** with a
+**change-control process**: every change request is logged, its impact on scope,
+schedule, and cost is assessed, and it is approved or rejected before work
+changes.
+
+### Try it yourself: the cost of an "innocent" change
+
+```{webr-r}
+#| label: scope-change-03
+# A stakeholder asks to add a second body colourway "while we're at it".
+extra_design_hours   <- 60
+extra_tooling_cost   <- 28000
+designer_rate        <- 46
+indirect_rate        <- 0.35
+schedule_days_added  <- 9
+penalty_per_day_late <- 1500     # retailer contract clause
+
+direct  <- extra_design_hours * designer_rate + extra_tooling_cost
+loaded  <- direct * (1 + indirect_rate)
+sched   <- schedule_days_added * penalty_per_day_late
+
+cat(sprintf("Direct cost of the change        : $%s\n", format(round(direct), big.mark = " ")))
+cat(sprintf("Fully burdened (x%.2f)            : $%s\n", 1 + indirect_rate,
+            format(round(loaded), big.mark = " ")))
+cat(sprintf("Schedule slip: %d days -> penalty : $%s\n", schedule_days_added,
+            format(sched, big.mark = " ")))
+cat(sprintf("--------\nTotal impact of one 'small' change: $%s\n",
+            format(round(loaded + sched), big.mark = " ")))
+cat("\nThrough change control this gets a number and a decision.\n")
+cat("Without it, it just shows up as an overrun later.\n")
+```
+
+## Organizational culture
+
+Every organization develops its own outlook, policies, habits of thought, and
+norms --- *"as unique as a fingerprint."* Culture is *the solution to problems
+that has worked consistently for a group and is therefore taught to new members
+as the correct way to perceive and think.* It is shaped by **technology,
+environment, geographic location, reward systems, rules and procedures, key
+organizational members, and critical incidents.**
+
+Culture affects projects through:
+
+- **Department interaction** --- cooperative cultures run projects far better than adversarial ones.
+- **Employee commitment to goals** --- teams need to understand the *why* to be motivated.
+- **Project planning** --- some cultures tolerate padding estimates but not being late.
+- **Performance evaluation** --- a culture that rewards innovation breeds aggressive, high-payoff project management (with occasional big losses).
+
+## Organizational structures
+
+How the lines of authority and communication are arranged decides **when people
+are available** and **how you get them**.
+
+```{r fig-org-authority-03, fig.cap="Project manager authority across organizational structures. It rises from almost none in a functional organization to near-total in a projectized one, with the matrix band in between.", fig.align='center', fig.width=10, fig.height=4.5}
+org <- data.frame(
+  type = factor(c("Functional", "Weak matrix", "Balanced matrix",
+                  "Strong matrix", "Projectized"),
+                levels = c("Functional", "Weak matrix", "Balanced matrix",
+                           "Strong matrix", "Projectized")),
+  authority = c(0.08, 0.28, 0.5, 0.72, 0.95)
+)
+ggplot(org, aes(type, authority, fill = authority)) +
+  geom_col(width = 0.65) +
+  geom_text(aes(label = scales::percent(authority, accuracy = 1)),
+            vjust = -0.4, size = 3.6 * diagram_text_scale) +
+  scale_fill_gradient(low = "#AED6F1", high = "#1B4F72", guide = "none") +
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1.05),
+                     expand = expansion(mult = c(0, 0.02))) +
+  labs(title = "How much authority does the PM actually have?",
+       x = NULL, y = "PM authority over resources") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+| Structure | Strengths for the PM | Weaknesses for the PM |
+|---|---|---|
+| **Functional** (grouped by specialty; one clear boss; each department runs its own projects) | No restructuring needed; deep expertise; everyone knows their place | Many layers to reach people; weak customer focus; projects drag because staff have "day jobs" and other priorities |
+| **Projectized** (the company just does projects; team co-located) | One reporting line; easy communication; fast decisions; strong PMs; rapid market response | Teams are expensive to set up and maintain; loyalty to the project over the organization; hard to keep a shared pool of expertise; team anxiety about "what next" when the project ends |
+| **Matrix** (blend; classified **weak / balanced / strong** by PM influence) | Suited to dynamic environments; values both project and functional efficiency; coordinates across units; maximizes scarce shared resources | **Two bosses**; heavy time spent negotiating shared resources; frustrating for staff caught between project and functional demands |
+
+<details>
+<summary>Which structure is the RC-vehicle project running in?</summary>
+
+Almost certainly a **matrix** --- the company has an existing manufacturing line
+and functional departments (design, quality, purchasing), and it borrows people
+into the project. That means the PM shares the design engineers with their
+functional manager and must negotiate their time. Expect the "administrative
+conflict" of [Chapter 10](10-Negotiation-and-Conflict-Management.qmd): every
+matrix team member has two bosses.
+
+</details>
+
+## Key Takeaways
+
+- **Select** projects on merit: **payback** is quick but ignores the time value of money; **NPV** discounts every future cash flow and is the course's standard (CLO 1). Positive NPV = beats the hurdle rate.
+- The **charter** *formally initiates* the project. Inputs: SOW, business case, contract, EEFs, OPAs. It defines stakeholders, roles, and scope, and earns team **buy-in**. No approved charter, no official project.
+- Manage **stakeholders** on a **power--interest grid**: manage the high-power/high-interest closely, monitor the rest.
+- The **scope statement** covers **product and project scope**, plus acceptance criteria, exclusions, constraints, and assumptions, and is signed off.
+- **Scope creep** is uncontrolled requirement growth. Change is normal; *uncontrolled* change is the enemy --- run every request through **change control** for a cost/schedule impact and a decision.
+- **Culture** shapes project outcomes through department cooperation, commitment, planning honesty, and what performance evaluation rewards.
+- **Structure** sets the PM's real authority: near zero in **functional**, near total in **projectized**, negotiated in the **matrix** (weak/balanced/strong) --- where everyone has two bosses.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Payback vs. NPV disagree</summary>
+
+Project A: \$300 000 outlay, then \$150 000/yr for 3 years, nothing after.
+Project B: \$300 000 outlay, then \$90 000/yr for 6 years. Hurdle rate 10 %.
+Which has the shorter payback, and which has the higher NPV?
+
+**Solution.**
+
+```{r p1-select-03, echo=TRUE}
+npv <- function(c0, cfs, r) -c0 + sum(cfs / (1 + r)^seq_along(cfs))
+A <- c(150000, 150000, 150000)
+B <- rep(90000, 6)
+cat(sprintf("A: payback 2.0 yr, NPV $%s\n", format(round(npv(3e5, A, 0.10)), big.mark = " ")))
+cat(sprintf("B: payback ~3.3 yr, NPV $%s\n", format(round(npv(3e5, B, 0.10)), big.mark = " ")))
+```
+
+A pays back faster; B has the higher NPV because its cash flows keep coming for
+three more years. Payback alone would pick the worse project.
+
+</details>
+
+<details>
+<summary>Problem 2: Charter or scope statement?</summary>
+
+Which document does each belong in?
+
+1. "Gross budget: approximately \$650 000." → **Charter** (summary budget).
+2. "Body colourways: Racing Red and Gunmetal only; no custom colours." → **Scope statement** (exclusions).
+3. "Sponsor: VP Operations. Signs off at Gate 1." → **Charter** (approval/signatures).
+4. "Drop test: survives 10 drops from 1.5 m onto concrete, no functional damage." → **Scope statement** (acceptance criteria).
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): the functional manager won't release the good engineer</summary>
+
+In a weak matrix, your best-choice design engineer's functional manager keeps
+assigning them to department work and offers you a junior instead. Using the
+culture and structure ideas in this chapter, explain why this happens and what
+you can do.
+
+**Discussion points.** The functional manager is **evaluated on their
+department's output**, so they hoard their strongest people --- a reward-system
+effect. In a weak matrix you have little formal authority to override it. Levers:
+escalate to the sponsor (whose NPV depends on the project), negotiate a
+part-time or time-boxed assignment, trade a deliverable the functional manager
+cares about, or get the resource commitment written into the **charter** so it is
+a documented agreement rather than a favour.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-03, echo=FALSE, results='asis'}
+embed_youtube("30a6zZP5EVI", "What Is Scope Creep? (Explained in 3 Minutes)")
+embed_youtube("HHey0EXZR0w", "Scope Creep in Project Management: Causes, Examples, Prevention")
+```

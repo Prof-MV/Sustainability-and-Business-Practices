@@ -1,34 +1,365 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Network Diagrams and Activity-on-Node (AON)
 
 ```{r setup-06, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 6 -- Network
-Diagrams** of MGMT-3105 and the `Critical-Path-Diagram.xlsx` worksheet,
-following the same structure as [Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Build an activity-on-node (AON) network from a precedence table.
-- Distinguish the four dependency types (FS, SS, FF, SF) and use lead and lag.
-- Perform the forward pass and backward pass to find ES, EF, LS, LF.
-- Calculate total float and free float and identify the critical path.
-- Explain how the critical path changes when durations or dependencies change.
+1. **Build** an activity-on-node (AON) network from a precedence table.
+2. **Apply** the rules for constructing a valid network diagram.
+3. **Perform** the forward pass to find early start (ES) and early finish (EF).
+4. **Perform** the backward pass to find late start (LS) and late finish (LF).
+5. **Calculate** total float and identify the **critical path**.
+6. **Compute** a three-point (PERT) activity duration.
+7. **Choose** a strategy to shorten the critical path when the project is too long.
 
-## Topic outline
+<details>
+<summary>Before we begin: which task can slip without moving the deadline?</summary>
 
-1. From WBS activities to a precedence table.
-2. AON notation; predecessors and successors.
-3. Dependency types, leads, and lags.
-4. Forward pass: earliest start and finish.
-5. Backward pass: latest start and finish.
-6. Float, the critical path, and near-critical paths.
-7. Running case: the AON network for the RC-vehicle project.
+On any project some tasks have slack and some do not. Guessing wrong --- pouring
+effort into a task with float while a zero-float task quietly slips --- is one of
+the most common ways schedules die. The network diagram tells you which is which.
+
+</details>
+
+## Introduction: when can we launch?
+
+The RC-vehicle WBS gives you a list of activities and their durations. It does
+*not* tell you how long the whole project takes, because the activities are not
+all independent --- you cannot assemble a prototype before the body is designed.
+A **network diagram** captures those dependencies and answers the question the
+sponsor actually cares about: **what is the earliest the project can finish, and
+which activities decide that date?**
+
+::: {.callout-note}
+**Industry snapshot.** Every automotive program plan is a critical-path network:
+the "job one" date is the length of the longest dependent chain. A food-plant
+commissioning schedule uses the same math to decide whether sanitation
+qualification can overlap controls checkout. A defense contractor reports
+critical-path status to the customer monthly --- slipping a critical task is a
+contractual event.
+:::
+
+```{r video-cpm-06, echo=FALSE, results='asis'}
+embed_youtube("4oDLMs11Exs", "Forward and Backward Pass -> Project Duration and Critical Path (Engineer4Free)")
+```
+
+## From WBS to precedence table
+
+For each activity you need its **duration** and its **immediate predecessors** ---
+the activities that must finish before it can start. Rules for a valid AON
+network:
+
+1. Determine precedence ordering **before** drawing.
+2. Networks flow **left to right**.
+3. An activity cannot begin until **all** connected predecessors are complete.
+4. Arrows show **precedence and logical flow** (they may cross, but minimize it).
+5. Every activity has a **unique identifier**.
+6. **No looping** back to an earlier activity.
+7. It is common (not required) to start from a **single start node**...
+8. ...and end at a **single end node**.
+
+## AON node anatomy
+
+Each activity is a box with six numbers:
+
+```{r fig-node-anatomy-06, fig.cap="The six-number activity node. Forward pass fills the top row (ES, DUR, EF); backward pass fills the bottom (LS, FLT, LF).", fig.align='center', fig.width=8, fig.height=4.2}
+ggplot() +
+  annotate("rect", xmin = 0, xmax = 3, ymin = 0, ymax = 2, fill = "#D6EAF8",
+           color = "#2E86C1", linewidth = 1) +
+  annotate("segment", x = 0, xend = 3, y = 1, yend = 1, color = "#2E86C1") +
+  annotate("segment", x = 1, xend = 1, y = 0, yend = 2, color = "#2E86C1") +
+  annotate("segment", x = 2, xend = 2, y = 0, yend = 2, color = "#2E86C1") +
+  annotate("text", x = c(0.5, 1.5, 2.5), y = 1.5,
+           label = c("ES", "DUR", "EF"), fontface = "bold",
+           size = 4 * diagram_text_scale) +
+  annotate("text", x = c(0.5, 1.5, 2.5), y = 0.5,
+           label = c("LS", "FLT", "LF"), fontface = "bold",
+           size = 4 * diagram_text_scale) +
+  annotate("text", x = 4.6, y = 1.5,
+           label = "ES = earliest start\nDUR = duration\nEF = earliest finish",
+           hjust = 0, size = 3 * diagram_text_scale, lineheight = 0.95) +
+  annotate("text", x = 4.6, y = 0.5,
+           label = "LS = latest start\nFLT = float (slack)\nLF = latest finish",
+           hjust = 0, size = 3 * diagram_text_scale, lineheight = 0.95) +
+  coord_equal(xlim = c(-0.3, 8.5), ylim = c(-0.4, 2.4)) +
+  theme_void()
+```
+
+An activity with 2+ predecessors flowing **in** is a **merge**; one with 2+
+successors flowing **out** is a **burst**.
+
+## Worked Example: the RC-vehicle sub-project network
+
+Ten activities (a simplified slice of the project):
+
+```{r cpm-setup-06, echo=TRUE}
+acts <- data.frame(
+  id = LETTERS[1:10],
+  dur = c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5),
+  pred = c("", "A", "B", "A", "C", "C", "D,E", "F", "G", "H,I"),
+  stringsAsFactors = FALSE
+)
+knitr::kable(acts, col.names = c("Activity", "Duration (days)", "Predecessors"),
+             align = c("c", "c", "l")) |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"),
+                            full_width = FALSE)
+```
+
+### Forward pass (ES, EF)
+
+Move left to right. $EF = ES + DUR$. Carry each EF forward as the successor's
+ES --- **except at a merge, where the ES is the largest incoming EF.**
+
+### Backward pass (LS, LF)
+
+Move right to left from the project finish. $LS = LF - DUR$. Carry each LS back
+as the predecessor's LF --- **except at a burst, where the LF is the smallest
+outgoing LS.**
+
+### Float and the critical path
+
+$$FLT = LS - ES = LF - EF$$
+
+Activities with **zero float** cannot slip without delaying the whole project ---
+together they form the **critical path**.
+
+```{r cpm-solve-06, echo=TRUE}
+# A small critical-path solver (base R + data.frame).
+cpm <- function(df) {
+  df$pred <- strsplit(df$pred, ",")
+  n <- nrow(df); id <- df$id
+  ES <- EF <- LS <- LF <- setNames(rep(NA_real_, n), id)
+
+  # Forward pass (ids are already in a valid topological order here)
+  for (i in seq_len(n)) {
+    p <- df$pred[[i]]; p <- p[p != ""]
+    ES[i] <- if (length(p) == 0) 0 else max(EF[p])
+    EF[i] <- ES[i] + df$dur[i]
+  }
+  proj <- max(EF)
+
+  # Backward pass
+  for (i in rev(seq_len(n))) {
+    succ <- id[sapply(df$pred, function(pp) id[i] %in% pp)]
+    LF[i] <- if (length(succ) == 0) proj else min(LS[succ])
+    LS[i] <- LF[i] - df$dur[i]
+  }
+
+  data.frame(Activity = id, Dur = df$dur,
+             ES = ES, EF = EF, LS = LS, LF = LF,
+             Float = LS - ES,
+             Critical = ifelse(LS - ES == 0, "  <- critical", ""))
+}
+
+res <- cpm(acts)
+print(res, row.names = FALSE)
+cat(sprintf("\nProject duration: %d days\n", max(res$EF)))
+cat("Critical path:", paste(res$Activity[res$Float == 0], collapse = " - "), "\n")
+```
+
+```{r fig-cpm-float-06, echo=FALSE, fig.cap="Total float per activity. The zero-float bars (A, B, C, E, G, I, J) are the critical path; D has 12 days of slack, F and H have 2.", fig.align='center', fig.width=10, fig.height=4.5}
+res$onCP <- res$Float == 0
+ggplot(res, aes(x = Activity, y = Float, fill = onCP)) +
+  geom_col(width = 0.7) +
+  geom_text(aes(label = Float), vjust = -0.4, size = 3.6 * diagram_text_scale) +
+  scale_fill_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
+                    labels = c("TRUE" = "Critical (float = 0)", "FALSE" = "Has float"),
+                    name = NULL) +
+  labs(title = "Where the slack is", x = "Activity", y = "Total float (days)") +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+The whole forward/backward/float sequence is one connected calculation --- change
+any duration and every downstream number moves --- so work it as a block, not as
+isolated steps.
+
+## Three-point (PERT) duration estimates
+
+When a duration is uncertain, estimate three values --- **optimistic** $o$,
+**most likely** $m$, **pessimistic** $p$ --- and combine them:
+
+$$t_e = \frac{o + 4m + p}{6}$$
+
+### Try it yourself: PERT durations
+
+```{webr-r}
+#| label: pert-te-06
+tasks <- data.frame(
+  id = c("A", "B", "C", "D", "E"),
+  o  = c(12, 7, 15, 9, 24),
+  m  = c(15, 10, 19, 13, 26),
+  p  = c(17, 13, 23, 16, 30)
+)
+tasks$te <- round((tasks$o + 4 * tasks$m + tasks$p) / 6, 2)
+tasks$sd <- round((tasks$p - tasks$o) / 6, 2)   # activity standard deviation
+
+print(tasks, row.names = FALSE)
+cat(sprintf("\nSum of expected durations along this chain: %.2f days\n", sum(tasks$te)))
+```
+
+<details>
+<summary>Why the weight of 4 on the most-likely value?</summary>
+
+PERT assumes each activity duration follows a Beta distribution skewed toward
+the most-likely value, with the optimistic and pessimistic values as the tails.
+Weighting $m$ by 4 and $o$, $p$ by 1 each (dividing by 6) is the standard
+approximation of that distribution's mean. The activity standard deviation
+$(p - o)/6$ becomes important in [Chapter 8](08-Project-Scheduling.qmd), where
+you combine them to find the probability of finishing on time.
+
+</details>
+
+## Shortening the critical path
+
+Only work on the **critical path** shortens the project. Options, roughly in
+order of preference:
+
+1. **Eliminate** critical tasks (is it truly needed?).
+2. **Re-plan series paths to run in parallel.**
+3. **Overlap** sequential tasks (start the successor before the predecessor fully finishes --- *fast-tracking*).
+4. **Shorten durations on critical activities** --- prefer earlier-starting tasks, then the longest, then the easiest, then the ones **cheapest to speed up**.
+
+### Try it yourself: recompute the critical path after a change
+
+```{webr-r}
+#| label: path-duration-06
+# All start-to-finish paths through the sub-project network, with activity durations.
+dur <- c(A = 5, B = 8, C = 3, D = 4, E = 5, F = 7, G = 6, H = 8, I = 6, J = 5)
+
+paths <- list(
+  "A-B-C-E-G-I-J" = c("A","B","C","E","G","I","J"),
+  "A-B-C-F-H-J"   = c("A","B","C","F","H","J"),
+  "A-D-G-I-J"     = c("A","D","G","I","J")
+)
+
+path_len <- sapply(paths, function(p) sum(dur[p]))
+cat("Baseline path lengths:\n"); print(path_len)
+cat(sprintf("Critical path: %s (%d days)\n\n", names(which.max(path_len)), max(path_len)))
+
+# Now crash B from 8 to 5 days and re-check:
+dur["B"] <- 5
+path_len2 <- sapply(paths, function(p) sum(dur[p]))
+cat("After crashing B by 3 days:\n"); print(path_len2)
+cat(sprintf("New critical path: %s (%d days)\n", names(which.max(path_len2)), max(path_len2)))
+cat("Note how the critical path can *shift* to a different chain once you crash enough.\n")
+```
+
+## The downside of network diagrams
+
+- Often **not drawn to scale** --- time is just a number, which can create a false sense of how much time is available.
+- Can be **too large and complex** to be useful.
+- **Faulty construction logic** can oversimplify or misrepresent the work.
+- Sometimes used for work they do not suit.
+- **Positive bias** creeps into PERT estimates (people are optimistic).
+
+## Key Takeaways
+
+- Build the **AON network** from a precedence table (durations + immediate predecessors); it flows left to right with no loops.
+- **Forward pass**: $EF = ES + DUR$; at a **merge**, ES = the largest incoming EF. Gives the **project duration**.
+- **Backward pass**: $LS = LF - DUR$; at a **burst**, LF = the smallest outgoing LS.
+- **Float** $= LS - ES = LF - EF$. **Zero-float** activities form the **critical path** --- the longest dependent chain, and the only one worth shortening.
+- **PERT**: $t_e = (o + 4m + p)/6$, activity SD $= (p - o)/6$.
+- Shorten the critical path by **eliminating, parallelizing, overlapping, or crashing** critical tasks --- and re-check, because the critical path can shift.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Solve this network</summary>
+
+| Activity | Predecessors | Duration |
+|---|---|---|
+| A | none | 3 |
+| B | A | 4 |
+| C | A | 2 |
+| D | B | 5 |
+| E | C | 1 |
+| F | E | 2 |
+| G | D, E | 4 |
+| H | F, G | 3 |
+| I | H | 6 |
+
+Find the project duration and the critical path.
+
+**Solution.**
+
+```{r p1-cpm-06, echo=TRUE}
+p1 <- data.frame(
+  id = LETTERS[1:9],
+  dur = c(3, 4, 2, 5, 1, 2, 4, 3, 6),
+  pred = c("", "A", "A", "B", "C", "E", "D,E", "F,G", "H"),
+  stringsAsFactors = FALSE
+)
+r1 <- cpm(p1)          # reuse the solver defined earlier in this chapter
+print(r1, row.names = FALSE)
+cat(sprintf("\nProject duration: %d days\n", max(r1$EF)))
+cat("Critical path:", paste(r1$Activity[r1$Float == 0], collapse = " - "), "\n")
+```
+
+Duration 25 days; critical path A--B--D--G--H--I. (The chain A--B--D--G is what
+pushes E, F, and C off the critical path --- D's 5 days arriving at the G merge
+beat E's early finish by 6 days.)
+
+</details>
+
+<details>
+<summary>Problem 2: PERT and the optimistic tail</summary>
+
+An activity is estimated at $o = 6$, $m = 9$, $p = 24$ days.
+
+(a) What is $t_e$? (b) Why is $t_e$ noticeably larger than $m$? (c) What is the activity standard deviation?
+
+**Solution.** (a) $t_e = (6 + 36 + 24)/6 = 11$ days. (b) The pessimistic tail is
+far from the most-likely value (24 vs 9) while the optimistic tail is close
+(6 vs 9), so the distribution is **right-skewed** and its mean sits above $m$.
+(c) SD $= (24 - 6)/6 = 3$ days --- a wide, risky activity.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): which task do you crash?</summary>
+
+On the sub-project network, the critical path is A--B--C--E--G--I--J (38 days)
+and the sponsor needs 34. Crash data: B costs \$500/day to shorten (max 3 days),
+G costs \$1 200/day (max 2 days), E costs \$300/day (max 2 days). Which
+combination gets you to 34 days at least cost, and what do you check afterward?
+
+**Discussion points.** You need 4 days. Cheapest first: E for 2 days
+(\$600), then B for 2 days (\$1 000) --- total \$1 600 for 4 days. Avoid G at
+\$1 200/day. **Then re-run the network**: after removing 4 days from this chain,
+another path (e.g. A--B--C--F--H--J) may now be critical or co-critical, and
+crashing further would have to shorten *both*.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-06, echo=FALSE, results='asis'}
+embed_youtube("AQ_Wr1Me__8", "PERT / Three-Point Estimating Explained (Cornelius Fichtner)")
+embed_youtube("u-9o-qa3HDg", "Three-Point Estimates and PERT (PMC Lounge)")
+```

@@ -1,36 +1,340 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Risk Management
 
 ```{r setup-07, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 7 -- Risk
-Management** of MGMT-3105 and the Risk Brainstorming Session Worksheet template,
-following the same structure as [Chapter 1](01-Sustainability.qmd) and
-[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Distinguish risk from uncertainty, and threats from opportunities.
-- Run a structured risk-identification session and write a well-formed risk statement.
-- Perform qualitative analysis with a probability-impact matrix.
-- Perform quantitative analysis: expected monetary value (EMV) and decision trees.
-- Select response strategies (avoid, transfer, mitigate, accept; exploit, share, enhance).
-- Build and maintain a risk register and set contingency and management reserves.
+1. **Distinguish** risk from uncertainty, and threats from opportunities.
+2. **Classify** a risk and write a well-formed risk statement.
+3. **Run** a qualitative analysis with a probability--impact matrix.
+4. **Compute** expected monetary value (EMV) and solve a simple decision tree.
+5. **Select** a response strategy: accept, minimize, share, transfer, or reserve.
+6. **Size** a contingency reserve and distinguish task contingency from managerial contingency.
+7. **Explain** how FMEA supports project risk management.
 
-## Topic outline
+<details>
+<summary>Before we begin: name one thing that could sink the RC-vehicle project</summary>
 
-1. What risk is, and why projects have more of it early.
-2. Risk identification: brainstorming, checklists, SWOT, assumptions analysis.
-3. Qualitative analysis: probability and impact scales, the P-I matrix.
-4. Quantitative analysis: EMV, decision trees, sensitivity.
-5. Response planning for threats and opportunities.
-6. Contingency reserve vs. management reserve.
-7. Monitoring: risk reviews, triggers, and the risk register.
-8. Running case: the risk register for the RC-vehicle project (unproven supplier, labour negotiations, new assembly line).
+Now: how likely is it, and how bad would it be? You just did qualitative risk
+analysis. The rest of this chapter makes it systematic.
+
+</details>
+
+## Introduction: the known unknowns
+
+The RC-vehicle brief is a risk register waiting to be written. One candidate
+motor supplier is **unproven** and its staff are **negotiating a first labour
+contract**. The carbon-fibre supplier is **mid-restructuring** after a foreign
+acquisition. Choosing a **new assembly line** brings a **learning curve**. None
+of these is a certainty --- but each is *identifiable*, and that is exactly what
+makes it a **risk** rather than an uncertainty.
+
+> **Risk** = the probability or threat of loss, injury, or any negative
+> occurrence caused by internal or external vulnerabilities, that **can be
+> reduced by preemptive action**.
+>
+> An **uncertainty** is when *neither* the probability *nor* the mode of
+> occurrence is known. If you do not know about it, you cannot act on it.
+
+The core equation:
+
+$$\text{Risk} = \text{Probability of event} \times \text{Impact of event}$$
+
+Probability is usually a percentage; impact is dollars or schedule delay. **Risk
+and opportunity are mirror images** --- an opportunity is an unforeseen event with
+a *positive* outcome, handled with the same tools for the opposite end.
+
+::: {.callout-note}
+**Industry snapshot.** Aircraft makers such as Bombardier **minimize** part risk
+by forcing every significant supplier into direct contact with their quality
+department and auditing their processes. The European Space Agency and Airbus
+**share** the risk of a new airframe across nations because no one country can
+carry it. A fixed-price defense contract **transfers** budget-overrun risk to
+the vendor.
+:::
+
+```{r video-emv-07, echo=FALSE, results='asis'}
+embed_youtube("dD-Vygp_MiM", "Expected Monetary Value (EMV) Explained Simply (Online PM Courses)")
+```
+
+## The four-stage process
+
+1. **Risk identification** --- determine the specific risk factors that can reasonably be expected to affect the project.
+2. **Analysis of probability and consequences** --- how likely, and how bad.
+3. **Risk mitigation strategies** --- steps to reduce the impact of the risks judged threatening enough to act on.
+4. **Control and documentation** --- track the risks and build a **knowledge base** for future projects from the lessons learned.
+
+## Risk identification and classification
+
+Sort each identified risk into a class. A common (not exhaustive) list:
+
+- **Financial** --- material price moves, currency, budget cuts
+- **Technology** --- unproven design or process
+- **Resources** --- key people, equipment availability
+- **Schedule** --- dependency slips, long lead times
+- **Weather**, **Political**, **Environmental**
+
+Techniques: structured **brainstorming**, **interviewing** to get optimistic /
+most-likely / pessimistic views of an event, **probability distributions** to
+represent uncertain outcomes, and **expert judgment** to validate.
+
+## Qualitative analysis: the probability--impact matrix
+
+Plot each risk by **likelihood** (x-axis) and **impact** (y-axis). The
+top-right is **red** (mitigation planned in advance), the middle band
+**yellow** (team decides whether to plan), the bottom-left **green** (just stay
+aware).
+
+```{r fig-pi-matrix-07, fig.cap="Probability-impact matrix for the RC-vehicle project. Red-zone risks (unproven supplier failure, carbon-fibre disruption) get a written mitigation plan before anything goes wrong.", fig.align='center', fig.width=9.5, fig.height=6.5}
+grid <- expand.grid(prob = 1:5, impact = 1:5)
+grid$score <- grid$prob * grid$impact
+grid$zone <- cut(grid$score, c(0, 6, 12, 25),
+                 labels = c("Green", "Yellow", "Red"))
+
+risks <- data.frame(
+  risk = c("Unproven supplier can't deliver", "Carbon-fibre plant disruption",
+           "New line learning curve overruns", "Labour action at supplier",
+           "Steel price spike", "Minor drawing errors"),
+  prob = c(3, 3, 4, 2, 3, 4),
+  impact = c(5, 4, 3, 5, 2, 1)
+)
+
+ggplot(grid, aes(prob, impact)) +
+  geom_tile(aes(fill = zone), color = "white", linewidth = 1) +
+  scale_fill_manual(values = c(Green = "#A9DFBF", Yellow = "#F9E79F", Red = "#F5B7B1"),
+                    name = "Zone") +
+  geom_point(data = risks, aes(prob, impact), inherit.aes = FALSE,
+             size = 3, color = "#1B4F72") +
+  geom_text(data = risks, aes(prob, impact, label = risk), inherit.aes = FALSE,
+            size = 2.7 * diagram_text_scale, vjust = -1, hjust = 0.5) +
+  scale_x_continuous(breaks = 1:5, labels = c("Very low", "Low", "Medium", "High", "Very high")) +
+  scale_y_continuous(breaks = 1:5, labels = c("Negligible", "Minor", "Moderate", "Major", "Severe")) +
+  labs(title = "Probability x Impact", x = "Probability", y = "Impact") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 9.5 * diagram_text_scale)
+  )
+```
+
+## Quantitative analysis
+
+Tools: **sensitivity analysis** (which risks move the outcome most),
+**expected monetary value** (the probability-weighted average outcome),
+**decision trees** (lay out choices and chance events), and **Monte Carlo**
+simulation (run the network thousands of times with sampled durations/costs).
+
+### Worked Example 1: EMV of a single risk
+
+The "new assembly line learning curve" risk: a **40 %** chance it adds
+**\$120 000** of rework and overtime; otherwise \$0.
+
+```{r emv-example-07, echo=TRUE}
+p_occurs <- 0.40
+impact   <- 120000
+
+emv <- p_occurs * impact + (1 - p_occurs) * 0
+cat(sprintf("EMV of this risk: 0.40 x $%s = $%s\n",
+            format(impact, big.mark = " "), format(emv, big.mark = " ")))
+cat("This is the amount you would budget in a risk reserve to 'cover' this one risk on average.\n")
+```
+
+### Try it yourself: decision tree --- buy the copper now or later?
+
+You need **750 lb of copper** for the RC-vehicle wiring harness tooling. Buy it
+**now** and pay **\$100** storage, or buy it **later** at the summer price ---
+which is **\$5.58/lb with 90 % probability**, or **\$4.50/lb with 10 %
+probability**.
+
+```{webr-r}
+#| label: decision-tree-07
+lb <- 750
+storage <- 100
+
+# Branch: buy now (price locked, pay storage)
+buy_now <- 5.58 * lb + storage
+
+# Branch: buy later (two chance outcomes)
+p_high <- 0.90; price_high <- 5.58
+p_low  <- 0.10; price_low  <- 4.50
+buy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)
+
+cat(sprintf("EMV, buy now  : $%.2f\n", buy_now))
+cat(sprintf("EMV, buy later: 0.90 x $%.2f + 0.10 x $%.2f = $%.2f\n",
+            price_high * lb, price_low * lb, buy_later))
+cat(sprintf("\nChoose: %s  (saves $%.2f on average)\n",
+            ifelse(buy_later < buy_now, "BUY LATER", "BUY NOW"),
+            abs(buy_now - buy_later)))
+```
+
+<details>
+<summary>What would flip the decision?</summary>
+
+Raise the probability of the low summer price, widen the price gap, or cut the
+storage cost toward zero and "buy later" wins by more. Push storage cost up
+(a bonded warehouse, insurance, spoilage) or make the high price nearly
+certain and "buy now" wins. A decision tree makes the tipping point explicit
+instead of leaving it to gut feel.
+
+</details>
+
+## Response strategies
+
+| Strategy | What it means | Example on our project |
+|---|---|---|
+| **Accept** | The risk is minor or unlikely enough to live with | Small drawing errors --- caught in review, low cost |
+| **Minimize** | Reduce probability or impact | Audit the unproven supplier; put their staff in contact with your quality team |
+| **Share** | Split the risk (and reward) with a partner | Co-develop the new control system with the supplier under a shared-savings deal |
+| **Transfer** | Shift the risk to another party | Fixed-price contract (vendor eats overruns); **liquidated damages** for non-performance |
+| **Contingency reserve** | Set aside funds/time for the risk if it hits | 10--15 % reserve against the carbon-fibre and learning-curve risks |
+| **Other** | Anything else fit for the situation | Dual-source the motor; pre-qualify a backup |
+
+For **opportunities**, the mirror strategies are **exploit, share, enhance,** and
+**accept**.
+
+## Contingency reserves
+
+Two kinds:
+
+- **Task (project) contingency** --- offsets overruns on individual tasks/work packages. **Managed by the project manager.** As work completes, reserve for finished tasks is released and cannot be reused.
+- **Managerial contingency** --- a project-level buffer for scope changes forced by the customer, "acts of God," and other unforeseeable events. **Managed by senior management, not the PM.**
+
+In construction it is common to set aside **10--15 %** of the price. Other
+industries resist it --- the customer may read a visible reserve as a sign of
+poor planning.
+
+### Try it yourself: does the mitigation pay for itself?
+
+```{webr-r}
+#| label: mitigation-value-07
+# Risk: unproven supplier fails to deliver on time.
+p_fail_no_action <- 0.35
+impact_if_fail   <- 260000       # expedite alternative source + line downtime
+
+# Mitigation: pre-qualify a backup supplier now.
+mitigation_cost  <- 22000
+p_fail_with_action <- 0.10       # backup ready -> failure much less damaging
+impact_with_action <- 90000      # switch to backup, smaller hit
+
+emv_before <- p_fail_no_action * impact_if_fail
+emv_after  <- mitigation_cost + p_fail_with_action * impact_with_action
+
+cat(sprintf("EMV, do nothing        : $%s\n", format(round(emv_before), big.mark = " ")))
+cat(sprintf("EMV, pre-qualify backup : $%s  (incl. $%s spent now)\n",
+            format(round(emv_after), big.mark = " "),
+            format(mitigation_cost, big.mark = " ")))
+cat(sprintf("\nExpected saving from acting: $%s\n",
+            format(round(emv_before - emv_after), big.mark = " ")))
+```
+
+## FMEA as a risk tool
+
+**Failure Mode and Effects Analysis** is often the first step of a reliability
+study: review as many components, assemblies, and subsystems as possible to
+identify **failure modes** (what can fail and how), their **causes**, and their
+**effects** (the consequences). It is a structured, bottom-up way to surface
+technical risks before they reach the customer --- and it feeds the same
+probability--impact thinking used above (in FMEA terms, a **risk priority
+number** combining severity, occurrence, and detection).
+
+## Key Takeaways
+
+- A **risk** is identifiable and can be acted on preemptively; an **uncertainty** cannot. **Risk = Probability × Impact.** Opportunities are the positive mirror.
+- Four stages: **identify → analyze → mitigate → control & document** (build the knowledge base).
+- **Qualitative**: plot risks on a **probability--impact matrix**; red-zone risks get a written plan *before* the event.
+- **Quantitative**: **EMV** = probability × impact; **decision trees** compare choices with chance events; Monte Carlo for whole-network risk.
+- Responses: **accept, minimize, share, transfer, reserve.** Pick per risk; ring-fence reserve against the biggest ones.
+- **Task contingency** is the PM's; **managerial contingency** is management's, for the truly unforeseeable.
+- **FMEA** systematically surfaces technical failure modes, causes, and effects.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: The road-trip risk register (from the course exercise)</summary>
+
+Six friends borrow an older car and drive to an unfamiliar beach. The weather
+forecast is mixed with a chance of rain and high winds; one friend is a very
+picky eater; the owner plans to replace the car soon due to problems; there is a
+fireworks show and all-day music at a crowded venue. List the risks, classify
+each, and give a mitigation strategy.
+
+**Model answer (partial).**
+
+| Risk | Class | Strategy |
+|---|---|---|
+| Get lost / arrive late | Schedule | *Minimize* --- offline map, leave early |
+| Car breaks down | Technology / Resources | *Minimize* (check oil, tires) + *transfer* (roadside assistance) |
+| Rain / high winds spoil the day | Weather | *Accept* + *minimize* (pack a tarp, check the radar) |
+| Picky eater has nothing to eat | Resources | *Minimize* --- bring a known-safe option |
+| No parking at a crowded venue | Resources | *Minimize* --- arrive before the crowd |
+| Injury in the crowd / fireworks | Environmental / Safety | *Minimize* --- agree a meeting point, stay together |
+
+</details>
+
+<details>
+<summary>Problem 2: EMV of competing suppliers</summary>
+
+Supplier X: \$140 000, 15 % chance of a 3-week slip costing \$45 000.
+Supplier Y: \$128 000, 35 % chance of a 3-week slip costing \$45 000.
+On expected cost alone, which is cheaper?
+
+**Solution.**
+
+```{r p2-emv-07, echo=TRUE}
+X <- 140000 + 0.15 * 45000
+Y <- 128000 + 0.35 * 45000
+cat(sprintf("Supplier X expected cost: $%s\n", format(X, big.mark = " ")))
+cat(sprintf("Supplier Y expected cost: $%s\n", format(Y, big.mark = " ")))
+cat(sprintf("Cheaper on EMV: Supplier %s\n", ifelse(X < Y, "X", "Y")))
+```
+
+X: \$146 750. Y: \$143 750. Y is cheaper on expected cost --- but note X's risk is
+*less likely*, which may matter more than the \$3 000 if a slip would blow the
+holiday launch window. EMV informs the decision; it does not make it.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): red-zone risk with no cheap mitigation</summary>
+
+The "carbon-fibre plant disruption" risk sits in the red zone, but the supplier
+is the only qualified source and re-qualifying another would take four months you
+do not have. What are your options?
+
+**Discussion points.** You cannot *minimize* the probability much, so work the
+**impact**: build a larger **contingency reserve** (time and money) against it;
+**transfer** part of it via contract terms (penalty clauses, guaranteed
+allocation); **share** it by co-investing in the supplier's modernization for
+priority supply; carry **safety stock** of the critical carbon-fibre parts; and
+design a **fallback** (an aluminium body variant) that could be substituted if
+the supply fails, accepting a heavier product rather than a missed launch.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-07, echo=FALSE, results='asis'}
+embed_youtube("vmkdHT9VmZg", "Decision Tree Analysis for Calculating EMV (PMC Lounge)")
+embed_youtube("uC2XBGpIcAs", "Decision Tree and Expected Monetary Value (Cornelius Fichtner)")
+```

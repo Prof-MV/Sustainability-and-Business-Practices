@@ -1,35 +1,374 @@
+---
+engine: knitr
+filters:
+  - webr
+webr:
+  show-startup-message: true
+  cell-options:
+    autorun: true
+---
+
 # Project Scheduling
 
 ```{r setup-08, include=FALSE}
+# include the helpers.R file for pdf output of youtube on pdfs as a clickable link
 source("R/helpers.R")
+# include the required packages to make sure the page can be built.
 source("R/required_packages.R")
+# jQuery is needed by kableExtra's kePrint.js (tooltips/popovers) but Quarto's
+# Bootstrap 5 theme doesn't ship it by default.
 inject_jquery()
 ```
 
-::: {.callout-note}
-This chapter is in preparation. It will be built from **Lecture 8 -- Project
-Schedule** of MGMT-3105 and the `SampleGantt better.xlsx` and `gantt-chart_L.xlsx`
-worksheets, following the same structure as [Chapter 1](01-Sustainability.qmd)
-and [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd).
-:::
-
-## Learning objectives (planned)
+## Learning Objectives
 
 By the end of this chapter you will be able to:
 
-- Convert a network and duration estimates into a Gantt chart and a schedule baseline.
-- Apply three-point (PERT) estimating: $t_e = (o + 4m + p)/6$ and activity variance.
-- Compute the probability of meeting a target date using the project standard deviation.
-- Compress a schedule with crashing and fast-tracking, and find the least-cost crash sequence.
-- Explain resource-limited scheduling and schedule risk.
-- Read and maintain a schedule: milestones, baselines, and slippage.
+1. **Read and build** a Gantt chart and explain what it adds over a network diagram.
+2. **Distinguish** the four precedence relationships (FS, FF, SS, SF) and use leads and lags.
+3. **Combine** PERT activity estimates into a project mean and standard deviation.
+4. **Calculate** the probability of finishing by a target date.
+5. **Compute** an activity's crash cost slope and build a **least-cost crashing** sequence.
+6. **Compare** crashing and fast-tracking, and state the risks of each.
 
-## Topic outline
+<details>
+<summary>Before we begin: a schedule is a promise --- how confident are you in it?</summary>
 
-1. From AON to a time-scaled schedule.
-2. Deterministic vs. probabilistic durations; PERT.
-3. Probability of on-time completion.
-4. Milestones and the schedule baseline.
-5. Schedule compression: crashing and fast-tracking, and their costs and risks.
-6. Gantt charts and tracking Gantts.
-7. Running case: the schedule for the RC-vehicle project.
+"The project finishes in 83 days" sounds precise. Is that a date you would bet
+your bonus on, or a coin flip? This chapter turns a single-number schedule into
+a probability you can actually stand behind.
+
+</details>
+
+## Introduction: from a network to a calendar
+
+The AON network from [Chapter 6](06-Network-Diagrams-and-AON.qmd) tells you the
+project takes *N* days. The **schedule** puts those days on a calendar, assigns
+resources, and gives you something to track progress against. The classic tool
+is the **Gantt chart**, developed by Henry Gantt between 1910 and 1915 and used
+at scale for the first time on the **Hoover Dam** (1931--1936).
+
+::: {.callout-note}
+**Industry snapshot.** An automotive program's master schedule is a Gantt with
+thousands of rows rolled up to a one-page milestone view for the steering
+committee. A food-plant install schedule shows the trades stacked so the
+project manager can see where two crews need the same space on the same day. A
+defense schedule is baselined and every slip against it is reported.
+:::
+
+```{r video-3point-08, echo=FALSE, results='asis'}
+embed_youtube("_YiAhMkBGbQ", "3-Point Estimation for Project Schedule and Cost")
+```
+
+## Gantt charts
+
+A Gantt chart is a **time-phased network**: it links each activity to a
+calendar. Linked to a schedule, it also **tracks progress against the plan**.
+Benefits: easy to read; shows the network *and* the schedule together; supports
+updating and control; useful for assigning resources; and easy to create.
+
+```{r fig-gantt-08, fig.cap="A Gantt chart for the RC-vehicle sub-project. Bars are activities; the dark segments show the critical path. Arrows (implied by stacking) show that assembly cannot start until design finishes.", fig.align='center', fig.width=10, fig.height=5.5}
+g <- data.frame(
+  task = c("A Design outer body", "B Design inner frame", "C Material selection",
+           "D Procure motor/controller", "E Wiring harness",
+           "F Prototype assembly", "G Drop & EMC test", "H Packaging & approvals"),
+  start = c(0, 5, 5, 8, 15, 20, 30, 30),
+  dur   = c(5, 8, 3, 12, 5, 10, 8, 12),
+  crit  = c(TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE)
+)
+g$end <- g$start + g$dur
+g$task <- factor(g$task, levels = rev(g$task))
+
+ggplot(g) +
+  geom_segment(aes(x = start, xend = end, y = task, yend = task, color = crit),
+               linewidth = 8, lineend = "butt") +
+  geom_text(aes(x = start + dur / 2, y = task, label = paste0(dur, "d")),
+            color = "white", fontface = "bold", size = 3.1 * diagram_text_scale) +
+  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
+                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
+                     name = NULL) +
+  labs(title = "RC-vehicle sub-project schedule", x = "Project day", y = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+## Precedence relationships
+
+Most dependencies are **finish-to-start**, but there are four:
+
+| Relationship | Meaning | Example |
+|---|---|---|
+| **Finish-to-Start (FS)** | B can't start until A finishes | Build the wall before you paint it |
+| **Finish-to-Finish (FF)** | B can't finish until A finishes | Can't finish editing until writing is finished |
+| **Start-to-Start (SS)** | B can't start until A starts (often simultaneous) | Start trimming edges when you start mowing |
+| **Start-to-Finish (SF)** | A starting triggers B finishing (rare) | The new shift starting ends the old shift |
+
+A **lead** lets a successor start early (overlap); a **lag** forces a wait
+(e.g. "wait 2 days for the paint to cure" is FS + 2-day lag).
+
+## Probabilistic scheduling with PERT
+
+A single duration hides uncertainty. Using three-point estimates
+(Chapter 6), for each activity:
+
+$$t_e = \frac{o + 4m + p}{6}, \qquad \sigma = \frac{p - o}{6}, \qquad \sigma^2 = \left(\frac{p - o}{6}\right)^2$$
+
+For the **project**, sum along the **critical path**:
+
+$$\mu_{\text{project}} = \sum t_e, \qquad \sigma^2_{\text{project}} = \sum \sigma^2, \qquad \sigma_{\text{project}} = \sqrt{\sigma^2_{\text{project}}}$$
+
+### Worked Example 1: project duration and its spread
+
+The critical path is A--B--C--D--E with these three-point estimates:
+
+```{r pert-project-08, echo=TRUE}
+cp <- data.frame(
+  id = c("A", "B", "C", "D", "E"),
+  o  = c(12, 7, 15, 9, 24),
+  m  = c(15, 10, 19, 13, 26),
+  p  = c(17, 13, 23, 16, 30)
+)
+cp$te  <- (cp$o + 4 * cp$m + cp$p) / 6
+cp$var <- ((cp$p - cp$o) / 6)^2
+
+mu    <- sum(cp$te)
+sigma <- sqrt(sum(cp$var))
+
+cp_show <- cp
+cp_show[c("te", "var")] <- lapply(cp_show[c("te", "var")], round, 2)
+print(cp_show, row.names = FALSE)
+cat(sprintf("\nProject mean duration : %.1f days\n", mu))
+cat(sprintf("Project variance      : %.2f\n", sum(cp$var)))
+cat(sprintf("Project std deviation : %.2f days\n", sigma))
+cat(sprintf("Rough 95%% range        : %.0f to %.0f days\n", mu - 2 * sigma, mu + 2 * sigma))
+```
+
+### Try it yourself: probability of hitting a target date
+
+Standardize the target: $z = \dfrac{\text{target} - \mu}{\sigma}$, then read the
+normal cumulative probability.
+
+```{webr-r}
+#| label: prob-on-time-08
+mu    <- 83.0     # from the worked example
+sigma <- 2.42
+
+for (target in c(80, 83, 86, 88)) {
+  z <- (target - mu) / sigma
+  cat(sprintf("Finish by day %2d:  z = %+5.2f  ->  P = %4.1f%%\n",
+              target, z, 100 * pnorm(z)))
+}
+
+cat("\nWhat target gives 90% confidence?\n")
+cat(sprintf("  day %.1f  (mu + %.2f x sigma)\n", mu + qnorm(0.90) * sigma, qnorm(0.90)))
+```
+
+<details>
+<summary>Why quote "day 86 at 90 % confidence" instead of "day 83"?</summary>
+
+Day 83 is the *mean* --- by definition you have only about a 50 % chance of
+meeting it. Committing to the mean is committing to a coin flip. Adding a buffer
+to reach 85--90 % confidence is how you turn a schedule into a promise you can
+keep, and it is the honest version of the "padding" problem from
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd) --- one visible buffer at the
+project level, not hidden padding in every task.
+
+</details>
+
+## Crashing the schedule
+
+**When** you crash: the initial schedule was too optimistic; the market wants
+the product sooner; the project has slipped badly; or the contract rewards
+finishing early / punishes finishing late.
+
+**How** you accelerate an activity: improve the productivity of existing
+resources (focus the team, review best practice); change the working method
+(swap drawing review for CAD model review); or add resources (overtime, extra
+shifts, expedited freight).
+
+::: {.callout-warning}
+**Caution on overtime.** Research on engineering work found optimal marginal
+output at about **4 hours of overtime per week**; by **10 hours** of overtime the
+*marginal* extra output had fallen to **zero**. More hours is not more work.
+:::
+
+Every activity has a **crash cost slope** --- the cost to buy back one time unit:
+
+$$\text{slope} = \frac{\text{crash cost} - \text{normal cost}}{\text{normal time} - \text{crash time}}$$
+
+```{r fig-time-cost-08, fig.cap="Time-cost trade-off for one activity. Between the normal and crash points, buying time gets steadily more expensive per day; past the crash point you cannot buy any more.", fig.align='center', fig.width=9, fig.height=5}
+normal_t <- 8; normal_c <- 14000
+crash_t  <- 5; crash_c  <- 23000
+line <- data.frame(
+  t = c(crash_t, normal_t),
+  c = c(crash_c, normal_c)
+)
+ggplot(line, aes(t, c)) +
+  geom_line(color = "#2E86C1", linewidth = 1.2) +
+  geom_point(size = 4, color = "#1B4F72") +
+  annotate("text", x = normal_t, y = normal_c, label = "Normal point\n(8 wk, $14 000)",
+           hjust = 1.1, size = 3.2 * diagram_text_scale, lineheight = 0.9) +
+  annotate("text", x = crash_t, y = crash_c, label = "Crash point\n(5 wk, $23 000)",
+           hjust = -0.1, size = 3.2 * diagram_text_scale, lineheight = 0.9) +
+  annotate("text", x = 6.5, y = 15500,
+           label = "slope = $9 000 / 3 wk\n= $3 000 per week",
+           size = 3.2 * diagram_text_scale, fontface = "italic", lineheight = 0.9) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = " ")) +
+  scale_x_reverse(breaks = 5:8) +
+  labs(title = "Time-cost trade-off for crashing",
+       x = "Activity duration (weeks) - shorter to the right",
+       y = "Activity cost") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+### Try it yourself: least-cost crashing
+
+To shorten the project, crash **critical-path** activities in **cheapest-slope-
+first** order, one time unit at a time, until you hit the target or run out of
+crashable critical tasks.
+
+```{webr-r}
+#| label: crash-sequence-08
+# Critical-path activities: normal/crash time and cost.
+act <- data.frame(
+  id         = c("A", "F", "H"),
+  normal_t   = c(9, 6, 8),
+  crash_t    = c(7, 5, 4),
+  normal_c   = c(5500, 4000, 3500),
+  crash_c    = c(7550, 9000, 7550)
+)
+act$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)
+act$max_crash <- act$normal_t - act$crash_t
+
+cat("Crash cost per day:\n")
+print(act[c("id", "slope", "max_crash")], row.names = FALSE)
+
+target_reduction <- 4          # days to remove from the project
+order_by_cost <- act[order(act$slope), ]
+
+remaining <- target_reduction
+total_cost <- 0
+cat(sprintf("\nGoal: remove %d days, cheapest first\n", target_reduction))
+for (i in seq_len(nrow(order_by_cost))) {
+  take <- min(remaining, order_by_cost$max_crash[i])
+  if (take <= 0) break
+  cost <- take * order_by_cost$slope[i]
+  total_cost <- total_cost + cost
+  remaining <- remaining - take
+  cat(sprintf("  crash %s by %d day(s) @ $%.0f/day = $%s\n",
+              order_by_cost$id[i], take, order_by_cost$slope[i],
+              format(cost, big.mark = " ")))
+}
+cat(sprintf("\nTotal crash cost for %d days: $%s\n",
+            target_reduction - remaining, format(total_cost, big.mark = " ")))
+if (remaining > 0) cat(sprintf("Still %d day(s) short -- no cheap critical task left to crash.\n", remaining))
+```
+
+## Fast-tracking versus crashing
+
+| | **Crashing** | **Fast-tracking** |
+|---|---|---|
+| Method | Add resources (overtime, staff, expediting) | Overlap tasks that were sequential |
+| Cost | Always adds cost | Little or no added cost |
+| Risk | Diminishing returns; overtime burnout | Rework if the predecessor changes after the successor started |
+
+Both only help on the **critical path**, and after either one you must
+**re-check the network** --- the critical path can move.
+
+## Key Takeaways
+
+- A **Gantt chart** puts the network on a calendar and lets you track progress; it shows activities, dependencies, and resources at once.
+- Four precedence types: **FS** (default), **FF**, **SS**, **SF** --- with **leads** (overlap) and **lags** (forced wait).
+- PERT project: $\mu = \sum t_e$ and $\sigma = \sqrt{\sum \sigma^2}$ along the **critical path**. The mean is a ~50 % date.
+- Probability of on-time: $z = (\text{target} - \mu)/\sigma$, then the normal CDF. Commit to an ~85--90 % date, not the mean.
+- **Crash cost slope** $=$ (crash cost − normal cost) / (normal time − crash time). Crash **critical tasks, cheapest slope first**.
+- **Crashing** buys time with money; **fast-tracking** buys it with rework risk. Re-check the critical path after either.
+
+## Practice Problems
+
+<details>
+<summary>Problem 1: Least-cost crash to a deadline</summary>
+
+Project critical path A--F--H, currently 23 weeks; the contract needs 20. Crash
+data: A \$513/wk (max 4 wk), F \$1 500/wk (max 1 wk), H \$950/wk (max 2 wk).
+Find the least-cost way to remove 3 weeks.
+
+**Solution.**
+
+```{r p1-crash-08, echo=TRUE}
+crash <- data.frame(
+  id = c("A", "F", "H"),
+  slope = c(513, 1500, 950),
+  max = c(4, 1, 2)
+)
+need <- 3
+crash <- crash[order(crash$slope), ]
+left <- need; cost <- 0
+for (i in seq_len(nrow(crash))) {
+  take <- min(left, crash$max[i]); if (take <= 0) break
+  cost <- cost + take * crash$slope[i]; left <- left - take
+  cat(sprintf("Crash %s by %d wk @ $%d = $%s\n", crash$id[i], take, crash$slope[i],
+              format(take * crash$slope[i], big.mark = " ")))
+}
+cat(sprintf("Total: $%s for %d weeks\n", format(cost, big.mark = " "), need - left))
+```
+
+Crash A by 3 weeks for \$1 539 --- far cheaper than touching F or H.
+
+</details>
+
+<details>
+<summary>Problem 2: Confidence in a date</summary>
+
+A project's critical path has $\mu = 60$ days and $\sigma = 4$ days. The customer
+wants delivery in 64 days.
+
+(a) What is the probability of meeting day 64? (b) What date should you commit to
+for 95 % confidence?
+
+**Solution.**
+
+```{r p2-prob-08, echo=TRUE}
+mu <- 60; sigma <- 4
+cat(sprintf("P(finish by day 64) = %.1f%%\n", 100 * pnorm((64 - mu) / sigma)))
+cat(sprintf("95%% confident date  = day %.1f\n", mu + qnorm(0.95) * sigma))
+```
+
+(a) ~84 %. (b) Day 66.6 --- commit to day 67.
+
+</details>
+
+<details>
+<summary>Problem 3 (discussion): crash or fast-track the RC-vehicle launch?</summary>
+
+The retailer moves the launch three weeks earlier. Design is on the critical
+path and is followed by prototype assembly (also critical). You could add a
+second designer and pay overtime (crash), or start building the frame jig from
+the released frame drawings while the body design is still being finalized
+(fast-track). Which, and why?
+
+**Discussion points.** Fast-tracking the jig against the *frame* drawings is
+low-cost and reasonably safe *if* the frame design is stable --- but if the body
+design forces a late frame change, the jig is rework. Crashing design with a
+second modeller adds cost and has coordination overhead (two people on one
+model), but no rework risk. A common answer: fast-track the clearly stable parts,
+crash the rest, and hold a contingency for the rework risk you accepted.
+
+</details>
+
+## Further Resources
+
+```{r video-resources-08, echo=FALSE, results='asis'}
+embed_youtube("6B7Qtc3rrQ4", "PERT / Three-Point Estimation Technique")
+embed_youtube("4oDLMs11Exs", "Forward and Backward Pass -> Project Duration and Critical Path")
+```
