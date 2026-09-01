@@ -684,7 +684,7 @@ cat("Annual material cost change : ",
     " (an increase)\n", sep = "")
 ```
 
-(a) About 7 200 kg less plastic per year, but roughly \$3 700/yr more spent on
+(a) About 7 200 kg less plastic per year, but roughly \$9 600/yr more spent on
 material because PP costs more per gram here and the 3 g saving does not fully
 offset it.
 
