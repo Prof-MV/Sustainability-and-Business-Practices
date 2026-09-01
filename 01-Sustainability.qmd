@@ -651,6 +651,53 @@ cat(sprintf("\nWaste KPI status: %s\n", status))
 - Consumers give ground on **price and cosmetics** but not on **performance or durability**; **whole-life cost** usually favours the durable design on both dollars and landfill count.
 - In **project management**, sustainability is a checklist across procurement, design, operations, and governance --- backed by **circular-economy** loops and tracked with **KPIs** (carbon per unit, waste diversion, recycled content).
 
+## Case Study: Meridian R/C — Week 1
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 1: The Body & Frame Material Decision"}
+
+Meridian R/C Vehicles is racing a deadline neither you nor your sponsor can
+move. Kestrel Retail Group, a national toy retailer, has told Daniel Cho,
+Meridian's VP of Product, that if the **Meridian Trailblazer** — a
+1/18-scale rally-truck replica — passes durability testing and toy-safety
+certification, Kestrel's Category Buyer, Renata Ford, will place a
+**100,000+ unit** production order in time for next year's holiday season.
+Before a single tool is cut, you and your manufacturing engineer, **Priya
+Nandakumar**, have to settle the one decision that shapes every cost, mass,
+and end-of-life number that follows: what is the Trailblazer's body and
+frame made of?
+
+Priya frames it as a three-way trade study. Steel bodies would weigh about
+140 g each and cost roughly $1.20/kg in raw material — cheap, but steel is
+the heaviest of the three candidates and, for this die-cast toy geometry,
+the least attractive to recycle back into value. Carbon-fibre composite is
+the opposite extreme: a 38 g body, the best strength-to-weight ratio by
+far, but at roughly $28/kg in material alone — and once a thermoset
+carbon-fibre part reaches end of life in a child's toy box, there is no
+practical way to recycle it. Aluminium lands in the middle on every axis:
+about 70 g per body, $3/kg, and — critically — genuinely recyclable at
+scale.
+
+| Candidate | Body mass | Material cost | End-of-life recyclability |
+|---|---|---|---|
+| Steel | 140 g | $1.20/kg | Heavy; low recyclate value for this design |
+| **Aluminium (chosen)** | 70 g | $3.00/kg | High — genuinely recyclable |
+| Carbon fibre | 38 g | $28.00/kg | Very poor — thermoset, effectively unrecyclable |
+
+You, Priya, procurement lead **Marcus Webb**, and quality engineer **Sofia
+Reyes** agree: aluminium is the call for both the body and the frame. It is
+not the lightest option and it is not the cheapest raw material, but it is
+the only one that clears the bar on cost *and* recyclability at once —
+exactly the kind of "no pillar loses" decision the sustainability framework
+asks for. Carbon fibre does not disappear from the story, though. **Fibro
+Source**, a carbon-fibre supplier in Sherbrooke, Quebec that is
+mid-restructuring after a recent French acquisition, stays on the supplier
+list — not for the core prototype, but as an optional carbon-fibre trim and
+spoiler package Kestrel could offer later as a premium upsell. Daniel Cho
+signs off: aluminium body and frame, carbon fibre trim only if the business
+case for it ever appears.
+
+:::
+
 ## Practice Problems
 
 <details>

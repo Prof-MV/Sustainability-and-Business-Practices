@@ -292,6 +292,48 @@ cat("Change the weights to your project's priorities and watch the answer move.\
 - Teams fight most about **schedules, priorities, and resources** --- **personality** is last and is usually a misdiagnosis of an unresolved root cause.
 - Match the resolution method --- **confronting, compromising, withdrawal, smoothing, forcing** --- to the situation; confronting is the durable fix.
 
+## Case Study: Meridian R/C — Week 10
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 10: The MCS/Paragon Showdown"}
+
+By Week 10, the motor and controller package --- the single biggest line item
+in Meridian's budget and the longest-lead, critical-path activity in the
+schedule --- stops being a formality. The Week 9 budget assumed MCS's original
+quote: **\$145,000** for the full package, with a **25-day lead time**. It is
+the number already baked into every schedule and cost baseline you have built
+so far.
+
+Then Marcus Webb, your procurement lead, brings you a competing quote.
+Paragon, the newer Kingston, Ontario supplier, will do the same package for
+**\$118,000** --- in just **20 days**. Marcus wants to switch immediately.
+Sofia Reyes, your quality and test engineer, pushes back hard: Paragon's
+controller technology is unproven, and the Week 7 risk register already
+flagged it as **R1** --- a 30% chance the technology fails qualification, at
+an \$80,000 impact, for an EMV of **\$24,000**. Add that risk cost to
+Paragon's sticker price and the real, risk-adjusted cost is
+**\$118,000 + \$24,000 = \$142,000** --- narrowly cheaper than MCS on paper,
+but not the bargain it first appears.
+
+You will not let the team split the difference by shouting. Your BATNA going
+into the negotiation is simple and safe: proceed with MCS at \$145,000, the
+proven supplier, with no qualification risk. But a strong BATNA is leverage,
+not a decision --- so instead of picking a side in the Marcus/Sofia standoff,
+you take Paragon's quote back to MCS. MCS knows the stakes: losing this
+contract could cost them the follow-on 100,000-unit production order Kestrel
+Retail Group is set to place once Meridian's prototype passes testing. Facing
+a credible alternative, MCS concedes --- dropping its price to **\$136,000**,
+a **\$9,000 (6.2%)** reduction from its original quote, while holding its
+25-day lead time.
+
+The outcome resolves both negotiations at once. Meridian keeps its proven
+supplier and captures real, verified savings, with no new qualification risk
+introduced. And the Marcus/Sofia conflict is settled not by forcing one side
+to lose, but through **compromising**: Marcus gets the lower price he wanted,
+Sofia keeps the proven supplier she insisted on. Neither gets everything;
+both get enough.
+
+:::
+
 ## Practice Problems
 
 <details>

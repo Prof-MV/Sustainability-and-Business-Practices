@@ -271,6 +271,34 @@ number** combining severity, occurrence, and detection).
 - **Task contingency** is the PM's; **managerial contingency** is management's, for the truly unforeseeable.
 - **FMEA** systematically surfaces technical failure modes, causes, and effects.
 
+## Case Study: Meridian R/C — Week 7
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 7: The Motor-Supplier Risk Register"}
+
+You call a formal risk workshop this week, before a single dollar is committed to a motor-controller contract. Priya Nandakumar, Marcus Webb, and Sofia Reyes join you around the whiteboard; Daniel Cho, mindful of the \$800,000 charter ceiling he authorized back in Week 3, has asked for a dollar-costed register, not a list of worries. Kestrel Retail Group's 100,000-unit holiday order is still contingent on the Trailblazer prototype clearing durability testing and toy-safety certification, so anything that could derail either milestone earns a line on the register.
+
+The motor-and-controller sourcing question is still wide open --- that decision does not land until Week 10 --- and it dominates the room. MCS, the trusted incumbent in Surrey, BC, is mid-move to a Mexican production line. Paragon, in Kingston, ON, is cheaper but unproven, and its staff are still negotiating their first labour contract. Marcus argues the team should keep an open mind toward Paragon's lower sticker price; Sofia counters that an unqualified controller is exactly the kind of risk that shows up in a durability-test failure report. Rather than settle the argument today, you convert it into a risk. Alongside it you register the MCS relocation, the carbon-fibre trim supplier's ongoing restructuring, and the ever-present chance that certification itself turns something up.
+
+| ID | Risk | Probability | Impact | EMV |
+|---|---|---|---|---|
+| R1 | Paragon's unproven controller tech fails qualification | 30% | \$80,000 | \$24,000 |
+| R2 | MCS's move to Mexico delays the first shipment | 25% | \$45,000 | \$11,250 |
+| R3 | Fibro Source restructuring delays the carbon-fibre trim package | 20% | \$30,000 | \$6,000 |
+| R4 | Toy-safety certification finds a defect requiring redesign | 15% | \$100,000 | \$15,000 |
+
+R1 posts the highest EMV of the four --- not because it carries the biggest single impact (R4's \$100,000 redesign is worse on paper) but because its probability is twice R4's. That is the number Sofia holds up in the meeting: whichever way the Week 10 sourcing decision goes, Paragon cannot be treated as a drop-in substitute without a qualification sample first.
+
+Response strategies, agreed before anyone leaves the room:
+
+- **R1** --- mitigate (require a qualification sample before signing any contract) or avoid entirely (stay with MCS).
+- **R2** --- accept, backed by a schedule contingency buffer.
+- **R3** --- transfer (a penalty clause in the Fibro Source contract) or mitigate (line up a backup carbon-fibre source).
+- **R4** --- mitigate, by running an internal pre-test ahead of the formal certification submission.
+
+Nothing here forces the MCS/Paragon call yet --- that negotiation is still three weeks away --- but the register now puts a number on waiting too long to decide.
+
+:::
+
 ## Practice Problems
 
 <details>

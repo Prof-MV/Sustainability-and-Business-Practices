@@ -634,6 +634,48 @@ the ceiling, that is a **feasibility** finding, not a rounding problem.
 - A **time-phased budget** produces the **cumulative cost baseline (S-curve)** you track against later.
 - **Contingency reserve** (10--15 %, PM-owned, inside the baseline, covers known-unknowns) is distinct from the **management reserve** (sponsor-owned, outside the baseline, covers unknown-unknowns). Contingency is added **after** ABC, never inside it.
 
+## Case Study: Meridian R/C — Week 9
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 9: The Bottom-Up Budget Goes to Daniel Cho"}
+
+Six weeks after Daniel Cho signed off on the $800,000 charter ceiling, you owe
+him something more defensible than a ballpark: a definitive, bottom-up budget
+built activity by activity off the WBS you cut with Priya Nandakumar, Marcus
+Webb, and Sofia Reyes back in Week 5. This week you assembled it, work
+package by work package, and sat down with Daniel for sign-off.
+
+You started with labour, costing each team member's time against the
+prototype phase: yourself as PM at $72,000, Priya (tooling) at $42,000,
+Marcus (procurement) at $38,000, and Sofia (quality and test) at $36,000 —
+a labour subtotal of **$188,000**. Then you rolled up the direct-cost line
+items Marcus, Priya, and Sofia had been pricing with suppliers all along: the
+motor and controller package MCS had quoted at $145,000, the aluminium for
+the body and frame (the Week 1 material decision) at $95,000, the body and
+frame tooling dies at $150,000, testing and certification fees at $60,000,
+government and toy-safety approval fees at $6,000, and packaging and shipping
+for the client sample run at $18,000 — a direct-cost subtotal of
+**$474,000**.
+
+Labour plus direct costs gives total direct costs of **$662,000**. Following
+the course's Costs Chart convention — and remembering that contingency is
+never buried inside an activity-based budget, only added on top once every
+line item is identified — you applied a **15% contingency on the full
+$662,000 direct-cost total**, not just the material-and-vendor subtotal. That
+adds **$99,300**, for a **Budget at Completion (BAC) of $761,300**.
+
+Daniel did the arithmetic you knew he would: $761,300 against his $800,000
+ceiling leaves **$38,700 of headroom** — about 4.8% of the ceiling. Comfortable,
+but not so much that he waved it through without questions. He pressed
+hardest on the $150,000 tooling line (largest single item after labour) and
+on why testing and certification, at $60,000, was priced near the top of the
+brief's original $25,000–$100,000 range rather than the middle. You walked him
+through the WBS lineage of each number — 1.2 Tooling & Fabrication, 1.5
+Testing & Certification — and he signed off. The bottom-up number now becomes
+the baseline you will track against once the S-curve is time-phased and,
+later, once Earned Value tracking begins in Week 12.
+
+:::
+
 ## Practice Problems
 
 <details>

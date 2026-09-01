@@ -377,6 +377,55 @@ matrix team member has two bosses.
 - **Culture** shapes project outcomes through department cooperation, commitment, planning honesty, and what performance evaluation rewards.
 - **Structure** sets the PM's real authority: near zero in **functional**, near total in **projectized**, negotiated in the **matrix** (weak/balanced/strong) --- where everyone has two bosses.
 
+## Case Study: Meridian R/C — Week 3
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 3: The Charter Lands on Your Desk"}
+
+This week the paperwork catches up with the promise. Daniel Cho, Meridian's VP
+of Product and the project's sponsor, signs off on the project charter for the
+Meridian Trailblazer, the 1/18-scale rally-truck replica that Kestrel Retail
+Group has all but promised to order in bulk --- 100,000 units or more for next
+year's holiday season --- if the prototype survives durability testing and
+toy-safety certification. Cho's signature does more than start the clock: it
+sets a hard ceiling. You are authorized to spend **up to $800,000** to get a
+certified, sellable prototype in front of Kestrel. Every budget you build from
+here --- the detailed estimate due in a few weeks, the crashing decisions
+later, the earned-value tracking after that --- has to fit under that number.
+
+The charter also settles a structural question you've been dancing around
+since the aluminium-vs-steel-vs-carbon-fibre debate in Week 1: Meridian is not
+spinning up a dedicated project team. You are running a **matrix
+organization**. Priya Nandakumar keeps her desk in Manufacturing Engineering
+and is loaned to you for body and frame tooling. Marcus Webb still reports to
+Procurement and negotiates your supplier contracts on top of his other
+accounts. Sofia Reyes stays inside Quality and splits her week between your
+durability and certification testing and her department's other work. None of
+the three has you as their only boss --- and neither do you have them full
+time.
+
+With the charter signed, you sit down and sketch a power-interest grid to
+decide where your attention goes this quarter:
+
+| Stakeholder | Power | Interest | Quadrant |
+|---|---|---|---|
+| Kestrel Retail Group | High | High | Manage closely |
+| Daniel Cho (sponsor) | High | High | Manage closely |
+| MCS (motor supplier) | Medium | High | Keep informed |
+| Paragon (motor supplier) | Medium | High | Keep informed |
+| Internal QA department | Medium | Medium | Keep satisfied |
+| Fibro Source (trim supplier) | Low | Low | Monitor |
+
+Kestrel and Cho land in the top-right corner --- high power, high interest ---
+because either one can stall or kill the project. MCS and Paragon, your two
+candidate motor suppliers, sit at medium power but high interest: they care
+intensely about winning the contract, so you keep them informed even though
+neither can unilaterally derail you. Internal QA, medium on both axes, gets
+kept satisfied: not a daily conversation, but not ignored either. Fibro
+Source, supplying only the optional carbon-fibre trim package, is low power
+and low interest --- worth monitoring, nothing more.
+
+:::
+
 ## Practice Problems
 
 <details>

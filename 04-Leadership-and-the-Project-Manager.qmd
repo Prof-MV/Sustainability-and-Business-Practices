@@ -289,6 +289,18 @@ components:
 - Diagnose motivation with **Herzberg** (fix hygiene to stop dissatisfaction, add motivators to raise engagement) and **expectancy** ($E \times I \times V$ --- any factor near zero kills it).
 - **Emotional intelligence** --- self-awareness, self-regulation, motivation, empathy, social skill --- separates effective project leaders from merely competent ones.
 
+## Case Study: Meridian R/C — Week 4
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 4: The Whiteboard Moment"}
+
+Four weeks into the Meridian Trailblazer prototype, the team gathers for its regular Tuesday design review --- Priya Nandakumar (tooling), Marcus Webb (procurement), Sofia Reyes (quality and test), and Owen Matsuda, a co-op student newly rotated in to shadow the tooling work. The charter Daniel Cho signed in Week 3 is in hand, the aluminium body-and-frame decision from Week 1 is locked, and the team has moved on to something less settled: which motor and controller supplier to commit to, MCS or the newer Paragon. It is still an early, informal debate --- no quotes on the table yet --- but it is already loud. Marcus keeps steering the conversation toward Paragon's lower sticker price; Sofia keeps pulling it back to qualification risk. Positions are hardening, side conversations are breaking out, and twice now someone has cut off someone else mid-sentence. You recognize it the moment it starts: this is Tuckman's storming, arriving right on schedule. It is uncomfortable, but it is not a sign anything has gone wrong --- yet.
+
+Into that tension, Owen raises a hand and offers an idea about the frame's mounting-tab geometry, something he saw work on a project during a previous rotation. Priya, mid-argument with Marcus and not really listening, cuts him off --- "that's not how we do it here" --- and moves straight back to the supplier debate. The room goes quiet for a beat. The mounting-tab idea was not the real loss; what a new team member just learned is that raising a suggestion here costs something.
+
+You do not correct it in the room. You address it afterward, with each person separately, because the two problems call for two different tools. With Owen, you use a coaching style: you ask him to walk you through the mounting-tab idea in full, help him sharpen it into two concrete questions, and set aside five minutes at the next stand-up for him to raise it himself, in front of the team. With Priya, whose tooling judgment has been sound since the Week 1 material call and who does not need you supervising her every interaction, you use a delegating style: a short, low-drama flag that new voices need room to speak in these early weeks, then trust her to follow up with Owen in her own way. Neither conversation is a lecture. Both are sized to how ready each person already is --- direction for the newcomer still finding his footing, room for the veteran who already knows how to lead.
+
+:::
+
 ## Practice Problems
 
 <details>

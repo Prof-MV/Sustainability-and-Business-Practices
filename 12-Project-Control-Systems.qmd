@@ -290,6 +290,54 @@ comfort blanket.
 - Keep the **baseline meaningful** through integrated change control and configuration management.
 - Report **honestly, consistently, and actionably** --- every variance gets an owner.
 
+## Case Study: Meridian R/C — Week 12
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 12: One Good Number Doesn't Make a Good Week"}
+
+Day 50, and it's time to run the loop this chapter just walked you through
+--- measure, compare, analyze, act --- against real Trailblazer numbers
+instead of a textbook example. Sofia Reyes's weekly report lands with a
+summary line that looks encouraging at a glance: spend is roughly tracking
+the plan. You know better than to stop at a glance.
+
+| Metric | Value |
+|---|---|
+| BAC (Budget At Completion) | \$761,300 |
+| PV (Planned Value, day 50) | \$560,000 |
+| EV (Earned Value, day 50) | \$520,000 |
+| AC (Actual Cost, day 50) | \$545,000 |
+
+You run the four core numbers yourself before the steering call. CV = EV −
+AC = \$520,000 − \$545,000 = **−\$25,000** --- over budget. SV = EV − PV =
+\$520,000 − \$560,000 = **−\$40,000** --- behind schedule. CPI = EV/AC =
+520/545 ≈ **0.95**. SPI = EV/PV = 520/560 ≈ **0.93**. Running BAC/CPI forward
+gives an EAC of roughly **\$798,000** --- a forecast, not a certainty, but not
+a comfortable one either.
+
+The schedule slip traces to one place: activity H, toy-safety certification,
+which has sat on the critical path with zero float since the CPM network was
+first built back in Week 6. The certification lab pushed back its review
+date, and because H has no float, every day it slips is a day the whole
+67-day project finish slips with it.
+
+The cost story is the sharper lesson. Two weeks ago, Marcus Webb talked MCS
+down from \$145,000 to **\$136,000** for the motor-and-controller package
+--- a genuine \$9,000 win, hard-negotiated, real money, and the whole point
+of using the competing Paragon quote as leverage. So why is AC still running
+\$25,000 ahead of EV? Because elsewhere on the project, packaging samples had
+to move by expedited freight to protect the schedule, and that bill quietly
+ate the MCS saving and then some. A favourable variance on one activity,
+read on its own, told the team nothing reliable about the project's overall
+health --- exactly the trap this chapter's "watermelon" warning describes:
+green on the outside, red once you look underneath.
+
+There is a sliver of good news buried in the bad. At roughly \$798,000, the
+EAC still sits just under Daniel Cho's \$800,000 charter ceiling from Week 3
+--- a thin margin, but a margin, assuming nothing else slips before Week
+13's closeout.
+
+:::
+
 ## Practice Problems
 
 <details>

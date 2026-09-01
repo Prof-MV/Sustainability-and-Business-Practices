@@ -269,6 +269,47 @@ cat("\n", verdict, "\n", sep = "")
 - **Cancel** when the **cost to complete exceeds the remaining benefit** --- the money already spent is **sunk** and irrelevant to that decision.
 - Famous failures share the same causes: **scope not understood, cost concealed, testing cut, interfaces unplanned, sunk-cost momentum.**
 
+## Case Study: Meridian R/C — Week 13
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 13: The Trailblazer Ships"}
+
+Thirteen weeks after Daniel Cho signed a $800,000 charter for a single
+prototype, you close the file on the Meridian Trailblazer with a phone call
+from Renata Ford. The drop/durability test (activity G) and the toy-safety
+certification (activity H) — the two milestones every other decision this
+quarter was built to protect — both pass. Kestrel Retail Group approves the
+prototype and awards Meridian the **100,000-unit production contract** for
+next year's holiday season. The bet you made in Week 1, choosing aluminium
+over steel and carbon fibre for the body and frame, paid off exactly as
+planned: durable enough to pass, affordable enough to scale.
+
+This is a **termination by integration**, not addition: there is no separate
+production-support team to hand the project to, because the project *becomes*
+production. Priya Nandakumar and Sofia Reyes are reassigned directly into
+production engineering, carrying the tooling and testing knowledge they built
+over thirteen weeks straight into the ramp-up. Marcus Webb stays on supplier
+contracts, now renegotiating MCS's $136,000 motor-and-controller price at
+100,000-unit volume instead of prototype volume. You report to Daniel Cho
+a final Estimate at Completion of **~$798,000** against his $800,000 ceiling
+— effectively on budget, a $2,300 margin that vindicates the bottom-up
+number Daniel questioned so hard back in Week 9.
+
+Closing the history file, three lessons learned carry forward into the
+production program. First, the **$9,000 MCS negotiation saving** from Week
+10: using the Paragon quote as leverage, without ever intending to switch
+suppliers, protected both the proven vendor relationship and the schedule.
+Second, **Priya's Week 11 overallocation**, resolved by shifting frame
+tooling (activity D) inside its own ten days of float rather than adding
+headcount — proof that a resource conflict is not always a hiring problem.
+Third, the **Week 2 communication near-miss**, where a spec change missed
+Kestrel's Vancouver buyer and cost three days and $4,000 — the RACI matrix
+adopted afterward is the reason the Week 13 sign-off reached every
+stakeholder the first time. The schedule, the budget, the people, and the
+lessons all land in the same file: the Trailblazer prototype is finished, and
+the production program it built starts from everything this one got right.
+
+:::
+
 ## Practice Problems
 
 <details>

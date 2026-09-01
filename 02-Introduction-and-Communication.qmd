@@ -392,6 +392,65 @@ transparency, accountability, and early warning.
 - **Listening** is ~55 % of communication and the least trained; ~93 % of meaning is nonverbal. Watch for the **selective attention/interpretation/retention** filters and the de-railers.
 - Match the **method** (formal/informal × written/verbal) to the message, and the **report** (status/progress/trend/forecast/variance/EVM) to the stakeholder's question.
 
+## Case Study: Meridian R/C — Week 2
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 2: The Email That Didn't Reach Vancouver"}
+
+Three weeks after Daniel Cho green-lit the Meridian Trailblazer prototype, Sofia
+Reyes flagged a durability concern in the early drop-test data: the die-cast
+aluminium body and frame were flexing more than expected at the wheel-well
+corners. Priya Nandakumar's fix was straightforward --- thicken the aluminium
+wall from **1.2 mm to 1.5 mm**, a change that would not touch the tooling
+budget but would add a fraction of a gram per unit. You approved it the same
+afternoon and asked Marcus Webb to notify everyone downstream who depended on
+the old spec sheet.
+
+That is where it went wrong. Marcus fired off the update to the internal
+engineering distribution list --- Priya, Sofia, the CAD vendor, and you ---
+because that was the list he had bookmarked from the Week 1 kickoff. It was
+the right list for people *building* the part. It was not the right list for
+people *selling* it. Kestrel Retail Group's Category Buyer, **Renata Ford**,
+based out of **Vancouver**, had been working from the original 1.2 mm spec
+sheet to brief her own packaging and merchandising team on box dimensions and
+weight claims. Nobody had ever added her, or Kestrel's Vancouver office
+generally, to any distribution list --- because no such list existed. Renata
+found out about the change only when her packaging vendor's proof came back
+listing a spec that did not match Meridian's shipped sample.
+
+The fallout: a **3-day delay** while Kestrel's packaging vendor reprinted spec
+sheets and box art, and a **$4,000** rush-reprint charge nobody had budgeted
+for. Daniel Cho was patient about the money but blunt about the cause: *"This
+wasn't a design problem. It was a mailing-list problem."*
+
+You rebuilt the communication plan that week. A **weekly status email** now
+goes to a named, role-based distribution list --- not a bookmarked group of
+whoever was in the room at kickoff. A **biweekly steering call** with Daniel
+and Kestrel keeps the client in sync in real time instead of by forwarded
+email. And a **RACI matrix** now spells out, for every deliverable, who is
+Responsible, Accountable, Consulted, and Informed --- so "who else needs to
+know this" stops being a guess. The timing mattered too: the team was about
+to grow from 4 people to 7, taking the number of two-way communication
+channels from $n(n-1)/2 = 6$ to **21** --- more than triple the coordination
+load the new plan now had to carry.
+
+| Metric | Before the fix | After the fix |
+|---|---|---|
+| Distribution list | Ad hoc, engineering-only | Named, role-based (RACI-driven) |
+| Client sync | None scheduled | Weekly status email + biweekly steering call |
+| Team size | 4 | 7 |
+| Two-way channels ($n(n-1)/2$) | 6 | 21 |
+
+:::
+
+<details>
+<summary>Case-study question pool</summary>
+
+A 21-question autograded pool testing this Week 2 episode --- the
+communication failure, the fix, and the channel-count math --- is available
+as a separate Brightspace quiz import (`quizzes/case-study/02-Meridian-Case-quiz.csv`).
+
+</details>
+
 ## Practice Problems
 
 <details>

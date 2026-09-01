@@ -325,6 +325,35 @@ cat("Note how the critical path can *shift* to a different chain once you crash 
 - **PERT**: $t_e = (o + 4m + p)/6$, activity SD $= (p - o)/6$.
 - Shorten the critical path by **eliminating, parallelizing, overlapping, or crashing** critical tasks --- and re-check, because the critical path can shift.
 
+## Case Study: Meridian R/C — Week 6
+
+::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 6: The network comes together"}
+
+Daniel Cho has been asking the same question in every steering call since the charter was signed: when does the Trailblazer prototype actually ship to Kestrel? This week you have a real answer, because you and Priya Nandakumar finally turned the "Prototype Build & Qualification" branch of the WBS into an activity-on-node network instead of a list of jobs on a whiteboard.
+
+Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches --- Priya's body and frame tooling builds, and Marcus Webb's motor-and-controller procurement from MCS --- which all have to finish before Sofia Reyes's team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the *slowest* of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full weeks after Marcus's frame tooling and five days after Priya's body tooling --- which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.
+
+The backward pass confirms it: activities A, B, E, F, H, I, and J all land with zero float. That chain --- concept CAD through detailed design, motor procurement, assembly, toy-safety certification, packaging, and your sign-off report to Renata Ford --- is the critical path, and it sets the whole prototype phase at 67 working days, just under 13.5 weeks. Body tooling (C) has 5 days of cushion, frame tooling (D) has 10, and the durability test (G) has 7 --- comfortable float today, but float that Priya and Sofia will need to manage carefully once resource assignments get made in a few weeks.
+
+You flag one thing for the team before the meeting ends: activity E is both the longest single activity on the critical path and completely outside Meridian's control once the purchase order is placed. Anything that slows MCS down slows the whole project down. That single line in the network diagram is the reason procurement risk is going to dominate next week's risk-identification session.
+
+| Activity | Description | Duration (days) | Predecessors | ES | EF | LS | LF | Float |
+|---|---|---|---|---|---|---|---|---|
+| A | Concept CAD | 10 | --- | 0 | 10 | 0 | 10 | 0 |
+| B | Detailed design release | 8 | A | 10 | 18 | 10 | 18 | 0 |
+| C | Body tooling build | 20 | B | 18 | 38 | 23 | 43 | 5 |
+| D | Frame tooling build | 15 | B | 18 | 33 | 28 | 43 | 10 |
+| E | Motor & controls procurement (MCS) | 25 | B | 18 | 43 | 18 | 43 | 0 |
+| F | Prototype assembly | 6 | C, D, E | 43 | 49 | 43 | 49 | 0 |
+| G | Drop/durability test | 5 | F | 49 | 54 | 51 | 56 | 7 |
+| H | Toy-safety certification | 12 | F | 49 | 61 | 49 | 61 | 0 |
+| I | Packaging & client sample ship | 4 | G, H | 61 | 65 | 61 | 65 | 0 |
+| J | PM sign-off / report to Kestrel | 2 | I | 65 | 67 | 65 | 67 | 0 |
+
+: The Week 6 Meridian Trailblazer CPM network. Project duration: 67 working days.
+
+:::
+
 ## Practice Problems
 
 <details>
