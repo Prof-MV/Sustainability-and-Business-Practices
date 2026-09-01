@@ -1852,8 +1852,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#the-downside-of-network-diagrams" id="toc-the-downside-of-network-diagrams" class="nav-link" data-scroll-target="#the-downside-of-network-diagrams"><span class="header-section-number">6.8</span> The downside of network diagrams</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">6.9</span> Key Takeaways</a></li>
-  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">6.10</span> Practice Problems</a></li>
-  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">6.11</span> Further Resources</a></li>
+  <li><a href="#case-study-meridian-rc-week-6" id="toc-case-study-meridian-rc-week-6" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-6"><span class="header-section-number">6.10</span> Case Study: Meridian R/C — Week 6</a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">6.11</span> Practice Problems</a></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">6.12</span> Further Resources</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/06-Network-Diagrams-and-AON.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -2387,8 +2388,166 @@ Why the weight of 4 on the most-likely value?
 <li>Shorten the critical path by <strong>eliminating, parallelizing, overlapping, or crashing</strong> critical tasks — and re-check, because the critical path can shift.</li>
 </ul>
 </section>
-<section id="practice-problems" class="level2" data-number="6.10">
-<h2 data-number="6.10" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">6.10</span> Practice Problems</h2>
+<section id="case-study-meridian-rc-week-6" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="case-study-meridian-rc-week-6"><span class="header-section-number">6.10</span> Case Study: Meridian R/C — Week 6</h2>
+<div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 6: The network comes together">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>📁 CASE STUDY FILE — Week 6: The network comes together
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Daniel Cho has been asking the same question in every steering call since the charter was signed: when does the Trailblazer prototype actually ship to Kestrel? This week you have a real answer, because you and Priya Nandakumar finally turned the “Prototype Build &amp; Qualification” branch of the WBS into an activity-on-node network instead of a list of jobs on a whiteboard.</p>
+<p>Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches — Priya’s body and frame tooling builds, and Marcus Webb’s motor-and-controller procurement from MCS — which all have to finish before Sofia Reyes’s team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the <em>slowest</em> of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full weeks after Marcus’s frame tooling and five days after Priya’s body tooling — which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.</p>
+<p>The backward pass confirms it: activities A, B, E, F, H, I, and J all land with zero float. That chain — concept CAD through detailed design, motor procurement, assembly, toy-safety certification, packaging, and your sign-off report to Renata Ford — is the critical path, and it sets the whole prototype phase at 67 working days, just under 13.5 weeks. Body tooling (C) has 5 days of cushion, frame tooling (D) has 10, and the durability test (G) has 7 — comfortable float today, but float that Priya and Sofia will need to manage carefully once resource assignments get made in a few weeks.</p>
+<p>You flag one thing for the team before the meeting ends: activity E is both the longest single activity on the critical path and completely outside Meridian’s control once the purchase order is placed. Anything that slows MCS down slows the whole project down. That single line in the network diagram is the reason procurement risk is going to dominate next week’s risk-identification session.</p>
+<table class="caption-top table">
+<caption>The Week 6 Meridian Trailblazer CPM network. Project duration: 67 working days.</caption>
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Activity</th>
+<th>Description</th>
+<th>Duration (days)</th>
+<th>Predecessors</th>
+<th>ES</th>
+<th>EF</th>
+<th>LS</th>
+<th>LF</th>
+<th>Float</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Concept CAD</td>
+<td>10</td>
+<td>—</td>
+<td>0</td>
+<td>10</td>
+<td>0</td>
+<td>10</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>Detailed design release</td>
+<td>8</td>
+<td>A</td>
+<td>10</td>
+<td>18</td>
+<td>10</td>
+<td>18</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>Body tooling build</td>
+<td>20</td>
+<td>B</td>
+<td>18</td>
+<td>38</td>
+<td>23</td>
+<td>43</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>D</td>
+<td>Frame tooling build</td>
+<td>15</td>
+<td>B</td>
+<td>18</td>
+<td>33</td>
+<td>28</td>
+<td>43</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td>Motor &amp; controls procurement (MCS)</td>
+<td>25</td>
+<td>B</td>
+<td>18</td>
+<td>43</td>
+<td>18</td>
+<td>43</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>Prototype assembly</td>
+<td>6</td>
+<td>C, D, E</td>
+<td>43</td>
+<td>49</td>
+<td>43</td>
+<td>49</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>Drop/durability test</td>
+<td>5</td>
+<td>F</td>
+<td>49</td>
+<td>54</td>
+<td>51</td>
+<td>56</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>Toy-safety certification</td>
+<td>12</td>
+<td>F</td>
+<td>49</td>
+<td>61</td>
+<td>49</td>
+<td>61</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>I</td>
+<td>Packaging &amp; client sample ship</td>
+<td>4</td>
+<td>G, H</td>
+<td>61</td>
+<td>65</td>
+<td>61</td>
+<td>65</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>J</td>
+<td>PM sign-off / report to Kestrel</td>
+<td>2</td>
+<td>I</td>
+<td>65</td>
+<td>67</td>
+<td>65</td>
+<td>67</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="practice-problems" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">6.11</span> Practice Problems</h2>
 <details>
 <summary>
 Problem 1: Solve this network
@@ -2498,8 +2657,8 @@ Problem 3 (discussion): which task do you crash?
 <p><strong>Discussion points.</strong> You need 4 days. Cheapest first: E for 2 days ($600), then B for 2 days ($1 000) — total $1 600 for 4 days. Avoid G at $1 200/day. <strong>Then re-run the network</strong>: after removing 4 days from this chain, another path (e.g.&nbsp;A–B–C–F–H–J) may now be critical or co-critical, and crashing further would have to shorten <em>both</em>.</p>
 </details>
 </section>
-<section id="further-resources" class="level2" data-number="6.11">
-<h2 data-number="6.11" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">6.11</span> Further Resources</h2>
+<section id="further-resources" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">6.12</span> Further Resources</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
 <p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/AQ_Wr1Me__8" title="PERT / Three-Point Estimating Explained (Cornelius Fichtner)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
 </div>

@@ -1821,8 +1821,9 @@ globalThis.qwebrExecuteCode = async function (
   </ul></li>
   <li><a href="#sustainability-and-resources" id="toc-sustainability-and-resources" class="nav-link" data-scroll-target="#sustainability-and-resources"><span class="header-section-number">11.9</span> Sustainability and resources</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">11.10</span> Key Takeaways</a></li>
-  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">11.11</span> Practice Problems</a></li>
-  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">11.12</span> Further Resources</a></li>
+  <li><a href="#case-study-meridian-rc-week-11" id="toc-case-study-meridian-rc-week-11" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-11"><span class="header-section-number">11.11</span> Case Study: Meridian R/C — Week 11</a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">11.12</span> Practice Problems</a></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">11.13</span> Further Resources</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/11-Resource-Management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -2321,8 +2322,91 @@ Figure&nbsp;11.2: Resource utilization across a project. The shaded area is capa
 <li><strong>Multitasking is not free</strong> — “40 hours” of nominal capacity is far less once someone carries several projects.</li>
 </ul>
 </section>
-<section id="practice-problems" class="level2" data-number="11.11">
-<h2 data-number="11.11" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">11.11</span> Practice Problems</h2>
+<section id="case-study-meridian-rc-week-11" class="level2" data-number="11.11">
+<h2 data-number="11.11" class="anchored" data-anchor-id="case-study-meridian-rc-week-11"><span class="header-section-number">11.11</span> Case Study: Meridian R/C — Week 11</h2>
+<div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 11: Priya's 160% Week">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>📁 CASE STUDY FILE — Week 11: Priya’s 160% Week
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>By Week 11 the tooling phase is in full swing, and two activities are running side by side: C (body tooling build, 20 days) and D (frame tooling build, 15 days), both released from B (detailed design release) on day 18. Priya Nandakumar, Meridian’s Manufacturing Engineer, is the only person qualified to supervise both dies at once — the matrix organization never gave her a dedicated tooling team, just herself and two die-shop technicians who report through her for the duration of the project.</p>
+<p>You pull the resource histogram for the tooling window and the number jumps out immediately: Priya is booked at 100% on C and 60% on D at the same time — 160% of one person’s capacity, a 60-percentage-point overallocation that no amount of overtime coffee is going to fix on its own.</p>
+<p>Before moving anything, you go back to the CPM table. C has 5 days of float (LS day 23, LF day 43). D has 10 days of float (LS day 28, LF day 43). Neither is on the critical path A–B–E–F–H–I–J, so neither move threatens the 67-day finish — but D gives you twice the room to work with. You shift D’s start later, inside its own float, so Priya’s two commitments no longer collide the way they did on paper. C keeps running on its original clock; D slides toward its late-start date of day 28 and still lands exactly on its late-finish date of day 43, precisely when F (prototype assembly) needs both dies ready. The overallocation is resolved, and the 67-day project finish never moves.</p>
+<p>While you’re in the histogram, you also pull the underlying weekly team-hours demand for the whole tooling phase against the department’s 45-hour/week capacity ceiling: 30, 48, 44, 52, and 38 hours across five consecutive weeks. Weeks 2 and 4 breach the limit, by 3 and 7 hours respectively — week 4 is the single worst overallocation — while weeks 1, 3, and 5 sit under capacity. Averaged out, the phase demands 42.4 hours per week, comfortably under the 45-hour limit. That average is the tell: there is enough slack in the valley weeks to absorb the peak weeks’ extra hours using float alone, which makes this a smoothing problem rather than a leveling one — no added headcount, no extended schedule, just a better-shaped curve.</p>
+<p><strong>Weekly team-hours demand, tooling phase (capacity limit: 45 hrs/week)</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Demand (hrs)</th>
+<th>vs.&nbsp;45-hr limit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>30</td>
+<td>15 under</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>48</td>
+<td>3 over</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>44</td>
+<td>1 under</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>52</td>
+<td>7 over (peak)</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>38</td>
+<td>7 under</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Activity float, for reference</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Activity</th>
+<th>Float</th>
+<th>Critical?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>B (detailed design release)</td>
+<td>0 days</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>C (body tooling build)</td>
+<td>5 days</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>D (frame tooling build)</td>
+<td>10 days</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="practice-problems" class="level2" data-number="11.12">
+<h2 data-number="11.12" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">11.12</span> Practice Problems</h2>
 <details>
 <summary>
 Problem 1: Level to the limit
@@ -2371,8 +2455,8 @@ Problem 3 (discussion): the shared CMM bottleneck
 <p><strong>Discussion points.</strong> Apply a rule and be explicit about it: <strong>minimum late finish</strong> (whichever project has the tightest deadline goes first) is defensible if one launch date is immovable; <strong>greatest resource demand</strong> surfaces the bottleneck earliest. Reduce it by: staggering the validation tasks into each project’s float, renting a second CMM for the peak, outsourcing some measurement to a metrology lab, or moving non-CMM checks off the critical window so the CMM time is used only for what truly needs it.</p>
 </details>
 </section>
-<section id="further-resources" class="level2" data-number="11.12">
-<h2 data-number="11.12" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">11.12</span> Further Resources</h2>
+<section id="further-resources" class="level2" data-number="11.13">
+<h2 data-number="11.13" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">11.13</span> Further Resources</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
 <p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/iSGWSGfG65U" title="What Is Resource Leveling in Project Management?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
 </div>

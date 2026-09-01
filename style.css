@@ -85,3 +85,26 @@ pre code {
 .answer .math.display {
   color: #1a531b;
 }
+
+/*--- Case Study callout: a "case file" look, unmistakable from the rest
+      of the chapter and from the book's other (.callout-note /
+      .callout-important / .callout-warning) asides. ---*/
+.callout.case-study {
+  border-left: 6px solid #8a5a00;
+  background-color: #fffaf0;
+  border-radius: 4px;
+}
+
+.callout.case-study .callout-header {
+  background-color: #fbead1;
+  font-family: "Courier New", Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+
+.callout.case-study .callout-icon::before {
+  background-image: none !important;
+}
+
+.callout.case-study .callout-title-container {
+  font-weight: bold;
+}
