@@ -347,7 +347,8 @@ BAC = \$400 000. At the status date: PV = \$180 000, EV = \$150 000,
 AC = \$165 000. Compute SV, CV, SPI, CPI, EAC (BAC/CPI), ETC, VAC, TCPI, and
 state the project's condition in one sentence.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-evm-12, echo=TRUE}
 BAC <- 400000; PV <- 180000; EV <- 150000; AC <- 165000
@@ -367,17 +368,24 @@ hit BAC.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: On budget but in trouble</summary>
 
 A project reports PV = \$500 000, EV = \$400 000, AC = \$400 000. The sponsor
 sees "spend exactly matches earned value --- CPI = 1.0 --- we're fine." Are they?
 
-**Answer.** Cost efficiency is fine (CPI = 1.0), but **SPI = EV/PV = 0.80** ---
+<details>
+<summary>Answer</summary>
+
+Cost efficiency is fine (CPI = 1.0), but **SPI = EV/PV = 0.80** ---
 the project has completed only 80 % of the work it should have by now. It is
 **20 % behind schedule** and will either finish late or need to spend more
 (overtime, added staff) to catch up, which will then push CPI below 1. This is
 the classic watermelon: the cost view is green, the schedule view is red.
+
+</details>
 
 </details>
 
@@ -389,7 +397,10 @@ At week 8 the RC-vehicle project is forecast (EAC) at \$700 000 against a
 (an approved scope change) and the new line's learning curve ran longer than
 planned. Should you re-baseline?
 
-**Discussion points.** Split the two causes. The **approved scope change** is a
+<details>
+<summary>Discussion points</summary>
+
+Split the two causes. The **approved scope change** is a
 legitimate reason to re-baseline --- the extra colourway was authorised, so the
 budget and schedule should be formally updated and future variance measured
 against the new plan. The **learning-curve overrun** is *performance* against
@@ -397,6 +408,8 @@ the plan, not a change to the plan --- that stays as variance you must recover o
 explain. Re-baselining to bury performance problems ("we'll just move the
 goalposts") destroys the value of the control system; re-baselining for
 authorised changes keeps it honest.
+
+</details>
 
 </details>
 

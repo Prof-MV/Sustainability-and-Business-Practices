@@ -326,7 +326,8 @@ Day 10 requires 10 people; the limit is 9. Running that day: task C (float 4,
 duration 5, 4 people), task D (float 0, duration 6, 3 people), task F (float 0,
 duration 6, 3 people). Which task moves, and what is the risk if none can?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-level-11, echo=TRUE}
 d10 <- data.frame(task = c("C", "D", "F"),
@@ -339,13 +340,16 @@ cat("If C could not move (no split, hard dependency), the project duration exten
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Does this need leveling or smoothing?</summary>
 
 A resource has a 40 h/week limit. Weekly demand over 6 weeks is
 55, 20, 48, 15, 50, 22 h. Total 210 h.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p2-smooth-11, echo=TRUE}
 demand <- c(55, 20, 48, 15, 50, 22); limit <- 40
@@ -361,6 +365,8 @@ solve it without extending the project.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 3 (discussion): the shared CMM bottleneck</summary>
 
@@ -368,13 +374,18 @@ Three projects, including yours, all need the single CMM for final validation in
 the same two-week window. Using the priority rules, how would you decide the
 order, and what could reduce the bottleneck?
 
-**Discussion points.** Apply a rule and be explicit about it: **minimum late
+<details>
+<summary>Discussion points</summary>
+
+Apply a rule and be explicit about it: **minimum late
 finish** (whichever project has the tightest deadline goes first) is defensible
 if one launch date is immovable; **greatest resource demand** surfaces the
 bottleneck earliest. Reduce it by: staggering the validation tasks into each
 project's float, renting a second CMM for the peak, outsourcing some measurement
 to a metrology lab, or moving non-CMM checks off the critical window so the CMM
 time is used only for what truly needs it.
+
+</details>
 
 </details>
 

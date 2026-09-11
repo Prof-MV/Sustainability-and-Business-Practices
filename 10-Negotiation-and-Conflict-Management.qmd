@@ -341,12 +341,24 @@ both get enough.
 
 Which cause does each statement point to?
 
-1. "I can't talk to her after what her son said to my son." → **Personal grudge** (interpersonal).
-2. "Sales management here are lazy --- they always leave by 4:00." → **Different mindsets among departments** (organizational).
-3. "She barely looked at my report; she's already decided to ignore it." → **Misconceptions about others' behaviour** (interpersonal).
-4. "Our computers are slow because their division always gets the best ones." → **Scarce resources** (organizational).
-5. "The worse your project does at year-end, the better mine looks." → **Reward systems** (organizational).
-6. "Why should I do that for the PM if my functional manager didn't tell me?" → **Uncertainty / two bosses** (organizational, matrix).
+1. "I can't talk to her after what her son said to my son."
+2. "Sales management here are lazy --- they always leave by 4:00."
+3. "She barely looked at my report; she's already decided to ignore it."
+4. "Our computers are slow because their division always gets the best ones."
+5. "The worse your project does at year-end, the better mine looks."
+6. "Why should I do that for the PM if my functional manager didn't tell me?"
+
+<details>
+<summary>Answers</summary>
+
+1. **Personal grudge** (interpersonal).
+2. **Different mindsets among departments** (organizational).
+3. **Misconceptions about others' behaviour** (interpersonal).
+4. **Scarce resources** (organizational).
+5. **Reward systems** (organizational).
+6. **Uncertainty / two bosses** (organizational, matrix).
+
+</details>
 
 </details>
 
@@ -358,7 +370,8 @@ in-house for \$98 000). The vendor's floor is \$102 000.
 
 (a) Is there a ZOPA? (b) What are your options?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p2-zopa-10, echo=TRUE}
 buyer_max  <- 95000
@@ -373,6 +386,8 @@ economics improve, split tooling ownership, or find a third vendor.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 3 (discussion): the functional manager skips your stand-up</summary>
 
@@ -381,7 +396,10 @@ meetings. How could this signal *each* of: reward systems, scarce resources,
 uncertainty, different mindsets, misconceptions, faulty communication, personal
 grudge?
 
-**Discussion points.** *Reward systems*: their boss doesn't value project work,
+<details>
+<summary>Discussion points</summary>
+
+*Reward systems*: their boss doesn't value project work,
 so they deprioritize it. *Scarce resources*: they are triple-booked and the
 meeting lost. *Uncertainty*: they are not sure the meeting applies to them.
 *Different mindsets*: maintenance culture sees planning meetings as talk, not
@@ -390,6 +408,8 @@ work. *Misconceptions*: they think you have already sidelined their input.
 ambiguous. *Grudge*: a past project soured them on you. The point: **do not
 jump to the grudge** --- confront it by asking, and you will usually find one of
 the structural causes.
+
+</details>
 
 </details>
 

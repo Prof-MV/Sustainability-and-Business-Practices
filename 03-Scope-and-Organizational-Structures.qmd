@@ -207,22 +207,23 @@ sh <- data.frame(
 )
 
 ggplot(sh, aes(interest, power)) +
-  annotate("rect", xmin = 0.5, xmax = 1, ymin = 0.5, ymax = 1, fill = "#27AE60", alpha = 0.10) +
-  annotate("rect", xmin = 0, xmax = 0.5, ymin = 0.5, ymax = 1, fill = "#F39C12", alpha = 0.10) +
+  annotate("rect", xmin = 0.5, xmax = 1, ymin = 0.5, ymax = 1.12, fill = "#27AE60", alpha = 0.10) +
+  annotate("rect", xmin = 0, xmax = 0.5, ymin = 0.5, ymax = 1.12, fill = "#F39C12", alpha = 0.10) +
   annotate("rect", xmin = 0.5, xmax = 1, ymin = 0, ymax = 0.5, fill = "#5DADE2", alpha = 0.10) +
   annotate("rect", xmin = 0, xmax = 0.5, ymin = 0, ymax = 0.5, fill = "grey70", alpha = 0.12) +
   geom_point(color = "#1B4F72", size = 3) +
-  geom_text(aes(label = who), size = 2.9 * diagram_text_scale, vjust = -0.8) +
-  annotate("text", x = 0.75, y = 0.97, label = "MANAGE CLOSELY",
+  geom_text(aes(label = who), size = 2.9 * diagram_text_scale,
+            vjust = ifelse(sh$power > 0.85, 1.8, -0.8)) +
+  annotate("text", x = 0.75, y = 1.08, label = "MANAGE CLOSELY",
            fontface = "bold", size = 3 * diagram_text_scale, color = "#186A3B") +
-  annotate("text", x = 0.25, y = 0.97, label = "KEEP SATISFIED",
+  annotate("text", x = 0.25, y = 1.08, label = "KEEP SATISFIED",
            fontface = "bold", size = 3 * diagram_text_scale, color = "#9C640C") +
   annotate("text", x = 0.75, y = 0.03, label = "KEEP INFORMED",
            fontface = "bold", size = 3 * diagram_text_scale, color = "#1B4F72") +
   annotate("text", x = 0.25, y = 0.03, label = "MONITOR",
            fontface = "bold", size = 3 * diagram_text_scale, color = "grey30") +
   scale_x_continuous(limits = c(0, 1), breaks = c(0.1, 0.9), labels = c("low", "high")) +
-  scale_y_continuous(limits = c(0, 1), breaks = c(0.1, 0.9), labels = c("low", "high")) +
+  scale_y_continuous(limits = c(0, 1.12), breaks = c(0.1, 0.9), labels = c("low", "high")) +
   labs(title = "Stakeholder power vs. interest", x = "Interest", y = "Power") +
   theme_minimal() +
   theme(
@@ -435,7 +436,8 @@ Project A: \$300 000 outlay, then \$150 000/yr for 3 years, nothing after.
 Project B: \$300 000 outlay, then \$90 000/yr for 6 years. Hurdle rate 10 %.
 Which has the shorter payback, and which has the higher NPV?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-select-03, echo=TRUE}
 npv <- function(c0, cfs, r) -c0 + sum(cfs / (1 + r)^seq_along(cfs))
@@ -450,15 +452,27 @@ three more years. Payback alone would pick the worse project.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Charter or scope statement?</summary>
 
 Which document does each belong in?
 
-1. "Gross budget: approximately \$650 000." → **Charter** (summary budget).
-2. "Body colourways: Racing Red and Gunmetal only; no custom colours." → **Scope statement** (exclusions).
-3. "Sponsor: VP Operations. Signs off at Gate 1." → **Charter** (approval/signatures).
-4. "Drop test: survives 10 drops from 1.5 m onto concrete, no functional damage." → **Scope statement** (acceptance criteria).
+1. "Gross budget: approximately \$650 000."
+2. "Body colourways: Racing Red and Gunmetal only; no custom colours."
+3. "Sponsor: VP Operations. Signs off at Gate 1."
+4. "Drop test: survives 10 drops from 1.5 m onto concrete, no functional damage."
+
+<details>
+<summary>Answers</summary>
+
+1. **Charter** (summary budget).
+2. **Scope statement** (exclusions).
+3. **Charter** (approval/signatures).
+4. **Scope statement** (acceptance criteria).
+
+</details>
 
 </details>
 
@@ -470,13 +484,18 @@ assigning them to department work and offers you a junior instead. Using the
 culture and structure ideas in this chapter, explain why this happens and what
 you can do.
 
-**Discussion points.** The functional manager is **evaluated on their
+<details>
+<summary>Discussion points</summary>
+
+The functional manager is **evaluated on their
 department's output**, so they hoard their strongest people --- a reward-system
 effect. In a weak matrix you have little formal authority to override it. Levers:
 escalate to the sponsor (whose NPV depends on the project), negotiate a
 part-time or time-boxed assignment, trade a deliverable the functional manager
 cares about, or get the resource commitment written into the **charter** so it is
 a documented agreement rather than a favour.
+
+</details>
 
 </details>
 

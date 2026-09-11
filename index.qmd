@@ -66,12 +66,14 @@ phases$phase <- factor(phases$phase, levels = c(
 ))
 phases$row <- ave(phases$chapter, phases$phase, FUN = seq_along)
 
+phases$label <- stringr::str_wrap(paste0(phases$chapter, ". ", phases$title), width = 14)
+
 ggplot(phases, aes(x = phase, y = -row)) +
-  geom_tile(aes(fill = phase), width = 0.9, height = 0.9,
+  geom_tile(aes(fill = phase), width = 0.95, height = 0.95,
             color = "white", linewidth = 1.2) +
-  geom_text(aes(label = paste0(chapter, ". ", title)),
+  geom_text(aes(label = label),
             color = "white", fontface = "bold", lineheight = 0.9,
-            size = 2.9 * diagram_text_scale) +
+            size = 2.3 * diagram_text_scale) +
   scale_fill_brewer(palette = "Dark2") +
   labs(title = "MGMT-3105 at a glance", x = NULL, y = NULL) +
   theme_void() +

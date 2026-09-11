@@ -320,7 +320,8 @@ A project has consumed \$1.2M of a \$1.5M budget. Finishing needs \$500 000
 is now worth \$350 000. The sponsor says "we've spent \$1.2M --- we can't stop
 now." Evaluate.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-sunk-13, echo=TRUE}
 cost_to_finish <- 500000
@@ -338,13 +339,25 @@ fallacy.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Which termination type?</summary>
 
-1. The RC-vehicle prototype team becomes the production line's support team. → **Addition.**
-2. A cancelled R&D project's engineers return to the design department. → **Integration.**
-3. A failed pilot is shut down, its budget audited, its test rig sold. → **Extinction.**
-4. A VP's favourite project keeps a \$1/year budget so it stays "active" on paper. → **Starvation.**
+1. The RC-vehicle prototype team becomes the production line's support team.
+2. A cancelled R&D project's engineers return to the design department.
+3. A failed pilot is shut down, its budget audited, its test rig sold.
+4. A VP's favourite project keeps a \$1/year budget so it stays "active" on paper.
+
+<details>
+<summary>Answers</summary>
+
+1. **Addition.**
+2. **Integration.**
+3. **Extinction.**
+4. **Starvation.**
+
+</details>
 
 </details>
 
@@ -355,13 +368,18 @@ The RC-vehicle project delivered late and over budget but the product passed.
 The exhausted team wants to skip the lessons-learned review and start on the
 production ramp. As PM, what do you do and why?
 
-**Discussion points.** This is exactly the moment the review matters most --- a
+<details>
+<summary>Discussion points</summary>
+
+This is exactly the moment the review matters most --- a
 troubled project is where the carryover value is highest, and the next program
 will hit the *same* new-line learning curve and *same* supplier risk. Keep it
 short and structured, focus on **what went wrong and why** (not blame), capture
 2--3 concrete, assigned actions, and put it in the history file before the team
 disperses and the memory fades. Skipping it guarantees the next project repeats
 the overrun.
+
+</details>
 
 </details>
 

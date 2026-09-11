@@ -425,7 +425,8 @@ for **next life**: what can this material become *after* its first use?
 **Current design:** ABS door, two stainless M2 screws, a printed polyester
 label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.
 
-**One redesign:**
+<details>
+<summary>One redesign</summary>
 
 - Replace the two screws with a **living hinge + snap latch** moulded into the door (same ABS) --- removes two dissimilar-metal fasteners and a driver operation on the line.
 - Replace the adhesive polyester label with **in-mould labelling** in an ABS-compatible film, or mould the text into the part.
@@ -434,6 +435,8 @@ label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.
 
 Result: the door goes from five materials and two fasteners to essentially one
 polymer, snaps apart by hand, and carries no adhesive.
+
+</details>
 
 </details>
 
@@ -567,8 +570,8 @@ with disposal as the last resort.
 
 ```{r fig-circular-economy-01, fig.cap="The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.", fig.align='center', fig.width=9, fig.height=7}
 stages <- data.frame(
-  label = c("Design", "Make", "Distribute", "Use", "Maintain / Reuse",
-            "Refurbish / Remanufacture", "Recycle"),
+  label = stringr::str_wrap(c("Design", "Make", "Distribute", "Use", "Maintain / Reuse",
+            "Refurbish / Remanufacture", "Recycle"), width = 12),
   angle = seq(90, 90 - 360 + 360/7, length.out = 7) * pi / 180
 )
 stages$x <- cos(stages$angle)
@@ -712,7 +715,8 @@ the client's regional recycler.
 (a) What is the annual change in material mass and material cost?
 (b) Give two non-cost arguments for switching, and one argument against.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-packaging-solution-01, echo=TRUE}
 trays        <- 2.4e6
@@ -742,6 +746,8 @@ qualification run.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Recycled-aluminium body (automotive/toy)</summary>
 
@@ -752,7 +758,8 @@ more. Run size 120 000 units.
 
 Estimate the energy saved, the CO2e avoided, and the extra material cost.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p2-recycled-al-solution-01, echo=TRUE}
 mass_kg   <- 70 / 1000
@@ -778,6 +785,8 @@ moves available on this project.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 3: Design-for-recyclability audit (defense)</summary>
 
@@ -790,7 +799,8 @@ labels.
 List, in priority order, the four changes that would most improve material
 recovery, and note the functional risk of each.
 
-**Model answer.**
+<details>
+<summary>Model answer</summary>
 
 1. **Replace the potting compound** with a removable conformal coating or a
    gasketed enclosure. *Risk:* reduced shock/moisture protection --- must
@@ -809,6 +819,8 @@ spec depends on it --- note it as a known limitation rather than a quick fix.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 4 (discussion): planned obsolescence vs. sustainable design</summary>
 
@@ -817,11 +829,16 @@ business decisions may deliberately shorten product life to protect repeat
 sales --- planned obsolescence. Which do you prefer, and how would you reconcile
 the two in a company that has to stay profitable?"
 
+<details>
+<summary>Discussion</summary>
+
 There is no single right answer --- this is a position you argue. Strong answers
 usually land on **service and circular business models**: the manufacturer keeps
 revenue through repair, upgrades, refurbishment, take-back, or
 product-as-a-service, so "make it last" and "keep earning" stop being opposites.
 Weak answers just pick a side and ignore the constraint on the other.
+
+</details>
 
 </details>
 

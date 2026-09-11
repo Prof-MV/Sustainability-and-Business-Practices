@@ -71,7 +71,11 @@ embed_youtube("B8q4uz5XiZc", "Work Breakdown Structure (WBS) Explained")
 
 ## The hierarchy
 
-```{r fig-wbs-tree-05, fig.cap="A partial WBS for the RC-vehicle project. Level 1 is the project; Level 2 the major deliverables; Level 3 the work packages. Numbering encodes the hierarchy.", fig.align='center', fig.width=11, fig.height=6}
+```{r fig-wbs-tree-05, fig.cap="A partial WBS for the RC-vehicle project. Level 1 is the project; Level 2 the major deliverables; Level 3 the work packages. Numbering encodes the hierarchy.", fig.align='center', fig.width=13, fig.height=6}
+w11 <- 0.5; w12 <- 3.2; w21 <- 6.0; w22 <- 8.7; w31 <- 11.4; w41 <- 14.1; w42 <- 16.8
+d1 <- mean(c(w11, w12)); d2 <- mean(c(w21, w22)); d3 <- w31; d4 <- mean(c(w41, w42))
+root <- mean(c(d1, d2, d3, d4))
+
 nodes <- data.frame(
   id = c("root", "d1", "d2", "d3", "d4",
          "w11", "w12", "w21", "w22", "w31", "w41", "w42"),
@@ -80,13 +84,13 @@ nodes <- data.frame(
             "1.1.1 Outer body\ndesign", "1.1.2 Inner frame\ndesign",
             "1.2.1 Motor/controller\nprocurement", "1.2.2 Wiring\nharness",
             "1.3.1 Prototype\nassembly", "1.4.1 Packaging\ndesign", "1.4.2 Compliance\n& approvals"),
-  x = c(5,  1.5, 4, 6.5, 9,   0.6, 2.4,  3.3, 4.7,  6.5,  8.2, 9.8),
+  x = c(root,  d1, d2, d3, d4,   w11, w12,  w21, w22,  w31,  w41, w42),
   y = c(3,  2,   2, 2,   2,   1,   1,    1,   1,    1,    1,   1)
 )
 edges <- data.frame(
-  x = c(5,5,5,5, 1.5,1.5, 4,4, 6.5, 9,9),
+  x = c(root,root,root,root, d1,d1, d2,d2, d3, d4,d4),
   y = c(3,3,3,3, 2,2, 2,2, 2, 2,2),
-  xend = c(1.5,4,6.5,9, 0.6,2.4, 3.3,4.7, 6.5, 8.2,9.8),
+  xend = c(d1,d2,d3,d4, w11,w12, w21,w22, w31, w41,w42),
   yend = c(2,2,2,2, 1,1, 1,1, 1, 1,1)
 )
 ggplot() +
@@ -97,10 +101,10 @@ ggplot() +
              fill = c("#1B4F72", rep("#5DADE2", 4), rep("#D6EAF8", 7)),
              color = c("white", rep("white", 4), rep("black", 7)),
              fontface = "bold", label.size = 0) +
-  annotate("text", x = -0.2, y = c(3, 2, 1),
+  annotate("text", x = w11 - 1.4, y = c(3, 2, 1),
            label = c("Level 1", "Level 2", "Level 3"),
            fontface = "italic", size = 3 * diagram_text_scale, hjust = 1) +
-  coord_cartesian(xlim = c(-1.2, 10.6), ylim = c(0.5, 3.5)) +
+  coord_cartesian(xlim = c(w11 - 2.6, w42 + 1.4), ylim = c(0.5, 3.5)) +
   labs(title = "WBS: project -> deliverables -> work packages") +
   theme_void() +
   theme(plot.title = element_text(size = 14 * diagram_text_scale,
@@ -364,12 +368,17 @@ project management (50 h)."
 
 What is wrong, and how do you fix it?
 
-**Solution.** The children sum to 360 h --- 60 h **over** 100 % of the parent. Two
+<details>
+<summary>Solution</summary>
+
+The children sum to 360 h --- 60 h **over** 100 % of the parent. Two
 problems: "Prototype assembly rework" overlaps "Prototype assembly" (not
 mutually exclusive --- fold rework into the assembly package or make it a
 contingency), and "General project management" is **not part of this
 deliverable's scope** --- PM effort belongs in its own Level-2 element (e.g.
 "1.0.1 Project Management"), not smuggled into a technical deliverable.
+
+</details>
 
 </details>
 
@@ -382,10 +391,17 @@ Rewrite these action-style entries as outcome-style WBS elements:
 2. "Run the mould 20 times and measure the parts"
 3. "Email the drawings to the customer for approval"
 
-**Model answers.** 1 → "Carbon-fibre supplier selected and quoted." 2 →
-"Moulding process capability established." 3 → "Customer design approval
-obtained." Each is a result you can mark done or not done, and it does not
+<details>
+<summary>Model answers</summary>
+
+1. "Carbon-fibre supplier selected and quoted."
+2. "Moulding process capability established."
+3. "Customer design approval obtained."
+
+Each is a result you can mark done or not done, and it does not
 dictate the method.
+
+</details>
 
 </details>
 
@@ -396,11 +412,16 @@ Your draft WBS has a work package "Design the outer body" estimated at 180 h and
 spanning 6 weeks, and another, "Deburr the frame jig", estimated at 2 h. Using
 the rules of thumb, what do you do with each?
 
-**Discussion points.** "Design the outer body" breaks both the 80-hour rule and
+<details>
+<summary>Discussion points</summary>
+
+"Design the outer body" breaks both the 80-hour rule and
 (if you report every 2 weeks) the single-reporting-period rule --- split it into
 concept, detailed CAD, and design-release packages. "Deburr the frame jig" is
 below the 8-hour floor --- roll it into the jig-fabrication package rather than
 tracking it as its own line.
+
+</details>
 
 </details>
 

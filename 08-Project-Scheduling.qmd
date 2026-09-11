@@ -215,14 +215,16 @@ ggplot(line, aes(t, c)) +
   geom_line(color = "#2E86C1", linewidth = 1.2) +
   geom_point(size = 4, color = "#1B4F72") +
   annotate("text", x = normal_t, y = normal_c, label = "Normal point\n(8 wk, $14 000)",
-           hjust = 1.1, size = 3.2 * diagram_text_scale, lineheight = 0.9) +
+           hjust = 0.1, vjust = -1.3, size = 3.2 * diagram_text_scale, lineheight = 0.9) +
   annotate("text", x = crash_t, y = crash_c, label = "Crash point\n(5 wk, $23 000)",
            hjust = -0.1, size = 3.2 * diagram_text_scale, lineheight = 0.9) +
   annotate("text", x = 6.5, y = 15500,
            label = "slope = $9 000 / 3 wk\n= $3 000 per week",
            size = 3.2 * diagram_text_scale, fontface = "italic", lineheight = 0.9) +
-  scale_y_continuous(labels = scales::dollar_format(big.mark = " ")) +
-  scale_x_reverse(breaks = 5:8) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = " "),
+                     expand = expansion(mult = c(0.08, 0.08))) +
+  scale_x_reverse(breaks = 5:8, expand = expansion(mult = c(0.1, 0.1))) +
+  coord_cartesian(clip = "off") +
   labs(title = "Time-cost trade-off for crashing",
        x = "Activity duration (weeks) - shorter to the right",
        y = "Activity cost") +
@@ -230,7 +232,8 @@ ggplot(line, aes(t, c)) +
   theme(
     plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    axis.text = element_text(size = 10 * diagram_text_scale),
+    plot.margin = margin(t = 5.5, r = 65, b = 5.5, l = 65)
   )
 ```
 
@@ -356,7 +359,8 @@ Project critical path A--F--H, currently 23 weeks; the contract needs 20. Crash
 data: A \$513/wk (max 4 wk), F \$1 500/wk (max 1 wk), H \$950/wk (max 2 wk).
 Find the least-cost way to remove 3 weeks.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-crash-08, echo=TRUE}
 crash <- data.frame(
@@ -380,6 +384,8 @@ Crash A by 3 weeks for \$1 539 --- far cheaper than touching F or H.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Confidence in a date</summary>
 
@@ -389,7 +395,8 @@ wants delivery in 64 days.
 (a) What is the probability of meeting day 64? (b) What date should you commit to
 for 95 % confidence?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p2-prob-08, echo=TRUE}
 mu <- 60; sigma <- 4
@@ -398,6 +405,8 @@ cat(sprintf("95%% confident date  = day %.1f\n", mu + qnorm(0.95) * sigma))
 ```
 
 (a) ~84 %. (b) Day 66.6 --- commit to day 67.
+
+</details>
 
 </details>
 
@@ -410,12 +419,17 @@ second designer and pay overtime (crash), or start building the frame jig from
 the released frame drawings while the body design is still being finalized
 (fast-track). Which, and why?
 
-**Discussion points.** Fast-tracking the jig against the *frame* drawings is
+<details>
+<summary>Discussion points</summary>
+
+Fast-tracking the jig against the *frame* drawings is
 low-cost and reasonably safe *if* the frame design is stable --- but if the body
 design forces a late frame change, the jig is rework. Crashing design with a
 second modeller adds cost and has coordination overhead (two people on one
 model), but no rework risk. A common answer: fast-track the clearly stable parts,
 crash the rest, and hold a contingency for the rework risk you accepted.
+
+</details>
 
 </details>
 

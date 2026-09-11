@@ -462,7 +462,8 @@ core team. A proposal would merge in 3 supplier engineers as full team members.
 (a) How many channels before and after?
 (b) By what percentage do channels increase versus the 50 % increase in headcount?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-channels-02, echo=TRUE}
 before <- 6; after <- 9
@@ -480,6 +481,8 @@ would add far less.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Pick the method (automotive, food, defense)</summary>
 
@@ -490,9 +493,14 @@ Choose formal/informal and written/verbal for each:
 3. The project charter for the RC-vehicle launch.
 4. Reminding a teammate that a drawing is due Friday.
 
-**Answers.** 1 --- **formal written** (contractual weight, complex, long-distance).
+<details>
+<summary>Answers</summary>
+
+1 --- **formal written** (contractual weight, complex, long-distance).
 2 --- **informal verbal** (meeting). 3 --- **formal written** (plan/charter).
 4 --- **informal written** (a text or short email; keep a light record).
+
+</details>
 
 </details>
 
@@ -502,7 +510,10 @@ Choose formal/informal and written/verbal for each:
 If you were the PM, redesign the tools, reporting, and meetings to prevent the
 failure.
 
-**Model answer.** Write a **communication plan before launch**. Use a mix:
+<details>
+<summary>Model answer</summary>
+
+Write a **communication plan before launch**. Use a mix:
 **email** for records, **Teams/Slack** for quick updates, **dashboards** for
 visual tracking, **video calls** for collaboration (so tone and context survive
 the offshore gap). Run **regular status meetings with an agenda and action
@@ -511,6 +522,8 @@ group dominates. Send stakeholders a **weekly progress report** (status, cost,
 risk). Build **feedback loops**: every developer confirms, in their own words,
 what a requirement means before coding it. Use plain language, avoid idioms, and
 summarize decisions in writing.
+
+</details>
 
 </details>
 

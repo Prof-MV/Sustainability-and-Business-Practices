@@ -308,11 +308,22 @@ You do not correct it in the room. You address it afterward, with each person se
 
 Which leadership style fits each moment on the RC-vehicle project?
 
-1. Kicking off planning for the WBS with the whole team. → **Democratic** (buy-in, reality-based plan).
-2. A moulding press fails at 2 a.m. and the launch date is at risk. → **Command & control** (crisis; take charge).
-3. A capable senior designer is bored and thinking of leaving. → **Coaching** (long-term development; varied, owned work).
-4. A brand-new co-op student has never used the company's PLM system. → **Command & control** initially, moving to **coaching**.
-5. The team has gelled and is hitting milestones on its own. → **Delegating / supporting** --- stay out of the way.
+1. Kicking off planning for the WBS with the whole team.
+2. A moulding press fails at 2 a.m. and the launch date is at risk.
+3. A capable senior designer is bored and thinking of leaving.
+4. A brand-new co-op student has never used the company's PLM system.
+5. The team has gelled and is hitting milestones on its own.
+
+<details>
+<summary>Answers</summary>
+
+1. **Democratic** (buy-in, reality-based plan).
+2. **Command & control** (crisis; take charge).
+3. **Coaching** (long-term development; varied, owned work).
+4. **Command & control** initially, moving to **coaching**.
+5. **Delegating / supporting** --- stay out of the way.
+
+</details>
 
 </details>
 
@@ -324,10 +335,15 @@ one-on-one you learn they are certain the extra effort won't change the delivery
 date because "purchasing will be late anyway." Which expectancy factor is
 broken, and what do you do?
 
-**Answer.** **Instrumentality** --- they no longer believe performance leads to
+<details>
+<summary>Answer</summary>
+
+**Instrumentality** --- they no longer believe performance leads to
 the outcome. Restoring it means making the link visible again: show how the test
 results actually gate the next milestone, remove the purchasing blocker or
 re-sequence around it, and close the loop when their work does move the date.
+
+</details>
 
 </details>
 
@@ -338,11 +354,16 @@ You are the strongest CAD modeller on the team, and every time someone struggles
 you take the model over and finish it yourself. The work gets done and is
 high-quality. Why is this a leadership failure, and what should you do instead?
 
-**Discussion points.** Taking over is the **hands-on** style overused: it is
+<details>
+<summary>Discussion points</summary>
+
+Taking over is the **hands-on** style overused: it is
 disempowering, tanks morale, stops people learning, and makes you the
 bottleneck --- the project's throughput is now capped by your personal hours. The
 **coaching** move is to ask questions that lead the person to the fix, sit with
 them while they do it, and follow up --- slower once, faster forever.
+
+</details>
 
 </details>
 

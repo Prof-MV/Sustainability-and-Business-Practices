@@ -173,22 +173,40 @@ cat("Fully-burdened work-package cost:",
 For each item, give **up to three** labels from: A Direct, B Indirect, C Fixed,
 D Variable, E Recurring, F Non-recurring, G Normal, H Expedited.
 
-| # | Cost item | Answer |
-|---|---|---|
-| 1 | Technician's hourly wages for project assembly | A Direct, D Variable, G Normal |
-| 2 | Office rent for company headquarters | B Indirect, C Fixed, E Recurring |
-| 3 | One-time purchase of specialized testing software | A Direct, F Non-recurring |
-| 4 | Electricity used by production equipment | D Variable, E Recurring, B Indirect |
-| 6 | Hiring extra workers to meet a tight deadline | H Expedited, A Direct |
-| 9 | Rush shipment of components to meet schedule | H Expedited, A Direct |
-| 12 | Cost of the project manager's salary | C Fixed, E Recurring, A Direct |
-| 17 | Routine monthly maintenance of equipment | F ... *(trick: this is E Recurring, B Indirect)* |
-| 23 | Equipment lease for six months (flat fee) | B Indirect, C Fixed, E Recurring |
-| 40 | One-time cost for prototype tooling | A Direct, F Non-recurring, C Fixed |
+| # | Cost item |
+|---|---|
+| 1 | Technician's hourly wages for project assembly |
+| 2 | Office rent for company headquarters |
+| 3 | One-time purchase of specialized testing software |
+| 4 | Electricity used by production equipment |
+| 6 | Hiring extra workers to meet a tight deadline |
+| 9 | Rush shipment of components to meet schedule |
+| 12 | Cost of the project manager's salary |
+| 17 | Routine monthly maintenance of equipment |
+| 23 | Equipment lease for six months (flat fee) |
+| 40 | One-time cost for prototype tooling |
+
+<details>
+<summary>Answers</summary>
+
+| # | Answer |
+|---|---|
+| 1 | A Direct, D Variable, G Normal |
+| 2 | B Indirect, C Fixed, E Recurring |
+| 3 | A Direct, F Non-recurring |
+| 4 | D Variable, E Recurring, B Indirect |
+| 6 | H Expedited, A Direct |
+| 9 | H Expedited, A Direct |
+| 12 | C Fixed, E Recurring, A Direct |
+| 17 | *(trick)* E Recurring, B Indirect |
+| 23 | B Indirect, C Fixed, E Recurring |
+| 40 | A Direct, F Non-recurring, C Fixed |
 
 The pattern: **anything charged straight to the project is Direct; overhead is
 Indirect; anything you pay to go faster is Expedited; anything paid once is
 Non-recurring.** Most items are genuinely two or three of these at once.
+
+</details>
 
 </details>
 
@@ -254,7 +272,8 @@ ggplot(cone, aes(x = x)) +
                 label = paste0("-", scales::percent(err, accuracy = 1))),
             vjust = 1.6, size = 3.2 * diagram_text_scale) +
   scale_x_continuous(breaks = 1:4, labels = levels(cone$stage)) +
-  scale_y_continuous(labels = scales::dollar_format(suffix = "M", big.mark = " ")) +
+  scale_y_continuous(labels = scales::dollar_format(suffix = "M", big.mark = " "),
+                     expand = expansion(mult = c(0.06, 0.1))) +
   labs(title = "The cone of uncertainty", x = NULL, y = "Estimated project cost") +
   theme_minimal() +
   theme(
@@ -347,6 +366,7 @@ ggplot(df, aes(x = task)) +
            hjust = 1, vjust = -0.6, size = 3.4 * diagram_text_scale) +
   scale_color_manual(values = c("Honest estimate" = "#27AE60",
                                 "Every task padded 15%" = "#C0392B")) +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.12))) +
   labs(title = "Per-task padding compounds into a meaningless total",
        x = "Cumulative task count", y = "Cumulative estimated hours",
        color = NULL) +
@@ -506,6 +526,7 @@ ggplot(phased, aes(x = month)) +
   scale_y_continuous(
     name = "Planned spend this month",
     labels = scales::dollar_format(big.mark = " "),
+    expand = expansion(mult = c(0, 0.1)),
     sec.axis = sec_axis(~ . * scale_factor, name = "Cumulative baseline (S-curve)",
                         labels = scales::dollar_format(big.mark = " "))
   ) +
@@ -686,7 +707,8 @@ plus \$6 200 of consumables. Compute the fully-burdened cost at an indirect rate
 of 25 %, and again at 45 %. How much does the indirect-rate assumption alone
 move the number?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-burdened-09, echo=TRUE}
 techs <- 2; weeks <- 3; hrs_week <- 37.5; rate <- 34
@@ -713,6 +735,8 @@ rate you used.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: Which estimating method, and what range?</summary>
 
@@ -726,11 +750,14 @@ with clean cost records.
 (c) All major POs are drafted and 90 % of the design is released for a
 firm-fixed-price defense bid.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 - (a) **Ballpark**, ±30 % → \$350 000 -- \$650 000.
 - (b) **Comparative/parametric**, ±15 % → \$425 000 -- \$575 000.
 - (c) **Definitive**, ±5 % → \$475 000 -- \$525 000. (Anything looser is a bad idea on a fixed-price bid.)
+
+</details>
 
 </details>
 
@@ -742,7 +769,8 @@ finishes with these actuals: Survey \$4 250, Design \$8 000, Clear site \$3 500,
 Foundation \$8 500, Framing \$11 250, Plumb & wire \$5 150. Find the variance per
 activity and overall, and flag the activities that need a post-mortem.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p3-variance-09, echo=TRUE}
 planned <- c(Survey = 4000, Design = 8000, `Clear site` = 4000,
@@ -770,6 +798,8 @@ the post-mortem.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 4 (discussion): sizing contingency for the RC-vehicle project</summary>
 
@@ -781,13 +811,18 @@ assembly line would carry a learning curve. The subtotal budget is \$620 000.
 Would you size the contingency at 10 %, 15 %, or 20 %? Would you spread it
 across all tasks or ring-fence it for specific ones? Defend your answer.
 
-**Discussion points.** With that many concentrated, plausible risks, **10 % is
+<details>
+<summary>Discussion points</summary>
+
+With that many concentrated, plausible risks, **10 % is
 light**; 15 % is defensible and matches the course's Costs Chart; 20 % is
 arguable if the unproven-supplier and new-line risks are both realised. A strong
 answer **ring-fences** most of the reserve against the supplier and
 assembly-line line items (the tasks critical to success) rather than smearing it
 evenly, and states that split in the scope statement so stakeholders are not
 surprised when it is drawn down.
+
+</details>
 
 </details>
 

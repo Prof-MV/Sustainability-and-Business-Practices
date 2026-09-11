@@ -116,7 +116,8 @@ risks <- data.frame(
            "New line learning curve overruns", "Labour action at supplier",
            "Steel price spike", "Minor drawing errors"),
   prob = c(3, 3, 4, 2, 3, 4),
-  impact = c(5, 4, 3, 5, 2, 1)
+  impact = c(5, 4, 3, 5, 2, 1),
+  label_nudge = c(0.65, 0, 0, -0.65, 0, 0)
 )
 
 ggplot(grid, aes(prob, impact)) +
@@ -125,7 +126,7 @@ ggplot(grid, aes(prob, impact)) +
                     name = "Zone") +
   geom_point(data = risks, aes(prob, impact), inherit.aes = FALSE,
              size = 3, color = "#1B4F72") +
-  geom_text(data = risks, aes(prob, impact, label = risk), inherit.aes = FALSE,
+  geom_text(data = risks, aes(prob + label_nudge, impact, label = risk), inherit.aes = FALSE,
             size = 2.7 * diagram_text_scale, vjust = -1, hjust = 0.5) +
   scale_x_continuous(breaks = 1:5, labels = c("Very low", "Low", "Medium", "High", "Very high")) +
   scale_y_continuous(breaks = 1:5, labels = c("Negligible", "Minor", "Moderate", "Major", "Severe")) +
@@ -310,7 +311,8 @@ picky eater; the owner plans to replace the car soon due to problems; there is a
 fireworks show and all-day music at a crowded venue. List the risks, classify
 each, and give a mitigation strategy.
 
-**Model answer (partial).**
+<details>
+<summary>Model answer (partial)</summary>
 
 | Risk | Class | Strategy |
 |---|---|---|
@@ -323,6 +325,8 @@ each, and give a mitigation strategy.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: EMV of competing suppliers</summary>
 
@@ -330,7 +334,8 @@ Supplier X: \$140 000, 15 % chance of a 3-week slip costing \$45 000.
 Supplier Y: \$128 000, 35 % chance of a 3-week slip costing \$45 000.
 On expected cost alone, which is cheaper?
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p2-emv-07, echo=TRUE}
 X <- 140000 + 0.15 * 45000
@@ -346,6 +351,8 @@ holiday launch window. EMV informs the decision; it does not make it.
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 3 (discussion): red-zone risk with no cheap mitigation</summary>
 
@@ -353,13 +360,18 @@ The "carbon-fibre plant disruption" risk sits in the red zone, but the supplier
 is the only qualified source and re-qualifying another would take four months you
 do not have. What are your options?
 
-**Discussion points.** You cannot *minimize* the probability much, so work the
+<details>
+<summary>Discussion points</summary>
+
+You cannot *minimize* the probability much, so work the
 **impact**: build a larger **contingency reserve** (time and money) against it;
 **transfer** part of it via contract terms (penalty clauses, guaranteed
 allocation); **share** it by co-investing in the supplier's modernization for
 priority supply; carry **safety stock** of the critical carbon-fibre parts; and
 design a **fallback** (an aluminium body variant) that could be substituted if
 the supply fails, accepting a heavier product rather than a missed launch.
+
+</details>
 
 </details>
 

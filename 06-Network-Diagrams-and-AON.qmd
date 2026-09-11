@@ -223,6 +223,7 @@ ggplot(res, aes(x = Activity, y = Float, fill = onCP)) +
   scale_fill_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
                     labels = c("TRUE" = "Critical (float = 0)", "FALSE" = "Has float"),
                     name = NULL) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
   labs(title = "Where the slack is", x = "Activity", y = "Total float (days)") +
   theme_minimal() +
   theme(
@@ -373,7 +374,8 @@ You flag one thing for the team before the meeting ends: activity E is both the 
 
 Find the project duration and the critical path.
 
-**Solution.**
+<details>
+<summary>Solution</summary>
 
 ```{r p1-cpm-06, echo=TRUE}
 p1 <- data.frame(
@@ -394,6 +396,8 @@ beat E's early finish by 6 days.)
 
 </details>
 
+</details>
+
 <details>
 <summary>Problem 2: PERT and the optimistic tail</summary>
 
@@ -401,10 +405,15 @@ An activity is estimated at $o = 6$, $m = 9$, $p = 24$ days.
 
 (a) What is $t_e$? (b) Why is $t_e$ noticeably larger than $m$? (c) What is the activity standard deviation?
 
-**Solution.** (a) $t_e = (6 + 36 + 24)/6 = 11$ days. (b) The pessimistic tail is
+<details>
+<summary>Solution</summary>
+
+(a) $t_e = (6 + 36 + 24)/6 = 11$ days. (b) The pessimistic tail is
 far from the most-likely value (24 vs 9) while the optimistic tail is close
 (6 vs 9), so the distribution is **right-skewed** and its mean sits above $m$.
 (c) SD $= (24 - 6)/6 = 3$ days --- a wide, risky activity.
+
+</details>
 
 </details>
 
@@ -416,11 +425,16 @@ and the sponsor needs 34. Crash data: B costs \$500/day to shorten (max 3 days),
 G costs \$1 200/day (max 2 days), E costs \$300/day (max 2 days). Which
 combination gets you to 34 days at least cost, and what do you check afterward?
 
-**Discussion points.** You need 4 days. Cheapest first: E for 2 days
+<details>
+<summary>Discussion points</summary>
+
+You need 4 days. Cheapest first: E for 2 days
 (\$600), then B for 2 days (\$1 000) --- total \$1 600 for 4 days. Avoid G at
 \$1 200/day. **Then re-run the network**: after removing 4 days from this chain,
 another path (e.g. A--B--C--F--H--J) may now be critical or co-critical, and
 crashing further would have to shorten *both*.
+
+</details>
 
 </details>
 
