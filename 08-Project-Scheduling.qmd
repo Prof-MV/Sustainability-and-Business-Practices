@@ -347,9 +347,6 @@ activity could shift where the true bottleneck sits.
 
 :::
 
-The question pool below tests this Week 8 episode specifically; it does not
-retest the general chapter content already covered elsewhere.
-
 ## Practice Problems
 
 <details>
