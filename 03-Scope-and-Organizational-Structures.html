@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2496,7 +2496,10 @@ Which structure is the RC-vehicle project running in?
 Problem 1: Payback vs.&nbsp;NPV disagree
 </summary>
 <p>Project A: $300 000 outlay, then $150 000/yr for 3 years, nothing after. Project B: $300 000 outlay, then $90 000/yr for 6 years. Hurdle rate 10 %. Which has the shorter payback, and which has the higher NPV?</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>npv <span class="ot">&lt;-</span> <span class="cf">function</span>(c0, cfs, r) <span class="sc">-</span>c0 <span class="sc">+</span> <span class="fu">sum</span>(cfs <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> r)<span class="sc">^</span><span class="fu">seq_along</span>(cfs))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">150000</span>, <span class="dv">150000</span>, <span class="dv">150000</span>)</span>
@@ -2510,24 +2513,41 @@ B: payback ~3.3 yr, NPV $91 973</code></pre>
 </div>
 <p>A pays back faster; B has the higher NPV because its cash flows keep coming for three more years. Payback alone would pick the worse project.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: Charter or scope statement?
 </summary>
 <p>Which document does each belong in?</p>
 <ol type="1">
-<li>“Gross budget: approximately $650 000.” → <strong>Charter</strong> (summary budget).</li>
-<li>“Body colourways: Racing Red and Gunmetal only; no custom colours.” → <strong>Scope statement</strong> (exclusions).</li>
-<li>“Sponsor: VP Operations. Signs off at Gate 1.” → <strong>Charter</strong> (approval/signatures).</li>
-<li>“Drop test: survives 10 drops from 1.5 m onto concrete, no functional damage.” → <strong>Scope statement</strong> (acceptance criteria).</li>
+<li>“Gross budget: approximately $650 000.”</li>
+<li>“Body colourways: Racing Red and Gunmetal only; no custom colours.”</li>
+<li>“Sponsor: VP Operations. Signs off at Gate 1.”</li>
+<li>“Drop test: survives 10 drops from 1.5 m onto concrete, no functional damage.”</li>
 </ol>
+<details>
+<summary>
+Answers
+</summary>
+<ol type="1">
+<li><strong>Charter</strong> (summary budget).</li>
+<li><strong>Scope statement</strong> (exclusions).</li>
+<li><strong>Charter</strong> (approval/signatures).</li>
+<li><strong>Scope statement</strong> (acceptance criteria).</li>
+</ol>
+</details>
 </details>
 <details>
 <summary>
 Problem 3 (discussion): the functional manager won’t release the good engineer
 </summary>
 <p>In a weak matrix, your best-choice design engineer’s functional manager keeps assigning them to department work and offers you a junior instead. Using the culture and structure ideas in this chapter, explain why this happens and what you can do.</p>
-<p><strong>Discussion points.</strong> The functional manager is <strong>evaluated on their department’s output</strong>, so they hoard their strongest people — a reward-system effect. In a weak matrix you have little formal authority to override it. Levers: escalate to the sponsor (whose NPV depends on the project), negotiate a part-time or time-boxed assignment, trade a deliverable the functional manager cares about, or get the resource commitment written into the <strong>charter</strong> so it is a documented agreement rather than a favour.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>The functional manager is <strong>evaluated on their department’s output</strong>, so they hoard their strongest people — a reward-system effect. In a weak matrix you have little formal authority to override it. Levers: escalate to the sponsor (whose NPV depends on the project), negotiate a part-time or time-boxed assignment, trade a deliverable the functional manager cares about, or get the resource commitment written into the <strong>charter</strong> so it is a documented agreement rather than a favour.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="3.13">

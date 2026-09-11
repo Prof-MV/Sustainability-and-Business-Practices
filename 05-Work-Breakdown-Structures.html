@@ -48,7 +48,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2153,7 +2153,7 @@ Note
 <div id="fig-wbs-tree-05" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wbs-tree-05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="05-Work-Breakdown-Structures_files/figure-html/fig-wbs-tree-05-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1056">
+<img src="05-Work-Breakdown-Structures_files/figure-html/fig-wbs-tree-05-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1248">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wbs-tree-05-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.1: A partial WBS for the RC-vehicle project. Level 1 is the project; Level 2 the major deliverables; Level 3 the work packages. Numbering encodes the hierarchy.
@@ -2310,7 +2310,12 @@ Problem 1: Fix the 100 % rule violation
 </summary>
 <p>The “1.3 Assembly &amp; Test” deliverable is estimated at 300 h. Its packages are listed as: Prototype assembly (110 h), Drop test (60 h), EMC test (70 h), Prototype assembly rework (40 h), Write the test report (30 h), <em>and</em> “General project management (50 h).”</p>
 <p>What is wrong, and how do you fix it?</p>
-<p><strong>Solution.</strong> The children sum to 360 h — 60 h <strong>over</strong> 100 % of the parent. Two problems: “Prototype assembly rework” overlaps “Prototype assembly” (not mutually exclusive — fold rework into the assembly package or make it a contingency), and “General project management” is <strong>not part of this deliverable’s scope</strong> — PM effort belongs in its own Level-2 element (e.g. “1.0.1 Project Management”), not smuggled into a technical deliverable.</p>
+<details>
+<summary>
+Solution
+</summary>
+<p>The children sum to 360 h — 60 h <strong>over</strong> 100 % of the parent. Two problems: “Prototype assembly rework” overlaps “Prototype assembly” (not mutually exclusive — fold rework into the assembly package or make it a contingency), and “General project management” is <strong>not part of this deliverable’s scope</strong> — PM effort belongs in its own Level-2 element (e.g. “1.0.1 Project Management”), not smuggled into a technical deliverable.</p>
+</details>
 </details>
 <details>
 <summary>
@@ -2322,14 +2327,29 @@ Problem 2: Outcome or action?
 <li>“Run the mould 20 times and measure the parts”</li>
 <li>“Email the drawings to the customer for approval”</li>
 </ol>
-<p><strong>Model answers.</strong> 1 → “Carbon-fibre supplier selected and quoted.” 2 → “Moulding process capability established.” 3 → “Customer design approval obtained.” Each is a result you can mark done or not done, and it does not dictate the method.</p>
+<details>
+<summary>
+Model answers
+</summary>
+<ol type="1">
+<li>“Carbon-fibre supplier selected and quoted.”</li>
+<li>“Moulding process capability established.”</li>
+<li>“Customer design approval obtained.”</li>
+</ol>
+<p>Each is a result you can mark done or not done, and it does not dictate the method.</p>
+</details>
 </details>
 <details>
 <summary>
 Problem 3 (discussion): how deep should the RC-vehicle WBS go?
 </summary>
 <p>Your draft WBS has a work package “Design the outer body” estimated at 180 h and spanning 6 weeks, and another, “Deburr the frame jig”, estimated at 2 h. Using the rules of thumb, what do you do with each?</p>
-<p><strong>Discussion points.</strong> “Design the outer body” breaks both the 80-hour rule and (if you report every 2 weeks) the single-reporting-period rule — split it into concept, detailed CAD, and design-release packages. “Deburr the frame jig” is below the 8-hour floor — roll it into the jig-fabrication package rather than tracking it as its own line.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>“Design the outer body” breaks both the 80-hour rule and (if you report every 2 weeks) the single-reporting-period rule — split it into concept, detailed CAD, and design-release packages. “Deburr the frame jig” is below the 8-hour floor — roll it into the jig-fabrication package rather than tracking it as its own line.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="5.12">

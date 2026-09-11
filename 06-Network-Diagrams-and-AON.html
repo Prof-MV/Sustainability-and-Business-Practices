@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2609,7 +2609,10 @@ Problem 1: Solve this network
 </tbody>
 </table>
 <p>Find the project duration and the critical path.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>],</span>
@@ -2639,6 +2642,7 @@ Critical path: A - B - D - G - H - I </code></pre>
 </div>
 <p>Duration 25 days; critical path A–B–D–G–H–I. (The chain A–B–D–G is what pushes E, F, and C off the critical path — D’s 5 days arriving at the G merge beat E’s early finish by 6 days.)</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: PERT and the optimistic tail
@@ -2647,14 +2651,27 @@ Problem 2: PERT and the optimistic tail
 <ol type="a">
 <li>What is <span class="math inline">\(t_e\)</span>? (b) Why is <span class="math inline">\(t_e\)</span> noticeably larger than <span class="math inline">\(m\)</span>? (c) What is the activity standard deviation?</li>
 </ol>
-<p><strong>Solution.</strong> (a) <span class="math inline">\(t_e = (6 + 36 + 24)/6 = 11\)</span> days. (b) The pessimistic tail is far from the most-likely value (24 vs 9) while the optimistic tail is close (6 vs 9), so the distribution is <strong>right-skewed</strong> and its mean sits above <span class="math inline">\(m\)</span>. (c) SD <span class="math inline">\(= (24 - 6)/6 = 3\)</span> days — a wide, risky activity.</p>
+<details>
+<summary>
+Solution
+</summary>
+<ol type="a">
+<li><span class="math inline">\(t_e = (6 + 36 + 24)/6 = 11\)</span> days. (b) The pessimistic tail is far from the most-likely value (24 vs 9) while the optimistic tail is close (6 vs 9), so the distribution is <strong>right-skewed</strong> and its mean sits above <span class="math inline">\(m\)</span>.</li>
+<li>SD <span class="math inline">\(= (24 - 6)/6 = 3\)</span> days — a wide, risky activity.</li>
+</ol>
+</details>
 </details>
 <details>
 <summary>
 Problem 3 (discussion): which task do you crash?
 </summary>
 <p>On the sub-project network, the critical path is A–B–C–E–G–I–J (38 days) and the sponsor needs 34. Crash data: B costs $500/day to shorten (max 3 days), G costs $1 200/day (max 2 days), E costs $300/day (max 2 days). Which combination gets you to 34 days at least cost, and what do you check afterward?</p>
-<p><strong>Discussion points.</strong> You need 4 days. Cheapest first: E for 2 days ($600), then B for 2 days ($1 000) — total $1 600 for 4 days. Avoid G at $1 200/day. <strong>Then re-run the network</strong>: after removing 4 days from this chain, another path (e.g.&nbsp;A–B–C–F–H–J) may now be critical or co-critical, and crashing further would have to shorten <em>both</em>.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>You need 4 days. Cheapest first: E for 2 days ($600), then B for 2 days ($1 000) — total $1 600 for 4 days. Avoid G at $1 200/day. <strong>Then re-run the network</strong>: after removing 4 days from this chain, another path (e.g.&nbsp;A–B–C–F–H–J) may now be critical or co-critical, and crashing further would have to shorten <em>both</em>.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="6.12">

@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2395,7 +2395,10 @@ Figure&nbsp;8.2: Time-cost trade-off for one activity. Between the normal and cr
 Problem 1: Least-cost crash to a deadline
 </summary>
 <p>Project critical path A–F–H, currently 23 weeks; the contract needs 20. Crash data: A $513/wk (max 4 wk), F $1 500/wk (max 1 wk), H $950/wk (max 2 wk). Find the least-cost way to remove 3 weeks.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>crash <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"F"</span>, <span class="st">"H"</span>),</span>
@@ -2419,6 +2422,7 @@ Total: $1 539 for 3 weeks</code></pre>
 </div>
 <p>Crash A by 3 weeks for $1 539 — far cheaper than touching F or H.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: Confidence in a date
@@ -2427,7 +2431,10 @@ Problem 2: Confidence in a date
 <ol type="a">
 <li>What is the probability of meeting day 64? (b) What date should you commit to for 95 % confidence?</li>
 </ol>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">60</span>; sigma <span class="ot">&lt;-</span> <span class="dv">4</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"P(finish by day 64) = %.1f%%</span><span class="sc">\n</span><span class="st">"</span>, <span class="dv">100</span> <span class="sc">*</span> <span class="fu">pnorm</span>((<span class="dv">64</span> <span class="sc">-</span> mu) <span class="sc">/</span> sigma)))</span>
@@ -2441,12 +2448,18 @@ Problem 2: Confidence in a date
 <li>~84 %. (b) Day 66.6 — commit to day 67.</li>
 </ol>
 </details>
+</details>
 <details>
 <summary>
 Problem 3 (discussion): crash or fast-track the RC-vehicle launch?
 </summary>
 <p>The retailer moves the launch three weeks earlier. Design is on the critical path and is followed by prototype assembly (also critical). You could add a second designer and pay overtime (crash), or start building the frame jig from the released frame drawings while the body design is still being finalized (fast-track). Which, and why?</p>
-<p><strong>Discussion points.</strong> Fast-tracking the jig against the <em>frame</em> drawings is low-cost and reasonably safe <em>if</em> the frame design is stable — but if the body design forces a late frame change, the jig is rework. Crashing design with a second modeller adds cost and has coordination overhead (two people on one model), but no rework risk. A common answer: fast-track the clearly stable parts, crash the rest, and hold a contingency for the rework risk you accepted.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>Fast-tracking the jig against the <em>frame</em> drawings is low-cost and reasonably safe <em>if</em> the frame design is stable — but if the body design forces a late frame change, the jig is rework. Crashing design with a second modeller adds cost and has coordination overhead (two people on one model), but no rework risk. A common answer: fast-track the clearly stable parts, crash the rest, and hold a contingency for the rework risk you accepted.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="8.11">

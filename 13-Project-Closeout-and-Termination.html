@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2373,7 +2373,10 @@ Figure&nbsp;13.2: Cost overrun as a multiple of the original budget for three we
 Problem 1: Sunk cost trap
 </summary>
 <p>A project has consumed $1.2M of a $1.5M budget. Finishing needs $500 000 (the last $300 000 of budget plus a $200 000 overrun). The delivered product is now worth $350 000. The sponsor says “we’ve spent $1.2M — we can’t stop now.” Evaluate.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cost_to_finish <span class="ot">&lt;-</span> <span class="dv">500000</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>remaining_benefit <span class="ot">&lt;-</span> <span class="dv">350000</span></span>
@@ -2387,23 +2390,40 @@ Problem 1: Sunk cost trap
 </div>
 <p>Finishing turns $500 000 of new spend into $350 000 of value — a $150 000 loss <strong>from today</strong>. The $1.2M is gone either way. Cancel (or de-scope until the remaining cost drops below $350 000). “We can’t stop now” is the sunk-cost fallacy.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: Which termination type?
 </summary>
 <ol type="1">
-<li>The RC-vehicle prototype team becomes the production line’s support team. → <strong>Addition.</strong></li>
-<li>A cancelled R&amp;D project’s engineers return to the design department. → <strong>Integration.</strong></li>
-<li>A failed pilot is shut down, its budget audited, its test rig sold. → <strong>Extinction.</strong></li>
-<li>A VP’s favourite project keeps a $1/year budget so it stays “active” on paper. → <strong>Starvation.</strong></li>
+<li>The RC-vehicle prototype team becomes the production line’s support team.</li>
+<li>A cancelled R&amp;D project’s engineers return to the design department.</li>
+<li>A failed pilot is shut down, its budget audited, its test rig sold.</li>
+<li>A VP’s favourite project keeps a $1/year budget so it stays “active” on paper.</li>
 </ol>
+<details>
+<summary>
+Answers
+</summary>
+<ol type="1">
+<li><strong>Addition.</strong></li>
+<li><strong>Integration.</strong></li>
+<li><strong>Extinction.</strong></li>
+<li><strong>Starvation.</strong></li>
+</ol>
+</details>
 </details>
 <details>
 <summary>
 Problem 3 (discussion): the team wants to skip lessons learned
 </summary>
 <p>The RC-vehicle project delivered late and over budget but the product passed. The exhausted team wants to skip the lessons-learned review and start on the production ramp. As PM, what do you do and why?</p>
-<p><strong>Discussion points.</strong> This is exactly the moment the review matters most — a troubled project is where the carryover value is highest, and the next program will hit the <em>same</em> new-line learning curve and <em>same</em> supplier risk. Keep it short and structured, focus on <strong>what went wrong and why</strong> (not blame), capture 2–3 concrete, assigned actions, and put it in the history file before the team disperses and the memory fades. Skipping it guarantees the next project repeats the overrun.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>This is exactly the moment the review matters most — a troubled project is where the carryover value is highest, and the next program will hit the <em>same</em> new-line learning curve and <em>same</em> supplier risk. Keep it short and structured, focus on <strong>what went wrong and why</strong> (not blame), capture 2–3 concrete, assigned actions, and put it in the history file before the team disperses and the memory fades. Skipping it guarantees the next project repeats the overrun.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="13.11">

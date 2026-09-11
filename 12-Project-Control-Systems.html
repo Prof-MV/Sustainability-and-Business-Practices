@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2451,7 +2451,10 @@ Which EAC formula should you actually report?
 Problem 1: Full EVM snapshot
 </summary>
 <p>BAC = $400 000. At the status date: PV = $180 000, EV = $150 000, AC = $165 000. Compute SV, CV, SPI, CPI, EAC (BAC/CPI), ETC, VAC, TCPI, and state the project’s condition in one sentence.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>BAC <span class="ot">&lt;-</span> <span class="dv">400000</span>; PV <span class="ot">&lt;-</span> <span class="dv">180000</span>; EV <span class="ot">&lt;-</span> <span class="dv">150000</span>; AC <span class="ot">&lt;-</span> <span class="dv">165000</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>SV <span class="ot">&lt;-</span> EV <span class="sc">-</span> PV; CV <span class="ot">&lt;-</span> EV <span class="sc">-</span> AC; SPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> PV; CPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> AC</span>
@@ -2469,19 +2472,30 @@ EAC=$440 000  ETC=$275 000  VAC=$-40 000  TCPI=1.064</code></pre>
 </div>
 <p>Behind schedule (SPI 0.83) and over cost (CPI 0.91); projected to finish about $40 000 over budget, and the remaining work must run at TCPI ≈ 1.06 to still hit BAC.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: On budget but in trouble
 </summary>
 <p>A project reports PV = $500 000, EV = $400 000, AC = $400 000. The sponsor sees “spend exactly matches earned value — CPI = 1.0 — we’re fine.” Are they?</p>
-<p><strong>Answer.</strong> Cost efficiency is fine (CPI = 1.0), but <strong>SPI = EV/PV = 0.80</strong> — the project has completed only 80 % of the work it should have by now. It is <strong>20 % behind schedule</strong> and will either finish late or need to spend more (overtime, added staff) to catch up, which will then push CPI below 1. This is the classic watermelon: the cost view is green, the schedule view is red.</p>
+<details>
+<summary>
+Answer
+</summary>
+<p>Cost efficiency is fine (CPI = 1.0), but <strong>SPI = EV/PV = 0.80</strong> — the project has completed only 80 % of the work it should have by now. It is <strong>20 % behind schedule</strong> and will either finish late or need to spend more (overtime, added staff) to catch up, which will then push CPI below 1. This is the classic watermelon: the cost view is green, the schedule view is red.</p>
+</details>
 </details>
 <details>
 <summary>
 Problem 3 (discussion): re-baseline or not?
 </summary>
 <p>At week 8 the RC-vehicle project is forecast (EAC) at $700 000 against a $620 000 BAC, mostly because the retailer added a second body colourway (an approved scope change) and the new line’s learning curve ran longer than planned. Should you re-baseline?</p>
-<p><strong>Discussion points.</strong> Split the two causes. The <strong>approved scope change</strong> is a legitimate reason to re-baseline — the extra colourway was authorised, so the budget and schedule should be formally updated and future variance measured against the new plan. The <strong>learning-curve overrun</strong> is <em>performance</em> against the plan, not a change to the plan — that stays as variance you must recover or explain. Re-baselining to bury performance problems (“we’ll just move the goalposts”) destroys the value of the control system; re-baselining for authorised changes keeps it honest.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>Split the two causes. The <strong>approved scope change</strong> is a legitimate reason to re-baseline — the extra colourway was authorised, so the budget and schedule should be formally updated and future variance measured against the new plan. The <strong>learning-curve overrun</strong> is <em>performance</em> against the plan, not a change to the plan — that stays as variance you must recover or explain. Re-baselining to bury performance problems (“we’ll just move the goalposts”) destroys the value of the control system; re-baselining for authorised changes keeps it honest.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="12.12">

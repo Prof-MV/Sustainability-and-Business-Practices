@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2367,72 +2367,111 @@ Practice: classify the cost (from the MGMT-3105 budgeting case study)
 </summary>
 <p>For each item, give <strong>up to three</strong> labels from: A Direct, B Indirect, C Fixed, D Variable, E Recurring, F Non-recurring, G Normal, H Expedited.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>#</th>
 <th>Cost item</th>
-<th>Answer</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1</td>
 <td>Technician’s hourly wages for project assembly</td>
-<td>A Direct, D Variable, G Normal</td>
 </tr>
 <tr class="even">
 <td>2</td>
 <td>Office rent for company headquarters</td>
-<td>B Indirect, C Fixed, E Recurring</td>
 </tr>
 <tr class="odd">
 <td>3</td>
 <td>One-time purchase of specialized testing software</td>
-<td>A Direct, F Non-recurring</td>
 </tr>
 <tr class="even">
 <td>4</td>
 <td>Electricity used by production equipment</td>
-<td>D Variable, E Recurring, B Indirect</td>
 </tr>
 <tr class="odd">
 <td>6</td>
 <td>Hiring extra workers to meet a tight deadline</td>
-<td>H Expedited, A Direct</td>
 </tr>
 <tr class="even">
 <td>9</td>
 <td>Rush shipment of components to meet schedule</td>
-<td>H Expedited, A Direct</td>
 </tr>
 <tr class="odd">
 <td>12</td>
 <td>Cost of the project manager’s salary</td>
-<td>C Fixed, E Recurring, A Direct</td>
 </tr>
 <tr class="even">
 <td>17</td>
 <td>Routine monthly maintenance of equipment</td>
-<td>F … <em>(trick: this is E Recurring, B Indirect)</em></td>
 </tr>
 <tr class="odd">
 <td>23</td>
 <td>Equipment lease for six months (flat fee)</td>
-<td>B Indirect, C Fixed, E Recurring</td>
 </tr>
 <tr class="even">
 <td>40</td>
 <td>One-time cost for prototype tooling</td>
+</tr>
+</tbody>
+</table>
+<details>
+<summary>
+Answers
+</summary>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>A Direct, D Variable, G Normal</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>B Indirect, C Fixed, E Recurring</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>A Direct, F Non-recurring</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>D Variable, E Recurring, B Indirect</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>H Expedited, A Direct</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>H Expedited, A Direct</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>C Fixed, E Recurring, A Direct</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td><em>(trick)</em> E Recurring, B Indirect</td>
+</tr>
+<tr class="odd">
+<td>23</td>
+<td>B Indirect, C Fixed, E Recurring</td>
+</tr>
+<tr class="even">
+<td>40</td>
 <td>A Direct, F Non-recurring, C Fixed</td>
 </tr>
 </tbody>
 </table>
 <p>The pattern: <strong>anything charged straight to the project is Direct; overhead is Indirect; anything you pay to go faster is Expedited; anything paid once is Non-recurring.</strong> Most items are genuinely two or three of these at once.</p>
+</details>
 </details>
 </section>
 <section id="the-dichotomies-on-the-running-project" class="level3" data-number="9.4.3">
@@ -2860,7 +2899,10 @@ How would top-down vs.&nbsp;bottom-up change this number?
 Problem 1: Fully-burdened labour and an indirect-rate swing
 </summary>
 <p>A test campaign needs 2 technicians for 3 weeks (37.5 h/week each) at $34/h, plus $6 200 of consumables. Compute the fully-burdened cost at an indirect rate of 25 %, and again at 45 %. How much does the indirect-rate assumption alone move the number?</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>techs <span class="ot">&lt;-</span> <span class="dv">2</span>; weeks <span class="ot">&lt;-</span> <span class="dv">3</span>; hrs_week <span class="ot">&lt;-</span> <span class="fl">37.5</span>; rate <span class="ot">&lt;-</span> <span class="dv">34</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>consumables <span class="ot">&lt;-</span> <span class="dv">6200</span></span>
@@ -2887,6 +2929,7 @@ Swing from the indirect-rate assumption alone: $2 770</code></pre>
 </div>
 <p>The direct cost is fixed at $21 500, but the burdened total moves by $4 300 — 20 % of direct — purely on the overhead assumption. Always state the indirect rate you used.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: Which estimating method, and what range?
@@ -2897,7 +2940,10 @@ Problem 2: Which estimating method, and what range?
 <li>You have run three near-identical RC-vehicle launches in the last four years with clean cost records.</li>
 <li>All major POs are drafted and 90 % of the design is released for a firm-fixed-price defense bid.</li>
 </ol>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <ul>
 <li><ol type="a">
 <li><strong>Ballpark</strong>, ±30 % → $350 000 – $650 000.</li>
@@ -2910,12 +2956,16 @@ Problem 2: Which estimating method, and what range?
 </ol></li>
 </ul>
 </details>
+</details>
 <details>
 <summary>
 Problem 3: Variance analysis on the ABC budget
 </summary>
 <p>Using the preliminary ABC budget above (total planned $63 250), the project finishes with these actuals: Survey $4 250, Design $8 000, Clear site $3 500, Foundation $8 500, Framing $11 250, Plumb &amp; wire $5 150. Find the variance per activity and overall, and flag the activities that need a post-mortem.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>planned <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Survey =</span> <span class="dv">4000</span>, <span class="at">Design =</span> <span class="dv">8000</span>, <span class="st">`</span><span class="at">Clear site</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">4000</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">Foundation =</span> <span class="dv">7500</span>, <span class="at">Framing =</span> <span class="dv">10000</span>, <span class="st">`</span><span class="at">Plumb &amp; wire</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">5000</span>)</span>
@@ -2948,13 +2998,19 @@ TOTAL planned $38 500  actual $40 650  variance $-2 150 (-5.6%)</code></pre>
 </div>
 <p>Design and (roughly) Survey held. <strong>Foundation (-13 %)</strong> and <strong>Framing (-13 %)</strong> blew through and drove the whole project $2 150 (3.4 %) over — those two get the post-mortem.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 4 (discussion): sizing contingency for the RC-vehicle project
 </summary>
 <p>The project brief flags several live risks: one candidate motor supplier is unproven, that supplier’s staff are negotiating a first labour contract, the carbon-fibre supplier is mid-restructuring after an acquisition, and a new assembly line would carry a learning curve. The subtotal budget is $620 000.</p>
 <p>Would you size the contingency at 10 %, 15 %, or 20 %? Would you spread it across all tasks or ring-fence it for specific ones? Defend your answer.</p>
-<p><strong>Discussion points.</strong> With that many concentrated, plausible risks, <strong>10 % is light</strong>; 15 % is defensible and matches the course’s Costs Chart; 20 % is arguable if the unproven-supplier and new-line risks are both realised. A strong answer <strong>ring-fences</strong> most of the reserve against the supplier and assembly-line line items (the tasks critical to success) rather than smearing it evenly, and states that split in the scope statement so stakeholders are not surprised when it is drawn down.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>With that many concentrated, plausible risks, <strong>10 % is light</strong>; 15 % is defensible and matches the course’s Costs Chart; 20 % is arguable if the unproven-supplier and new-line risks are both realised. A strong answer <strong>ring-fences</strong> most of the reserve against the supplier and assembly-line line items (the tasks critical to success) rather than smearing it evenly, and states that split in the scope statement so stakeholders are not surprised when it is drawn down.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="9.14">

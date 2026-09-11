@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2428,7 +2428,10 @@ What would flip the decision?
 Problem 1: The road-trip risk register (from the course exercise)
 </summary>
 <p>Six friends borrow an older car and drive to an unfamiliar beach. The weather forecast is mixed with a chance of rain and high winds; one friend is a very picky eater; the owner plans to replace the car soon due to problems; there is a fireworks show and all-day music at a crowded venue. List the risks, classify each, and give a mitigation strategy.</p>
-<p><strong>Model answer (partial).</strong></p>
+<details>
+<summary>
+Model answer (partial)
+</summary>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -2476,12 +2479,16 @@ Problem 1: The road-trip risk register (from the course exercise)
 </tbody>
 </table>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: EMV of competing suppliers
 </summary>
 <p>Supplier X: $140 000, 15 % chance of a 3-week slip costing $45 000. Supplier Y: $128 000, 35 % chance of a 3-week slip costing $45 000. On expected cost alone, which is cheaper?</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="dv">140000</span> <span class="sc">+</span> <span class="fl">0.15</span> <span class="sc">*</span> <span class="dv">45000</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="dv">128000</span> <span class="sc">+</span> <span class="fl">0.35</span> <span class="sc">*</span> <span class="dv">45000</span></span>
@@ -2496,12 +2503,18 @@ Cheaper on EMV: Supplier Y</code></pre>
 </div>
 <p>X: $146 750. Y: $143 750. Y is cheaper on expected cost — but note X’s risk is <em>less likely</em>, which may matter more than the $3 000 if a slip would blow the holiday launch window. EMV informs the decision; it does not make it.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 3 (discussion): red-zone risk with no cheap mitigation
 </summary>
 <p>The “carbon-fibre plant disruption” risk sits in the red zone, but the supplier is the only qualified source and re-qualifying another would take four months you do not have. What are your options?</p>
-<p><strong>Discussion points.</strong> You cannot <em>minimize</em> the probability much, so work the <strong>impact</strong>: build a larger <strong>contingency reserve</strong> (time and money) against it; <strong>transfer</strong> part of it via contract terms (penalty clauses, guaranteed allocation); <strong>share</strong> it by co-investing in the supplier’s modernization for priority supply; carry <strong>safety stock</strong> of the critical carbon-fibre parts; and design a <strong>fallback</strong> (an aluminium body variant) that could be substituted if the supply fails, accepting a heavier product rather than a missed launch.</p>
+<details>
+<summary>
+Discussion points
+</summary>
+<p>You cannot <em>minimize</em> the probability much, so work the <strong>impact</strong>: build a larger <strong>contingency reserve</strong> (time and money) against it; <strong>transfer</strong> part of it via contract terms (penalty clauses, guaranteed allocation); <strong>share</strong> it by co-investing in the supplier’s modernization for priority supply; carry <strong>safety stock</strong> of the critical carbon-fibre parts; and design a <strong>fallback</strong> (an aluminium body variant) that could be substituted if the supply fails, accepting a heavier product rather than a missed launch.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="7.13">

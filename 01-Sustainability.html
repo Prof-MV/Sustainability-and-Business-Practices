@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-77f877a8bbdaf906de76408b5606b2fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-aae1decb7c0a57a761683734fafe0f97.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2443,7 +2443,10 @@ What the numbers usually show — and why the “greenest” answer is not obvio
 Try it: redesign the RC-car battery door for recyclability
 </summary>
 <p><strong>Current design:</strong> ABS door, two stainless M2 screws, a printed polyester label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.</p>
-<p><strong>One redesign:</strong></p>
+<details>
+<summary>
+One redesign
+</summary>
 <ul>
 <li>Replace the two screws with a <strong>living hinge + snap latch</strong> moulded into the door (same ABS) — removes two dissimilar-metal fasteners and a driver operation on the line.</li>
 <li>Replace the adhesive polyester label with <strong>in-mould labelling</strong> in an ABS-compatible film, or mould the text into the part.</li>
@@ -2451,6 +2454,7 @@ Try it: redesign the RC-car battery door for recyclability
 <li>Keep the TPE gasket but make it a <strong>removable press-in</strong> part in a recycling-compatible grade, or switch to a moulded-in flexible ABS lip if the seal spec allows.</li>
 </ul>
 <p>Result: the door goes from five materials and two fasteners to essentially one polymer, snaps apart by hand, and carries no adhesive.</p>
+</details>
 </details>
 </section>
 <section id="the-consumers-perspective" class="level2" data-number="1.9">
@@ -2622,7 +2626,10 @@ Problem 1: Packaging substitution (food industry)
 <li>What is the annual change in material mass and material cost?</li>
 <li>Give two non-cost arguments for switching, and one argument against.</li>
 </ol>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>trays        <span class="ot">&lt;-</span> <span class="fl">2.4e6</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mass_cpet_g  <span class="ot">&lt;-</span> <span class="dv">22</span></span>
@@ -2648,13 +2655,17 @@ Annual material cost change : $9 600 (an increase)</code></pre>
 <li><p><em>For:</em> the natural-coloured PP is actually recovered by the recycler (black CPET usually is not), and PP trays tolerate reheating better. <em>Against:</em> higher material spend, and a tooling change is needed — capital plus a qualification run.</p></li>
 </ol>
 </details>
+</details>
 <details>
 <summary>
 Problem 2: Recycled-aluminium body (automotive/toy)
 </summary>
 <p>Switching the RC-car body from primary to <strong>recycled</strong> aluminium keeps the mass at 70 g/unit but changes the cradle-to-gate energy from 155 MJ/kg to 8 MJ/kg and the carbon from 11 kg CO2e/kg to 0.6 kg CO2e/kg. Recycled stock costs $0.25/kg more. Run size 120 000 units.</p>
 <p>Estimate the energy saved, the CO2e avoided, and the extra material cost.</p>
-<p><strong>Solution.</strong></p>
+<details>
+<summary>
+Solution
+</summary>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mass_kg   <span class="ot">&lt;-</span> <span class="dv">70</span> <span class="sc">/</span> <span class="dv">1000</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>units     <span class="ot">&lt;-</span> <span class="dv">120000</span></span>
@@ -2680,13 +2691,17 @@ Extra material cost : $2 100</code></pre>
 </div>
 <p>Roughly 1.2 million MJ (about 340 000 kWh) and 87 t of CO2e avoided for about $2 100 of extra material cost — one of the highest-leverage sustainability moves available on this project.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 3: Design-for-recyclability audit (defense)
 </summary>
 <p>A defense client requires that field-returned electronic enclosures be <strong>materially recoverable</strong>. You are handed this enclosure: glass-filled nylon (#7) housing, 6 zinc-plated steel screws, a bonded aluminium RFI shield, a polyurethane potting compound over the PCB, and two adhesive asset-tracking labels.</p>
 <p>List, in priority order, the four changes that would most improve material recovery, and note the functional risk of each.</p>
-<p><strong>Model answer.</strong></p>
+<details>
+<summary>
+Model answer
+</summary>
 <ol type="1">
 <li><strong>Replace the potting compound</strong> with a removable conformal coating or a gasketed enclosure. <em>Risk:</em> reduced shock/moisture protection — must re-qualify to the environmental spec.</li>
 <li><strong>Eliminate the bonded aluminium shield</strong>; use a conductive coating on the nylon or a snap-in shield of the same-family metal. <em>Risk:</em> RFI performance must be re-verified.</li>
@@ -2695,12 +2710,18 @@ Problem 3: Design-for-recyclability audit (defense)
 </ol>
 <p>The housing polymer itself (#7 glass-filled) is hard to change if the structural spec depends on it — note it as a known limitation rather than a quick fix.</p>
 </details>
+</details>
 <details>
 <summary>
 Problem 4 (discussion): planned obsolescence vs.&nbsp;sustainable design
 </summary>
 <p>“Sustainable design requires that our products last as long as possible. But business decisions may deliberately shorten product life to protect repeat sales — planned obsolescence. Which do you prefer, and how would you reconcile the two in a company that has to stay profitable?”</p>
+<details>
+<summary>
+Discussion
+</summary>
 <p>There is no single right answer — this is a position you argue. Strong answers usually land on <strong>service and circular business models</strong>: the manufacturer keeps revenue through repair, upgrades, refurbishment, take-back, or product-as-a-service, so “make it last” and “keep earning” stop being opposites. Weak answers just pick a side and ignore the constraint on the other.</p>
+</details>
 </details>
 </section>
 <section id="further-resources" class="level2" data-number="1.14">
