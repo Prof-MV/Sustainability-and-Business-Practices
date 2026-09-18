@@ -112,6 +112,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
@@ -1837,7 +1839,8 @@ window.Quarto = {
   <li><a href="#payback-period" id="toc-payback-period" class="nav-link" data-scroll-target="#payback-period"><span class="header-section-number">3.3.1</span> Payback period</a></li>
   <li><a href="#worked-example-1-payback-on-the-rc-vehicle-tooling-investment" id="toc-worked-example-1-payback-on-the-rc-vehicle-tooling-investment" class="nav-link" data-scroll-target="#worked-example-1-payback-on-the-rc-vehicle-tooling-investment"><span class="header-section-number">3.3.2</span> Worked Example 1: payback on the RC-vehicle tooling investment</a></li>
   <li><a href="#net-present-value" id="toc-net-present-value" class="nav-link" data-scroll-target="#net-present-value"><span class="header-section-number">3.3.3</span> Net present value</a></li>
-  <li><a href="#try-it-yourself-npv-of-the-project" id="toc-try-it-yourself-npv-of-the-project" class="nav-link" data-scroll-target="#try-it-yourself-npv-of-the-project"><span class="header-section-number">3.3.4</span> Try it yourself: NPV of the project</a></li>
+  <li><a href="#nominal-vs.-discounted-payback-for-example-1" id="toc-nominal-vs.-discounted-payback-for-example-1" class="nav-link" data-scroll-target="#nominal-vs.-discounted-payback-for-example-1"><span class="header-section-number">3.3.4</span> Nominal vs.&nbsp;discounted payback for Example 1</a></li>
+  <li><a href="#try-it-yourself-npv-of-the-project" id="toc-try-it-yourself-npv-of-the-project" class="nav-link" data-scroll-target="#try-it-yourself-npv-of-the-project"><span class="header-section-number">3.3.5</span> Try it yourself: NPV of the project</a></li>
   </ul></li>
   <li><a href="#the-project-charter" id="toc-the-project-charter" class="nav-link" data-scroll-target="#the-project-charter"><span class="header-section-number">3.4</span> The project charter</a>
   <ul class="collapse">
@@ -2244,8 +2247,102 @@ Figure&nbsp;3.1: Cumulative cash position for the RC-vehicle tooling investment.
 <p>NPV discounts every future cash flow back to today’s dollars at the organization’s required rate of return <span class="math inline">\(r\)</span>, then subtracts the initial outlay. A positive NPV means the project earns more than that hurdle rate.</p>
 <p><span class="math display">\[NPV = -C_0 + \sum_{t=1}^{n} \frac{CF_t}{(1 + r)^t}\]</span></p>
 </section>
-<section id="try-it-yourself-npv-of-the-project" class="level3" data-number="3.3.4">
-<h3 data-number="3.3.4" class="anchored" data-anchor-id="try-it-yourself-npv-of-the-project"><span class="header-section-number">3.3.4</span> Try it yourself: NPV of the project</h3>
+<section id="nominal-vs.-discounted-payback-for-example-1" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="nominal-vs.-discounted-payback-for-example-1"><span class="header-section-number">3.3.4</span> Nominal vs.&nbsp;discounted payback for Example 1</h3>
+<p>Apply a 12 % hurdle rate to Example 1’s own numbers and put the nominal and discounted cash flows side by side:</p>
+<div class="cell">
+<div id="tbl-payback-npv-03" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-payback-npv-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3.1: Example 1: nominal cash flow and cumulative cash flow vs. the discounted present value and cumulative PV (NPV running total) at a 12% hurdle rate.
+</figcaption>
+<div aria-describedby="tbl-payback-npv-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Year</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Net cash flow</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Cumulative cash flow</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Discount factor @ 12%</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Present value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Cumulative PV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: right;">-$450 000</td>
+<td style="text-align: right; font-weight: bold;">-$450 000</td>
+<td style="text-align: center;">1.000</td>
+<td style="text-align: right;">-$450 000</td>
+<td style="text-align: right; font-weight: bold;">-$450 000</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: right;">$180 000</td>
+<td style="text-align: right; font-weight: bold;">-$270 000</td>
+<td style="text-align: center;">0.893</td>
+<td style="text-align: right;">$160 714</td>
+<td style="text-align: right; font-weight: bold;">-$289 286</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: right;">$180 000</td>
+<td style="text-align: right; font-weight: bold;">-$90 000</td>
+<td style="text-align: center;">0.797</td>
+<td style="text-align: right;">$143 495</td>
+<td style="text-align: right; font-weight: bold;">-$145 791</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: right;">$180 000</td>
+<td style="text-align: right; font-weight: bold;">$90 000</td>
+<td style="text-align: center;">0.712</td>
+<td style="text-align: right;">$128 120</td>
+<td style="text-align: right; font-weight: bold;">-$17 670</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: right;">$180 000</td>
+<td style="text-align: right; font-weight: bold;">$270 000</td>
+<td style="text-align: center;">0.636</td>
+<td style="text-align: right;">$114 393</td>
+<td style="text-align: right; font-weight: bold;">$96 723</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: right;">$180 000</td>
+<td style="text-align: right; font-weight: bold;">$450 000</td>
+<td style="text-align: center;">0.567</td>
+<td style="text-align: right;">$102 137</td>
+<td style="text-align: right; font-weight: bold;">$198 860</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The <strong>nominal</strong> cumulative cash flow crosses zero between year 2 and year 3 — the 2.5-year payback already computed. Once each year’s cash flow is discounted at 12 %, the <strong>cumulative PV</strong> does not cross zero until between year 3 and year 4: a <strong>discounted payback of about 3.15 years</strong>. Those extra 0.65 years are the cost of the time value of money — and the year-5 cumulative PV, <strong>$198 860</strong>, is exactly the project’s NPV.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-npv-breakeven-03" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-npv-breakeven-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-Scope-and-Organizational-Structures_files/figure-html/fig-npv-breakeven-03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-npv-breakeven-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Discounted breakeven for Example 1. The dashed grey line is the nominal cumulative cash flow from the earlier figure; the solid navy line discounts each year’s cash flow at the 12% hurdle rate before accumulating it, pushing the crossing point from 2.5 years out to about 3.15 years.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="try-it-yourself-npv-of-the-project" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="try-it-yourself-npv-of-the-project"><span class="header-section-number">3.3.5</span> Try it yourself: NPV of the project</h3>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <details>
@@ -2319,7 +2416,7 @@ What happens to NPV if the hurdle rate rises to 18 %?
 <img src="03-Scope-and-Organizational-Structures_files/figure-html/fig-stakeholder-grid-03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stakeholder-grid-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.2: Power-interest grid for the RC-vehicle project. Effort goes where power and interest are both high; low-low stakeholders are monitored, not managed.
+Figure&nbsp;3.3: Power-interest grid for the RC-vehicle project. Effort goes where power and interest are both high; low-low stakeholders are monitored, not managed.
 </figcaption>
 </figure>
 </div>
@@ -2381,7 +2478,7 @@ Figure&nbsp;3.2: Power-interest grid for the RC-vehicle project. Effort goes whe
 <img src="03-Scope-and-Organizational-Structures_files/figure-html/fig-org-authority-03-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-org-authority-03-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.3: Project manager authority across organizational structures. It rises from almost none in a functional organization to near-total in a projectized one, with the matrix band in between.
+Figure&nbsp;3.4: Project manager authority across organizational structures. It rises from almost none in a functional organization to near-total in a projectized one, with the matrix band in between.
 </figcaption>
 </figure>
 </div>
