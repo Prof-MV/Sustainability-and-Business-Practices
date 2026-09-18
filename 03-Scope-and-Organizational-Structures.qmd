@@ -102,6 +102,55 @@ cat(sprintf("Payback period: %.2f years\n", (year_paid - 1) + frac))
 Payback is quick to compute but ignores the **time value of money** and anything
 that happens after the payback point. NPV fixes both.
 
+The same story as a picture: the balance starts at \$0, is spent down to
+**-\$450 000** as tooling, setup, and approvals are paid for ahead of **Start
+of Production (SOP)**, then turns upward once production starts, as
+\$180 000/year of net cash flow closes the gap until it crosses breakeven.
+
+```{r fig-payback-curve-03, fig.cap="Cumulative cash position for the RC-vehicle tooling investment. The balance starts at $0 and is spent down to -$450,000 by Start of Production (SOP); once production begins, $180,000/year of net cash flow closes the gap, crossing breakeven at 2.5 years.", fig.align='center', fig.width=9, fig.height=5.5}
+initial   <- 450000
+annual_cf <- 180000
+horizon   <- 5
+payback_t <- initial / annual_cf
+
+pre_sop  <- data.frame(t = seq(-1, 0, by = 0.05))
+pre_sop$balance <- -initial * (pre_sop$t + 1)
+post_sop <- data.frame(t = seq(0, horizon, by = 0.05))
+post_sop$balance <- -initial + annual_cf * post_sop$t
+curve_df <- rbind(pre_sop, post_sop)
+
+ggplot(curve_df, aes(t, balance)) +
+  geom_ribbon(aes(ymin = pmin(balance, 0), ymax = 0),
+              fill = "#C0392B", alpha = 0.15) +
+  geom_ribbon(data = subset(curve_df, balance > 0),
+              aes(ymin = 0, ymax = balance),
+              fill = "#27AE60", alpha = 0.15) +
+  geom_hline(yintercept = 0, color = "grey40", linewidth = 0.6) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey40", linewidth = 0.7) +
+  geom_line(color = "#1B4F72", linewidth = 1.2) +
+  geom_point(data = data.frame(t = payback_t, balance = 0),
+             color = "#186A3B", size = 3.5) +
+  annotate("text", x = 0.08, y = -initial * 0.82, label = "-$450,000\n(tooling outlay, at SOP)",
+           hjust = 0, vjust = 1, size = 3.2 * diagram_text_scale, color = "#C0392B") +
+  annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
+           hjust = 0, size = 3.2 * diagram_text_scale, color = "grey30", fontface = "bold") +
+  annotate("text", x = payback_t, y = 0,
+           label = paste0("Payback: ", payback_t, " yrs"),
+           vjust = -1.2, hjust = -0.08, size = 3.2 * diagram_text_scale,
+           color = "#186A3B", fontface = "bold") +
+  scale_x_continuous(breaks = seq(-1, horizon, 1)) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = " "),
+                      expand = expansion(mult = c(0.14, 0.08))) +
+  labs(title = "Time vs. cumulative project cash position",
+       x = "Time (years)", y = "Cumulative cash position") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
 ### Net present value
 
 NPV discounts every future cash flow back to today's dollars at the
