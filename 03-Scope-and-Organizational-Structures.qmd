@@ -159,6 +159,116 @@ A positive NPV means the project earns more than that hurdle rate.
 
 $$NPV = -C_0 + \sum_{t=1}^{n} \frac{CF_t}{(1 + r)^t}$$
 
+### Nominal vs. discounted payback for Example 1
+
+Apply a 12 % hurdle rate to Example 1's own numbers and put the nominal and
+discounted cash flows side by side:
+
+```{r tbl-payback-npv-03}
+initial   <- 450000
+annual_cf <- 180000
+horizon   <- 5
+r         <- 0.12
+
+years       <- 0:horizon
+cash_flow   <- c(-initial, rep(annual_cf, horizon))
+cum_cf      <- cumsum(cash_flow)
+disc_factor <- 1 / (1 + r)^years
+pv          <- cash_flow * disc_factor
+cum_pv      <- cumsum(pv)
+
+tbl <- data.frame(
+  Year = years,
+  `Net cash flow` = scales::dollar(cash_flow, big.mark = " "),
+  `Cumulative cash flow` = scales::dollar(cum_cf, big.mark = " "),
+  `Discount factor @ 12%` = sprintf("%.3f", disc_factor),
+  `Present value` = scales::dollar(round(pv), big.mark = " "),
+  `Cumulative PV` = scales::dollar(round(cum_pv), big.mark = " "),
+  check.names = FALSE
+)
+
+knitr::kable(tbl, align = c("c", "r", "r", "c", "r", "r"),
+             caption = "Example 1: nominal cash flow and cumulative cash flow vs. the discounted present value and cumulative PV (NPV running total) at a 12% hurdle rate.") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(3, bold = TRUE) |>
+  kableExtra::column_spec(6, bold = TRUE)
+```
+
+The **nominal** cumulative cash flow crosses zero between year 2 and year 3 ---
+the 2.5-year payback already computed. Once each year's cash flow is
+discounted at 12 %, the **cumulative PV** does not cross zero until between
+year 3 and year 4: a **discounted payback of about 3.15 years**. Those extra
+0.65 years are the cost of the time value of money --- and the year-5
+cumulative PV, **\$198 860**, is exactly the project's NPV.
+
+```{r fig-npv-breakeven-03, fig.cap="Discounted breakeven for Example 1. The dashed grey line is the nominal cumulative cash flow from the earlier figure; the solid navy line discounts each year's cash flow at the 12% hurdle rate before accumulating it, pushing the crossing point from 2.5 years out to about 3.15 years.", fig.align='center', fig.width=9, fig.height=5.5}
+initial   <- 450000
+annual_cf <- 180000
+horizon   <- 5
+r         <- 0.12
+
+years       <- 0:horizon
+cash_flow   <- c(-initial, rep(annual_cf, horizon))
+disc_factor <- 1 / (1 + r)^years
+pv          <- cash_flow * disc_factor
+cum_pv      <- cumsum(pv)
+
+# Discounted payback: fractional year where cumulative PV crosses zero
+cross_i      <- which(cum_pv >= 0)[1]
+frac_pv      <- -cum_pv[cross_i - 1] / pv[cross_i]
+payback_pv_t <- years[cross_i - 1] + frac_pv
+
+# Fine-resolution curves so the shaded ribbon tracks the line exactly
+pre_sop        <- data.frame(t = seq(-1, 0, by = 0.02))
+pre_sop$balance <- -initial * (pre_sop$t + 1)
+
+post_t          <- seq(0, horizon, by = 0.02)
+post_sop        <- data.frame(t = post_t,
+                               balance = approx(years, cum_pv, xout = post_t)$y)
+curve_df   <- rbind(pre_sop, post_sop)
+
+# Nominal curve (from the earlier figure) for comparison
+nominal_df <- data.frame(t = post_t, balance = -initial + annual_cf * post_t)
+nominal_df <- rbind(data.frame(t = pre_sop$t, balance = pre_sop$balance), nominal_df)
+
+ggplot(curve_df, aes(t, balance)) +
+  geom_ribbon(aes(ymin = pmin(balance, 0), ymax = 0),
+              fill = "#C0392B", alpha = 0.15) +
+  geom_ribbon(data = subset(curve_df, balance > 0),
+              aes(ymin = 0, ymax = balance),
+              fill = "#27AE60", alpha = 0.15) +
+  geom_hline(yintercept = 0, color = "grey40", linewidth = 0.6) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey40", linewidth = 0.7) +
+  geom_line(data = nominal_df, aes(t, balance), color = "grey55",
+            linetype = "dashed", linewidth = 1) +
+  geom_line(color = "#1B4F72", linewidth = 1.2) +
+  geom_point(data = data.frame(t = payback_pv_t, balance = 0),
+             color = "#186A3B", size = 3.5) +
+  annotate("text", x = 0.08, y = -initial * 0.82, label = "-$450,000\n(tooling outlay, at SOP)",
+           hjust = 0, vjust = 1, size = 3.2 * diagram_text_scale, color = "#C0392B") +
+  annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
+           hjust = 0, size = 3.2 * diagram_text_scale, color = "grey30", fontface = "bold") +
+  annotate("text", x = payback_pv_t, y = 0,
+           label = paste0("Discounted payback: ", round(payback_pv_t, 2), " yrs"),
+           vjust = -1.2, hjust = 1.05, size = 3.2 * diagram_text_scale,
+           color = "#186A3B", fontface = "bold") +
+  annotate("text", x = horizon - 0.1, y = -initial + annual_cf * (horizon - 0.1),
+           label = "nominal (undiscounted)", hjust = 1, vjust = -0.8,
+           size = 3 * diagram_text_scale, color = "grey45", fontface = "italic") +
+  scale_x_continuous(breaks = seq(-1, horizon, 1)) +
+  scale_y_continuous(labels = scales::dollar_format(big.mark = " "),
+                      expand = expansion(mult = c(0.14, 0.08))) +
+  labs(title = "Nominal vs. discounted (NPV) cumulative cash position",
+       x = "Time (years)", y = "Cumulative cash position") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
 ### Try it yourself: NPV of the project
 
 ```{webr-r}
