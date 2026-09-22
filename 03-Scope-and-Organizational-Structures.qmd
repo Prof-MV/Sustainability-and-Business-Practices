@@ -392,6 +392,31 @@ ggplot(sh, aes(interest, power)) +
   )
 ```
 
+### Try it yourself: score your own stakeholders onto the grid
+
+Rate each stakeholder's **power** and **interest** on a 1--10 scale and the
+quadrant follows automatically --- the same rule the figure above was built
+from. Live cell --- edit the table or add rows for your own project.
+
+```{webr-r}
+#| label: stakeholder-score-03
+stakeholders <- data.frame(
+  who      = c("Kestrel Retail Group", "Daniel Cho (sponsor)", "MCS (motor supplier)",
+               "Internal QA", "Fibro Source (trim supplier)"),
+  power    = c(9, 9, 5, 5, 2),
+  interest = c(8, 8, 7, 5, 2)
+)
+
+stakeholders$quadrant <- with(stakeholders, ifelse(
+  power >= 5 & interest >= 5, "Manage closely",
+  ifelse(power >= 5 & interest < 5, "Keep satisfied",
+  ifelse(power < 5 & interest >= 5, "Keep informed", "Monitor"))))
+
+print(stakeholders, row.names = FALSE)
+cat("\nChange the power/interest scores (1-10) for your own project's stakeholders\n")
+cat("and re-run -- the quadrant assignment updates automatically.\n")
+```
+
 ## The scope statement
 
 Written early in **planning**, the scope statement is more detailed than the

@@ -126,6 +126,41 @@ get a decision, not to quietly absorb it.
 
 </details>
 
+### Try it yourself: put a number on each side of the triangle
+
+"Which constraint gives" is a much easier decision once each option has a
+dollar figure attached. Live cell --- change the weeks compressed, the costs,
+or the failure probability and see how the three options compare.
+
+```{webr-r}
+#| label: triple-constraint-tradeoff-02
+weeks_compressed <- 4
+
+# Option A: hold scope -- pay to compress the schedule
+overtime_cost_per_week <- 9000
+expedite_fee           <- 15000
+cost_of_holding_scope  <- weeks_compressed * overtime_cost_per_week + expedite_fee
+
+# Option B: hold cost -- cut scope (drop one body colourway)
+colourway_revenue_at_risk <- 62000   # forecast contribution margin lost
+
+# Option C: hold cost and scope -- accept lower quality (skip one test cycle)
+skip_test_prob_failure <- 0.08       # chance a defect reaches the customer
+field_failure_cost     <- 240000     # recall/rework cost if it does
+expected_quality_cost  <- skip_test_prob_failure * field_failure_cost
+
+cat(sprintf("Option A - hold scope, pay to compress  : $%s\n",
+            format(round(cost_of_holding_scope), big.mark = " ")))
+cat(sprintf("Option B - hold cost, cut scope          : $%s of revenue foregone\n",
+            format(colourway_revenue_at_risk, big.mark = " ")))
+cat(sprintf("Option C - hold cost/scope, cut testing  : $%s expected quality cost\n",
+            format(round(expected_quality_cost), big.mark = " ")))
+cat(sprintf("                                            (%.0f%% chance of a $%s failure)\n",
+            skip_test_prob_failure * 100, format(field_failure_cost, big.mark = " ")))
+cat("\nThe triple constraint isn't just a triangle -- it's three numbers.\n")
+cat("Whichever side you flex, put a dollar figure on it before the sponsor decides.\n")
+```
+
 ## The five process phases
 
 ```{r fig-project-lifecycle-02, fig.cap="Effort and resource use across the project life cycle. Little happens during initiation, effort peaks through execution and control, and it falls away at closing.", fig.align='center', fig.width=10, fig.height=5}

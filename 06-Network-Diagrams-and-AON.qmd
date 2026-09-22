@@ -309,6 +309,43 @@ cat(sprintf("New critical path: %s (%d days)\n", names(which.max(path_len2)), ma
 cat("Note how the critical path can *shift* to a different chain once you crash enough.\n")
 ```
 
+### Try it yourself: which activities actually threaten the finish date?
+
+Float answers this precisely: bump every activity by the same 2 days, one at a
+time, and see which ones move the finish date and which get absorbed. This is
+the Week 6 Meridian network from the case study below. Live cell --- change a
+duration or the network and re-run.
+
+```{webr-r}
+#| label: float-sensitivity-06
+dur  <- c(A = 10, B = 8, C = 20, D = 15, E = 25, F = 6, G = 5, H = 12, I = 4, J = 2)
+pred <- list(A = c(), B = "A", C = "B", D = "B", E = "B",
+             F = c("C", "D", "E"), G = "F", H = "F", I = c("G", "H"), J = "I")
+
+project_duration <- function(dur, pred) {
+  id <- names(dur)
+  EF <- setNames(rep(NA_real_, length(id)), id)
+  for (a in id) {
+    p  <- pred[[a]]
+    ES <- if (length(p) == 0) 0 else max(EF[p])
+    EF[a] <- ES + dur[a]
+  }
+  max(EF)
+}
+
+baseline <- project_duration(dur, pred)
+cat(sprintf("Baseline project duration: %d days\n\n", baseline))
+
+cat("Add 2 days to one activity at a time and see what happens to the finish date:\n")
+for (a in names(dur)) {
+  bumped  <- dur; bumped[a] <- bumped[a] + 2
+  new_dur <- project_duration(bumped, pred)
+  impact  <- new_dur - baseline
+  cat(sprintf("  +2 days to %s  ->  finish moves by %d day(s)%s\n",
+              a, impact, if (impact == 0) "  (has float -- absorbed)" else "  <- CRITICAL"))
+}
+```
+
 ## The downside of network diagrams
 
 - Often **not drawn to scale** --- time is just a number, which can create a false sense of how much time is available.

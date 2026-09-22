@@ -155,6 +155,34 @@ ggplot(sl, aes(x, y)) +
                                   face = "bold", hjust = 0.5))
 ```
 
+### Try it yourself: which quadrant is this team member in?
+
+Rate the person's **competence** on the specific task and their **commitment**
+to doing it, both 0--1, and the situational-leadership quadrant above follows
+directly. Live cell --- try Owen from the case study below, then a veteran who
+is skilled but burning out.
+
+```{webr-r}
+#| label: situational-quadrant-04
+team_member <- "Owen (co-op student, mounting-tab idea)"
+competence  <- 0.3   # 0-1: skill/experience on this specific task
+commitment  <- 0.8   # 0-1: confidence and motivation to do it
+
+style <- if (competence < 0.5 && commitment < 0.5) {
+  "Directing (high direction, low support)"
+} else if (competence < 0.5 && commitment >= 0.5) {
+  "Coaching (high direction, high support)"
+} else if (competence >= 0.5 && commitment < 0.5) {
+  "Supporting (low direction, high support)"
+} else {
+  "Delegating (low direction, low support)"
+}
+
+cat(sprintf("%s\n  competence = %.1f, commitment = %.1f\n\n", team_member, competence, commitment))
+cat(sprintf("Recommended style: %s\n", style))
+cat("\nTry Priya (competence 0.9, commitment 0.9) or a burned-out veteran (competence 0.9, commitment 0.3).\n")
+```
+
 ### Try it yourself: the leadership self-assessment
 
 The course quiz has 18 statements rated 1 (strongly disagree) to 5 (strongly

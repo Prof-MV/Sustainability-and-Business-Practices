@@ -211,6 +211,36 @@ cat(sprintf("\n%d of %d packages need re-sizing.\n",
             sum(flag != "ok"), nrow(packages)))
 ```
 
+### Try it yourself: does it fit inside one reporting period?
+
+The 8/80 rule checks **effort hours**; the one-reporting-period rule checks
+**calendar span** against how often you report --- a different failure mode. A
+package can be well under 80 hours and still run longer than your reporting
+cycle if it is thin, spread-out work. Live cell --- change the reporting
+cadence or a package's span and see which packages need to be split or
+tracked by percent-complete instead.
+
+```{webr-r}
+#| label: wbs-reporting-period-05
+reporting_cycle_days <- 14   # biweekly status reports
+
+packages <- data.frame(
+  id        = c("1.1.1", "1.2.1", "1.5.1", "1.5.2"),
+  name      = c("Concept CAD", "Motor/controller procurement",
+               "Drop/durability test", "Toy-safety certification"),
+  span_days = c(10, 25, 5, 12)
+)
+
+packages$verdict <- ifelse(packages$span_days > reporting_cycle_days,
+                            "SPANS >1 reporting cycle -- split or report % complete",
+                            "fits within one cycle")
+print(packages, row.names = FALSE)
+
+cat(sprintf("\nReporting cadence: every %d days.\n", reporting_cycle_days))
+cat(sprintf("%d of %d packages need attention.\n",
+            sum(grepl("SPANS", packages$verdict)), nrow(packages)))
+```
+
 ## Why the WBS matters
 
 ```{r fig-wbs-hub-05, fig.cap="The WBS feeds four downstream planning activities. Get it wrong and the estimate, the schedule, the staffing plan, and the risk register are all built on sand.", fig.align='center', fig.width=9, fig.height=5.5}
