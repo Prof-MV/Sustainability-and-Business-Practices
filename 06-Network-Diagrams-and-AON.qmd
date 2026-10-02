@@ -238,7 +238,312 @@ The whole forward/backward/float sequence is one connected calculation --- chang
 any duration and every downstream number moves --- so work it as a block, not as
 isolated steps.
 
+### Try it yourself: fill in the AON node boxes
+
+Now do the math yourself, by hand, on a fresh network. It is a small
+renovation sub-project --- seven activities --- and it is **pre-drawn**: every
+node already shows its activity ID and duration, and the arrows already show
+precedence, so you do not need to draw anything. Your job is the forward and
+backward pass: type ES, EF, LS, and LF straight into each box (float fills
+itself in once a box has both ES and LS). Click **Check my numbers** as often
+as you like --- correct cells turn green, wrong ones turn red. Once you are
+confident, click every node you think belongs on the **critical path** and
+then click **Check critical path**.
+
+```{r aon6-input-table, echo=FALSE}
+aon6_tbl <- data.frame(
+  id   = LETTERS[1:7],
+  desc = c("Site prep", "Foundation pour", "Utility rough-in", "Framing",
+           "Inspection sign-off", "Drywall & finish", "Final walkthrough"),
+  dur  = c(4, 6, 3, 5, 4, 2, 3),
+  pred = c("", "A", "A", "B", "C", "D,E", "F"),
+  stringsAsFactors = FALSE
+)
+knitr::kable(aon6_tbl, col.names = c("Activity", "Description", "Duration (days)", "Predecessors"),
+             align = c("c", "l", "c", "l")) |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE)
+```
+
+<div class="aon-widget" id="aon6-widget">
+<div class="aon-diagram-scroll">
+<div class="aon-diagram" id="aon6-diagram">
+<svg class="aon-svg-layer" id="aon6-svg">
+<defs>
+<marker id="aon6-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#2E86C1"></path>
+</marker>
+</defs>
+</svg>
+<div class="aon-col">
+<div class="aon-node" id="aon6-node-A" data-id="A">
+<div class="aon-node-id">A</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-A" aria-label="ES for activity A"></div>
+<div class="aon-cell static">4</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-A" aria-label="EF for activity A"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-A" aria-label="LS for activity A"></div>
+<div class="aon-cell"><span id="aon6-FLT-A">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-A" aria-label="LF for activity A"></div>
+</div>
+</div>
+</div>
+<div class="aon-col">
+<div class="aon-node" id="aon6-node-B" data-id="B">
+<div class="aon-node-id">B</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-B" aria-label="ES for activity B"></div>
+<div class="aon-cell static">6</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-B" aria-label="EF for activity B"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-B" aria-label="LS for activity B"></div>
+<div class="aon-cell"><span id="aon6-FLT-B">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-B" aria-label="LF for activity B"></div>
+</div>
+</div>
+<div class="aon-node" id="aon6-node-C" data-id="C">
+<div class="aon-node-id">C</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-C" aria-label="ES for activity C"></div>
+<div class="aon-cell static">3</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-C" aria-label="EF for activity C"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-C" aria-label="LS for activity C"></div>
+<div class="aon-cell"><span id="aon6-FLT-C">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-C" aria-label="LF for activity C"></div>
+</div>
+</div>
+</div>
+<div class="aon-col">
+<div class="aon-node" id="aon6-node-D" data-id="D">
+<div class="aon-node-id">D</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-D" aria-label="ES for activity D"></div>
+<div class="aon-cell static">5</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-D" aria-label="EF for activity D"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-D" aria-label="LS for activity D"></div>
+<div class="aon-cell"><span id="aon6-FLT-D">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-D" aria-label="LF for activity D"></div>
+</div>
+</div>
+<div class="aon-node" id="aon6-node-E" data-id="E">
+<div class="aon-node-id">E</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-E" aria-label="ES for activity E"></div>
+<div class="aon-cell static">4</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-E" aria-label="EF for activity E"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-E" aria-label="LS for activity E"></div>
+<div class="aon-cell"><span id="aon6-FLT-E">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-E" aria-label="LF for activity E"></div>
+</div>
+</div>
+</div>
+<div class="aon-col">
+<div class="aon-node" id="aon6-node-F" data-id="F">
+<div class="aon-node-id">F</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-F" aria-label="ES for activity F"></div>
+<div class="aon-cell static">2</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-F" aria-label="EF for activity F"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-F" aria-label="LS for activity F"></div>
+<div class="aon-cell"><span id="aon6-FLT-F">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-F" aria-label="LF for activity F"></div>
+</div>
+</div>
+</div>
+<div class="aon-col">
+<div class="aon-node" id="aon6-node-G" data-id="G">
+<div class="aon-node-id">G</div>
+<div class="aon-node-grid">
+<div class="aon-cell"><input type="number" id="aon6-ES-G" aria-label="ES for activity G"></div>
+<div class="aon-cell static">3</div>
+<div class="aon-cell"><input type="number" id="aon6-EF-G" aria-label="EF for activity G"></div>
+<div class="aon-cell"><input type="number" id="aon6-LS-G" aria-label="LS for activity G"></div>
+<div class="aon-cell"><span id="aon6-FLT-G">&nbsp;</span></div>
+<div class="aon-cell"><input type="number" id="aon6-LF-G" aria-label="LF for activity G"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="aon-controls">
+<button type="button" class="aon-btn" id="aon6-btn-check">Check my numbers</button>
+<button type="button" class="aon-btn secondary" id="aon6-btn-cp">Check critical path</button>
+<button type="button" class="aon-btn secondary" id="aon6-btn-reset">Reset</button>
+</div>
+<div class="aon-feedback" id="aon6-feedback"></div>
+<div class="aon-cp-feedback" id="aon6-cpfeedback"></div>
+</div>
+
+<script>
+(function () {
+  var nodes = [
+    { id: "A", dur: 4, pred: [] },
+    { id: "B", dur: 6, pred: ["A"] },
+    { id: "C", dur: 3, pred: ["A"] },
+    { id: "D", dur: 5, pred: ["B"] },
+    { id: "E", dur: 4, pred: ["C"] },
+    { id: "F", dur: 2, pred: ["D", "E"] },
+    { id: "G", dur: 3, pred: ["F"] }
+  ];
+  var edges = [["A","B"], ["A","C"], ["B","D"], ["C","E"], ["D","F"], ["E","F"], ["F","G"]];
+
+  var succ = {};
+  nodes.forEach(function (n) { succ[n.id] = []; });
+  edges.forEach(function (e) { succ[e[0]].push(e[1]); });
+
+  // Correct answers, computed once with the same forward/backward pass taught above.
+  var ES = {}, EF = {}, LS = {}, LF = {}, FLOAT = {}, CRIT = {};
+  nodes.forEach(function (n) {
+    var es = n.pred.length === 0 ? 0 : Math.max.apply(null, n.pred.map(function (p) { return EF[p]; }));
+    ES[n.id] = es;
+    EF[n.id] = es + n.dur;
+  });
+  var proj = Math.max.apply(null, nodes.map(function (n) { return EF[n.id]; }));
+  nodes.slice().reverse().forEach(function (n) {
+    var s = succ[n.id];
+    var lf = s.length === 0 ? proj : Math.min.apply(null, s.map(function (x) { return LS[x]; }));
+    LF[n.id] = lf;
+    LS[n.id] = lf - n.dur;
+  });
+  nodes.forEach(function (n) {
+    FLOAT[n.id] = LS[n.id] - ES[n.id];
+    CRIT[n.id] = FLOAT[n.id] === 0;
+  });
+
+  var diagram = document.getElementById("aon6-diagram");
+  var svg = document.getElementById("aon6-svg");
+  var feedback = document.getElementById("aon6-feedback");
+  var cpFeedback = document.getElementById("aon6-cpfeedback");
+
+  function el(id) { return document.getElementById(id); }
+
+  function updateFloat(id) {
+    var esVal = parseFloat(el("aon6-ES-" + id).value);
+    var lsVal = parseFloat(el("aon6-LS-" + id).value);
+    var span = el("aon6-FLT-" + id);
+    if (!isNaN(esVal) && !isNaN(lsVal)) {
+      span.textContent = lsVal - esVal;
+    } else {
+      span.innerHTML = "&nbsp;";
+    }
+  }
+
+  function layoutArrows() {
+    var rect = diagram.getBoundingClientRect();
+    var w = diagram.scrollWidth, h = diagram.scrollHeight;
+    svg.setAttribute("width", w);
+    svg.setAttribute("height", h);
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    while (svg.children.length > 1) { svg.removeChild(svg.lastChild); }
+    edges.forEach(function (e) {
+      var a = el("aon6-node-" + e[0]).getBoundingClientRect();
+      var b = el("aon6-node-" + e[1]).getBoundingClientRect();
+      var x1 = a.right - rect.left, y1 = a.top - rect.top + a.height / 2;
+      var x2 = b.left - rect.left, y2 = b.top - rect.top + b.height / 2;
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", x1); line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2 - 6); line.setAttribute("y2", y2);
+      line.setAttribute("stroke", "#2E86C1");
+      line.setAttribute("stroke-width", "2");
+      line.setAttribute("marker-end", "url(#aon6-arrowhead)");
+      svg.appendChild(line);
+    });
+  }
+
+  nodes.forEach(function (n) {
+    ["ES", "LS"].forEach(function (f) {
+      el("aon6-" + f + "-" + n.id).addEventListener("input", function () { updateFloat(n.id); });
+    });
+    el("aon6-node-" + n.id).addEventListener("click", function (ev) {
+      if (ev.target.tagName.toLowerCase() === "input") return;
+      this.classList.toggle("cp-selected");
+    });
+  });
+
+  el("aon6-btn-check").addEventListener("click", function () {
+    var total = 0, correct = 0;
+    var answers = { ES: ES, EF: EF, LS: LS, LF: LF };
+    nodes.forEach(function (n) {
+      ["ES", "EF", "LS", "LF"].forEach(function (f) {
+        total++;
+        var input = el("aon6-" + f + "-" + n.id);
+        var cell = input.parentElement;
+        cell.classList.remove("correct", "incorrect");
+        var val = parseFloat(input.value);
+        if (!isNaN(val) && val === answers[f][n.id]) {
+          cell.classList.add("correct");
+          correct++;
+        } else {
+          cell.classList.add("incorrect");
+        }
+      });
+      updateFloat(n.id);
+    });
+    feedback.textContent = correct + " of " + total + " cells correct." +
+      (correct === total ? " Every number checks out -- on to the critical path." : " Fix the red cells and check again.");
+  });
+
+  el("aon6-btn-cp").addEventListener("click", function () {
+    nodes.forEach(function (n) {
+      var node = el("aon6-node-" + n.id);
+      var selected = node.classList.contains("cp-selected");
+      node.classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
+      if (selected && CRIT[n.id]) node.classList.add("cp-correct");
+      else if (!selected && CRIT[n.id]) node.classList.add("cp-missed");
+      else if (selected && !CRIT[n.id]) node.classList.add("cp-wrong");
+    });
+    var chain = nodes.filter(function (n) { return CRIT[n.id]; }).map(function (n) { return n.id; }).join("-");
+    cpFeedback.textContent = "Critical path: " + chain + " (" + proj + " days). Green = correctly on the critical path, red outline = missed or wrongly selected.";
+  });
+
+  el("aon6-btn-reset").addEventListener("click", function () {
+    nodes.forEach(function (n) {
+      ["ES", "EF", "LS", "LF"].forEach(function (f) {
+        var input = el("aon6-" + f + "-" + n.id);
+        input.value = "";
+        input.parentElement.classList.remove("correct", "incorrect");
+      });
+      el("aon6-FLT-" + n.id).innerHTML = "&nbsp;";
+      el("aon6-node-" + n.id).classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
+    });
+    feedback.textContent = "";
+    cpFeedback.textContent = "";
+  });
+
+  layoutArrows();
+  window.addEventListener("resize", layoutArrows);
+  window.addEventListener("load", layoutArrows);
+  setTimeout(layoutArrows, 200);
+})();
+</script>
+
+<details>
+<summary>Show the fully solved network</summary>
+
+```{r aon6-solution, echo=FALSE}
+aon6_solved <- cpm(data.frame(
+  id = LETTERS[1:7],
+  dur = c(4, 6, 3, 5, 4, 2, 3),
+  pred = c("", "A", "A", "B", "C", "D,E", "F"),
+  stringsAsFactors = FALSE
+))
+knitr::kable(aon6_solved, row.names = FALSE) |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE)
+```
+
+Project duration: 20 days. Critical path: A-B-D-F-G. C and E each carry 4 days
+of float --- they can slip into that cushion without moving the finish date,
+which is exactly why they are not on the critical path even though they sit
+"in the middle" of the network.
+
+</details>
+
 ## Three-point (PERT) duration estimates
+
+**PERT** stands for **Program Evaluation and Review Technique**. The U.S. Navy
+developed it in the late 1950s for the Polaris submarine-missile program, where
+almost nothing had been built before and no activity duration was really
+"known." PERT pairs with CPM (the forward/backward pass you just did, which
+assumes each duration is a single fixed number): instead of one number per
+activity, PERT asks for three and blends them into an expected duration.
 
 When a duration is uncertain, estimate three values --- **optimistic** $o$,
 **most likely** $m$, **pessimistic** $p$ --- and combine them:
