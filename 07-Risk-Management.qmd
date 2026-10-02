@@ -30,7 +30,7 @@ By the end of this chapter you will be able to:
 4. **Compute** expected monetary value (EMV) and solve a simple decision tree.
 5. **Select** a response strategy: accept, minimize, share, transfer, or reserve.
 6. **Size** a contingency reserve and distinguish task contingency from managerial contingency.
-7. **Explain** how FMEA supports project risk management.
+7. **Explain** how FMEA supports project risk management, complete a simplified FMEA form, and compute a Risk Priority Number (RPN) from standardized Severity/Occurrence/Detection scales.
 
 <details>
 <summary>Before we begin: name one thing that could sink the RC-vehicle project</summary>
@@ -259,8 +259,174 @@ study: review as many components, assemblies, and subsystems as possible to
 identify **failure modes** (what can fail and how), their **causes**, and their
 **effects** (the consequences). It is a structured, bottom-up way to surface
 technical risks before they reach the customer --- and it feeds the same
-probability--impact thinking used above (in FMEA terms, a **risk priority
-number** combining severity, occurrence, and detection).
+probability--impact thinking used above. Instead of a single probability and a
+single dollar impact, FMEA scores each failure mode on three separate 1--10
+scales --- **Severity**, **Occurrence**, **Detection** --- and multiplies them
+into a **Risk Priority Number (RPN)**.
+
+### The FMEA form
+
+Every failure mode gets one row on a standard form: what the step is supposed
+to do, how it can fail, the effect of that failure, a severity rating, the
+likely cause, an occurrence rating, what currently catches it, a detection
+rating, the resulting RPN, and the action taken if the RPN is too high.
+
+```{r fmea-form-07, echo=FALSE}
+fmea_form <- data.frame(
+  Field = c("Process Step", "Function", "Failure Mode", "Effect", "S",
+            "Cause", "O", "Current Controls", "D", "RPN", "Action"),
+  Example = c("Install motor controller",
+              "Deliver throttle signal reliably at all speeds",
+              "Controller intermittently drops signal",
+              "Vehicle loses power mid-use; return; safety concern at speed",
+              "8",
+              "Unqualified solder joints from new (Paragon) supplier",
+              "6",
+              "Final functional test on assembly bench",
+              "5",
+              "8 x 6 x 5 = 240",
+              "Require a qualification sample and burn-in test before contract (see Week 7 case study, R1)")
+)
+knitr::kable(fmea_form, align = c("l", "l"),
+             caption = "FMEA form, one row, worked from the motor-controller risk.") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(1, bold = TRUE)
+```
+
+### Rating Severity, Occurrence, and Detection
+
+Three people scoring the same failure mode should land on close to the same
+numbers, so each factor is rated against a **predefined table**, not a gut
+feel.
+
+- **Severity (S)** --- how bad is the *effect* if the failure happens? Rated
+  on the effect, not the cause --- so severity can really only be brought down
+  by changing the design, not the process.
+- **Occurrence (O)** --- how likely is the *cause* to happen?
+- **Detection (D)** --- how likely are *current controls* to catch the failure
+  before it reaches the customer? A 10 means no control exists at all; a 1
+  means the process is error-proofed so the defect physically cannot get out.
+
+```{r severity-scale-07, echo=FALSE}
+severity <- data.frame(
+  Rating = 10:1,
+  Criteria = c(
+    "Hazardous, no warning -- safety/regulatory failure with no warning",
+    "Hazardous, with warning -- safety/regulatory failure, warning given",
+    "Very high -- product/service inoperable, loss of primary function",
+    "High -- operable, but at reduced performance",
+    "Moderate -- operable, degradation noticeable to most customers",
+    "Low -- operable, noticed by the average customer",
+    "Very low -- operable, noticed only by a discriminating customer",
+    "Minor -- nonconforming fit/finish, noticed by a discriminating customer",
+    "Very minor -- noticed only by a very observant customer",
+    "None -- no discernible effect"
+  )
+)
+knitr::kable(severity, align = c("c", "l"),
+             caption = "Severity rating scale (S).") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(1, bold = TRUE)
+```
+
+```{r occurrence-scale-07, echo=FALSE}
+occurrence <- data.frame(
+  Rating = 10:1,
+  Criteria = c(
+    "Very high -- failure almost inevitable",
+    "Very high -- failures occur very frequently",
+    "High -- failures occur frequently",
+    "High -- failures occur often, on a regular basis",
+    "Moderate -- occasional failures",
+    "Moderate -- a moderate number of failures",
+    "Low -- relatively few failures",
+    "Low -- few failures",
+    "Remote -- failure unlikely",
+    "Remote -- failure nearly impossible"
+  )
+)
+knitr::kable(occurrence, align = c("c", "l"),
+             caption = "Occurrence rating scale (O).") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(1, bold = TRUE)
+```
+
+```{r detection-scale-07, echo=FALSE}
+detection <- data.frame(
+  Rating = 10:1,
+  Criteria = c(
+    "Absolute uncertainty -- no current control exists",
+    "Very remote -- control will almost certainly not detect",
+    "Remote -- control has a poor chance of detection",
+    "Very low -- control has a low chance of detection",
+    "Low -- control may detect",
+    "Moderate -- control has a moderate chance of detection",
+    "Moderately high -- control has a reasonably good chance of detection",
+    "High -- control has a good chance of detection",
+    "Very high -- control will almost certainly detect",
+    "Almost certain -- error-proofed; the defect cannot reach the customer"
+  )
+)
+knitr::kable(detection, align = c("c", "l"),
+             caption = "Detection rating scale (D).") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                            full_width = FALSE) |>
+  kableExtra::column_spec(1, bold = TRUE)
+```
+
+### Calculating the Risk Priority Number
+
+$$\text{RPN} = \text{Severity (S)} \times \text{Occurrence (O)} \times \text{Detection (D)}$$
+
+RPN ranges from 1 (S=O=D=1) to 1000 (S=O=D=10). Rank failure modes by RPN and
+work down the list --- but don't switch off judgment: a severity of 9 or 10
+(a safety or regulatory hazard) usually earns action regardless of where the
+RPN lands, because two very different S--O--D combinations can multiply out
+to the same number.
+
+Live cell --- change S, O, or D for any failure mode and watch the ranking move.
+
+```{webr-r}
+#| label: rpn-fmea-07
+# Three failure modes from the RC-vehicle build
+
+# 1. Motor controller drops signal (unproven Paragon supplier)
+S1 <- 8; O1 <- 6; D1 <- 5
+RPN1 <- S1 * O1 * D1
+
+# 2. Carbon-fibre panel delaminates
+S2 <- 9; O2 <- 3; D2 <- 6
+RPN2 <- S2 * O2 * D2
+
+# 3. Minor paint overspray on trim
+S3 <- 2; O3 <- 5; D3 <- 3
+RPN3 <- S3 * O3 * D3
+
+cat(sprintf("Controller signal drop : S=%d O=%d D=%d -> RPN = %d\n", S1, O1, D1, RPN1))
+cat(sprintf("Panel delamination     : S=%d O=%d D=%d -> RPN = %d\n", S2, O2, D2, RPN2))
+cat(sprintf("Paint overspray        : S=%d O=%d D=%d -> RPN = %d\n", S3, O3, D3, RPN3))
+
+cat("\n--- Priority order by RPN ---\n")
+modes <- c("Controller signal drop", "Panel delamination", "Paint overspray")
+rpns  <- c(RPN1, RPN2, RPN3)
+ord   <- order(rpns, decreasing = TRUE)
+for (i in ord) cat(sprintf("%s (RPN = %d)\n", modes[i], rpns[i]))
+```
+
+<details>
+<summary>Why doesn't the highest severity automatically win?</summary>
+
+The panel delamination (S=9) has a *lower* RPN than the controller signal drop
+(S=8) here, because the controller's occurrence and detection are both worse.
+RPN is a useful sort, not a verdict: most teams still flag any S >= 8 for
+action even if its RPN is not the top of the list, the same way the
+probability--impact matrix earlier in this chapter still red-flags a
+low-probability event if its impact is severe enough.
+
+</details>
 
 ## Key Takeaways
 
@@ -270,7 +436,7 @@ number** combining severity, occurrence, and detection).
 - **Quantitative**: **EMV** = probability × impact; **decision trees** compare choices with chance events; Monte Carlo for whole-network risk.
 - Responses: **accept, minimize, share, transfer, reserve.** Pick per risk; ring-fence reserve against the biggest ones.
 - **Task contingency** is the PM's; **managerial contingency** is management's, for the truly unforeseeable.
-- **FMEA** systematically surfaces technical failure modes, causes, and effects.
+- **FMEA** systematically surfaces technical failure modes, causes, and effects, scoring each on **Severity, Occurrence, Detection** (predefined 1--10 tables) and multiplying them into an **RPN** to prioritize action.
 
 ## Case Study: Meridian R/C — Week 7
 
