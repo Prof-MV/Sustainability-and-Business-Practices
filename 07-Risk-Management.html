@@ -112,6 +112,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/editor/editor.main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
@@ -412,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\ncat(sprintf(\"EMV of this risk: 0.40 x $%s = $%s\\n\",\n            format(impact, big.mark = \" \"), format(emv, big.mark = \" \")))\ncat(\"This is the amount you would budget in a risk reserve to 'cover' this one risk on average.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- 5.58 * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high <- 0.90; price_high <- 5.58\np_low  <- 0.10; price_low  <- 4.50\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\ncat(sprintf(\"EMV, buy now  : $%.2f\\n\", buy_now))\ncat(sprintf(\"EMV, buy later: 0.90 x $%.2f + 0.10 x $%.2f = $%.2f\\n\",\n            price_high * lb, price_low * lb, buy_later))\ncat(sprintf(\"\\nChoose: %s  (saves $%.2f on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"),\n            abs(buy_now - buy_later)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\n\ncat(sprintf(\"EMV, do nothing        : $%s\\n\", format(round(emv_before), big.mark = \" \")))\ncat(sprintf(\"EMV, pre-qualify backup : $%s  (incl. $%s spent now)\\n\",\n            format(round(emv_after), big.mark = \" \"),\n            format(mitigation_cost, big.mark = \" \")))\ncat(sprintf(\"\\nExpected saving from acting: $%s\\n\",\n            format(round(emv_before - emv_after), big.mark = \" \")))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\ncat(sprintf(\"EMV of this risk: 0.40 x $%s = $%s\\n\",\n            format(impact, big.mark = \" \"), format(emv, big.mark = \" \")))\ncat(\"This is the amount you would budget in a risk reserve to 'cover' this one risk on average.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- 5.58 * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high <- 0.90; price_high <- 5.58\np_low  <- 0.10; price_low  <- 4.50\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\ncat(sprintf(\"EMV, buy now  : $%.2f\\n\", buy_now))\ncat(sprintf(\"EMV, buy later: 0.90 x $%.2f + 0.10 x $%.2f = $%.2f\\n\",\n            price_high * lb, price_low * lb, buy_later))\ncat(sprintf(\"\\nChoose: %s  (saves $%.2f on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"),\n            abs(buy_now - buy_later)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\n\ncat(sprintf(\"EMV, do nothing        : $%s\\n\", format(round(emv_before), big.mark = \" \")))\ncat(sprintf(\"EMV, pre-qualify backup : $%s  (incl. $%s spent now)\\n\",\n            format(round(emv_after), big.mark = \" \"),\n            format(mitigation_cost, big.mark = \" \")))\ncat(sprintf(\"\\nExpected saving from acting: $%s\\n\",\n            format(round(emv_before - emv_after), big.mark = \" \")))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Three failure modes from the RC-vehicle build\n\n# 1. Motor controller drops signal (unproven Paragon supplier)\nS1 <- 8; O1 <- 6; D1 <- 5\nRPN1 <- S1 * O1 * D1\n\n# 2. Carbon-fibre panel delaminates\nS2 <- 9; O2 <- 3; D2 <- 6\nRPN2 <- S2 * O2 * D2\n\n# 3. Minor paint overspray on trim\nS3 <- 2; O3 <- 5; D3 <- 3\nRPN3 <- S3 * O3 * D3\n\ncat(sprintf(\"Controller signal drop : S=%d O=%d D=%d -> RPN = %d\\n\", S1, O1, D1, RPN1))\ncat(sprintf(\"Panel delamination     : S=%d O=%d D=%d -> RPN = %d\\n\", S2, O2, D2, RPN2))\ncat(sprintf(\"Paint overspray        : S=%d O=%d D=%d -> RPN = %d\\n\", S3, O3, D3, RPN3))\n\ncat(\"\\n--- Priority order by RPN ---\\n\")\nmodes <- c(\"Controller signal drop\", \"Panel delamination\", \"Paint overspray\")\nrpns  <- c(RPN1, RPN2, RPN3)\nord   <- order(rpns, decreasing = TRUE)\nfor (i in ord) cat(sprintf(\"%s (RPN = %d)\\n\", modes[i], rpns[i]))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rpn-fmea-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1845,7 +1847,12 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#try-it-yourself-does-the-mitigation-pay-for-itself" id="toc-try-it-yourself-does-the-mitigation-pay-for-itself" class="nav-link" data-scroll-target="#try-it-yourself-does-the-mitigation-pay-for-itself"><span class="header-section-number">7.8.1</span> Try it yourself: does the mitigation pay for itself?</a></li>
   </ul></li>
-  <li><a href="#fmea-as-a-risk-tool" id="toc-fmea-as-a-risk-tool" class="nav-link" data-scroll-target="#fmea-as-a-risk-tool"><span class="header-section-number">7.9</span> FMEA as a risk tool</a></li>
+  <li><a href="#fmea-as-a-risk-tool" id="toc-fmea-as-a-risk-tool" class="nav-link" data-scroll-target="#fmea-as-a-risk-tool"><span class="header-section-number">7.9</span> FMEA as a risk tool</a>
+  <ul class="collapse">
+  <li><a href="#the-fmea-form" id="toc-the-fmea-form" class="nav-link" data-scroll-target="#the-fmea-form"><span class="header-section-number">7.9.1</span> The FMEA form</a></li>
+  <li><a href="#rating-severity-occurrence-and-detection" id="toc-rating-severity-occurrence-and-detection" class="nav-link" data-scroll-target="#rating-severity-occurrence-and-detection"><span class="header-section-number">7.9.2</span> Rating Severity, Occurrence, and Detection</a></li>
+  <li><a href="#calculating-the-risk-priority-number" id="toc-calculating-the-risk-priority-number" class="nav-link" data-scroll-target="#calculating-the-risk-priority-number"><span class="header-section-number">7.9.3</span> Calculating the Risk Priority Number</a></li>
+  </ul></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">7.10</span> Key Takeaways</a></li>
   <li><a href="#case-study-meridian-rc-week-7" id="toc-case-study-meridian-rc-week-7" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-7"><span class="header-section-number">7.11</span> Case Study: Meridian R/C — Week 7</a></li>
   <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">7.12</span> Practice Problems</a></li>
@@ -2169,7 +2176,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <li><strong>Compute</strong> expected monetary value (EMV) and solve a simple decision tree.</li>
 <li><strong>Select</strong> a response strategy: accept, minimize, share, transfer, or reserve.</li>
 <li><strong>Size</strong> a contingency reserve and distinguish task contingency from managerial contingency.</li>
-<li><strong>Explain</strong> how FMEA supports project risk management.</li>
+<li><strong>Explain</strong> how FMEA supports project risk management, complete a simplified FMEA form, and compute a Risk Priority Number (RPN) from standardized Severity/Occurrence/Detection scales.</li>
 </ol>
 <details>
 <summary>
@@ -2333,7 +2340,258 @@ What would flip the decision?
 </section>
 <section id="fmea-as-a-risk-tool" class="level2" data-number="7.9">
 <h2 data-number="7.9" class="anchored" data-anchor-id="fmea-as-a-risk-tool"><span class="header-section-number">7.9</span> FMEA as a risk tool</h2>
-<p><strong>Failure Mode and Effects Analysis</strong> is often the first step of a reliability study: review as many components, assemblies, and subsystems as possible to identify <strong>failure modes</strong> (what can fail and how), their <strong>causes</strong>, and their <strong>effects</strong> (the consequences). It is a structured, bottom-up way to surface technical risks before they reach the customer — and it feeds the same probability–impact thinking used above (in FMEA terms, a <strong>risk priority number</strong> combining severity, occurrence, and detection).</p>
+<p><strong>Failure Mode and Effects Analysis</strong> is often the first step of a reliability study: review as many components, assemblies, and subsystems as possible to identify <strong>failure modes</strong> (what can fail and how), their <strong>causes</strong>, and their <strong>effects</strong> (the consequences). It is a structured, bottom-up way to surface technical risks before they reach the customer — and it feeds the same probability–impact thinking used above. Instead of a single probability and a single dollar impact, FMEA scores each failure mode on three separate 1–10 scales — <strong>Severity</strong>, <strong>Occurrence</strong>, <strong>Detection</strong> — and multiplies them into a <strong>Risk Priority Number (RPN)</strong>.</p>
+<section id="the-fmea-form" class="level3" data-number="7.9.1">
+<h3 data-number="7.9.1" class="anchored" data-anchor-id="the-fmea-form"><span class="header-section-number">7.9.1</span> The FMEA form</h3>
+<p>Every failure mode gets one row on a standard form: what the step is supposed to do, how it can fail, the effect of that failure, a severity rating, the likely cause, an occurrence rating, what currently catches it, a detection rating, the resulting RPN, and the action taken if the RPN is too high.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>FMEA form, one row, worked from the motor-controller risk.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Field</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Process Step</td>
+<td style="text-align: left;">Install motor controller</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Function</td>
+<td style="text-align: left;">Deliver throttle signal reliably at all speeds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Failure Mode</td>
+<td style="text-align: left;">Controller intermittently drops signal</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Effect</td>
+<td style="text-align: left;">Vehicle loses power mid-use; return; safety concern at speed</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">S</td>
+<td style="text-align: left;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Cause</td>
+<td style="text-align: left;">Unqualified solder joints from new (Paragon) supplier</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">O</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">Current Controls</td>
+<td style="text-align: left;">Final functional test on assembly bench</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">D</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; font-weight: bold;">RPN</td>
+<td style="text-align: left;">8 x 6 x 5 = 240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; font-weight: bold;">Action</td>
+<td style="text-align: left;">Require a qualification sample and burn-in test before contract (see Week 7 case study, R1)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="rating-severity-occurrence-and-detection" class="level3" data-number="7.9.2">
+<h3 data-number="7.9.2" class="anchored" data-anchor-id="rating-severity-occurrence-and-detection"><span class="header-section-number">7.9.2</span> Rating Severity, Occurrence, and Detection</h3>
+<p>Three people scoring the same failure mode should land on close to the same numbers, so each factor is rated against a <strong>predefined table</strong>, not a gut feel.</p>
+<ul>
+<li><strong>Severity (S)</strong> — how bad is the <em>effect</em> if the failure happens? Rated on the effect, not the cause — so severity can really only be brought down by changing the design, not the process.</li>
+<li><strong>Occurrence (O)</strong> — how likely is the <em>cause</em> to happen?</li>
+<li><strong>Detection (D)</strong> — how likely are <em>current controls</em> to catch the failure before it reaches the customer? A 10 means no control exists at all; a 1 means the process is error-proofed so the defect physically cannot get out.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Severity rating scale (S).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Rating</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">10</td>
+<td style="text-align: left;">Hazardous, no warning -- safety/regulatory failure with no warning</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">9</td>
+<td style="text-align: left;">Hazardous, with warning -- safety/regulatory failure, warning given</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">8</td>
+<td style="text-align: left;">Very high -- product/service inoperable, loss of primary function</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">7</td>
+<td style="text-align: left;">High -- operable, but at reduced performance</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">6</td>
+<td style="text-align: left;">Moderate -- operable, degradation noticeable to most customers</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">5</td>
+<td style="text-align: left;">Low -- operable, noticed by the average customer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">4</td>
+<td style="text-align: left;">Very low -- operable, noticed only by a discriminating customer</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">3</td>
+<td style="text-align: left;">Minor -- nonconforming fit/finish, noticed by a discriminating customer</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">2</td>
+<td style="text-align: left;">Very minor -- noticed only by a very observant customer</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">1</td>
+<td style="text-align: left;">None -- no discernible effect</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Occurrence rating scale (O).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Rating</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">10</td>
+<td style="text-align: left;">Very high -- failure almost inevitable</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">9</td>
+<td style="text-align: left;">Very high -- failures occur very frequently</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">8</td>
+<td style="text-align: left;">High -- failures occur frequently</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">7</td>
+<td style="text-align: left;">High -- failures occur often, on a regular basis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">6</td>
+<td style="text-align: left;">Moderate -- occasional failures</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">5</td>
+<td style="text-align: left;">Moderate -- a moderate number of failures</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">4</td>
+<td style="text-align: left;">Low -- relatively few failures</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">3</td>
+<td style="text-align: left;">Low -- few failures</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">2</td>
+<td style="text-align: left;">Remote -- failure unlikely</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">1</td>
+<td style="text-align: left;">Remote -- failure nearly impossible</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Detection rating scale (D).</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Rating</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">10</td>
+<td style="text-align: left;">Absolute uncertainty -- no current control exists</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">9</td>
+<td style="text-align: left;">Very remote -- control will almost certainly not detect</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">8</td>
+<td style="text-align: left;">Remote -- control has a poor chance of detection</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">7</td>
+<td style="text-align: left;">Very low -- control has a low chance of detection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">6</td>
+<td style="text-align: left;">Low -- control may detect</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">5</td>
+<td style="text-align: left;">Moderate -- control has a moderate chance of detection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">4</td>
+<td style="text-align: left;">Moderately high -- control has a reasonably good chance of detection</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">3</td>
+<td style="text-align: left;">High -- control has a good chance of detection</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center; font-weight: bold;">2</td>
+<td style="text-align: left;">Very high -- control will almost certainly detect</td>
+</tr>
+<tr class="even">
+<td style="text-align: center; font-weight: bold;">1</td>
+<td style="text-align: left;">Almost certain -- error-proofed; the defect cannot reach the customer</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="calculating-the-risk-priority-number" class="level3" data-number="7.9.3">
+<h3 data-number="7.9.3" class="anchored" data-anchor-id="calculating-the-risk-priority-number"><span class="header-section-number">7.9.3</span> Calculating the Risk Priority Number</h3>
+<p><span class="math display">\[\text{RPN} = \text{Severity (S)} \times \text{Occurrence (O)} \times \text{Detection (D)}\]</span></p>
+<p>RPN ranges from 1 (S=O=D=1) to 1000 (S=O=D=10). Rank failure modes by RPN and work down the list — but don’t switch off judgment: a severity of 9 or 10 (a safety or regulatory hazard) usually earns action regardless of where the RPN lands, because two very different S–O–D combinations can multiply out to the same number.</p>
+<p>Live cell — change S, O, or D for any failure mode and watch the ranking move.</p>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<details>
+<summary>
+Why doesn’t the highest severity automatically win?
+</summary>
+<p>The panel delamination (S=9) has a <em>lower</em> RPN than the controller signal drop (S=8) here, because the controller’s occurrence and detection are both worse. RPN is a useful sort, not a verdict: most teams still flag any S &gt;= 8 for action even if its RPN is not the top of the list, the same way the probability–impact matrix earlier in this chapter still red-flags a low-probability event if its impact is severe enough.</p>
+</details>
+</section>
 </section>
 <section id="key-takeaways" class="level2" data-number="7.10">
 <h2 data-number="7.10" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">7.10</span> Key Takeaways</h2>
@@ -2344,7 +2602,7 @@ What would flip the decision?
 <li><strong>Quantitative</strong>: <strong>EMV</strong> = probability × impact; <strong>decision trees</strong> compare choices with chance events; Monte Carlo for whole-network risk.</li>
 <li>Responses: <strong>accept, minimize, share, transfer, reserve.</strong> Pick per risk; ring-fence reserve against the biggest ones.</li>
 <li><strong>Task contingency</strong> is the PM’s; <strong>managerial contingency</strong> is management’s, for the truly unforeseeable.</li>
-<li><strong>FMEA</strong> systematically surfaces technical failure modes, causes, and effects.</li>
+<li><strong>FMEA</strong> systematically surfaces technical failure modes, causes, and effects, scoring each on <strong>Severity, Occurrence, Detection</strong> (predefined 1–10 tables) and multiplying them into an <strong>RPN</strong> to prioritize action.</li>
 </ul>
 </section>
 <section id="case-study-meridian-rc-week-7" class="level2" data-number="7.11">
