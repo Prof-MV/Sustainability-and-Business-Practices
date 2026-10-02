@@ -31,6 +31,7 @@ By the end of this chapter you will be able to:
 5. **Calculate** total float and identify the **critical path**.
 6. **Compute** a three-point (PERT) activity duration.
 7. **Choose** a strategy to shorten the critical path when the project is too long.
+8. **Translate** a solved AON network into a Gantt chart.
 
 <details>
 <summary>Before we begin: which task can slip without moving the deadline?</summary>
@@ -651,6 +652,80 @@ for (a in names(dur)) {
 }
 ```
 
+## From network to Gantt chart
+
+The AON network shows **logic** --- what depends on what --- but it is not
+drawn against a calendar, so it is easy to misjudge how much real time
+separates two activities, or which ones are actually running at the same
+time. Take the same **ES** and **EF** you just calculated in the forward pass
+and plot each activity as a bar running from its early start to its early
+finish on a day axis, and you get a **Gantt chart**: the identical schedule,
+now readable at a glance.
+
+```{r fig-gantt-main-06, echo=FALSE, fig.cap="The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float.", fig.align='center', fig.width=10, fig.height=5.5}
+gantt_main <- res
+gantt_main$Activity <- factor(gantt_main$Activity, levels = rev(gantt_main$Activity))
+
+ggplot(gantt_main) +
+  geom_segment(aes(x = ES, xend = EF, y = Activity, yend = Activity, color = onCP),
+               linewidth = 8, lineend = "butt") +
+  geom_text(aes(x = (ES + EF) / 2, y = Activity, label = paste0(Dur, "d")),
+            color = "white", fontface = "bold", size = 3.1 * diagram_text_scale) +
+  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
+                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
+                     name = NULL) +
+  labs(title = "Sub-project schedule on a calendar axis", x = "Project day", y = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+Nothing here is new information --- it is the same ten rows as the solved
+network table and the float chart above, just laid out so you can see **when**
+each activity runs and
+**which ones overlap**, not only how much slack each one carries. The merges
+(D and E both feeding G) and bursts are now visible as bars that start or end
+together, instead of arrows you have to trace.
+
+The same trick works on the small renovation network from the node-fill
+exercise:
+
+```{r fig-gantt-reno-06, echo=FALSE, fig.cap="The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark; C and E (light) carry the float visible as the gap between where they finish and where F can actually start.", fig.align='center', fig.width=9, fig.height=4.5}
+gantt_reno <- aon6_solved
+gantt_reno$onCP <- gantt_reno$Float == 0
+gantt_reno$Activity <- factor(gantt_reno$Activity, levels = rev(gantt_reno$Activity))
+
+ggplot(gantt_reno) +
+  geom_segment(aes(x = ES, xend = EF, y = Activity, yend = Activity, color = onCP),
+               linewidth = 8, lineend = "butt") +
+  geom_text(aes(x = (ES + EF) / 2, y = Activity, label = paste0(Dur, "d")),
+            color = "white", fontface = "bold", size = 3.1 * diagram_text_scale) +
+  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
+                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
+                     name = NULL) +
+  labs(title = "Renovation sub-project schedule", x = "Project day", y = NULL) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * diagram_text_scale),
+    axis.text = element_text(size = 10 * diagram_text_scale)
+  )
+```
+
+Notice the gap between C's bar ending and F's bar starting --- that gap *is*
+C's float, drawn as empty space instead of a number in a box. A Gantt chart is
+the natural format for tracking progress against the plan once the project is
+under way, for assigning resources to specific calendar days, and for showing
+a sponsor the schedule without making them read a network diagram. [Chapter
+8](08-Project-Scheduling.qmd) builds on this: precedence relationships beyond
+simple finish-to-start, leads and lags, and turning the single-number
+duration into a probability of finishing on time.
+
 ## The downside of network diagrams
 
 - Often **not drawn to scale** --- time is just a number, which can create a false sense of how much time is available.
@@ -667,6 +742,7 @@ for (a in names(dur)) {
 - **Float** $= LS - ES = LF - EF$. **Zero-float** activities form the **critical path** --- the longest dependent chain, and the only one worth shortening.
 - **PERT**: $t_e = (o + 4m + p)/6$, activity SD $= (p - o)/6$.
 - Shorten the critical path by **eliminating, parallelizing, overlapping, or crashing** critical tasks --- and re-check, because the critical path can shift.
+- A **Gantt chart** plots the same ES/EF numbers on a calendar axis --- same schedule, now readable at a glance and ready to track progress against.
 
 ## Case Study: Meridian R/C — Week 6
 
