@@ -1852,11 +1852,12 @@ window.Quarto = {
   <li><a href="#try-it-yourself-recompute-the-critical-path-after-a-change" id="toc-try-it-yourself-recompute-the-critical-path-after-a-change" class="nav-link" data-scroll-target="#try-it-yourself-recompute-the-critical-path-after-a-change"><span class="header-section-number">6.7.1</span> Try it yourself: recompute the critical path after a change</a></li>
   <li><a href="#try-it-yourself-which-activities-actually-threaten-the-finish-date" id="toc-try-it-yourself-which-activities-actually-threaten-the-finish-date" class="nav-link" data-scroll-target="#try-it-yourself-which-activities-actually-threaten-the-finish-date"><span class="header-section-number">6.7.2</span> Try it yourself: which activities actually threaten the finish date?</a></li>
   </ul></li>
-  <li><a href="#the-downside-of-network-diagrams" id="toc-the-downside-of-network-diagrams" class="nav-link" data-scroll-target="#the-downside-of-network-diagrams"><span class="header-section-number">6.8</span> The downside of network diagrams</a></li>
-  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">6.9</span> Key Takeaways</a></li>
-  <li><a href="#case-study-meridian-rc-week-6" id="toc-case-study-meridian-rc-week-6" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-6"><span class="header-section-number">6.10</span> Case Study: Meridian R/C — Week 6</a></li>
-  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">6.11</span> Practice Problems</a></li>
-  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">6.12</span> Further Resources</a></li>
+  <li><a href="#from-network-to-gantt-chart" id="toc-from-network-to-gantt-chart" class="nav-link" data-scroll-target="#from-network-to-gantt-chart"><span class="header-section-number">6.8</span> From network to Gantt chart</a></li>
+  <li><a href="#the-downside-of-network-diagrams" id="toc-the-downside-of-network-diagrams" class="nav-link" data-scroll-target="#the-downside-of-network-diagrams"><span class="header-section-number">6.9</span> The downside of network diagrams</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">6.10</span> Key Takeaways</a></li>
+  <li><a href="#case-study-meridian-rc-week-6" id="toc-case-study-meridian-rc-week-6" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-6"><span class="header-section-number">6.11</span> Case Study: Meridian R/C — Week 6</a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">6.12</span> Practice Problems</a></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">6.13</span> Further Resources</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/06-Network-Diagrams-and-AON.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -2177,6 +2178,7 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <li><strong>Calculate</strong> total float and identify the <strong>critical path</strong>.</li>
 <li><strong>Compute</strong> a three-point (PERT) activity duration.</li>
 <li><strong>Choose</strong> a strategy to shorten the critical path when the project is too long.</li>
+<li><strong>Translate</strong> a solved AON network into a Gantt chart.</li>
 </ol>
 <details>
 <summary>
@@ -2887,8 +2889,43 @@ Why the weight of 4 on the most-likely value?
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 </section>
-<section id="the-downside-of-network-diagrams" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="the-downside-of-network-diagrams"><span class="header-section-number">6.8</span> The downside of network diagrams</h2>
+<section id="from-network-to-gantt-chart" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="from-network-to-gantt-chart"><span class="header-section-number">6.8</span> From network to Gantt chart</h2>
+<p>The AON network shows <strong>logic</strong> — what depends on what — but it is not drawn against a calendar, so it is easy to misjudge how much real time separates two activities, or which ones are actually running at the same time. Take the same <strong>ES</strong> and <strong>EF</strong> you just calculated in the forward pass and plot each activity as a bar running from its early start to its early finish on a day axis, and you get a <strong>Gantt chart</strong>: the identical schedule, now readable at a glance.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-gantt-main-06" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gantt-main-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-Network-Diagrams-and-AON_files/figure-html/fig-gantt-main-06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gantt-main-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Nothing here is new information — it is the same ten rows as the solved network table and the float chart above, just laid out so you can see <strong>when</strong> each activity runs and <strong>which ones overlap</strong>, not only how much slack each one carries. The merges (D and E both feeding G) and bursts are now visible as bars that start or end together, instead of arrows you have to trace.</p>
+<p>The same trick works on the small renovation network from the node-fill exercise:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-gantt-reno-06" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gantt-reno-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-Network-Diagrams-and-AON_files/figure-html/fig-gantt-reno-06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gantt-reno-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark; C and E (light) carry the float visible as the gap between where they finish and where F can actually start.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice the gap between C’s bar ending and F’s bar starting — that gap <em>is</em> C’s float, drawn as empty space instead of a number in a box. A Gantt chart is the natural format for tracking progress against the plan once the project is under way, for assigning resources to specific calendar days, and for showing a sponsor the schedule without making them read a network diagram. <a href="./08-Project-Scheduling.html">Chapter 8</a> builds on this: precedence relationships beyond simple finish-to-start, leads and lags, and turning the single-number duration into a probability of finishing on time.</p>
+</section>
+<section id="the-downside-of-network-diagrams" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="the-downside-of-network-diagrams"><span class="header-section-number">6.9</span> The downside of network diagrams</h2>
 <ul>
 <li>Often <strong>not drawn to scale</strong> — time is just a number, which can create a false sense of how much time is available.</li>
 <li>Can be <strong>too large and complex</strong> to be useful.</li>
@@ -2897,8 +2934,8 @@ Why the weight of 4 on the most-likely value?
 <li><strong>Positive bias</strong> creeps into PERT estimates (people are optimistic).</li>
 </ul>
 </section>
-<section id="key-takeaways" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">6.9</span> Key Takeaways</h2>
+<section id="key-takeaways" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">6.10</span> Key Takeaways</h2>
 <ul>
 <li>Build the <strong>AON network</strong> from a precedence table (durations + immediate predecessors); it flows left to right with no loops.</li>
 <li><strong>Forward pass</strong>: <span class="math inline">\(EF = ES + DUR\)</span>; at a <strong>merge</strong>, ES = the largest incoming EF. Gives the <strong>project duration</strong>.</li>
@@ -2906,10 +2943,11 @@ Why the weight of 4 on the most-likely value?
 <li><strong>Float</strong> <span class="math inline">\(= LS - ES = LF - EF\)</span>. <strong>Zero-float</strong> activities form the <strong>critical path</strong> — the longest dependent chain, and the only one worth shortening.</li>
 <li><strong>PERT</strong>: <span class="math inline">\(t_e = (o + 4m + p)/6\)</span>, activity SD <span class="math inline">\(= (p - o)/6\)</span>.</li>
 <li>Shorten the critical path by <strong>eliminating, parallelizing, overlapping, or crashing</strong> critical tasks — and re-check, because the critical path can shift.</li>
+<li>A <strong>Gantt chart</strong> plots the same ES/EF numbers on a calendar axis — same schedule, now readable at a glance and ready to track progress against.</li>
 </ul>
 </section>
-<section id="case-study-meridian-rc-week-6" class="level2" data-number="6.10">
-<h2 data-number="6.10" class="anchored" data-anchor-id="case-study-meridian-rc-week-6"><span class="header-section-number">6.10</span> Case Study: Meridian R/C — Week 6</h2>
+<section id="case-study-meridian-rc-week-6" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="case-study-meridian-rc-week-6"><span class="header-section-number">6.11</span> Case Study: Meridian R/C — Week 6</h2>
 <div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 6: The network comes together">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -3066,8 +3104,8 @@ Why the weight of 4 on the most-likely value?
 </div>
 </div>
 </section>
-<section id="practice-problems" class="level2" data-number="6.11">
-<h2 data-number="6.11" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">6.11</span> Practice Problems</h2>
+<section id="practice-problems" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">6.12</span> Practice Problems</h2>
 <details>
 <summary>
 Problem 1: Solve this network
@@ -3194,8 +3232,8 @@ Discussion points
 </details>
 </details>
 </section>
-<section id="further-resources" class="level2" data-number="6.12">
-<h2 data-number="6.12" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">6.12</span> Further Resources</h2>
+<section id="further-resources" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">6.13</span> Further Resources</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
 <p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/AQ_Wr1Me__8" title="PERT / Three-Point Estimating Explained (Cornelius Fichtner)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
 </div>
