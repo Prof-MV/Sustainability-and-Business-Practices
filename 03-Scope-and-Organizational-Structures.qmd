@@ -83,21 +83,52 @@ per year.
 
 Live cell --- change the outlay, the annual cash flow, or the horizon.
 
+```{r calc-payback-example-03, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "payback-example-03",
+  title = "Payback Period Calculator",
+  icon = "clock-rotate-left",
+  inputs = list(
+    qwebr_calc_input("initial", "Initial outlay", value = 450000, min = 10000, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("annual_cf", "Annual cash flow", value = 180000, min = 10000, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("horizon", "Horizon (years)", value = 5, min = 1, max = 10, step = 1, type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: payback-example-03
 initial   <- 450000
 annual_cf <- 180000
 horizon   <- 5
 
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", trim = TRUE))
+
 cum <- cumsum(rep(annual_cf, horizon)) - initial
 year_paid <- which(cum >= 0)[1]
-# Fractional year within the payback year:
-prev <- if (year_paid == 1) -initial else cum[year_paid - 1]
-frac <- -prev / annual_cf
 
-cat("Cumulative cash flow by year:", paste0("$", format(cum, big.mark = " ")), "\n")
-cat(sprintf("Payback period: %.2f years\n", (year_paid - 1) + frac))
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(cum / 1000, names.arg = 1:horizon, col = ifelse(cum >= 0, "#16a085", "#e74c3c"),
+        xlab = "Year", ylab = "Cumulative cash flow ($ thousand)", main = "Cumulative cash flow")
+abline(h = 0, lwd = 2)
+
+if (is.na(year_paid)) {
+  cat(sprintf("!!Not paid back within %d years!!\n", horizon))
+} else {
+  # Fractional year within the payback year:
+  prev <- if (year_paid == 1) -initial else cum[year_paid - 1]
+  frac <- -prev / annual_cf
+  cat(sprintf("Payback period: %.2f years\n", (year_paid - 1) + frac))
+}
+for (t in 1:horizon) cat(sprintf("End of year %d  %s\n", t, money(cum[t])))
 ```
+
+</details>
 
 Payback is quick to compute but ignores the **time value of money** and anything
 that happens after the payback point. NPV fixes both.
@@ -271,6 +302,23 @@ ggplot(curve_df, aes(t, balance)) +
 
 ### Try it yourself: NPV of the project
 
+```{r calc-npv-calc-03, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "npv-calc-03",
+  title = "NPV Calculator",
+  icon = "coins",
+  inputs = list(
+    qwebr_calc_input("initial", "Initial outlay", value = 450000, min = 10000, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("r", "Required rate of return", value = 0.12, min = 0, max = 0.3, step = 0.01, type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: npv-calc-03
 initial   <- 450000
@@ -281,18 +329,23 @@ t   <- seq_along(cash_flows)
 pv  <- cash_flows / (1 + r)^t
 npv <- sum(pv) - initial
 
-cat("Year   Cash flow     Present value\n")
-for (i in t) {
-  cat(sprintf(" %d    $%s    $%s\n", i,
-              format(cash_flows[i], big.mark = " "),
-              format(round(pv[i]), big.mark = " ")))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", trim = TRUE))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(rbind(cash_flows, pv) / 1000, beside = TRUE, names.arg = t, col = c("#bdc3c7", "#2980b9"), xlab = "Year", ylab = "$ thousand",
+              main = "Cash flow (grey) vs. present value (blue)")
+
+if (npv > 0) {
+  cat(sprintf("NPV %s: ACCEPT (beats the %s%% hurdle)\n", money(npv), format(100 * r)))
+} else {
+  cat(sprintf("NPV %s: !!REJECT!! (misses the %s%% hurdle)\n", money(npv), format(100 * r)))
 }
-cat(sprintf("\nSum of PVs : $%s\n", format(round(sum(pv)), big.mark = " ")))
-cat(sprintf("Less outlay: $%s\n", format(initial, big.mark = " ")))
-cat(sprintf("NPV        : $%s  -> %s\n",
-            format(round(npv), big.mark = " "),
-            ifelse(npv > 0, "ACCEPT (beats the 12% hurdle)", "REJECT")))
+for (i in t) cat(sprintf("Year %d present value  %s\n", i, money(pv[i])))
+cat(sprintf("Sum of PVs  %s\n", money(sum(pv))))
+cat(sprintf("Less outlay  %s\n", money(initial)))
 ```
+
+</details>
 
 <details>
 <summary>What happens to NPV if the hurdle rate rises to 18 %?</summary>
@@ -463,6 +516,27 @@ changes.
 
 ### Try it yourself: the cost of an "innocent" change
 
+```{r calc-scope-change-03, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "scope-change-03",
+  title = "Cost of a Scope Change",
+  icon = "file-circle-exclamation",
+  inputs = list(
+    qwebr_calc_input("extra_design_hours", "Extra design hours", value = 60, min = 0, max = 400, step = 5, suffix = "h"),
+    qwebr_calc_input("designer_rate", "Designer rate", value = 46, min = 10, max = 150, step = 1, prefix = "$", suffix = "/ h"),
+    qwebr_calc_input("extra_tooling_cost", "Extra tooling cost", value = 28000, min = 0, max = 200000, step = 1000, prefix = "$"),
+    qwebr_calc_input("indirect_rate", "Indirect rate", value = 0.35, min = 0, max = 1, step = 0.05),
+    qwebr_calc_input("schedule_days_added", "Schedule days added", value = 9, min = 0, max = 60, step = 1, type = "slider"),
+    qwebr_calc_input("penalty_per_day_late", "Late penalty", value = 1500, min = 0, max = 10000, step = 100, prefix = "$", suffix = "/ day")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: scope-change-03
 # A stakeholder asks to add a second body colourway "while we're at it".
@@ -477,16 +551,21 @@ direct  <- extra_design_hours * designer_rate + extra_tooling_cost
 loaded  <- direct * (1 + indirect_rate)
 sched   <- schedule_days_added * penalty_per_day_late
 
-cat(sprintf("Direct cost of the change        : $%s\n", format(round(direct), big.mark = " ")))
-cat(sprintf("Fully burdened (x%.2f)            : $%s\n", 1 + indirect_rate,
-            format(round(loaded), big.mark = " ")))
-cat(sprintf("Schedule slip: %d days -> penalty : $%s\n", schedule_days_added,
-            format(sched, big.mark = " ")))
-cat(sprintf("--------\nTotal impact of one 'small' change: $%s\n",
-            format(round(loaded + sched), big.mark = " ")))
-cat("\nThrough change control this gets a number and a decision.\n")
-cat("Without it, it just shows up as an overrun later.\n")
+fmt <- function(x) paste0("$", format(round(x), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+parts <- c(Direct = direct, Indirect = loaded - direct, "Late penalty" = sched)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(parts / 1000, col = c("#2980b9", "#8e44ad", "#e74c3c"), ylim = c(0, max(parts / 1000) * 1.2), ylab = "$ thousand",
+              main = "Where the cost of the change lands")
+text(bp, parts / 1000, labels = paste0("$", round(parts / 1000, 1), "k"), pos = 3, cex = 1.3)
+
+cat(sprintf("Total impact of one 'small' change: %s\n", fmt(loaded + sched)))
+cat(sprintf("Direct cost  %s\n", fmt(direct)))
+cat(sprintf("Fully burdened (x%.2f)  %s\n", 1 + indirect_rate, fmt(loaded)))
+cat(sprintf("Schedule penalty (%g days)  %s\n", schedule_days_added, fmt(sched)))
 ```
+
+</details>
 
 ## Organizational culture
 

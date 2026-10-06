@@ -124,25 +124,77 @@ customers, is **\$150 000**.
 
 Live cell --- move either side's reservation price and see whether a deal still exists.
 
+```{r calc-zopa-example-10, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "zopa-example-10",
+  title = "ZOPA Calculator",
+  icon = "handshake",
+  inputs = list(
+    qwebr_calc_input("buyer_reservation", "Buyer's reservation price (most they'll pay)", value = 168000, min = 50000, max = 400000, step = 1000, prefix = "$"),
+    qwebr_calc_input("seller_reservation", "Seller's reservation price (least they'll accept)", value = 150000, min = 50000, max = 400000, step = 1000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: zopa-example-10
 buyer_reservation  <- 168000   # most you will pay
 seller_reservation <- 150000   # least they will accept
 
-if (seller_reservation <= buyer_reservation) {
-  zopa_low  <- seller_reservation
-  zopa_high <- buyer_reservation
-  cat(sprintf("ZOPA exists: $%s to $%s  (width $%s)\n",
-              format(zopa_low, big.mark = " "),
-              format(zopa_high, big.mark = " "),
-              format(zopa_high - zopa_low, big.mark = " ")))
-  cat("Any agreed price in that band beats both sides' alternatives.\n")
+zopa <- seller_reservation <= buyer_reservation
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+lo  <- min(buyer_reservation, seller_reservation)
+hi  <- max(buyer_reservation, seller_reservation)
+pad <- max(hi - lo, 20000) * 0.5
+ticks <- pretty(c(lo - pad, hi + pad), n = 5)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+plot(NA, xlim = c(lo - pad, hi + pad), ylim = c(0, 1), xaxt = "n", yaxt = "n",
+     xlab = "Price ($)", ylab = "", main = "Zone of possible agreement")
+rect(lo, 0.3, hi, 0.7, col = if (zopa) "#a9dfbf" else "#f5b7b1", border = NA)
+axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
+points(seller_reservation, 0.5, pch = 19, cex = 3, col = "#2980b9")
+points(buyer_reservation, 0.5, pch = 19, cex = 3, col = "#e67e22")
+text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2)
+text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2)
+
+if (zopa) {
+  cat(sprintf("ZOPA exists: %s to %s\n", money(seller_reservation), money(buyer_reservation)))
+  cat(sprintf("ZOPA width  %s\n", money(buyer_reservation - seller_reservation)))
 } else {
-  cat("No ZOPA -- the seller's floor is above the buyer's ceiling. Change the package or walk.\n")
+  cat("!!No ZOPA!!: the seller's floor is above the buyer's ceiling\n")
+  cat(sprintf("Gap between the two sides  %s\n", money(seller_reservation - buyer_reservation)))
 }
 ```
 
+</details>
+
 ### Try it yourself: reservation points from a BATNA
+
+```{r calc-zopa-calc-10, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "zopa-calc-10",
+  title = "Reservation Points from a BATNA",
+  icon = "scale-balanced",
+  inputs = list(
+    qwebr_calc_input("paragon_price", "BATNA: Paragon's price", value = 150000, min = 50000, max = 400000, step = 1000, prefix = "$"),
+    qwebr_calc_input("paragon_risk", "Extra risk cost of using Paragon", value = 25000, min = 0, max = 150000, step = 1000, prefix = "$"),
+    qwebr_calc_input("mcs_cost", "MCS cost to make", value = 132000, min = 50000, max = 400000, step = 1000, prefix = "$"),
+    qwebr_calc_input("mcs_margin", "MCS minimum margin", value = 15000, min = 0, max = 100000, step = 1000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
 
 ```{webr-r}
 #| label: zopa-calc-10
@@ -156,18 +208,35 @@ mcs_cost   <- 132000
 mcs_margin <- 15000
 seller_reservation <- mcs_cost + mcs_margin
 
-cat(sprintf("Buyer reservation (max)  : $%s\n", format(buyer_reservation, big.mark = " ")))
-cat(sprintf("Seller reservation (min) : $%s\n", format(seller_reservation, big.mark = " ")))
+zopa <- seller_reservation <= buyer_reservation
 
-if (seller_reservation <= buyer_reservation) {
-  cat(sprintf("ZOPA width: $%s -- a deal is possible.\n",
-              format(buyer_reservation - seller_reservation, big.mark = " ")))
-  cat(sprintf("A midpoint settlement would be about $%s.\n",
-              format(round((buyer_reservation + seller_reservation) / 2), big.mark = " ")))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+lo  <- min(buyer_reservation, seller_reservation)
+hi  <- max(buyer_reservation, seller_reservation)
+pad <- max(hi - lo, 20000) * 0.5
+ticks <- pretty(c(lo - pad, hi + pad), n = 5)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+plot(NA, xlim = c(lo - pad, hi + pad), ylim = c(0, 1), xaxt = "n", yaxt = "n",
+     xlab = "Price ($)", ylab = "", main = "Zone of possible agreement")
+rect(lo, 0.3, hi, 0.7, col = if (zopa) "#a9dfbf" else "#f5b7b1", border = NA)
+axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
+points(seller_reservation, 0.5, pch = 19, cex = 3, col = "#2980b9")
+points(buyer_reservation, 0.5, pch = 19, cex = 3, col = "#e67e22")
+text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2)
+text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2)
+
+if (zopa) {
+  cat(sprintf("ZOPA width: %s: a deal is possible\n", money(buyer_reservation - seller_reservation)))
 } else {
-  cat("No ZOPA. Improve your BATNA, expand the package, or walk away.\n")
+  cat("!!No ZOPA!!: improve your BATNA, expand the package, or walk away\n")
 }
+cat(sprintf("Buyer reservation (max)  %s\n", money(buyer_reservation)))
+cat(sprintf("Seller reservation (min)  %s\n", money(seller_reservation)))
+if (zopa) cat(sprintf("Midpoint settlement  about %s\n", money((buyer_reservation + seller_reservation) / 2)))
 ```
+
+</details>
 
 <details>
 <summary>Why does improving your BATNA move the whole negotiation?</summary>

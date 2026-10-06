@@ -592,8 +592,30 @@ order of preference:
 
 ### Try it yourself: recompute the critical path after a change
 
+Try it --- crash B as far as you like: both long chains share it, so the critical path stays put. Then drag E's crashed duration down and watch the critical path flip to the other chain.
+
+```{r calc-path-duration-06, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "path-duration-06",
+  title = "Critical-Path Shift Explorer",
+  icon = "route",
+  inputs = list(
+    qwebr_calc_input("b_crashed_days", "Activity B crashed to (normally 8)", value = 5, min = 1, max = 8, step = 1, suffix = "days"),
+    qwebr_calc_input("e_crashed_days", "Activity E crashed to (normally 5)", value = 5, min = 1, max = 5, step = 1, suffix = "days", type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: path-duration-06
+b_crashed_days <- 5    # B crashed from its normal 8 days
+e_crashed_days <- 5    # E crashed from its normal 5 days (5 = not crashed)
+
 # All start-to-finish paths through the sub-project network, with activity durations.
 dur <- c(A = 5, B = 8, C = 3, D = 4, E = 5, F = 7, G = 6, H = 8, I = 6, J = 5)
 
@@ -604,27 +626,63 @@ paths <- list(
 )
 
 path_len <- sapply(paths, function(p) sum(dur[p]))
-cat("Baseline path lengths:\n"); print(path_len)
-cat(sprintf("Critical path: %s (%d days)\n\n", names(which.max(path_len)), max(path_len)))
 
-# Now crash B from 8 to 5 days and re-check:
-dur["B"] <- 5
+# Now crash B and E and re-check:
+dur["B"] <- b_crashed_days
+dur["E"] <- e_crashed_days
 path_len2 <- sapply(paths, function(p) sum(dur[p]))
-cat("After crashing B by 3 days:\n"); print(path_len2)
-cat(sprintf("New critical path: %s (%d days)\n", names(which.max(path_len2)), max(path_len2)))
-cat("Note how the critical path can *shift* to a different chain once you crash enough.\n")
+
+crit_before <- names(which.max(path_len))
+crit_after  <- names(which.max(path_len2))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(rbind(path_len, path_len2), beside = TRUE, names.arg = paste("Path", 1:3), col = c("#bdc3c7", "#2980b9"), ylab = "Path length (days)",
+              ylim = c(0, max(path_len, path_len2) * 1.25), main = "Path length: before (grey), after (blue)")
+
+cat(sprintf("New critical path: %s (%g days)
+", crit_after, max(path_len2)))
+cat(sprintf("Critical path shifted?  %s
+", if (crit_before != crit_after) "Yes, to a different chain" else "No, same chain"))
+for (i in seq_along(paths)) {
+  cat(sprintf("Path %d: %s  %g d -> %g d
+", i, names(paths)[i], path_len[i], path_len2[i]))
+}
 ```
+
+</details>
 
 ### Try it yourself: which activities actually threaten the finish date?
 
 Float answers this precisely: bump every activity by the same 2 days, one at a
 time, and see which ones move the finish date and which get absorbed. This is
-the Week 6 Meridian network from the case study below. Live cell --- change a
-duration or the network and re-run.
+the Week 6 Meridian network from the case study below. Live cell --- drag the delay,
+or lengthen C or E, and watch which activities threaten the finish date.
+
+```{r calc-float-sensitivity-06, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "float-sensitivity-06",
+  title = "Float Sensitivity Explorer",
+  icon = "gauge-high",
+  inputs = list(
+    qwebr_calc_input("bump_days", "Delay added to each activity", value = 2, min = 1, max = 20, step = 1, suffix = "days", type = "slider"),
+    qwebr_calc_input("c_days", "Activity C duration", value = 20, min = 1, max = 40, step = 1, suffix = "days"),
+    qwebr_calc_input("e_days", "Activity E duration", value = 25, min = 1, max = 40, step = 1, suffix = "days")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
 
 ```{webr-r}
 #| label: float-sensitivity-06
-dur  <- c(A = 10, B = 8, C = 20, D = 15, E = 25, F = 6, G = 5, H = 12, I = 4, J = 2)
+bump_days <- 2    # delay added to one activity at a time
+c_days    <- 20
+e_days    <- 25
+
+dur  <- c(A = 10, B = 8, C = c_days, D = 15, E = e_days, F = 6, G = 5, H = 12, I = 4, J = 2)
 pred <- list(A = c(), B = "A", C = "B", D = "B", E = "B",
              F = c("C", "D", "E"), G = "F", H = "F", I = c("G", "H"), J = "I")
 
@@ -640,17 +698,27 @@ project_duration <- function(dur, pred) {
 }
 
 baseline <- project_duration(dur, pred)
-cat(sprintf("Baseline project duration: %d days\n\n", baseline))
 
-cat("Add 2 days to one activity at a time and see what happens to the finish date:\n")
+# Add the delay to one activity at a time and see what happens to the finish date.
+impact <- setNames(numeric(length(dur)), names(dur))
 for (a in names(dur)) {
-  bumped  <- dur; bumped[a] <- bumped[a] + 2
-  new_dur <- project_duration(bumped, pred)
-  impact  <- new_dur - baseline
-  cat(sprintf("  +2 days to %s  ->  finish moves by %d day(s)%s\n",
-              a, impact, if (impact == 0) "  (has float -- absorbed)" else "  <- CRITICAL"))
+  bumped  <- dur; bumped[a] <- bumped[a] + bump_days
+  impact[a] <- project_duration(bumped, pred) - baseline
+}
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(impact, col = ifelse(impact > 0, "#e74c3c", "#bdc3c7"), xlab = "Activity delayed", ylab = "Finish-date slip (days)",
+        main = paste("Effect of a", bump_days, "day delay on the finish"))
+
+cat(sprintf("Baseline project duration: %g days\n", baseline))
+cat(sprintf("Critical activities  %s\n", paste(names(impact)[impact > 0], collapse = ", ")))
+for (a in names(dur)) {
+  cat(sprintf("+%g days to %s  finish moves %g day(s)%s\n", bump_days, a, impact[a],
+              if (impact[a] == 0) " (float absorbs it)" else " (CRITICAL)"))
 }
 ```
+
+</details>
 
 ## From network to Gantt chart
 

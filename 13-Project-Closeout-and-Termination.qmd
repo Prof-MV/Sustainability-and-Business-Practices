@@ -150,6 +150,24 @@ A project has already spent **\$480 000** (sunk). Finishing it needs another
 
 Live cell --- change the cost to finish or the remaining benefit.
 
+```{r calc-cancel-decision-13, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "cancel-decision-13",
+  title = "Continue-or-Cancel Calculator",
+  icon = "circle-question",
+  inputs = list(
+    qwebr_calc_input("sunk", "Sunk cost (already spent)", value = 480000, min = 0, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("cost_to_finish", "Cost to finish", value = 260000, min = 10000, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("remaining_benefit", "Remaining benefit if finished", value = 300000, min = 0, max = 1000000, step = 10000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: cancel-decision-13
 sunk            <- 480000     # already spent -- IRRELEVANT to the decision
@@ -157,14 +175,26 @@ cost_to_finish  <- 260000
 remaining_benefit <- 300000
 
 net_if_continue <- remaining_benefit - cost_to_finish
-cat(sprintf("Sunk cost (ignore it)        : $%s\n", format(sunk, big.mark = " ")))
-cat(sprintf("Cost to finish               : $%s\n", format(cost_to_finish, big.mark = " ")))
-cat(sprintf("Benefit if finished          : $%s\n", format(remaining_benefit, big.mark = " ")))
-cat(sprintf("Net from *here*              : $%s\n", format(net_if_continue, big.mark = " ")))
-cat(ifelse(net_if_continue > 0,
-           "\n-> CONTINUE: the remaining benefit still beats the remaining cost.\n",
-           "\n-> CANCEL: finishing loses money from here, regardless of the $480k already gone.\n"))
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(c("Sunk\n(ignore)" = sunk, "Cost to\nfinish" = cost_to_finish, "Remaining\nbenefit" = remaining_benefit) / 1000,
+        col = c("#bdc3c7", "#e67e22", ifelse(net_if_continue > 0, "#16a085", "#e74c3c")),
+        ylab = "$ thousand", main = "Only the last two bars matter")
+
+if (net_if_continue > 0) {
+  cat("CONTINUE: the remaining benefit still beats the remaining cost\n")
+} else {
+  cat(sprintf("!!CANCEL!!: finishing loses money from here, regardless of the %s already gone\n", money(sunk)))
+}
+cat(sprintf("Sunk cost (ignore it)  %s\n", money(sunk)))
+cat(sprintf("Cost to finish  %s\n", money(cost_to_finish)))
+cat(sprintf("Benefit if finished  %s\n", money(remaining_benefit)))
+cat(sprintf("Net from *here*  %s\n", money(net_if_continue)))
 ```
+
+</details>
 
 The \$480 000 is a **sunk cost** --- it is spent whether you continue or not, so
 it must not enter the decision. From here, spending \$260 000 to get \$300 000 is
@@ -173,22 +203,58 @@ is what keeps doomed projects alive.)
 
 ### Try it yourself: the cancel decision under uncertainty
 
+```{r calc-cancel-decision-13b, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "cancel-decision-13b",
+  title = "Cancel Decision Under Uncertainty",
+  icon = "shuffle",
+  inputs = list(
+    qwebr_calc_input("sunk", "Sunk cost (irrelevant: try changing it)", value = 480000, min = 0, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("cost_to_finish", "Cost to finish", value = 260000, min = 10000, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("benefit_weak", "Benefit if the market is weak", value = 150000, min = 0, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("benefit_below", "Benefit if below plan", value = 250000, min = 0, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("benefit_plan", "Benefit if on plan", value = 300000, min = 0, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("benefit_strong", "Benefit if the market is strong", value = 400000, min = 0, max = 1000000, step = 10000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: cancel-decision-13b
 sunk           <- 480000
 cost_to_finish <- 260000
 
 # The remaining benefit is uncertain -- try a range of market outcomes.
-for (benefit in c(150000, 250000, 300000, 400000)) {
-  net <- benefit - cost_to_finish
-  verdict <- ifelse(net > 0, "CONTINUE", "CANCEL")
-  cat(sprintf("If remaining benefit = $%s  ->  net from here $%+d  ->  %s\n",
-              format(benefit, big.mark = " "), net, verdict))
+benefit_weak   <- 150000
+benefit_below  <- 250000
+benefit_plan   <- 300000
+benefit_strong <- 400000
+benefits <- c(benefit_weak, benefit_below, benefit_plan, benefit_strong)
+
+net <- benefits - cost_to_finish
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+smoney <- function(x) paste0(ifelse(x < 0, "-", "+"), "$", format(round(abs(x)), big.mark = " ", trim = TRUE))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(net / 1000, names.arg = c("Weak", "Below plan", "On plan", "Strong"), col = ifelse(net > 0, "#16a085", "#e74c3c"), ylab = "Net from here ($ thousand)",
+        main = "Net value of finishing, by outcome")
+abline(h = 0, lwd = 2)
+
+cat(sprintf("Break-even benefit: %s\n", money(cost_to_finish)))
+cat(sprintf("Sunk cost (ignored)  %s\n", money(sunk)))
+for (i in seq_along(benefits)) {
+  verdict <- if (net[i] > 0) "CONTINUE" else "!!CANCEL!!"
+  cat(sprintf("If benefit = %s  net %s: %s\n", money(benefits[i]), smoney(net[i]), verdict))
 }
-cat(sprintf("\nBreak-even benefit: $%s. Below that, finishing destroys value\n",
-            format(cost_to_finish, big.mark = " ")))
-cat("-- no matter how much has already been spent.\n")
 ```
+
+</details>
 
 ## Lessons from spectacular failures
 
@@ -227,29 +293,63 @@ organizations; and pressing on past every off-ramp because of sunk cost.
 
 ### Try it yourself: the final project reconciliation
 
+```{r calc-reconciliation-13, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "reconciliation-13",
+  title = "Project Reconciliation Calculator",
+  icon = "clipboard-check",
+  inputs = list(
+    qwebr_calc_input("planned_weeks", "Planned duration", value = 30, min = 1, max = 100, step = 1, suffix = "weeks"),
+    qwebr_calc_input("actual_weeks", "Actual duration", value = 34, min = 1, max = 150, step = 1, suffix = "weeks"),
+    qwebr_calc_input("planned_cost", "Planned cost", value = 620000, min = 50000, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("actual_cost", "Actual cost", value = 703000, min = 50000, max = 3000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("planned_scope_items", "Deliverables planned", value = 12, min = 1, max = 30, step = 1),
+    qwebr_calc_input("delivered_items", "Deliverables accepted", value = 12, min = 0, max = 30, step = 1)
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: reconciliation-13
 # Planned vs actual for the RC-vehicle prototype project at closeout.
-planned_weeks <- 30;      actual_weeks <- 34
-planned_cost  <- 620000;  actual_cost  <- 703000
-planned_scope_items <- 12; delivered_items <- 12   # all deliverables met
+planned_weeks <- 30
+actual_weeks  <- 34
+planned_cost  <- 620000
+actual_cost   <- 703000
+planned_scope_items <- 12
+delivered_items     <- 12    # all deliverables met
 
 sched_var_pct <- 100 * (actual_weeks - planned_weeks) / planned_weeks
 cost_var_pct  <- 100 * (actual_cost - planned_cost) / planned_cost
 
-cat(sprintf("Schedule : planned %d wk, actual %d wk  (%+.1f%%)\n",
-            planned_weeks, actual_weeks, sched_var_pct))
-cat(sprintf("Cost     : planned $%s, actual $%s  (%+.1f%%)\n",
-            format(planned_cost, big.mark = " "),
-            format(actual_cost, big.mark = " "), cost_var_pct))
-cat(sprintf("Scope    : %d of %d deliverables accepted\n",
-            delivered_items, planned_scope_items))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
 
-verdict <- if (delivered_items == planned_scope_items && cost_var_pct < 20 && sched_var_pct < 20)
-  "SUCCESS with overruns -- document the causes in the history file and lessons learned."
-else "TROUBLED -- the lessons-learned review is the priority deliverable."
-cat("\n", verdict, "\n", sep = "")
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(c(Schedule = sched_var_pct, Cost = cost_var_pct), col = ifelse(c(sched_var_pct, cost_var_pct) < 20, "#2980b9", "#e74c3c"),
+              ylim = c(min(0, sched_var_pct, cost_var_pct) * 1.2, max(25, sched_var_pct, cost_var_pct) * 1.15),
+              ylab = "Variance vs. plan (%)", main = "Variance vs. the 20% threshold")
+abline(h = 0, lwd = 2)
+abline(h = 20, lty = 2, lwd = 2, col = "#e74c3c")
+
+success <- delivered_items == planned_scope_items && cost_var_pct < 20 && sched_var_pct < 20
+if (success) {
+  cat(sprintf("%s\n", if (sched_var_pct > 0 || cost_var_pct > 0) "SUCCESS with overruns" else "SUCCESS"))
+} else {
+  cat("!!TROUBLED!!\n")
+}
+cat(sprintf("Schedule  %g -> %g wk (%+.1f%%)\n", planned_weeks, actual_weeks, sched_var_pct))
+cat(sprintf("Cost  %s -> %s (%+.1f%%)\n", money(planned_cost), money(actual_cost), cost_var_pct))
+cat(sprintf("Scope  %g of %g deliverables accepted\n", delivered_items, planned_scope_items))
+cat(sprintf("Next step  %s\n", if (success) "document the causes in the history file and lessons learned"
+                               else "the lessons-learned review is the priority deliverable"))
 ```
+
+</details>
 
 ## Closing out the RC-vehicle project
 

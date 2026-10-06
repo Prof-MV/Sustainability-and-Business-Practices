@@ -146,10 +146,33 @@ materials for prototypes are \$4 500. The company applies indirect cost at
 
 Live cell --- change the hours, rates, materials, or the indirect rate.
 
+```{r calc-cost-wp-example-09, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "cost-wp-example-09",
+  title = "Work-Package Cost Calculator",
+  icon = "calculator",
+  inputs = list(
+    qwebr_calc_input("designer_hours", "Designer hours", value = 220, min = 0, max = 1000, step = 10, suffix = "h"),
+    qwebr_calc_input("designer_rate", "Designer rate", value = 46, min = 10, max = 150, step = 1, prefix = "$", suffix = "/ h"),
+    qwebr_calc_input("junior_hours", "Junior hours", value = 120, min = 0, max = 1000, step = 10, suffix = "h"),
+    qwebr_calc_input("junior_rate", "Junior rate", value = 32, min = 10, max = 150, step = 1, prefix = "$", suffix = "/ h"),
+    qwebr_calc_input("direct_materials", "Direct materials", value = 4500, min = 0, max = 50000, step = 100, prefix = "$"),
+    qwebr_calc_input("indirect_rate", "Indirect rate", value = 0.35, min = 0, max = 1, step = 0.05, type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: cost-wp-example-09
-designer_hours <- 220; designer_rate <- 46
-junior_hours   <- 120; junior_rate   <- 32
+designer_hours <- 220
+designer_rate  <- 46
+junior_hours   <- 120
+junior_rate    <- 32
 direct_materials <- 4500
 indirect_rate <- 0.35
 
@@ -158,14 +181,22 @@ direct_cost   <- direct_labour + direct_materials
 indirect_cost <- indirect_rate * direct_cost
 total_cost    <- direct_cost + indirect_cost
 
-cat("Direct labour  :", sprintf("$%s", format(direct_labour, big.mark = " ")), "\n")
-cat("Direct materials:", sprintf("$%s", format(direct_materials, big.mark = " ")), "\n")
-cat("Direct cost    :", sprintf("$%s", format(direct_cost, big.mark = " ")), "\n")
-cat("Indirect (35%) :", sprintf("$%s", format(indirect_cost, big.mark = " ")), "\n")
-cat("-----\n")
-cat("Fully-burdened work-package cost:",
-    sprintf("$%s", format(round(total_cost), big.mark = " ")), "\n")
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+parts <- c("Direct labour" = direct_labour, "Direct materials" = direct_materials, "Indirect" = indirect_cost)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(parts / 1000, col = c("#2980b9", "#16a085", "#8e44ad"), ylim = c(0, max(parts / 1000) * 1.2), ylab = "$ thousand",
+              main = "What makes up the work-package cost")
+text(bp, parts / 1000, labels = paste0("$", round(parts / 1000, 1), "k"), pos = 3, cex = 1.3)
+
+cat(sprintf("Fully-burdened work-package cost: %s\n", money(total_cost)))
+cat(sprintf("Direct labour  %s\n", money(direct_labour)))
+cat(sprintf("Direct materials  %s\n", money(direct_materials)))
+cat(sprintf("Direct cost  %s\n", money(direct_cost)))
+cat(sprintf("Indirect (%g%%)  %s\n", 100 * indirect_rate, money(indirect_cost)))
 ```
+
+</details>
 
 <details>
 <summary>Practice: classify the cost (from the MGMT-3105 budgeting case study)</summary>
@@ -290,6 +321,24 @@ A **parametric** estimate uses a cost-estimating relationship (CER) from history
 plus \$85 000 of fixed project cost." The live cell builds the estimate and
 shows the band each method would put around it.
 
+```{r calc-parametric-estimate-09, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "parametric-estimate-09",
+  title = "Parametric Estimate & Accuracy Bands",
+  icon = "chart-line",
+  inputs = list(
+    qwebr_calc_input("units", "Units produced", value = 120000, min = 10000, max = 500000, step = 10000, type = "slider"),
+    qwebr_calc_input("cost_per_unit_CER", "Cost per unit (CER)", value = 14.5, min = 1, max = 50, step = 0.5, prefix = "$", suffix = "/ unit"),
+    qwebr_calc_input("fixed_project_cost", "Fixed project cost", value = 85000, min = 0, max = 500000, step = 5000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: parametric-estimate-09
 units             <- 120000
@@ -305,15 +354,23 @@ bands <- data.frame(
 bands$low  <- round(point_estimate * (1 - bands$accuracy))
 bands$high <- round(point_estimate * (1 + bands$accuracy))
 
-cat(sprintf("Parametric point estimate: $%s\n\n",
-            format(round(point_estimate), big.mark = " ")))
+ticks <- pretty(c(bands$low, bands$high), n = 3)
+par(mar = c(5, 13, 3, 3), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+plot(NA, xlim = range(bands$low, bands$high), ylim = c(0.5, 4.5), yaxt = "n", xaxt = "n",
+     xlab = "Estimate ($)", ylab = "", main = "Estimate accuracy band by method")
+segments(bands$low, 4:1, bands$high, 4:1, lwd = 10, lend = 1, col = "#2980b9")
+axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
+axis(2, at = 4:1, labels = bands$method, las = 1, tick = FALSE)
+abline(v = point_estimate, lty = 2, lwd = 2, col = "#e74c3c")
+
+cat(sprintf("Parametric point estimate: $%s\n", format(round(point_estimate), big.mark = " ")))
 for (i in seq_len(nrow(bands))) {
-  cat(sprintf("%-11s (+/- %2.0f%%):  $%s  ...  $%s\n",
-              bands$method[i], bands$accuracy[i] * 100,
-              format(bands$low[i],  big.mark = " "),
-              format(bands$high[i], big.mark = " ")))
+  cat(sprintf("%s (+/- %.0f%%)  $%s to $%s\n", bands$method[i], bands$accuracy[i] * 100,
+              format(bands$low[i], big.mark = " "), format(bands$high[i], big.mark = " ")))
 }
 ```
+
+</details>
 
 <details>
 <summary>Why quote a range at all --- why not just give "the number"?</summary>
@@ -458,11 +515,35 @@ knitr::kable(abc, align = c("l", "r", "r", "r"),
 The live cell costs a single activity from its drivers, then compares planned
 vs. actual to get the **variance**. Change the rates, hours, or actuals.
 
+```{r calc-abc-activity-variance-09, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "abc-activity-variance-09",
+  title = "Activity Cost & Variance Calculator",
+  icon = "scale-unbalanced",
+  inputs = list(
+    qwebr_calc_input("labour_rate", "Labour rate", value = 38, min = 10, max = 150, step = 1, prefix = "$", suffix = "/ h"),
+    qwebr_calc_input("labour_hours", "Labour hours", value = 160, min = 0, max = 800, step = 5, suffix = "h"),
+    qwebr_calc_input("machine_rate", "Machine rate", value = 22, min = 5, max = 150, step = 1, prefix = "$", suffix = "/ h"),
+    qwebr_calc_input("machine_hours", "Machine hours", value = 45, min = 0, max = 400, step = 5, suffix = "h"),
+    qwebr_calc_input("materials", "Materials", value = 2600, min = 0, max = 20000, step = 100, prefix = "$"),
+    qwebr_calc_input("overhead_rate", "Overhead rate", value = 0.3, min = 0, max = 1, step = 0.05),
+    qwebr_calc_input("actual", "Actual activity cost", value = 11800, min = 0, max = 30000, step = 100, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: abc-activity-variance-09
 # --- Step 3 & 4: cost the "Assemble & test prototype" activity from drivers ---
-labour_rate   <- 38;  labour_hours   <- 160
-machine_rate  <- 22;  machine_hours  <- 45
+labour_rate   <- 38
+labour_hours  <- 160
+machine_rate  <- 22
+machine_hours <- 45
 materials     <- 2600
 overhead_rate <- 0.30            # 30% of direct
 
@@ -470,20 +551,31 @@ direct   <- labour_rate * labour_hours + machine_rate * machine_hours + material
 overhead <- overhead_rate * direct
 planned  <- direct + overhead
 
-cat(sprintf("Direct   : $%s\n", format(round(direct),   big.mark = " ")))
-cat(sprintf("Overhead : $%s\n", format(round(overhead), big.mark = " ")))
-cat(sprintf("Planned activity cost: $%s\n\n", format(round(planned), big.mark = " ")))
-
 # --- Variance: what actually happened ---
 actual <- 11800
 variance <- planned - actual          # positive = under budget (favourable)
 pct <- 100 * variance / planned
 
-verdict <- if (variance >= 0) "UNDER budget (favourable)" else "OVER budget (unfavourable)"
-cat(sprintf("Actual   : $%s\n", format(actual, big.mark = " ")))
-cat(sprintf("Variance : $%s  (%.1f%%)  -> %s\n",
-            format(round(variance), big.mark = " "), pct, verdict))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(c(Planned = planned, Actual = actual) / 1000, col = c("#2980b9", if (variance >= 0) "#16a085" else "#e74c3c"),
+              ylim = c(0, max(planned, actual) / 1000 * 1.2), ylab = "$ thousand",
+              main = "Planned vs. actual activity cost")
+text(bp, c(planned, actual) / 1000, labels = paste0("$", round(c(planned, actual) / 1000, 1), "k"), pos = 3, cex = 1.3)
+
+if (variance >= 0) {
+  cat(sprintf("Variance %s (%+.1f%%): UNDER budget (favourable)\n", money(variance), pct))
+} else {
+  cat(sprintf("Variance %s (%+.1f%%): !!OVER budget (unfavourable)!!\n", money(variance), pct))
+}
+cat(sprintf("Direct  %s\n", money(direct)))
+cat(sprintf("Overhead  %s\n", money(overhead)))
+cat(sprintf("Planned activity cost  %s\n", money(planned)))
+cat(sprintf("Actual  %s\n", money(actual)))
 ```
+
+</details>
 
 ::: {.callout-warning}
 **Common mistake.** Contingency is **not** built into an ABC budget. ABC costs
@@ -589,6 +681,28 @@ ranges (using a pick inside each range), rolls up labour and materials, and adds
 a contingency. Change the picks or the contingency rate and watch the total ---
 then check it against what Senior Management is likely to approve.
 
+```{r calc-rc-project-budget-09, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "rc-project-budget-09",
+  title = "RC-Vehicle Project Budget Calculator",
+  icon = "sack-dollar",
+  inputs = list(
+    qwebr_calc_input("months", "Project length", value = 7, min = 1, max = 24, step = 1, suffix = "months"),
+    qwebr_calc_input("pm_salary", "Project manager salary", value = 72000, min = 30000, max = 150000, step = 1000, prefix = "$", suffix = "/ yr"),
+    qwebr_calc_input("n_team", "Team members", value = 4, min = 0, max = 12, step = 1),
+    qwebr_calc_input("team_salary_each", "Salary per team member", value = 38000, min = 20000, max = 120000, step = 1000, prefix = "$", suffix = "/ yr"),
+    qwebr_calc_input("sundry_hours", "Support hours booked", value = 1800, min = 0, max = 6000, step = 100, suffix = "h"),
+    qwebr_calc_input("contingency_r", "Contingency rate", value = 0.15, min = 0, max = 0.5, step = 0.01, type = "slider"),
+    qwebr_calc_input("charter_ceiling", "Senior-management ceiling", value = 800000, min = 300000, max = 1500000, step = 10000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: rc-project-budget-09
 # --- Labour (annualised salaries prorated to a 7-month project = 7/12) ---
@@ -624,14 +738,34 @@ contingency_r <- 0.15
 contingency   <- contingency_r * subtotal
 grand_total   <- subtotal + contingency
 
-cat(sprintf("Labour subtotal      : $%s\n", format(round(labour),        big.mark = " ")))
-cat(sprintf("Material subtotal     : $%s\n", format(round(material_total),big.mark = " ")))
-cat(sprintf("Subtotal             : $%s\n", format(round(subtotal),      big.mark = " ")))
-cat(sprintf("Contingency (%.0f%%)     : $%s\n", contingency_r * 100,
-            format(round(contingency), big.mark = " ")))
-cat(sprintf("--------\nGRAND TOTAL          : $%s\n",
-            format(round(grand_total), big.mark = " ")))
+charter_ceiling <- 800000         # what Senior Management has authorised
+headroom <- charter_ceiling - grand_total
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+stack <- matrix(c(labour, material_total, contingency) / 1000, ncol = 1)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(stack, col = c("#2980b9", "#16a085", "#e67e22"), xlim = c(0, 2.6),
+        ylim = c(0, max(grand_total, charter_ceiling) / 1000 * 1.1), names.arg = "Budget",
+        ylab = "$ thousand", main = "Budget vs. ceiling")
+mids <- cumsum(stack) - stack / 2
+text(0.7, mids, c("Labour", "Materials", "Contingency"), col = "white", cex = 1.2)
+abline(h = charter_ceiling / 1000, lty = 2, lwd = 3, col = "#e74c3c")
+text(2.2, charter_ceiling / 1000, "Ceiling", pos = 3, col = "#e74c3c", cex = 1.2)
+
+cat(sprintf("GRAND TOTAL %s\n", money(grand_total)))
+if (headroom >= 0) {
+  cat(sprintf("Versus the %s ceiling  %s headroom\n", money(charter_ceiling), money(headroom)))
+} else {
+  cat(sprintf("Versus the %s ceiling  !!%s over!!\n", money(charter_ceiling), money(-headroom)))
+}
+cat(sprintf("Labour subtotal  %s\n", money(labour)))
+cat(sprintf("Material subtotal  %s\n", money(material_total)))
+cat(sprintf("Subtotal  %s\n", money(subtotal)))
+cat(sprintf("Contingency (%g%%)  %s\n", contingency_r * 100, money(contingency)))
 ```
+
+</details>
 
 <details>
 <summary>How would top-down vs. bottom-up change this number?</summary>

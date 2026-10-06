@@ -133,29 +133,62 @@ packages are estimated at 120, 90, 70, and 60 hours.
 
 Live cell --- change the parent estimate or the work-package hours and watch the 100 % check.
 
+```{r calc-wbs-rollup-example-05, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "wbs-rollup-example-05",
+  title = "WBS 100% Rule Check",
+  icon = "sitemap",
+  inputs = list(
+    qwebr_calc_input("parent_hours", "Parent estimate (1.1 Body & Frame)", value = 340, min = 50, max = 800, step = 5, suffix = "h"),
+    qwebr_calc_input("h_outer", "1.1.1 Outer body design", value = 120, min = 0, max = 400, step = 5, suffix = "h"),
+    qwebr_calc_input("h_inner", "1.1.2 Inner frame design", value = 90, min = 0, max = 400, step = 5, suffix = "h"),
+    qwebr_calc_input("h_select", "1.1.3 Material selection", value = 70, min = 0, max = 400, step = 5, suffix = "h"),
+    qwebr_calc_input("h_review", "1.1.4 Design review & release", value = 60, min = 0, max = 400, step = 5, suffix = "h")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: wbs-rollup-example-05
-parent_hours   <- 340
-children_hours <- c("1.1.1 Outer body design" = 120,
-                    "1.1.2 Inner frame design" = 90,
-                    "1.1.3 Material selection" = 70,
-                    "1.1.4 Design review & release" = 60)
+parent_hours <- 340
+h_outer  <- 120   # 1.1.1 Outer body design
+h_inner  <- 90    # 1.1.2 Inner frame design
+h_select <- 70    # 1.1.3 Material selection
+h_review <- 60    # 1.1.4 Design review & release
+
+children_hours <- c("1.1.1 Outer body design" = h_outer,
+                    "1.1.2 Inner frame design" = h_inner,
+                    "1.1.3 Material selection" = h_select,
+                    "1.1.4 Design review & release" = h_review)
 
 child_sum <- sum(children_hours)
-cat("Children:\n"); print(children_hours)
-cat(sprintf("\nSum of children : %d h\n", child_sum))
-cat(sprintf("Parent estimate : %d h\n", parent_hours))
+
+# Chart: the four children stacked beside the parent estimate
+stack <- rbind(cbind(children_hours, 0), c(0, parent_hours))
+colnames(stack) <- c("Children", "Parent")
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(stack, col = c("#2980b9", "#16a085", "#8e44ad", "#e67e22", "#34495e"), ylim = c(0, max(child_sum, parent_hours) * 1.1), ylab = "Hours",
+        main = "Do the children add up to the parent?")
+abline(h = parent_hours, lty = 2, lwd = 3, col = "#e74c3c")
 
 if (child_sum == parent_hours) {
-  cat("OK - the children account for exactly 100% of the parent.\n")
+  cat("OK: the children account for exactly 100% of the parent\n")
 } else if (child_sum < parent_hours) {
-  cat(sprintf("GAP - %d h of the parent's scope is not captured by any work package.\n",
-              parent_hours - child_sum))
+  cat(sprintf("!!GAP: %g h of the parent's scope is in no work package!!\n", parent_hours - child_sum))
 } else {
-  cat(sprintf("OVER - the children exceed the parent by %d h (>100%% -- scope crept in).\n",
-              child_sum - parent_hours))
+  cat(sprintf("!!OVER: the children exceed the parent by %g h (scope crept in)!!\n", child_sum - parent_hours))
 }
+cat(sprintf("Sum of children  %g h\n", child_sum))
+cat(sprintf("Parent estimate  %g h\n", parent_hours))
+cat(sprintf("Children as share of parent  %.1f%%\n", 100 * child_sum / parent_hours))
 ```
+
+</details>
 
 Here the children sum to 340 --- the deliverable is fully decomposed with nothing
 missing and nothing extra.
@@ -220,26 +253,67 @@ cycle if it is thin, spread-out work. Live cell --- change the reporting
 cadence or a package's span and see which packages need to be split or
 tracked by percent-complete instead.
 
+```{r calc-wbs-reporting-period-05, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "wbs-reporting-period-05",
+  title = "Reporting-Cycle Check",
+  icon = "calendar-check",
+  inputs = list(
+    qwebr_calc_input("reporting_cycle_days", "Reporting cycle", value = 14, min = 3, max = 30, step = 1, suffix = "days", type = "slider"),
+    qwebr_calc_input("span_concept", "1.1.1 Concept CAD", value = 10, min = 1, max = 60, step = 1, suffix = "days"),
+    qwebr_calc_input("span_motor", "1.2.1 Motor/controller procurement", value = 25, min = 1, max = 60, step = 1, suffix = "days"),
+    qwebr_calc_input("span_drop", "1.5.1 Drop/durability test", value = 5, min = 1, max = 60, step = 1, suffix = "days"),
+    qwebr_calc_input("span_cert", "1.5.2 Toy-safety certification", value = 12, min = 1, max = 60, step = 1, suffix = "days")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: wbs-reporting-period-05
 reporting_cycle_days <- 14   # biweekly status reports
+
+span_concept <- 10    # 1.1.1 Concept CAD
+span_motor   <- 25    # 1.2.1 Motor/controller procurement
+span_drop    <- 5     # 1.5.1 Drop/durability test
+span_cert    <- 12    # 1.5.2 Toy-safety certification
 
 packages <- data.frame(
   id        = c("1.1.1", "1.2.1", "1.5.1", "1.5.2"),
   name      = c("Concept CAD", "Motor/controller procurement",
                "Drop/durability test", "Toy-safety certification"),
-  span_days = c(10, 25, 5, 12)
+  span_days = c(span_concept, span_motor, span_drop, span_cert)
 )
+packages$too_long <- packages$span_days > reporting_cycle_days
+n_bad <- sum(packages$too_long)
 
-packages$verdict <- ifelse(packages$span_days > reporting_cycle_days,
-                            "SPANS >1 reporting cycle -- split or report % complete",
-                            "fits within one cycle")
-print(packages, row.names = FALSE)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(packages$span_days, names.arg = packages$id, col = ifelse(packages$too_long, "#e74c3c", "#16a085"),
+        ylim = c(0, max(packages$span_days, reporting_cycle_days) * 1.15),
+        ylab = "Span (days)", main = "Work-package span vs. reporting cycle")
+abline(h = reporting_cycle_days, lty = 2, lwd = 3, col = "#2c3e50")
 
-cat(sprintf("\nReporting cadence: every %d days.\n", reporting_cycle_days))
-cat(sprintf("%d of %d packages need attention.\n",
-            sum(grepl("SPANS", packages$verdict)), nrow(packages)))
+if (n_bad > 0) {
+  cat(sprintf("!!%d of %d packages need attention!!\n", n_bad, nrow(packages)))
+} else {
+  cat(sprintf("All %d packages fit within one reporting cycle\n", nrow(packages)))
+}
+cat(sprintf("Reporting cadence  every %d days\n", reporting_cycle_days))
+for (i in seq_len(nrow(packages))) {
+  verdict <- if (packages$too_long[i]) {
+    sprintf("!!%g days: split or report %% complete!!", packages$span_days[i])
+  } else {
+    sprintf("%g days: fits within one cycle", packages$span_days[i])
+  }
+  cat(sprintf("%s %s  %s\n", packages$id[i], packages$name[i], verdict))
+}
 ```
+
+</details>
 
 ## Why the WBS matters
 

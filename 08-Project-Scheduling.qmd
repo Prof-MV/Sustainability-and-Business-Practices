@@ -156,20 +156,58 @@ cat(sprintf("Rough 95%% range        : %.0f to %.0f days\n", mu - 2 * sigma, mu 
 Standardize the target: $z = \dfrac{\text{target} - \mu}{\sigma}$, then read the
 normal cumulative probability.
 
+```{r calc-prob-on-time-08, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "prob-on-time-08",
+  title = "Probability-of-On-Time Calculator",
+  icon = "bell-concierge",
+  inputs = list(
+    qwebr_calc_input("mu", "Project mean duration", value = 83.0, min = 40, max = 200, step = 0.5, suffix = "days"),
+    qwebr_calc_input("sigma", "Project standard deviation", value = 2.42, min = 0.5, max = 15, step = 0.01, suffix = "days"),
+    qwebr_calc_input("confidence_pct", "Confidence you want", value = 90, min = 50, max = 99, step = 1, suffix = "%"),
+    qwebr_calc_input("target_day", "Target finish day", value = 86, min = 60, max = 120, step = 1, type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: prob-on-time-08
 mu    <- 83.0     # from the worked example
 sigma <- 2.42
+confidence_pct <- 90    # confidence you want in the target
+target_day     <- 86    # the day you are promising
 
-for (target in c(80, 83, 86, 88)) {
-  z <- (target - mu) / sigma
-  cat(sprintf("Finish by day %2d:  z = %+5.2f  ->  P = %4.1f%%\n",
-              target, z, 100 * pnorm(z)))
+z    <- (target_day - mu) / sigma
+prob <- pnorm(z)
+conf_day <- mu + qnorm(confidence_pct / 100) * sigma
+
+x <- seq(mu - 4 * sigma, mu + 4 * sigma, length.out = 200)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+plot(x, dnorm(x, mu, sigma), type = "n", xlab = "Project finish (day)", ylab = "Density",
+     main = "Probability of finishing on time")
+shade <- x <= target_day
+if (any(shade)) polygon(c(x[shade][1], x[shade], target_day), c(0, dnorm(x[shade], mu, sigma), 0),
+                        col = "#aed6f1", border = NA)
+lines(x, dnorm(x, mu, sigma), lwd = 4, col = "#2c3e50")
+abline(v = target_day, lty = 2, lwd = 2, col = "#e74c3c")
+abline(v = conf_day, lty = 3, lwd = 2, col = "#16a085")
+
+if (100 * prob >= confidence_pct) {
+  cat(sprintf("P(finish by day %g) = %.1f%%: meets the %g%% goal\n", target_day, 100 * prob, confidence_pct))
+} else {
+  cat(sprintf("!!P(finish by day %g) = %.1f%%: below the %g%% goal!!\n", target_day, 100 * prob, confidence_pct))
 }
-
-cat("\nWhat target gives 90% confidence?\n")
-cat(sprintf("  day %.1f  (mu + %.2f x sigma)\n", mu + qnorm(0.90) * sigma, qnorm(0.90)))
+cat(sprintf("z-score  %+.2f\n", z))
+cat(sprintf("Day for %g%% confidence  day %.1f (mu + %.2f x sigma)\n",
+            confidence_pct, conf_day, qnorm(confidence_pct / 100)))
 ```
+
+</details>
 
 <details>
 <summary>Why quote "day 86 at 90 % confidence" instead of "day 83"?</summary>
@@ -243,8 +281,26 @@ To shorten the project, crash **critical-path** activities in **cheapest-slope-
 first** order, one time unit at a time, until you hit the target or run out of
 crashable critical tasks.
 
+```{r calc-crash-sequence-08, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "crash-sequence-08",
+  title = "Crash-Cost Calculator",
+  icon = "bolt",
+  inputs = list(
+    qwebr_calc_input("target_reduction", "Days to remove from the project", value = 4, min = 1, max = 8, step = 1, type = "slider")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: crash-sequence-08
+target_reduction <- 4          # days to remove from the project
+
 # Critical-path activities: normal/crash time and cost.
 act <- data.frame(
   id         = c("A", "F", "H"),
@@ -256,29 +312,42 @@ act <- data.frame(
 act$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)
 act$max_crash <- act$normal_t - act$crash_t
 
-cat("Crash cost per day:\n")
-print(act[c("id", "slope", "max_crash")], row.names = FALSE)
-
-target_reduction <- 4          # days to remove from the project
 order_by_cost <- act[order(act$slope), ]
+order_by_cost$days_used <- 0
 
 remaining <- target_reduction
 total_cost <- 0
-cat(sprintf("\nGoal: remove %d days, cheapest first\n", target_reduction))
+steps <- character(0)
 for (i in seq_len(nrow(order_by_cost))) {
   take <- min(remaining, order_by_cost$max_crash[i])
   if (take <= 0) break
   cost <- take * order_by_cost$slope[i]
   total_cost <- total_cost + cost
   remaining <- remaining - take
-  cat(sprintf("  crash %s by %d day(s) @ $%.0f/day = $%s\n",
-              order_by_cost$id[i], take, order_by_cost$slope[i],
-              format(cost, big.mark = " ")))
+  order_by_cost$days_used[i] <- take
+  steps <- c(steps, sprintf("Crash %s by %g day(s) at $%s/day  $%s",
+                            order_by_cost$id[i], take, format(round(order_by_cost$slope[i]), big.mark = " "),
+                            format(round(cost), big.mark = " ")))
 }
-cat(sprintf("\nTotal crash cost for %d days: $%s\n",
-            target_reduction - remaining, format(total_cost, big.mark = " ")))
-if (remaining > 0) cat(sprintf("Still %d day(s) short -- no cheap critical task left to crash.\n", remaining))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(order_by_cost$slope, names.arg = order_by_cost$id, col = ifelse(order_by_cost$days_used > 0, "#2980b9", "#bdc3c7"),
+              ylim = c(0, max(order_by_cost$slope) * 1.2),
+              xlab = "Activity (cheapest first)", ylab = "Crash cost ($ per day)",
+              main = "Crash cost per day (blue = crashed)")
+text(bp, order_by_cost$slope, labels = ifelse(order_by_cost$days_used > 0, paste(order_by_cost$days_used, "d"), ""),
+     pos = 3, cex = 1.3)
+
+if (remaining > 0) {
+  cat(sprintf("!!Only %g of %g days can be crashed: $%s!!\n", target_reduction - remaining,
+              target_reduction, format(round(total_cost), big.mark = " ")))
+} else {
+  cat(sprintf("Cheapest way to cut %g days: $%s\n", target_reduction, format(round(total_cost), big.mark = " ")))
+}
+for (s in steps) cat(s, "\n", sep = "")
 ```
+
+</details>
 
 ## Fast-tracking versus crashing
 

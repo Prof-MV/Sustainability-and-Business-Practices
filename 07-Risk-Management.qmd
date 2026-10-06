@@ -153,16 +153,44 @@ The "new assembly line learning curve" risk: a **40 %** chance it adds
 
 Live cell --- change the probability or the impact of the risk.
 
+```{r calc-emv-example-07, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "emv-example-07",
+  title = "Expected Monetary Value Calculator",
+  icon = "dice",
+  inputs = list(
+    qwebr_calc_input("p_occurs", "Probability the risk occurs", value = 0.4, min = 0, max = 1, step = 0.05, type = "slider"),
+    qwebr_calc_input("impact", "Impact if it occurs", value = 120000, min = 0, max = 1000000, step = 5000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: emv-example-07
 p_occurs <- 0.40
 impact   <- 120000
 
 emv <- p_occurs * impact + (1 - p_occurs) * 0
-cat(sprintf("EMV of this risk: 0.40 x $%s = $%s\n",
-            format(impact, big.mark = " "), format(emv, big.mark = " ")))
-cat("This is the amount you would budget in a risk reserve to 'cover' this one risk on average.\n")
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+probs <- seq(0, 1, length.out = 100)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+plot(probs * 100, probs * impact / 1000, type = "l", lwd = 4, col = "#2c3e50", xlab = "Probability of occurring (%)", ylab = "EMV ($ thousand)",
+     main = "EMV grows with probability")
+abline(v = p_occurs * 100, lty = 2, col = "#bdc3c7")
+points(p_occurs * 100, emv / 1000, pch = 19, cex = 2.2, col = "#e74c3c")
+
+cat(sprintf("EMV of this risk: %s\n", money(emv)))
+cat(sprintf("Calculation  %.2f x %s\n", p_occurs, money(impact)))
 ```
+
+</details>
 
 ### Try it yourself: decision tree --- buy the copper now or later?
 
@@ -171,26 +199,59 @@ You need **750 lb of copper** for the RC-vehicle wiring harness tooling. Buy it
 which is **\$5.58/lb with 90 % probability**, or **\$4.50/lb with 10 %
 probability**.
 
+```{r calc-decision-tree-07, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "decision-tree-07",
+  title = "Decision-Tree EMV Calculator",
+  icon = "code-branch",
+  inputs = list(
+    qwebr_calc_input("lb", "Quantity needed", value = 750, min = 100, max = 3000, step = 50, suffix = "lb"),
+    qwebr_calc_input("storage", "Storage cost if bought now", value = 100, min = 0, max = 1000, step = 10, prefix = "$"),
+    qwebr_calc_input("price_now", "Price if bought now", value = 5.58, min = 1, max = 10, step = 0.01, prefix = "$", suffix = "/ lb"),
+    qwebr_calc_input("p_high", "Chance price stays high", value = 0.9, min = 0, max = 1, step = 0.05, type = "slider"),
+    qwebr_calc_input("price_high", "Later price if it stays high", value = 5.58, min = 1, max = 10, step = 0.01, prefix = "$", suffix = "/ lb"),
+    qwebr_calc_input("price_low", "Later price if it drops", value = 4.5, min = 1, max = 10, step = 0.01, prefix = "$", suffix = "/ lb")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: decision-tree-07
 lb <- 750
 storage <- 100
+price_now <- 5.58
 
 # Branch: buy now (price locked, pay storage)
-buy_now <- 5.58 * lb + storage
+buy_now <- price_now * lb + storage
 
 # Branch: buy later (two chance outcomes)
-p_high <- 0.90; price_high <- 5.58
-p_low  <- 0.10; price_low  <- 4.50
+p_high     <- 0.90
+price_high <- 5.58
+price_low  <- 4.50
+p_low      <- 1 - p_high
+fmt2 <- function(x) formatC(x, format = "f", digits = 2, big.mark = " ")
 buy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)
 
-cat(sprintf("EMV, buy now  : $%.2f\n", buy_now))
-cat(sprintf("EMV, buy later: 0.90 x $%.2f + 0.10 x $%.2f = $%.2f\n",
-            price_high * lb, price_low * lb, buy_later))
-cat(sprintf("\nChoose: %s  (saves $%.2f on average)\n",
-            ifelse(buy_later < buy_now, "BUY LATER", "BUY NOW"),
-            abs(buy_now - buy_later)))
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+emvs <- c("Buy now" = buy_now, "Buy later" = buy_later)
+bp <- barplot(emvs, col = c("#2980b9", "#e67e22"), ylim = c(0, max(emvs) * 1.15),
+              ylab = "Expected cost ($)", main = "EMV of each branch")
+text(bp, emvs, labels = paste0("$", format(round(emvs), big.mark = " ")), pos = 3, cex = 1.3)
+
+cat(sprintf("Choose: %s (saves $%s on average)\n",
+            ifelse(buy_later < buy_now, "BUY LATER", "BUY NOW"), fmt2(abs(buy_now - buy_later))))
+cat(sprintf("EMV, buy now  $%s\n", fmt2(buy_now)))
+cat(sprintf("EMV, buy later  $%s\n", fmt2(buy_later)))
+cat(sprintf("Price if high (%.0f%%)  $%s\n", 100 * p_high, fmt2(price_high * lb)))
+cat(sprintf("Price if low (%.0f%%)  $%s\n", 100 * p_low, fmt2(price_low * lb)))
 ```
+
+</details>
 
 <details>
 <summary>What would flip the decision?</summary>
@@ -230,6 +291,26 @@ poor planning.
 
 ### Try it yourself: does the mitigation pay for itself?
 
+```{r calc-mitigation-value-07, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "mitigation-value-07",
+  title = "Does the Mitigation Pay for Itself?",
+  icon = "shield-halved",
+  inputs = list(
+    qwebr_calc_input("p_fail_no_action", "Failure chance, do nothing", value = 0.35, min = 0, max = 1, step = 0.05),
+    qwebr_calc_input("impact_if_fail", "Impact if it fails", value = 260000, min = 0, max = 1000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("mitigation_cost", "Mitigation cost", value = 22000, min = 0, max = 200000, step = 1000, prefix = "$"),
+    qwebr_calc_input("p_fail_with_action", "Failure chance, with mitigation", value = 0.1, min = 0, max = 1, step = 0.05, type = "slider"),
+    qwebr_calc_input("impact_with_action", "Impact if it still fails", value = 90000, min = 0, max = 1000000, step = 10000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: mitigation-value-07
 # Risk: unproven supplier fails to deliver on time.
@@ -243,14 +324,26 @@ impact_with_action <- 90000      # switch to backup, smaller hit
 
 emv_before <- p_fail_no_action * impact_if_fail
 emv_after  <- mitigation_cost + p_fail_with_action * impact_with_action
+saving     <- emv_before - emv_after
 
-cat(sprintf("EMV, do nothing        : $%s\n", format(round(emv_before), big.mark = " ")))
-cat(sprintf("EMV, pre-qualify backup : $%s  (incl. $%s spent now)\n",
-            format(round(emv_after), big.mark = " "),
-            format(mitigation_cost, big.mark = " ")))
-cat(sprintf("\nExpected saving from acting: $%s\n",
-            format(round(emv_before - emv_after), big.mark = " ")))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+stack <- cbind("Do nothing" = c(0, emv_before),
+               "Pre-qualify backup" = c(mitigation_cost, emv_after - mitigation_cost))
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(stack / 1000, col = c("#7f8c8d", "#e67e22"), ylab = "Expected cost ($ thousand)",
+        main = "Expected cost: spent now (grey) + loss (orange)")
+
+if (saving >= 0) {
+  cat(sprintf("Mitigation pays: expected saving %s\n", money(saving)))
+} else {
+  cat(sprintf("!!Mitigation does not pay: expected loss of %s!!\n", money(-saving)))
+}
+cat(sprintf("EMV, do nothing  %s\n", money(emv_before)))
+cat(sprintf("EMV, pre-qualify backup  %s (incl. %s spent now)\n", money(emv_after), money(mitigation_cost)))
 ```
+
+</details>
 
 ## FMEA as a risk tool
 
@@ -389,32 +482,72 @@ to the same number.
 
 Live cell --- change S, O, or D for any failure mode and watch the ranking move.
 
+```{r calc-rpn-fmea-07, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "rpn-fmea-07",
+  title = "FMEA Risk Priority Number Calculator",
+  icon = "triangle-exclamation",
+  inputs = list(
+    qwebr_calc_input("S1", "Controller signal drop: Severity (S)", value = 8, min = 1, max = 10, step = 1),
+    qwebr_calc_input("O1", "Controller signal drop: Occurrence (O)", value = 6, min = 1, max = 10, step = 1),
+    qwebr_calc_input("D1", "Controller signal drop: Detection (D)", value = 5, min = 1, max = 10, step = 1),
+    qwebr_calc_input("S2", "Panel delamination: Severity (S)", value = 9, min = 1, max = 10, step = 1),
+    qwebr_calc_input("O2", "Panel delamination: Occurrence (O)", value = 3, min = 1, max = 10, step = 1),
+    qwebr_calc_input("D2", "Panel delamination: Detection (D)", value = 6, min = 1, max = 10, step = 1),
+    qwebr_calc_input("S3", "Paint overspray: Severity (S)", value = 2, min = 1, max = 10, step = 1),
+    qwebr_calc_input("O3", "Paint overspray: Occurrence (O)", value = 5, min = 1, max = 10, step = 1),
+    qwebr_calc_input("D3", "Paint overspray: Detection (D)", value = 3, min = 1, max = 10, step = 1)
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: rpn-fmea-07
 # Three failure modes from the RC-vehicle build
 
 # 1. Motor controller drops signal (unproven Paragon supplier)
-S1 <- 8; O1 <- 6; D1 <- 5
+S1 <- 8
+O1 <- 6
+D1 <- 5
 RPN1 <- S1 * O1 * D1
 
 # 2. Carbon-fibre panel delaminates
-S2 <- 9; O2 <- 3; D2 <- 6
+S2 <- 9
+O2 <- 3
+D2 <- 6
 RPN2 <- S2 * O2 * D2
 
 # 3. Minor paint overspray on trim
-S3 <- 2; O3 <- 5; D3 <- 3
+S3 <- 2
+O3 <- 5
+D3 <- 3
 RPN3 <- S3 * O3 * D3
 
-cat(sprintf("Controller signal drop : S=%d O=%d D=%d -> RPN = %d\n", S1, O1, D1, RPN1))
-cat(sprintf("Panel delamination     : S=%d O=%d D=%d -> RPN = %d\n", S2, O2, D2, RPN2))
-cat(sprintf("Paint overspray        : S=%d O=%d D=%d -> RPN = %d\n", S3, O3, D3, RPN3))
-
-cat("\n--- Priority order by RPN ---\n")
 modes <- c("Controller signal drop", "Panel delamination", "Paint overspray")
+short <- c("Controller", "Panel", "Overspray")
+sev   <- c(S1, S2, S3)
 rpns  <- c(RPN1, RPN2, RPN3)
 ord   <- order(rpns, decreasing = TRUE)
-for (i in ord) cat(sprintf("%s (RPN = %d)\n", modes[i], rpns[i]))
+
+# RPN is a sort, not a verdict: flag any Severity >= 8 for action regardless of rank.
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(rpns[ord], names.arg = short[ord], col = ifelse(sev[ord] >= 8, "#e74c3c", "#2980b9"),
+        ylab = "RPN (S x O x D)", main = "Priority order by RPN")
+
+cat(sprintf("Top priority: %s (RPN = %d)\n", modes[ord[1]], rpns[ord[1]]))
+for (i in ord) {
+  flag <- if (sev[i] >= 8) " - !!S >= 8: flag for action!!" else ""
+  cat(sprintf("%s  RPN %d (S=%d, O=%d, D=%d)%s\n", modes[i], rpns[i], sev[i],
+              c(O1, O2, O3)[i], c(D1, D2, D3)[i], flag))
+}
 ```
+
+</details>
 
 <details>
 <summary>Why doesn't the highest severity automatically win?</summary>

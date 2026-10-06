@@ -169,6 +169,25 @@ work should be done; **30 %** is actually done; **\$210 000** has been spent.
 
 Live cell --- change the planned %, the actual %, or the actual cost.
 
+```{r calc-evm-example-12, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "evm-example-12",
+  title = "Earned Value Calculator",
+  icon = "chart-line",
+  inputs = list(
+    qwebr_calc_input("BAC", "Budget at completion (BAC)", value = 620000, min = 100000, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("planned_pct", "Planned % complete", value = 0.35, min = 0.05, max = 1, step = 0.01),
+    qwebr_calc_input("actual_pct", "Actual % complete", value = 0.3, min = 0, max = 1, step = 0.01, type = "slider"),
+    qwebr_calc_input("AC", "Actual cost to date (AC)", value = 210000, min = 1000, max = 2000000, step = 5000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: evm-example-12
 BAC <- 620000
@@ -184,18 +203,26 @@ CV  <- EV - AC
 SPI <- EV / PV
 CPI <- EV / AC
 
-cat(sprintf("PV  = $%s      EV  = $%s      AC  = $%s\n",
-            format(PV, big.mark = " "), format(EV, big.mark = " "),
-            format(AC, big.mark = " ")))
-cat(sprintf("SV  = $%s  (%s schedule)\n", format(SV, big.mark = " "),
-            ifelse(SV < 0, "behind", "ahead")))
-cat(sprintf("CV  = $%s  (%s budget)\n", format(CV, big.mark = " "),
-            ifelse(CV < 0, "over", "under")))
-cat(sprintf("SPI = %.3f   (getting %.0f cents of schedule per planned dollar)\n",
-            SPI, SPI * 100))
-cat(sprintf("CPI = %.3f   (getting %.0f cents of work per dollar spent)\n",
-            CPI, CPI * 100))
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(c(PV, EV, AC) / 1000, names.arg = c("PV", "EV", "AC"), col = c("#bdc3c7", "#16a085", ifelse(AC > EV, "#e74c3c", "#2980b9")),
+              ylim = c(0, max(PV, EV, AC) / 1000 * 1.2), ylab = "$ thousand",
+              main = "Planned vs. earned vs. actual")
+
+sched <- if (SV < 0) "!!behind schedule!!" else "on or ahead of schedule"
+cost  <- if (CV < 0) "!!over budget!!" else "on or under budget"
+cat(sprintf("Project is %s and %s\n", sched, cost))
+cat(sprintf("Planned value (PV)  %s\n", money(PV)))
+cat(sprintf("Earned value (EV)  %s\n", money(EV)))
+cat(sprintf("Actual cost (AC)  %s\n", money(AC)))
+cat(sprintf("Schedule variance (SV)  %s\n", money(SV)))
+cat(sprintf("Cost variance (CV)  %s\n", money(CV)))
+cat(sprintf("SPI  %.3f (%.0f cents of schedule per planned dollar)\n", SPI, SPI * 100))
+cat(sprintf("CPI  %.3f (%.0f cents of work per dollar spent)\n", CPI, CPI * 100))
 ```
+
+</details>
 
 The project is **behind schedule and over cost** --- and this is visible in week 8,
 while there is still time to act, instead of as a surprise at the end.
@@ -213,6 +240,25 @@ while there is still time to act, instead of as a surprise at the end.
 
 ### Try it yourself: EAC scenarios
 
+```{r calc-eac-scenarios-12, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "eac-scenarios-12",
+  title = "Estimate-at-Completion Scenarios",
+  icon = "forward",
+  inputs = list(
+    qwebr_calc_input("BAC", "Budget at completion (BAC)", value = 620000, min = 100000, max = 2000000, step = 10000, prefix = "$"),
+    qwebr_calc_input("EV", "Earned value (EV)", value = 186000, min = 1000, max = 2000000, step = 1000, prefix = "$"),
+    qwebr_calc_input("AC", "Actual cost (AC)", value = 210000, min = 1000, max = 2000000, step = 1000, prefix = "$"),
+    qwebr_calc_input("PV", "Planned value (PV)", value = 217000, min = 1000, max = 2000000, step = 1000, prefix = "$")
+  )
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this calculator</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: eac-scenarios-12
 BAC <- 620000
@@ -226,21 +272,37 @@ eac_cpi       <- BAC / CPI
 eac_oneoff    <- AC + (BAC - EV)
 eac_cost_sched<- AC + (BAC - EV) / (CPI * SPI)
 
-cat(sprintf("CPI = %.3f   SPI = %.3f\n\n", CPI, SPI))
-cat(sprintf("EAC, cost efficiency continues : $%s\n", format(round(eac_cpi), big.mark = " ")))
-cat(sprintf("EAC, overrun was a one-off     : $%s\n", format(round(eac_oneoff), big.mark = " ")))
-cat(sprintf("EAC, cost AND schedule persist : $%s\n", format(round(eac_cost_sched), big.mark = " ")))
-
 etc  <- eac_cpi - AC
 vac  <- BAC - eac_cpi
 tcpi <- (BAC - EV) / (BAC - AC)
-cat(sprintf("\nETC (money still needed)  : $%s\n", format(round(etc), big.mark = " ")))
-cat(sprintf("VAC (projected overrun)   : $%s\n", format(round(vac), big.mark = " ")))
-cat(sprintf("TCPI (efficiency needed)  : %.3f  ", tcpi))
-cat(ifelse(tcpi > 1.10, "-- that is a big ask; the BAC is likely unrealistic now.\n",
-    ifelse(tcpi > 1.0, "-- recoverable, but the team must run leaner than planned.\n",
-           "-- achievable.\n")))
+
+money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), big.mark = " ", scientific = FALSE, trim = TRUE))
+
+eacs <- c("BAC\n(plan)" = BAC, "CPI\ncontinues" = eac_cpi, "One-off\noverrun" = eac_oneoff,
+          "Cost and\nschedule" = eac_cost_sched)
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(eacs / 1000, col = c("#bdc3c7", "#2980b9", "#16a085", "#8e44ad"),
+        ylim = c(0, max(eacs) / 1000 * 1.1), ylab = "$ thousand", main = "Estimate at completion by scenario")
+abline(h = BAC / 1000, lty = 2, lwd = 2, col = "#e74c3c")
+
+msg <- if (tcpi > 1.10) {
+  "!!a big ask; the BAC is likely unrealistic now!!"
+} else if (tcpi > 1.0) {
+  "recoverable, but the team must run leaner than planned"
+} else {
+  "achievable"
+}
+cat(sprintf("TCPI %.3f: %s\n", tcpi, msg))
+cat(sprintf("CPI  %.3f\n", CPI))
+cat(sprintf("SPI  %.3f\n", SPI))
+cat(sprintf("EAC, cost efficiency continues  %s\n", money(eac_cpi)))
+cat(sprintf("EAC, overrun was a one-off  %s\n", money(eac_oneoff)))
+cat(sprintf("EAC, cost AND schedule persist  %s\n", money(eac_cost_sched)))
+cat(sprintf("ETC (money still needed)  %s\n", money(etc)))
+cat(sprintf("VAC (projected overrun)  %s\n", money(vac)))
 ```
+
+</details>
 
 <details>
 <summary>Which EAC formula should you actually report?</summary>
