@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -414,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\ncat(sprintf(\"EMV of this risk: 0.40 x $%s = $%s\\n\",\n            format(impact, big.mark = \" \"), format(emv, big.mark = \" \")))\ncat(\"This is the amount you would budget in a risk reserve to 'cover' this one risk on average.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- 5.58 * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high <- 0.90; price_high <- 5.58\np_low  <- 0.10; price_low  <- 4.50\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\ncat(sprintf(\"EMV, buy now  : $%.2f\\n\", buy_now))\ncat(sprintf(\"EMV, buy later: 0.90 x $%.2f + 0.10 x $%.2f = $%.2f\\n\",\n            price_high * lb, price_low * lb, buy_later))\ncat(sprintf(\"\\nChoose: %s  (saves $%.2f on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"),\n            abs(buy_now - buy_later)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\n\ncat(sprintf(\"EMV, do nothing        : $%s\\n\", format(round(emv_before), big.mark = \" \")))\ncat(sprintf(\"EMV, pre-qualify backup : $%s  (incl. $%s spent now)\\n\",\n            format(round(emv_after), big.mark = \" \"),\n            format(mitigation_cost, big.mark = \" \")))\ncat(sprintf(\"\\nExpected saving from acting: $%s\\n\",\n            format(round(emv_before - emv_after), big.mark = \" \")))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Three failure modes from the RC-vehicle build\n\n# 1. Motor controller drops signal (unproven Paragon supplier)\nS1 <- 8; O1 <- 6; D1 <- 5\nRPN1 <- S1 * O1 * D1\n\n# 2. Carbon-fibre panel delaminates\nS2 <- 9; O2 <- 3; D2 <- 6\nRPN2 <- S2 * O2 * D2\n\n# 3. Minor paint overspray on trim\nS3 <- 2; O3 <- 5; D3 <- 3\nRPN3 <- S3 * O3 * D3\n\ncat(sprintf(\"Controller signal drop : S=%d O=%d D=%d -> RPN = %d\\n\", S1, O1, D1, RPN1))\ncat(sprintf(\"Panel delamination     : S=%d O=%d D=%d -> RPN = %d\\n\", S2, O2, D2, RPN2))\ncat(sprintf(\"Paint overspray        : S=%d O=%d D=%d -> RPN = %d\\n\", S3, O3, D3, RPN3))\n\ncat(\"\\n--- Priority order by RPN ---\\n\")\nmodes <- c(\"Controller signal drop\", \"Panel delamination\", \"Paint overspray\")\nrpns  <- c(RPN1, RPN2, RPN3)\nord   <- order(rpns, decreasing = TRUE)\nfor (i in ord) cat(sprintf(\"%s (RPN = %d)\\n\", modes[i], rpns[i]))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rpn-fmea-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nprobs <- seq(0, 1, length.out = 100)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(probs * 100, probs * impact / 1000, type = \"l\", lwd = 4, col = \"#2c3e50\", xlab = \"Probability of occurring (%)\", ylab = \"EMV ($ thousand)\",\n     main = \"EMV grows with probability\")\nabline(v = p_occurs * 100, lty = 2, col = \"#bdc3c7\")\npoints(p_occurs * 100, emv / 1000, pch = 19, cex = 2.2, col = \"#e74c3c\")\n\ncat(sprintf(\"EMV of this risk: %s\\n\", money(emv)))\ncat(sprintf(\"Calculation  %.2f x %s\\n\", p_occurs, money(impact)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\nprice_now <- 5.58\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- price_now * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high     <- 0.90\nprice_high <- 5.58\nprice_low  <- 4.50\np_low      <- 1 - p_high\nfmt2 <- function(x) formatC(x, format = \"f\", digits = 2, big.mark = \" \")\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nemvs <- c(\"Buy now\" = buy_now, \"Buy later\" = buy_later)\nbp <- barplot(emvs, col = c(\"#2980b9\", \"#e67e22\"), ylim = c(0, max(emvs) * 1.15),\n              ylab = \"Expected cost ($)\", main = \"EMV of each branch\")\ntext(bp, emvs, labels = paste0(\"$\", format(round(emvs), big.mark = \" \")), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Choose: %s (saves $%s on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"), fmt2(abs(buy_now - buy_later))))\ncat(sprintf(\"EMV, buy now  $%s\\n\", fmt2(buy_now)))\ncat(sprintf(\"EMV, buy later  $%s\\n\", fmt2(buy_later)))\ncat(sprintf(\"Price if high (%.0f%%)  $%s\\n\", 100 * p_high, fmt2(price_high * lb)))\ncat(sprintf(\"Price if low (%.0f%%)  $%s\\n\", 100 * p_low, fmt2(price_low * lb)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\nsaving     <- emv_before - emv_after\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nstack <- cbind(\"Do nothing\" = c(0, emv_before),\n               \"Pre-qualify backup\" = c(mitigation_cost, emv_after - mitigation_cost))\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack / 1000, col = c(\"#7f8c8d\", \"#e67e22\"), ylab = \"Expected cost ($ thousand)\",\n        main = \"Expected cost: spent now (grey) + loss (orange)\")\n\nif (saving >= 0) {\n  cat(sprintf(\"Mitigation pays: expected saving %s\\n\", money(saving)))\n} else {\n  cat(sprintf(\"!!Mitigation does not pay: expected loss of %s!!\\n\", money(-saving)))\n}\ncat(sprintf(\"EMV, do nothing  %s\\n\", money(emv_before)))\ncat(sprintf(\"EMV, pre-qualify backup  %s (incl. %s spent now)\\n\", money(emv_after), money(mitigation_cost)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Three failure modes from the RC-vehicle build\n\n# 1. Motor controller drops signal (unproven Paragon supplier)\nS1 <- 8\nO1 <- 6\nD1 <- 5\nRPN1 <- S1 * O1 * D1\n\n# 2. Carbon-fibre panel delaminates\nS2 <- 9\nO2 <- 3\nD2 <- 6\nRPN2 <- S2 * O2 * D2\n\n# 3. Minor paint overspray on trim\nS3 <- 2\nO3 <- 5\nD3 <- 3\nRPN3 <- S3 * O3 * D3\n\nmodes <- c(\"Controller signal drop\", \"Panel delamination\", \"Paint overspray\")\nshort <- c(\"Controller\", \"Panel\", \"Overspray\")\nsev   <- c(S1, S2, S3)\nrpns  <- c(RPN1, RPN2, RPN3)\nord   <- order(rpns, decreasing = TRUE)\n\n# RPN is a sort, not a verdict: flag any Severity >= 8 for action regardless of rank.\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(rpns[ord], names.arg = short[ord], col = ifelse(sev[ord] >= 8, \"#e74c3c\", \"#2980b9\"),\n        ylab = \"RPN (S x O x D)\", main = \"Priority order by RPN\")\n\ncat(sprintf(\"Top priority: %s (RPN = %d)\\n\", modes[ord[1]], rpns[ord[1]]))\nfor (i in ord) {\n  flag <- if (sev[i] >= 8) \" - !!S >= 8: flag for action!!\" else \"\"\n  cat(sprintf(\"%s  RPN %d (S=%d, O=%d, D=%d)%s\\n\", modes[i], rpns[i], sev[i],\n              c(O1, O2, O3)[i], c(D1, D2, D3)[i], flag))\n}","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rpn-fmea-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2258,14 +2258,109 @@ Figure&nbsp;7.1: Probability-impact matrix for the RC-vehicle project. Red-zone 
 <h3 data-number="7.6.1" class="anchored" data-anchor-id="worked-example-1-emv-of-a-single-risk"><span class="header-section-number">7.6.1</span> Worked Example 1: EMV of a single risk</h3>
 <p>The “new assembly line learning curve” risk: a <strong>40 %</strong> chance it adds <strong>$120 000</strong> of rework and overtime; otherwise $0.</p>
 <p>Live cell — change the probability or the impact of the risk.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="emv-example-07" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-dice qwebr-calc-icon"></i>
+    <h4 class="anchored">Expected Monetary Value Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-emv-example-07-p-occurs">Probability the risk occurs <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-emv-example-07-p-occurs" id="qcalc-emv-example-07-p-occurs-readout">0.4</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-emv-example-07-p-occurs" data-var="p_occurs" value="0.4" min="0" max="1" step="0.05">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-emv-example-07-impact">Impact if it occurs</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-emv-example-07-impact" data-var="impact" value="120000" min="0" max="1000000" step="5000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 <section id="try-it-yourself-decision-tree-buy-the-copper-now-or-later" class="level3" data-number="7.6.2">
 <h3 data-number="7.6.2" class="anchored" data-anchor-id="try-it-yourself-decision-tree-buy-the-copper-now-or-later"><span class="header-section-number">7.6.2</span> Try it yourself: decision tree — buy the copper now or later?</h3>
 <p>You need <strong>750 lb of copper</strong> for the RC-vehicle wiring harness tooling. Buy it <strong>now</strong> and pay <strong>$100</strong> storage, or buy it <strong>later</strong> at the summer price — which is <strong>$5.58/lb with 90 % probability</strong>, or <strong>$4.50/lb with 10 % probability</strong>.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="decision-tree-07" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-code-branch qwebr-calc-icon"></i>
+    <h4 class="anchored">Decision-Tree EMV Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-decision-tree-07-lb">Quantity needed</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-decision-tree-07-lb" data-var="lb" value="750" min="100" max="3000" step="50">
+        <span class="qwebr-calc-suffix">lb</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-decision-tree-07-storage">Storage cost if bought now</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-decision-tree-07-storage" data-var="storage" value="100" min="0" max="1000" step="10">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-decision-tree-07-price-now">Price if bought now</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-decision-tree-07-price-now" data-var="price_now" value="5.58" min="1" max="10" step="0.01">
+        <span class="qwebr-calc-suffix">/ lb</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-decision-tree-07-p-high">Chance price stays high <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-decision-tree-07-p-high" id="qcalc-decision-tree-07-p-high-readout">0.9</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-decision-tree-07-p-high" data-var="p_high" value="0.9" min="0" max="1" step="0.05">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-decision-tree-07-price-high">Later price if it stays high</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-decision-tree-07-price-high" data-var="price_high" value="5.58" min="1" max="10" step="0.01">
+        <span class="qwebr-calc-suffix">/ lb</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-decision-tree-07-price-low">Later price if it drops</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-decision-tree-07-price-low" data-var="price_low" value="4.5" min="1" max="10" step="0.01">
+        <span class="qwebr-calc-suffix">/ lb</span>
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 What would flip the decision?
@@ -2334,8 +2429,61 @@ What would flip the decision?
 <p>In construction it is common to set aside <strong>10–15 %</strong> of the price. Other industries resist it — the customer may read a visible reserve as a sign of poor planning.</p>
 <section id="try-it-yourself-does-the-mitigation-pay-for-itself" class="level3" data-number="7.8.1">
 <h3 data-number="7.8.1" class="anchored" data-anchor-id="try-it-yourself-does-the-mitigation-pay-for-itself"><span class="header-section-number">7.8.1</span> Try it yourself: does the mitigation pay for itself?</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="mitigation-value-07" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-shield-halved qwebr-calc-icon"></i>
+    <h4 class="anchored">Does the Mitigation Pay for Itself?</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-mitigation-value-07-p-fail-no-action">Failure chance, do nothing</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-mitigation-value-07-p-fail-no-action" data-var="p_fail_no_action" value="0.35" min="0" max="1" step="0.05">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-mitigation-value-07-impact-if-fail">Impact if it fails</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-mitigation-value-07-impact-if-fail" data-var="impact_if_fail" value="260000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-mitigation-value-07-mitigation-cost">Mitigation cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-mitigation-value-07-mitigation-cost" data-var="mitigation_cost" value="22000" min="0" max="200000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-mitigation-value-07-p-fail-with-action">Failure chance, with mitigation <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-mitigation-value-07-p-fail-with-action" id="qcalc-mitigation-value-07-p-fail-with-action-readout">0.1</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-mitigation-value-07-p-fail-with-action" data-var="p_fail_with_action" value="0.1" min="0" max="1" step="0.05">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-mitigation-value-07-impact-with-action">Impact if it still fails</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-mitigation-value-07-impact-with-action" data-var="impact_with_action" value="90000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="fmea-as-a-risk-tool" class="level2" data-number="7.9">
@@ -2583,8 +2731,88 @@ What would flip the decision?
 <p><span class="math display">\[\text{RPN} = \text{Severity (S)} \times \text{Occurrence (O)} \times \text{Detection (D)}\]</span></p>
 <p>RPN ranges from 1 (S=O=D=1) to 1000 (S=O=D=10). Rank failure modes by RPN and work down the list — but don’t switch off judgment: a severity of 9 or 10 (a safety or regulatory hazard) usually earns action regardless of where the RPN lands, because two very different S–O–D combinations can multiply out to the same number.</p>
 <p>Live cell — change S, O, or D for any failure mode and watch the ranking move.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="rpn-fmea-07" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-triangle-exclamation qwebr-calc-icon"></i>
+    <h4 class="anchored">FMEA Risk Priority Number Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-S1">Controller signal drop: Severity (S)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-S1" data-var="S1" value="8" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-O1">Controller signal drop: Occurrence (O)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-O1" data-var="O1" value="6" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-D1">Controller signal drop: Detection (D)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-D1" data-var="D1" value="5" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-S2">Panel delamination: Severity (S)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-S2" data-var="S2" value="9" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-O2">Panel delamination: Occurrence (O)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-O2" data-var="O2" value="3" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-D2">Panel delamination: Detection (D)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-D2" data-var="D2" value="6" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-S3">Paint overspray: Severity (S)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-S3" data-var="S3" value="2" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-O3">Paint overspray: Occurrence (O)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-O3" data-var="O3" value="5" min="1" max="10" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rpn-fmea-07-D3">Paint overspray: Detection (D)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rpn-fmea-07-D3" data-var="D3" value="3" min="1" max="10" step="1">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Why doesn’t the highest severity automatically win?

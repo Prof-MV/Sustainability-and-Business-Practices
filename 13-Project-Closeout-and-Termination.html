@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -413,7 +413,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"sunk            <- 480000     # already spent -- IRRELEVANT to the decision\ncost_to_finish  <- 260000\nremaining_benefit <- 300000\n\nnet_if_continue <- remaining_benefit - cost_to_finish\ncat(sprintf(\"Sunk cost (ignore it)        : $%s\\n\", format(sunk, big.mark = \" \")))\ncat(sprintf(\"Cost to finish               : $%s\\n\", format(cost_to_finish, big.mark = \" \")))\ncat(sprintf(\"Benefit if finished          : $%s\\n\", format(remaining_benefit, big.mark = \" \")))\ncat(sprintf(\"Net from *here*              : $%s\\n\", format(net_if_continue, big.mark = \" \")))\ncat(ifelse(net_if_continue > 0,\n           \"\\n-> CONTINUE: the remaining benefit still beats the remaining cost.\\n\",\n           \"\\n-> CANCEL: finishing loses money from here, regardless of the $480k already gone.\\n\"))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cancel-decision-13","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"sunk           <- 480000\ncost_to_finish <- 260000\n\n# The remaining benefit is uncertain -- try a range of market outcomes.\nfor (benefit in c(150000, 250000, 300000, 400000)) {\n  net <- benefit - cost_to_finish\n  verdict <- ifelse(net > 0, \"CONTINUE\", \"CANCEL\")\n  cat(sprintf(\"If remaining benefit = $%s  ->  net from here $%+d  ->  %s\\n\",\n              format(benefit, big.mark = \" \"), net, verdict))\n}\ncat(sprintf(\"\\nBreak-even benefit: $%s. Below that, finishing destroys value\\n\",\n            format(cost_to_finish, big.mark = \" \")))\ncat(\"-- no matter how much has already been spent.\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cancel-decision-13b","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Planned vs actual for the RC-vehicle prototype project at closeout.\nplanned_weeks <- 30;      actual_weeks <- 34\nplanned_cost  <- 620000;  actual_cost  <- 703000\nplanned_scope_items <- 12; delivered_items <- 12   # all deliverables met\n\nsched_var_pct <- 100 * (actual_weeks - planned_weeks) / planned_weeks\ncost_var_pct  <- 100 * (actual_cost - planned_cost) / planned_cost\n\ncat(sprintf(\"Schedule : planned %d wk, actual %d wk  (%+.1f%%)\\n\",\n            planned_weeks, actual_weeks, sched_var_pct))\ncat(sprintf(\"Cost     : planned $%s, actual $%s  (%+.1f%%)\\n\",\n            format(planned_cost, big.mark = \" \"),\n            format(actual_cost, big.mark = \" \"), cost_var_pct))\ncat(sprintf(\"Scope    : %d of %d deliverables accepted\\n\",\n            delivered_items, planned_scope_items))\n\nverdict <- if (delivered_items == planned_scope_items && cost_var_pct < 20 && sched_var_pct < 20)\n  \"SUCCESS with overruns -- document the causes in the history file and lessons learned.\"\nelse \"TROUBLED -- the lessons-learned review is the priority deliverable.\"\ncat(\"\\n\", verdict, \"\\n\", sep = \"\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"reconciliation-13","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"sunk            <- 480000     # already spent -- IRRELEVANT to the decision\ncost_to_finish  <- 260000\nremaining_benefit <- 300000\n\nnet_if_continue <- remaining_benefit - cost_to_finish\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(c(\"Sunk\\n(ignore)\" = sunk, \"Cost to\\nfinish\" = cost_to_finish, \"Remaining\\nbenefit\" = remaining_benefit) / 1000,\n        col = c(\"#bdc3c7\", \"#e67e22\", ifelse(net_if_continue > 0, \"#16a085\", \"#e74c3c\")),\n        ylab = \"$ thousand\", main = \"Only the last two bars matter\")\n\nif (net_if_continue > 0) {\n  cat(\"CONTINUE: the remaining benefit still beats the remaining cost\\n\")\n} else {\n  cat(sprintf(\"!!CANCEL!!: finishing loses money from here, regardless of the %s already gone\\n\", money(sunk)))\n}\ncat(sprintf(\"Sunk cost (ignore it)  %s\\n\", money(sunk)))\ncat(sprintf(\"Cost to finish  %s\\n\", money(cost_to_finish)))\ncat(sprintf(\"Benefit if finished  %s\\n\", money(remaining_benefit)))\ncat(sprintf(\"Net from *here*  %s\\n\", money(net_if_continue)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cancel-decision-13","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"sunk           <- 480000\ncost_to_finish <- 260000\n\n# The remaining benefit is uncertain -- try a range of market outcomes.\nbenefit_weak   <- 150000\nbenefit_below  <- 250000\nbenefit_plan   <- 300000\nbenefit_strong <- 400000\nbenefits <- c(benefit_weak, benefit_below, benefit_plan, benefit_strong)\n\nnet <- benefits - cost_to_finish\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\nsmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"+\"), \"$\", format(round(abs(x)), big.mark = \" \", trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(net / 1000, names.arg = c(\"Weak\", \"Below plan\", \"On plan\", \"Strong\"), col = ifelse(net > 0, \"#16a085\", \"#e74c3c\"), ylab = \"Net from here ($ thousand)\",\n        main = \"Net value of finishing, by outcome\")\nabline(h = 0, lwd = 2)\n\ncat(sprintf(\"Break-even benefit: %s\\n\", money(cost_to_finish)))\ncat(sprintf(\"Sunk cost (ignored)  %s\\n\", money(sunk)))\nfor (i in seq_along(benefits)) {\n  verdict <- if (net[i] > 0) \"CONTINUE\" else \"!!CANCEL!!\"\n  cat(sprintf(\"If benefit = %s  net %s: %s\\n\", money(benefits[i]), smoney(net[i]), verdict))\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cancel-decision-13b","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Planned vs actual for the RC-vehicle prototype project at closeout.\nplanned_weeks <- 30\nactual_weeks  <- 34\nplanned_cost  <- 620000\nactual_cost   <- 703000\nplanned_scope_items <- 12\ndelivered_items     <- 12    # all deliverables met\n\nsched_var_pct <- 100 * (actual_weeks - planned_weeks) / planned_weeks\ncost_var_pct  <- 100 * (actual_cost - planned_cost) / planned_cost\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(c(Schedule = sched_var_pct, Cost = cost_var_pct), col = ifelse(c(sched_var_pct, cost_var_pct) < 20, \"#2980b9\", \"#e74c3c\"),\n              ylim = c(min(0, sched_var_pct, cost_var_pct) * 1.2, max(25, sched_var_pct, cost_var_pct) * 1.15),\n              ylab = \"Variance vs. plan (%)\", main = \"Variance vs. the 20% threshold\")\nabline(h = 0, lwd = 2)\nabline(h = 20, lty = 2, lwd = 2, col = \"#e74c3c\")\n\nsuccess <- delivered_items == planned_scope_items && cost_var_pct < 20 && sched_var_pct < 20\nif (success) {\n  cat(sprintf(\"%s\\n\", if (sched_var_pct > 0 || cost_var_pct > 0) \"SUCCESS with overruns\" else \"SUCCESS\"))\n} else {\n  cat(\"!!TROUBLED!!\\n\")\n}\ncat(sprintf(\"Schedule  %g -> %g wk (%+.1f%%)\\n\", planned_weeks, actual_weeks, sched_var_pct))\ncat(sprintf(\"Cost  %s -> %s (%+.1f%%)\\n\", money(planned_cost), money(actual_cost), cost_var_pct))\ncat(sprintf(\"Scope  %g of %g deliverables accepted\\n\", delivered_items, planned_scope_items))\ncat(sprintf(\"Next step  %s\\n\", if (success) \"document the causes in the history file and lessons learned\"\n                               else \"the lessons-learned review is the priority deliverable\"))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"reconciliation-13","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2286,14 +2286,120 @@ Table&nbsp;13.1: The seven elements of project closeout.
 <h3 data-number="13.5.1" class="anchored" data-anchor-id="worked-example-1-continue-or-cancel"><span class="header-section-number">13.5.1</span> Worked Example 1: continue or cancel?</h3>
 <p>A project has already spent <strong>$480 000</strong> (sunk). Finishing it needs another <strong>$260 000</strong>. The product, if delivered, is now worth an estimated <strong>$300 000</strong> in benefit — the market moved while you were building.</p>
 <p>Live cell — change the cost to finish or the remaining benefit.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="cancel-decision-13" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-circle-question qwebr-calc-icon"></i>
+    <h4 class="anchored">Continue-or-Cancel Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13-sunk">Sunk cost (already spent)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13-sunk" data-var="sunk" value="480000" min="0" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13-cost-to-finish">Cost to finish</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13-cost-to-finish" data-var="cost_to_finish" value="260000" min="10000" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13-remaining-benefit">Remaining benefit if finished</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13-remaining-benefit" data-var="remaining_benefit" value="300000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <p>The $480 000 is a <strong>sunk cost</strong> — it is spent whether you continue or not, so it must not enter the decision. From here, spending $260 000 to get $300 000 is still worth $40 000. (The sunk-cost fallacy — “we’ve come too far to stop” — is what keeps doomed projects alive.)</p>
 </section>
 <section id="try-it-yourself-the-cancel-decision-under-uncertainty" class="level3" data-number="13.5.2">
 <h3 data-number="13.5.2" class="anchored" data-anchor-id="try-it-yourself-the-cancel-decision-under-uncertainty"><span class="header-section-number">13.5.2</span> Try it yourself: the cancel decision under uncertainty</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="cancel-decision-13b" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-shuffle qwebr-calc-icon"></i>
+    <h4 class="anchored">Cancel Decision Under Uncertainty</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-sunk">Sunk cost (irrelevant: try changing it)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-sunk" data-var="sunk" value="480000" min="0" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-cost-to-finish">Cost to finish</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-cost-to-finish" data-var="cost_to_finish" value="260000" min="10000" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-benefit-weak">Benefit if the market is weak</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-benefit-weak" data-var="benefit_weak" value="150000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-benefit-below">Benefit if below plan</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-benefit-below" data-var="benefit_below" value="250000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-benefit-plan">Benefit if on plan</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-benefit-plan" data-var="benefit_plan" value="300000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cancel-decision-13b-benefit-strong">Benefit if the market is strong</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cancel-decision-13b-benefit-strong" data-var="benefit_strong" value="400000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="lessons-from-spectacular-failures" class="level2" data-number="13.6">
@@ -2322,8 +2428,71 @@ Figure&nbsp;13.2: Cost overrun as a multiple of the original budget for three we
 <p><strong>The recurring threads:</strong> scope not truly understood; optimism and cost concealment; cutting testing to save money; no plan for the interfaces between organizations; and pressing on past every off-ramp because of sunk cost.</p>
 <section id="try-it-yourself-the-final-project-reconciliation" class="level3" data-number="13.6.1">
 <h3 data-number="13.6.1" class="anchored" data-anchor-id="try-it-yourself-the-final-project-reconciliation"><span class="header-section-number">13.6.1</span> Try it yourself: the final project reconciliation</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="reconciliation-13" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-clipboard-check qwebr-calc-icon"></i>
+    <h4 class="anchored">Project Reconciliation Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-planned-weeks">Planned duration</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-reconciliation-13-planned-weeks" data-var="planned_weeks" value="30" min="1" max="100" step="1">
+        <span class="qwebr-calc-suffix">weeks</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-actual-weeks">Actual duration</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-reconciliation-13-actual-weeks" data-var="actual_weeks" value="34" min="1" max="150" step="1">
+        <span class="qwebr-calc-suffix">weeks</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-planned-cost">Planned cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-reconciliation-13-planned-cost" data-var="planned_cost" value="620000" min="50000" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-actual-cost">Actual cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-reconciliation-13-actual-cost" data-var="actual_cost" value="703000" min="50000" max="3000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-planned-scope-items">Deliverables planned</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-reconciliation-13-planned-scope-items" data-var="planned_scope_items" value="12" min="1" max="30" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-reconciliation-13-delivered-items">Deliverables accepted</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-reconciliation-13-delivered-items" data-var="delivered_items" value="12" min="0" max="30" step="1">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="closing-out-the-rc-vehicle-project" class="level2" data-number="13.7">

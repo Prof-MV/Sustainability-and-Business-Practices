@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -412,7 +412,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"weeks_compressed <- 4\n\n# Option A: hold scope -- pay to compress the schedule\novertime_cost_per_week <- 9000\nexpedite_fee           <- 15000\ncost_of_holding_scope  <- weeks_compressed * overtime_cost_per_week + expedite_fee\n\n# Option B: hold cost -- cut scope (drop one body colourway)\ncolourway_revenue_at_risk <- 62000   # forecast contribution margin lost\n\n# Option C: hold cost and scope -- accept lower quality (skip one test cycle)\nskip_test_prob_failure <- 0.08       # chance a defect reaches the customer\nfield_failure_cost     <- 240000     # recall/rework cost if it does\nexpected_quality_cost  <- skip_test_prob_failure * field_failure_cost\n\ncat(sprintf(\"Option A - hold scope, pay to compress  : $%s\\n\",\n            format(round(cost_of_holding_scope), big.mark = \" \")))\ncat(sprintf(\"Option B - hold cost, cut scope          : $%s of revenue foregone\\n\",\n            format(colourway_revenue_at_risk, big.mark = \" \")))\ncat(sprintf(\"Option C - hold cost/scope, cut testing  : $%s expected quality cost\\n\",\n            format(round(expected_quality_cost), big.mark = \" \")))\ncat(sprintf(\"                                            (%.0f%% chance of a $%s failure)\\n\",\n            skip_test_prob_failure * 100, format(field_failure_cost, big.mark = \" \")))\ncat(\"\\nThe triple constraint isn't just a triangle -- it's three numbers.\\n\")\ncat(\"Whichever side you flex, put a dollar figure on it before the sponsor decides.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"triple-constraint-tradeoff-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"core <- 7\nextended <- 11\n\nch_core     <- core * (core - 1) / 2\nch_extended <- extended * (extended - 1) / 2\n\ncat(\"Core team channels     :\", ch_core, \"\\n\")\ncat(\"Extended circle channels:\", ch_extended, \"\\n\")\ncat(\"Added by widening the circle from 7 to 11:\", ch_extended - ch_core, \"\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"channels-example-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"team_size <- 9\n\nchannels <- function(n) n * (n - 1) / 2\n\nfor (extra in 0:4) {\n  n <- team_size + extra\n  cat(sprintf(\"Team of %2d  ->  %3d channels\", n, channels(n)))\n  if (extra > 0) cat(sprintf(\"   (+%d vs. baseline)\", channels(n) - channels(team_size)))\n  cat(\"\\n\")\n}\n\ncat(sprintf(\"\\nAdding the 10th person alone creates %d new channels.\\n\",\n            channels(team_size + 1) - channels(team_size)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"channels-calc-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"listen_wpm <- 500\nspeak_wpm  <- 150\nbriefing_minutes <- 12\n\nspare_wpm    <- listen_wpm - speak_wpm\nspare_words  <- spare_wpm * briefing_minutes\n# Time the listener could \"leave\" if they mentally processed at listening speed:\ntune_out_seconds_per_min <- spare_wpm / listen_wpm * 60\n\ncat(sprintf(\"Spare listening capacity: %d words/min\\n\", spare_wpm))\ncat(sprintf(\"Over a %d-minute briefing: %s spare words to fill or drift\\n\",\n            briefing_minutes, format(spare_words, big.mark = \" \")))\ncat(sprintf(\"Equivalent 'tune-out' time available: %.0f seconds per minute\\n\",\n            tune_out_seconds_per_min))\ncat(\"\\nCauses of tuning out: purpose mismatch, under- or over-stimulation,\\n\")\ncat(\"pace and delivery. The fix: give the listener a reason to stay ('what's in it for me').\\n\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"tune-out-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"weeks_compressed <- 4\n\n# Option A: hold scope -- pay to compress the schedule\novertime_cost_per_week <- 9000\nexpedite_fee           <- 15000\ncost_of_holding_scope  <- weeks_compressed * overtime_cost_per_week + expedite_fee\n\n# Option B: hold cost -- cut scope (drop one body colourway)\ncolourway_revenue_at_risk <- 62000   # forecast contribution margin lost\n\n# Option C: hold cost and scope -- accept lower quality (skip one test cycle)\nskip_test_prob_failure <- 0.08       # chance a defect reaches the customer\nfield_failure_cost     <- 240000     # recall/rework cost if it does\nexpected_quality_cost  <- skip_test_prob_failure * field_failure_cost\n\nfmt <- function(x) format(round(x), big.mark = \" \", scientific = FALSE, trim = TRUE)\n\ncosts <- c(A = cost_of_holding_scope, B = colourway_revenue_at_risk, C = expected_quality_cost)\ncheapest <- c(A = \"A, pay to compress\", B = \"B, cut scope\", C = \"C, skip a test cycle\")[[names(which.min(costs))]]\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(costs / 1000, names.arg = c(\"A: compress\", \"B: cut scope\", \"C: cut testing\"),\n              col = c(\"#2980b9\", \"#e67e22\", \"#8e44ad\"), ylim = c(0, max(costs / 1000) * 1.2),\n              ylab = \"Cost of flexing ($ thousand)\", main = \"What each side of the triangle costs\")\ntext(bp, costs / 1000, labels = paste0(\"$\", round(costs / 1000, 1), \"k\"), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Cheapest side to flex: Option %s\\n\", cheapest))\ncat(sprintf(\"Option A: pay to compress  $%s\\n\", fmt(cost_of_holding_scope)))\ncat(sprintf(\"Option B: cut scope  $%s revenue lost\\n\", fmt(colourway_revenue_at_risk)))\ncat(sprintf(\"Option C: skip a test cycle  $%s expected cost\\n\", fmt(expected_quality_cost)))\ncat(sprintf(\"Option C risk  %.0f%% chance of a $%s failure\\n\",\n            skip_test_prob_failure * 100, fmt(field_failure_cost)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"triple-constraint-tradeoff-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"core <- 7\nextended <- 11\n\nch_core     <- core * (core - 1) / 2\nch_extended <- extended * (extended - 1) / 2\n\nn <- 2:40\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(n, n * (n - 1) / 2, type = \"l\", lwd = 4, col = \"#2c3e50\", xlab = \"People in the group\", ylab = \"Communication channels\",\n     main = \"Channels grow with the square of group size\")\npoints(c(core, extended), c(ch_core, ch_extended), pch = 19, cex = 2.2, col = c(\"#2980b9\", \"#e74c3c\"))\n\ncat(sprintf(\"Widening the circle from %d to %d adds %d channels\\n\", core, extended, ch_extended - ch_core))\ncat(sprintf(\"Core team channels  %d\\n\", ch_core))\ncat(sprintf(\"Extended circle channels  %d\\n\", ch_extended))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"channels-example-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"team_size <- 9\n\nchannels <- function(n) n * (n - 1) / 2\n\nsizes <- team_size + 0:4\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(2:40, channels(2:40), type = \"l\", lwd = 4, col = \"#bdc3c7\", xlab = \"People in the group\", ylab = \"Communication channels\",\n     main = \"Each added person costs more than the last\")\npoints(sizes, channels(sizes), pch = 19, cex = 2.2, col = c(\"#2980b9\", rep(\"#e74c3c\", 4)))\n\ncat(sprintf(\"Adding person #%d alone creates %d new channels\\n\",\n            team_size + 1, channels(team_size + 1) - channels(team_size)))\nfor (extra in 0:4) {\n  n <- team_size + extra\n  cat(sprintf(\"Team of %d  %d channels\", n, channels(n)))\n  if (extra > 0) cat(sprintf(\" (+%d vs. baseline)\", channels(n) - channels(team_size)))\n  cat(\"\\n\")\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"channels-calc-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"listen_wpm <- 500\nspeak_wpm  <- 150\nbriefing_minutes <- 12\n\nspare_wpm    <- listen_wpm - speak_wpm\nspare_words  <- spare_wpm * briefing_minutes\n# Time the listener could \"leave\" if they mentally processed at listening speed:\ntune_out_seconds_per_min <- spare_wpm / listen_wpm * 60\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(c(Speaking = speak_wpm, Listening = listen_wpm), col = c(\"#2980b9\", \"#16a085\"),\n              ylab = \"Words per minute\", main = \"The gap the listener's mind fills\")\nsegments(bp[1], speak_wpm, bp[2], listen_wpm, lty = 2, lwd = 3, col = \"#e74c3c\")\ntext(mean(bp), (speak_wpm + listen_wpm) / 2 + 20, labels = paste(spare_wpm, \"spare\"), cex = 1.3, col = \"#e74c3c\")\n\ncat(sprintf(\"Spare listening capacity: %d words/min\\n\", spare_wpm))\ncat(sprintf(\"Spare words over the briefing  %s\\n\", format(spare_words, big.mark = \" \")))\ncat(sprintf(\"Tune-out time available  %.0f seconds per minute\\n\", tune_out_seconds_per_min))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"tune-out-02","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2276,8 +2276,70 @@ Think about it: the retailer moves the RC-vehicle launch four weeks earlier. Whi
 <section id="try-it-yourself-put-a-number-on-each-side-of-the-triangle" class="level3" data-number="2.4.1">
 <h3 data-number="2.4.1" class="anchored" data-anchor-id="try-it-yourself-put-a-number-on-each-side-of-the-triangle"><span class="header-section-number">2.4.1</span> Try it yourself: put a number on each side of the triangle</h3>
 <p>“Which constraint gives” is a much easier decision once each option has a dollar figure attached. Live cell — change the weeks compressed, the costs, or the failure probability and see how the three options compare.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="triple-constraint-tradeoff-02" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-triangle-exclamation qwebr-calc-icon"></i>
+    <h4 class="anchored">Triple-Constraint Trade-off Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-triple-constraint-tradeoff-02-weeks-compressed">Weeks to compress <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-triple-constraint-tradeoff-02-weeks-compressed" id="qcalc-triple-constraint-tradeoff-02-weeks-compressed-readout">4</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-triple-constraint-tradeoff-02-weeks-compressed" data-var="weeks_compressed" value="4" min="1" max="12" step="1">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-triple-constraint-tradeoff-02-overtime-cost-per-week">Overtime cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-triple-constraint-tradeoff-02-overtime-cost-per-week" data-var="overtime_cost_per_week" value="9000" min="1000" max="30000" step="500">
+        <span class="qwebr-calc-suffix">/ wk</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-triple-constraint-tradeoff-02-expedite-fee">Expedite fee</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-triple-constraint-tradeoff-02-expedite-fee" data-var="expedite_fee" value="15000" min="0" max="100000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-triple-constraint-tradeoff-02-colourway-revenue-at-risk">Revenue lost by cutting scope</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-triple-constraint-tradeoff-02-colourway-revenue-at-risk" data-var="colourway_revenue_at_risk" value="62000" min="0" max="300000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-triple-constraint-tradeoff-02-skip-test-prob-failure">Chance a defect escapes</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-triple-constraint-tradeoff-02-skip-test-prob-failure" data-var="skip_test_prob_failure" value="0.08" min="0" max="1" step="0.01">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-triple-constraint-tradeoff-02-field-failure-cost">Cost if it does</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-triple-constraint-tradeoff-02-field-failure-cost" data-var="field_failure_cost" value="240000" min="0" max="1000000" step="10000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="the-five-process-phases" class="level2" data-number="2.5">
@@ -2392,14 +2454,65 @@ Figure&nbsp;2.3: Two-way communication channels versus team size. Doubling the t
 <h3 data-number="2.6.4" class="anchored" data-anchor-id="worked-example-1-channels-on-the-rc-vehicle-project"><span class="header-section-number">2.6.4</span> Worked Example 1: channels on the RC-vehicle project</h3>
 <p>The core project has the PM, 4 team members, an accountant, and a sponsor liaison — <strong>7 people</strong>. The extended stakeholder circle adds 2 supplier contacts, a retailer contact, and a compliance officer — <strong>11 people</strong>.</p>
 <p>Live cell — try different core-team and extended-circle sizes.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="channels-example-02" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-diagram-project qwebr-calc-icon"></i>
+    <h4 class="anchored">Communication Channels Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-channels-example-02-core">Core team size</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-channels-example-02-core" data-var="core" value="7" min="2" max="30" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-channels-example-02-extended">Extended circle size <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-channels-example-02-extended" id="qcalc-channels-example-02-extended-readout">11</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-channels-example-02-extended" data-var="extended" value="11" min="2" max="40" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <p>Four extra people did not add four conversations — they added 34. That is the argument for a <strong>hub-and-spoke</strong> communication plan (routes defined, the PM as the hub) instead of letting everyone talk to everyone about everything.</p>
 </section>
 <section id="try-it-yourself-channel-growth-and-the-cost-of-one-more-stakeholder" class="level3" data-number="2.6.5">
 <h3 data-number="2.6.5" class="anchored" data-anchor-id="try-it-yourself-channel-growth-and-the-cost-of-one-more-stakeholder"><span class="header-section-number">2.6.5</span> Try it yourself: channel growth and the cost of one more stakeholder</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="channels-calc-02" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-user-plus qwebr-calc-icon"></i>
+    <h4 class="anchored">Cost of One More Stakeholder</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-channels-calc-02-team-size">Baseline team size <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-channels-calc-02-team-size" id="qcalc-channels-calc-02-team-size-readout">9</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-channels-calc-02-team-size" data-var="team_size" value="9" min="2" max="30" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="listening-the-mode-we-use-most-and-understand-least" class="level2" data-number="2.7">
@@ -2453,8 +2566,46 @@ Figure&nbsp;2.3: Two-way communication channels versus team size. Doubling the t
 </section>
 <section id="try-it-yourself-the-tune-out-budget" class="level3" data-number="2.7.2">
 <h3 data-number="2.7.2" class="anchored" data-anchor-id="try-it-yourself-the-tune-out-budget"><span class="header-section-number">2.7.2</span> Try it yourself: the tune-out budget</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="tune-out-02" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-headphones qwebr-calc-icon"></i>
+    <h4 class="anchored">Tune-Out Budget Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-tune-out-02-listen-wpm">Listening speed</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-tune-out-02-listen-wpm" data-var="listen_wpm" value="500" min="250" max="900" step="50">
+        <span class="qwebr-calc-suffix">words / min</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-tune-out-02-speak-wpm">Speaking speed</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-tune-out-02-speak-wpm" data-var="speak_wpm" value="150" min="50" max="250" step="10">
+        <span class="qwebr-calc-suffix">words / min</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-tune-out-02-briefing-minutes">Briefing length <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-tune-out-02-briefing-minutes" id="qcalc-tune-out-02-briefing-minutes-readout">12</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-tune-out-02-briefing-minutes" data-var="briefing_minutes" value="12" min="1" max="60" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Listening de-railers — which one is Orion Tech’s problem?

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -414,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"mass_before_g <- 48\nmass_after_g  <- 41\nunits         <- 120000\nabs_cost_per_kg   <- 3.10\nabs_energy_MJ_kg  <- 90\nabs_co2e_kg_kg    <- 3.4\n\nsaved_kg <- (mass_before_g - mass_after_g) / 1000 * units\n\ncost_saved   <- saved_kg * abs_cost_per_kg\nenergy_saved <- saved_kg * abs_energy_MJ_kg\nco2_saved    <- saved_kg * abs_co2e_kg_kg\n\ncat(\"Mass removed per unit :\", mass_before_g - mass_after_g, \"g\\n\")\ncat(\"Material saved over the run :\", format(round(saved_kg), big.mark = \" \"), \"kg\\n\")\ncat(\"Material cost saved :\", sprintf(\"$%s\", format(round(cost_saved), big.mark = \" \")), \"\\n\")\ncat(\"Production energy saved :\", format(round(energy_saved), big.mark = \" \"), \"MJ\",\n    sprintf(\"(~%s kWh)\", format(round(energy_saved / 3.6), big.mark = \" \")), \"\\n\")\ncat(\"Cradle-to-gate CO2e avoided :\", format(round(co2_saved), big.mark = \" \"), \"kg\",\n    sprintf(\"(~%.1f t)\", co2_saved / 1000), \"\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"material-reduction-example-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Rough per-unit body mass for equal stiffness, and cradle-to-gate factors.\nmaterial <- c(\"Steel\", \"Aluminium\", \"Carbon-fibre\")\nmass_g   <- c(140,      70,          38)          # grams per body\ncost_kg  <- c(1.20,     3.00,        28.00)       # $ per kg\nenergy_kg<- c(25,       155,         300)         # MJ per kg (primary)\nco2_kg   <- c(2.0,      11.0,        24.0)        # kg CO2e per kg\n\nunits <- 120000\n\nkg_total     <- mass_g / 1000 * units\ncost_total   <- kg_total * cost_kg\nenergy_total <- kg_total * energy_kg\nco2_total    <- kg_total * co2_kg\n\nresult <- data.frame(\n  Material     = material,\n  Body_mass_g  = mass_g,\n  Material_t   = round(kg_total / 1000, 1),\n  Cost_usd     = round(cost_total),\n  Energy_MWh   = round(energy_total / 3600, 1),\n  CO2e_t       = round(co2_total / 1000, 1)\n)\nprint(result, row.names = FALSE)\n\ncat(\"\\nLightest body:\", material[which.min(mass_g)], \"\\n\")\ncat(\"Lowest material cost:\", material[which.min(cost_total)], \"\\n\")\ncat(\"Lowest cradle-to-gate CO2e:\", material[which.min(co2_total)], \"\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"material-choice-compare-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"horizon_years <- 10\n\n# Cheap option\ncheap_price     <- 18\ncheap_life_yrs  <- 2\n\n# Durable option\ndurable_price     <- 42\ndurable_life_yrs  <- 10\n\ncheap_purchases   <- ceiling(horizon_years / cheap_life_yrs)\ndurable_purchases <- ceiling(horizon_years / durable_life_yrs)\n\ncheap_tco   <- cheap_purchases   * cheap_price\ndurable_tco <- durable_purchases * durable_price\n\ncat(sprintf(\"Over %d years:\\n\", horizon_years))\ncat(sprintf(\"  Cheap  : %d purchases x $%d  = $%d   (%d units to landfill)\\n\",\n            cheap_purchases, cheap_price, cheap_tco, cheap_purchases))\ncat(sprintf(\"  Durable: %d purchase(s) x $%d = $%d   (%d unit to landfill)\\n\",\n            durable_purchases, durable_price, durable_tco, durable_purchases))\n\nbetter <- if (durable_tco < cheap_tco) \"Durable\" else \"Cheap\"\ncat(sprintf(\"\\nLower total cost of ownership: %s (saves $%d)\\n\",\n            better, abs(cheap_tco - durable_tco)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"whole-life-cost-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"units            <- 120000\n\n# Carbon\nmaterial_co2_t   <- 71      # tonnes CO2e, cradle-to-gate materials\nprocess_co2_t    <- 18      # tonnes CO2e, moulding + assembly energy\ntransport_co2_t  <- 26      # tonnes CO2e, inbound + outbound freight\n\n# Waste\nprocess_waste_t  <- 9.0     # tonnes of scrap + packaging generated\nwaste_diverted_t <- 8.1     # tonnes reused / recycled / to-energy\n\n# Materials\nrecycled_input_t <- 15.5    # tonnes of recycled feedstock\ntotal_input_t    <- 62.0    # tonnes of material input\n\ntotal_co2_t <- material_co2_t + process_co2_t + transport_co2_t\n\ncat(sprintf(\"Carbon footprint      : %.1f t CO2e total,  %.3f kg CO2e per unit\\n\",\n            total_co2_t, total_co2_t * 1000 / units))\ncat(sprintf(\"Waste diversion rate  : %.1f %%  (target: >= 90 %%)\\n\",\n            100 * waste_diverted_t / process_waste_t))\ncat(sprintf(\"Landfilled waste      : %.2f t\\n\", process_waste_t - waste_diverted_t))\ncat(sprintf(\"Recycled content      : %.1f %%  of material input\\n\",\n            100 * recycled_input_t / total_input_t))\n\nstatus <- if (100 * waste_diverted_t / process_waste_t >= 90) \"PASS\" else \"BELOW TARGET\"\ncat(sprintf(\"\\nWaste KPI status: %s\\n\", status))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"sustainability-kpi-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"mass_before_g <- 48\nmass_after_g  <- 41\nunits         <- 120000\nabs_cost_per_kg   <- 3.10\nabs_energy_MJ_kg  <- 90\nabs_co2e_kg_kg    <- 3.4\n\nsaved_kg <- (mass_before_g - mass_after_g) / 1000 * units\n\ncost_saved   <- saved_kg * abs_cost_per_kg\nenergy_saved <- saved_kg * abs_energy_MJ_kg\nco2_saved    <- saved_kg * abs_co2e_kg_kg\n\nfmt <- function(x) format(round(x), big.mark = \" \", scientific = FALSE, trim = TRUE)\n\n# Chart: CO2e avoided grows with the production run\nruns <- seq(0, 500000, length.out = 100)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(runs / 1000, (mass_before_g - mass_after_g) / 1000 * runs * abs_co2e_kg_kg / 1000,\n     type = \"l\", lwd = 4, col = \"#16a085\", xlab = \"Production run (thousand units)\", ylab = \"CO2e avoided (tonnes)\",\n     main = \"Carbon avoided vs. production run\")\nabline(v = units / 1000, lty = 2, col = \"#bdc3c7\")\npoints(units / 1000, co2_saved / 1000, pch = 19, cex = 2.2, col = \"#e74c3c\")\n\ncat(sprintf(\"%s kg of material saved over the run\\n\", fmt(saved_kg)))\ncat(sprintf(\"Mass removed per unit  %s g\\n\", mass_before_g - mass_after_g))\ncat(sprintf(\"Material cost saved  $%s\\n\", fmt(cost_saved)))\ncat(sprintf(\"Production energy saved  %s MJ\\n\", fmt(energy_saved)))\ncat(sprintf(\"Equivalent electricity  ~%s kWh\\n\", fmt(energy_saved / 3.6)))\ncat(sprintf(\"Cradle-to-gate CO2e avoided  %s kg (~%.1f t)\\n\", fmt(co2_saved), co2_saved / 1000))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"material-reduction-example-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Rough per-unit body mass for equal stiffness, and cradle-to-gate factors.\nmaterial <- c(\"Steel\", \"Aluminium\", \"Carbon-fibre\")\nmass_g   <- c(140,      70,          38)          # grams per body\ncost_kg  <- c(1.20,     3.00,        28.00)       # $ per kg\nenergy_kg<- c(25,       155,         300)         # MJ per kg (primary)\nco2_kg   <- c(2.0,      11.0,        24.0)        # kg CO2e per kg\n\nunits <- 120000\n\nkg_total     <- mass_g / 1000 * units\ncost_total   <- kg_total * cost_kg\nenergy_total <- kg_total * energy_kg\nco2_total    <- kg_total * co2_kg\n\nresult <- data.frame(\n  Material     = material,\n  Body_mass_g  = mass_g,\n  Material_t   = round(kg_total / 1000, 1),\n  Cost_usd     = round(cost_total),\n  Energy_MWh   = round(energy_total / 3600, 1),\n  CO2e_t       = round(co2_total / 1000, 1)\n)\nprint(result, row.names = FALSE)\n\ncat(\"\\nLightest body:\", material[which.min(mass_g)], \"\\n\")\ncat(\"Lowest material cost:\", material[which.min(cost_total)], \"\\n\")\ncat(\"Lowest cradle-to-gate CO2e:\", material[which.min(co2_total)], \"\\n\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"material-choice-compare-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"horizon_years <- 10\n\n# Cheap option\ncheap_price     <- 18\ncheap_life_yrs  <- 2\n\n# Durable option\ndurable_price     <- 42\ndurable_life_yrs  <- 10\n\ncheap_purchases   <- ceiling(horizon_years / cheap_life_yrs)\ndurable_purchases <- ceiling(horizon_years / durable_life_yrs)\n\ncheap_tco   <- cheap_purchases   * cheap_price\ndurable_tco <- durable_purchases * durable_price\n\nbetter <- if (durable_tco < cheap_tco) \"Durable\" else if (durable_tco > cheap_tco) \"Cheap\" else \"Neither\"\n\ntco <- c(Cheap = cheap_tco, Durable = durable_tco)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(tco, col = c(\"#e67e22\", \"#16a085\"), ylim = c(0, max(tco) * 1.2),\n              ylab = \"Total cost of ownership ($)\",\n              main = paste(\"Cost over\", horizon_years, \"years\"))\ntext(bp, tco, labels = paste0(\"$\", tco), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Lower total cost: %s (saves $%s)\\n\", better, abs(cheap_tco - durable_tco)))\ncat(sprintf(\"Cheap option  %d purchase(s) x $%s = $%s\\n\", cheap_purchases, cheap_price, cheap_tco))\ncat(sprintf(\"Durable option  %d purchase(s) x $%s = $%s\\n\", durable_purchases, durable_price, durable_tco))\ncat(sprintf(\"Units to landfill, cheap  %d\\n\", cheap_purchases))\ncat(sprintf(\"Units to landfill, durable  %d\\n\", durable_purchases))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"whole-life-cost-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"units            <- 120000\n\n# Carbon\nmaterial_co2_t   <- 71      # tonnes CO2e, cradle-to-gate materials\nprocess_co2_t    <- 18      # tonnes CO2e, moulding + assembly energy\ntransport_co2_t  <- 26      # tonnes CO2e, inbound + outbound freight\n\n# Waste\nprocess_waste_t  <- 9.0     # tonnes of scrap + packaging generated\nwaste_diverted_t <- 8.1     # tonnes reused / recycled / to-energy\n\n# Materials\nrecycled_input_t <- 15.5    # tonnes of recycled feedstock\ntotal_input_t    <- 62.0    # tonnes of material input\n\ntotal_co2_t <- material_co2_t + process_co2_t + transport_co2_t\ndiversion   <- 100 * waste_diverted_t / process_waste_t\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(c(Materials = material_co2_t, Process = process_co2_t, Transport = transport_co2_t),\n              col = c(\"#2c3e50\", \"#2980b9\", \"#16a085\"), ylab = \"t CO2e\", main = \"Carbon footprint by source\")\n\ncat(sprintf(\"Waste KPI status: %s\\n\", if (diversion >= 90) \"PASS\" else \"!!BELOW TARGET!!\"))\ncat(sprintf(\"Waste diversion rate  %.1f %% (target >= 90 %%)\\n\", diversion))\ncat(sprintf(\"Landfilled waste  %.2f t\\n\", process_waste_t - waste_diverted_t))\ncat(sprintf(\"Carbon footprint  %.1f t CO2e\\n\", total_co2_t))\ncat(sprintf(\"Carbon per unit  %.3f kg CO2e\\n\", total_co2_t * 1000 / units))\ncat(sprintf(\"Recycled content  %.1f %% of input\\n\", 100 * recycled_input_t / total_input_t))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"sustainability-kpi-01","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2408,8 +2408,71 @@ Discussion (Week 1 case): was it unreasonably risky for EcoPlast to trade durabi
 <h3 data-number="1.7.1" class="anchored" data-anchor-id="worked-example-1-thinning-the-rc-car-body"><span class="header-section-number">1.7.1</span> Worked Example 1: thinning the RC-car body</h3>
 <p>Your baseline RC-car body is injection-moulded ABS with a mass of <strong>48 g</strong>. Simulation says you can drop the nominal wall from 2.5 mm to 2.1 mm and still pass the drop test, cutting body mass to <strong>41 g</strong>. The contract run is <strong>120 000 units</strong>. ABS costs <strong>$3.10/kg</strong>, its production embodied energy is about <strong>90 MJ/kg</strong>, and its cradle-to-gate carbon intensity is about <strong>3.4 kg CO2e/kg</strong>.</p>
 <p>Live cell — change the mass reduction, the run size, or the material’s cost and energy factors.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="material-reduction-example-01" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-leaf qwebr-calc-icon"></i>
+    <h4 class="anchored">Material Reduction Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-material-reduction-example-01-mass-before-g">Baseline body mass</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-material-reduction-example-01-mass-before-g" data-var="mass_before_g" value="48" min="10" max="500" step="1">
+        <span class="qwebr-calc-suffix">g</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-material-reduction-example-01-mass-after-g">Thinned body mass</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-material-reduction-example-01-mass-after-g" data-var="mass_after_g" value="41" min="5" max="500" step="1">
+        <span class="qwebr-calc-suffix">g</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-material-reduction-example-01-abs-cost-per-kg">ABS cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-material-reduction-example-01-abs-cost-per-kg" data-var="abs_cost_per_kg" value="3.1" min="0.5" max="20" step="0.1">
+        <span class="qwebr-calc-suffix">/ kg</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-material-reduction-example-01-abs-energy-MJ-kg">ABS embodied energy</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-material-reduction-example-01-abs-energy-MJ-kg" data-var="abs_energy_MJ_kg" value="90" min="10" max="400" step="5">
+        <span class="qwebr-calc-suffix">MJ / kg</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-material-reduction-example-01-abs-co2e-kg-kg">ABS carbon intensity</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-material-reduction-example-01-abs-co2e-kg-kg" data-var="abs_co2e_kg_kg" value="3.4" min="0.5" max="30" step="0.1">
+        <span class="qwebr-calc-suffix">kg CO2e / kg</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-material-reduction-example-01-units">Production run <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-material-reduction-example-01-units" id="qcalc-material-reduction-example-01-units-readout">120 000</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-material-reduction-example-01-units" data-var="units" value="120000" min="5000" max="500000" step="5000">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <p>A 7 g decision, taken once on a screen, moves almost a tonne of material and several tonnes of CO2e once it is multiplied by the production run — before counting the lighter shipping weight.</p>
 </section>
 <section id="try-it-yourself-the-material-choice-decision" class="level3" data-number="1.7.2">
@@ -2482,8 +2545,62 @@ Figure&nbsp;1.2: Consumer tolerance for trade-offs made in the name of sustainab
 <h3 data-number="1.9.1" class="anchored" data-anchor-id="whole-life-cost-cheaper-to-buy-vs.-cheaper-to-own"><span class="header-section-number">1.9.1</span> Whole-life cost: cheaper to buy vs.&nbsp;cheaper to own</h3>
 <p>This is where <strong>planned obsolescence</strong> enters. A business may have a commercial reason to limit a product’s life — it protects repeat sales. Sustainable design pushes the other way: make it last. The buyer’s own wallet is often on the side of durability, even when the sticker price is higher.</p>
 <p>The live cell compares a <strong>cheap</strong> version of a product (low price, short life, replaced repeatedly) with a <strong>durable</strong> version (higher price, lasts the whole period). Change the prices, lifetimes, and horizon and watch which one wins on <strong>total cost of ownership</strong> — and on <strong>units sent to landfill</strong>.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="whole-life-cost-01" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-scale-balanced qwebr-calc-icon"></i>
+    <h4 class="anchored">Whole-Life Cost Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-whole-life-cost-01-cheap-price">Cheap version: price</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-whole-life-cost-01-cheap-price" data-var="cheap_price" value="18" min="1" max="200" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-whole-life-cost-01-cheap-life-yrs">Cheap version: lifetime</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-whole-life-cost-01-cheap-life-yrs" data-var="cheap_life_yrs" value="2" min="0.5" max="20" step="0.5">
+        <span class="qwebr-calc-suffix">yr</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-whole-life-cost-01-durable-price">Durable version: price</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-whole-life-cost-01-durable-price" data-var="durable_price" value="42" min="1" max="500" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-whole-life-cost-01-durable-life-yrs">Durable version: lifetime</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-whole-life-cost-01-durable-life-yrs" data-var="durable_life_yrs" value="10" min="0.5" max="30" step="0.5">
+        <span class="qwebr-calc-suffix">yr</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-whole-life-cost-01-horizon-years">Years you need the product <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-whole-life-cost-01-horizon-years" id="qcalc-whole-life-cost-01-horizon-years-readout">10</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-whole-life-cost-01-horizon-years" data-var="horizon_years" value="10" min="1" max="20" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Where does the cheap option actually win?
@@ -2545,8 +2662,86 @@ Figure&nbsp;1.3: The circular economy: keep materials circulating through the ti
 <section id="try-it-yourself-a-sustainability-kpi-snapshot" class="level3" data-number="1.10.2">
 <h3 data-number="1.10.2" class="anchored" data-anchor-id="try-it-yourself-a-sustainability-kpi-snapshot"><span class="header-section-number">1.10.2</span> Try it yourself: a sustainability KPI snapshot</h3>
 <p>Sustainability only gets managed if it gets measured. The live cell computes a few of the KPIs from the checklist for the RC-vehicle project: carbon footprint per unit, waste-diversion rate, and recycled-content share. Adjust the inputs to your own project assumptions.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="sustainability-kpi-01" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-seedling qwebr-calc-icon"></i>
+    <h4 class="anchored">Sustainability KPI Snapshot</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-sustainability-kpi-01-units">Units produced <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-sustainability-kpi-01-units" id="qcalc-sustainability-kpi-01-units-readout">120 000</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-sustainability-kpi-01-units" data-var="units" value="120000" min="10000" max="500000" step="10000">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-material-co2-t">Materials (cradle-to-gate)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-material-co2-t" data-var="material_co2_t" value="71" min="0" max="300" step="1">
+        <span class="qwebr-calc-suffix">t CO2e</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-process-co2-t">Moulding + assembly energy</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-process-co2-t" data-var="process_co2_t" value="18" min="0" max="100" step="1">
+        <span class="qwebr-calc-suffix">t CO2e</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-transport-co2-t">Inbound + outbound freight</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-transport-co2-t" data-var="transport_co2_t" value="26" min="0" max="100" step="1">
+        <span class="qwebr-calc-suffix">t CO2e</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-process-waste-t">Scrap + packaging generated</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-process-waste-t" data-var="process_waste_t" value="9" min="0.1" max="50" step="0.1">
+        <span class="qwebr-calc-suffix">t</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-waste-diverted-t">Reused / recycled / to-energy</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-waste-diverted-t" data-var="waste_diverted_t" value="8.1" min="0" max="50" step="0.1">
+        <span class="qwebr-calc-suffix">t</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-recycled-input-t">Recycled feedstock</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-recycled-input-t" data-var="recycled_input_t" value="15.5" min="0" max="100" step="0.5">
+        <span class="qwebr-calc-suffix">t</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-sustainability-kpi-01-total-input-t">Total material input</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-sustainability-kpi-01-total-input-t" data-var="total_input_t" value="62" min="1" max="200" step="0.5">
+        <span class="qwebr-calc-suffix">t</span>
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="key-takeaways" class="level2" data-number="1.11">

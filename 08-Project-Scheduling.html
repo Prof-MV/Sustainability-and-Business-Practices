@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -412,7 +412,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"cp <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ncp$te  <- (cp$o + 4 * cp$m + cp$p) / 6\ncp$var <- ((cp$p - cp$o) / 6)^2\n\nmu    <- sum(cp$te)\nsigma <- sqrt(sum(cp$var))\n\ncp_show <- cp\ncp_show[c(\"te\", \"var\")] <- lapply(cp_show[c(\"te\", \"var\")], round, 2)\nprint(cp_show, row.names = FALSE)\ncat(sprintf(\"\\nProject mean duration : %.1f days\\n\", mu))\ncat(sprintf(\"Project variance      : %.2f\\n\", sum(cp$var)))\ncat(sprintf(\"Project std deviation : %.2f days\\n\", sigma))\ncat(sprintf(\"Rough 95%% range        : %.0f to %.0f days\\n\", mu - 2 * sigma, mu + 2 * sigma))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-project-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mu    <- 83.0     # from the worked example\nsigma <- 2.42\n\nfor (target in c(80, 83, 86, 88)) {\n  z <- (target - mu) / sigma\n  cat(sprintf(\"Finish by day %2d:  z = %+5.2f  ->  P = %4.1f%%\\n\",\n              target, z, 100 * pnorm(z)))\n}\n\ncat(\"\\nWhat target gives 90% confidence?\\n\")\ncat(sprintf(\"  day %.1f  (mu + %.2f x sigma)\\n\", mu + qnorm(0.90) * sigma, qnorm(0.90)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"prob-on-time-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Critical-path activities: normal/crash time and cost.\nact <- data.frame(\n  id         = c(\"A\", \"F\", \"H\"),\n  normal_t   = c(9, 6, 8),\n  crash_t    = c(7, 5, 4),\n  normal_c   = c(5500, 4000, 3500),\n  crash_c    = c(7550, 9000, 7550)\n)\nact$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)\nact$max_crash <- act$normal_t - act$crash_t\n\ncat(\"Crash cost per day:\\n\")\nprint(act[c(\"id\", \"slope\", \"max_crash\")], row.names = FALSE)\n\ntarget_reduction <- 4          # days to remove from the project\norder_by_cost <- act[order(act$slope), ]\n\nremaining <- target_reduction\ntotal_cost <- 0\ncat(sprintf(\"\\nGoal: remove %d days, cheapest first\\n\", target_reduction))\nfor (i in seq_len(nrow(order_by_cost))) {\n  take <- min(remaining, order_by_cost$max_crash[i])\n  if (take <= 0) break\n  cost <- take * order_by_cost$slope[i]\n  total_cost <- total_cost + cost\n  remaining <- remaining - take\n  cat(sprintf(\"  crash %s by %d day(s) @ $%.0f/day = $%s\\n\",\n              order_by_cost$id[i], take, order_by_cost$slope[i],\n              format(cost, big.mark = \" \")))\n}\ncat(sprintf(\"\\nTotal crash cost for %d days: $%s\\n\",\n            target_reduction - remaining, format(total_cost, big.mark = \" \")))\nif (remaining > 0) cat(sprintf(\"Still %d day(s) short -- no cheap critical task left to crash.\\n\", remaining))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"crash-sequence-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"cp <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ncp$te  <- (cp$o + 4 * cp$m + cp$p) / 6\ncp$var <- ((cp$p - cp$o) / 6)^2\n\nmu    <- sum(cp$te)\nsigma <- sqrt(sum(cp$var))\n\ncp_show <- cp\ncp_show[c(\"te\", \"var\")] <- lapply(cp_show[c(\"te\", \"var\")], round, 2)\nprint(cp_show, row.names = FALSE)\ncat(sprintf(\"\\nProject mean duration : %.1f days\\n\", mu))\ncat(sprintf(\"Project variance      : %.2f\\n\", sum(cp$var)))\ncat(sprintf(\"Project std deviation : %.2f days\\n\", sigma))\ncat(sprintf(\"Rough 95%% range        : %.0f to %.0f days\\n\", mu - 2 * sigma, mu + 2 * sigma))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-project-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mu    <- 83.0     # from the worked example\nsigma <- 2.42\nconfidence_pct <- 90    # confidence you want in the target\ntarget_day     <- 86    # the day you are promising\n\nz    <- (target_day - mu) / sigma\nprob <- pnorm(z)\nconf_day <- mu + qnorm(confidence_pct / 100) * sigma\n\nx <- seq(mu - 4 * sigma, mu + 4 * sigma, length.out = 200)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(x, dnorm(x, mu, sigma), type = \"n\", xlab = \"Project finish (day)\", ylab = \"Density\",\n     main = \"Probability of finishing on time\")\nshade <- x <= target_day\nif (any(shade)) polygon(c(x[shade][1], x[shade], target_day), c(0, dnorm(x[shade], mu, sigma), 0),\n                        col = \"#aed6f1\", border = NA)\nlines(x, dnorm(x, mu, sigma), lwd = 4, col = \"#2c3e50\")\nabline(v = target_day, lty = 2, lwd = 2, col = \"#e74c3c\")\nabline(v = conf_day, lty = 3, lwd = 2, col = \"#16a085\")\n\nif (100 * prob >= confidence_pct) {\n  cat(sprintf(\"P(finish by day %g) = %.1f%%: meets the %g%% goal\\n\", target_day, 100 * prob, confidence_pct))\n} else {\n  cat(sprintf(\"!!P(finish by day %g) = %.1f%%: below the %g%% goal!!\\n\", target_day, 100 * prob, confidence_pct))\n}\ncat(sprintf(\"z-score  %+.2f\\n\", z))\ncat(sprintf(\"Day for %g%% confidence  day %.1f (mu + %.2f x sigma)\\n\",\n            confidence_pct, conf_day, qnorm(confidence_pct / 100)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"prob-on-time-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"target_reduction <- 4          # days to remove from the project\n\n# Critical-path activities: normal/crash time and cost.\nact <- data.frame(\n  id         = c(\"A\", \"F\", \"H\"),\n  normal_t   = c(9, 6, 8),\n  crash_t    = c(7, 5, 4),\n  normal_c   = c(5500, 4000, 3500),\n  crash_c    = c(7550, 9000, 7550)\n)\nact$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)\nact$max_crash <- act$normal_t - act$crash_t\n\norder_by_cost <- act[order(act$slope), ]\norder_by_cost$days_used <- 0\n\nremaining <- target_reduction\ntotal_cost <- 0\nsteps <- character(0)\nfor (i in seq_len(nrow(order_by_cost))) {\n  take <- min(remaining, order_by_cost$max_crash[i])\n  if (take <= 0) break\n  cost <- take * order_by_cost$slope[i]\n  total_cost <- total_cost + cost\n  remaining <- remaining - take\n  order_by_cost$days_used[i] <- take\n  steps <- c(steps, sprintf(\"Crash %s by %g day(s) at $%s/day  $%s\",\n                            order_by_cost$id[i], take, format(round(order_by_cost$slope[i]), big.mark = \" \"),\n                            format(round(cost), big.mark = \" \")))\n}\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(order_by_cost$slope, names.arg = order_by_cost$id, col = ifelse(order_by_cost$days_used > 0, \"#2980b9\", \"#bdc3c7\"),\n              ylim = c(0, max(order_by_cost$slope) * 1.2),\n              xlab = \"Activity (cheapest first)\", ylab = \"Crash cost ($ per day)\",\n              main = \"Crash cost per day (blue = crashed)\")\ntext(bp, order_by_cost$slope, labels = ifelse(order_by_cost$days_used > 0, paste(order_by_cost$days_used, \"d\"), \"\"),\n     pos = 3, cex = 1.3)\n\nif (remaining > 0) {\n  cat(sprintf(\"!!Only %g of %g days can be crashed: $%s!!\\n\", target_reduction - remaining,\n              target_reduction, format(round(total_cost), big.mark = \" \")))\n} else {\n  cat(sprintf(\"Cheapest way to cut %g days: $%s\\n\", target_reduction, format(round(total_cost), big.mark = \" \")))\n}\nfor (s in steps) cat(s, \"\\n\", sep = \"\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"crash-sequence-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2270,8 +2270,54 @@ Figure&nbsp;8.1: A Gantt chart for the RC-vehicle sub-project. Bars are activiti
 <section id="try-it-yourself-probability-of-hitting-a-target-date" class="level3" data-number="8.5.2">
 <h3 data-number="8.5.2" class="anchored" data-anchor-id="try-it-yourself-probability-of-hitting-a-target-date"><span class="header-section-number">8.5.2</span> Try it yourself: probability of hitting a target date</h3>
 <p>Standardize the target: <span class="math inline">\(z = \dfrac{\text{target} - \mu}{\sigma}\)</span>, then read the normal cumulative probability.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="prob-on-time-08" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-bell-concierge qwebr-calc-icon"></i>
+    <h4 class="anchored">Probability-of-On-Time Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-prob-on-time-08-mu">Project mean duration</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-prob-on-time-08-mu" data-var="mu" value="83" min="40" max="200" step="0.5">
+        <span class="qwebr-calc-suffix">days</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-prob-on-time-08-sigma">Project standard deviation</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-prob-on-time-08-sigma" data-var="sigma" value="2.42" min="0.5" max="15" step="0.01">
+        <span class="qwebr-calc-suffix">days</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-prob-on-time-08-confidence-pct">Confidence you want</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-prob-on-time-08-confidence-pct" data-var="confidence_pct" value="90" min="50" max="99" step="1">
+        <span class="qwebr-calc-suffix">%</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-prob-on-time-08-target-day">Target finish day <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-target-day" id="qcalc-prob-on-time-08-target-day-readout">86</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-prob-on-time-08-target-day" data-var="target_day" value="86" min="60" max="120" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Why quote “day 86 at 90 % confidence” instead of “day 83”?
@@ -2316,8 +2362,30 @@ Figure&nbsp;8.2: Time-cost trade-off for one activity. Between the normal and cr
 <section id="try-it-yourself-least-cost-crashing" class="level3" data-number="8.6.1">
 <h3 data-number="8.6.1" class="anchored" data-anchor-id="try-it-yourself-least-cost-crashing"><span class="header-section-number">8.6.1</span> Try it yourself: least-cost crashing</h3>
 <p>To shorten the project, crash <strong>critical-path</strong> activities in <strong>cheapest-slope- first</strong> order, one time unit at a time, until you hit the target or run out of crashable critical tasks.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="crash-sequence-08" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-bolt qwebr-calc-icon"></i>
+    <h4 class="anchored">Crash-Cost Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-crash-sequence-08-target-reduction">Days to remove from the project <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-crash-sequence-08-target-reduction" id="qcalc-crash-sequence-08-target-reduction-readout">4</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-crash-sequence-08-target-reduction" data-var="target_reduction" value="4" min="1" max="8" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="fast-tracking-versus-crashing" class="level2" data-number="8.7">

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -412,7 +412,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"buyer_reservation  <- 168000   # most you will pay\nseller_reservation <- 150000   # least they will accept\n\nif (seller_reservation <= buyer_reservation) {\n  zopa_low  <- seller_reservation\n  zopa_high <- buyer_reservation\n  cat(sprintf(\"ZOPA exists: $%s to $%s  (width $%s)\\n\",\n              format(zopa_low, big.mark = \" \"),\n              format(zopa_high, big.mark = \" \"),\n              format(zopa_high - zopa_low, big.mark = \" \")))\n  cat(\"Any agreed price in that band beats both sides' alternatives.\\n\")\n} else {\n  cat(\"No ZOPA -- the seller's floor is above the buyer's ceiling. Change the package or walk.\\n\")\n}","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"zopa-example-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Buyer's side: BATNA is Paragon at $150k, but carrying $25k of extra risk cost.\nparagon_price   <- 150000\nparagon_risk    <- 25000\nbuyer_reservation <- paragon_price + paragon_risk   # indifference point vs MCS\n\n# Seller's side (MCS): cost to make + minimum acceptable margin.\nmcs_cost   <- 132000\nmcs_margin <- 15000\nseller_reservation <- mcs_cost + mcs_margin\n\ncat(sprintf(\"Buyer reservation (max)  : $%s\\n\", format(buyer_reservation, big.mark = \" \")))\ncat(sprintf(\"Seller reservation (min) : $%s\\n\", format(seller_reservation, big.mark = \" \")))\n\nif (seller_reservation <= buyer_reservation) {\n  cat(sprintf(\"ZOPA width: $%s -- a deal is possible.\\n\",\n              format(buyer_reservation - seller_reservation, big.mark = \" \")))\n  cat(sprintf(\"A midpoint settlement would be about $%s.\\n\",\n              format(round((buyer_reservation + seller_reservation) / 2), big.mark = \" \")))\n} else {\n  cat(\"No ZOPA. Improve your BATNA, expand the package, or walk away.\\n\")\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"zopa-calc-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"criteria <- c(\"Quality record\", \"Delivery reliability\", \"Price\",\n              \"Technical capability\", \"Supply-chain risk\")\nweight   <- c(0.30, 0.25, 0.15, 0.15, 0.15)   # must sum to 1\n\n# Score each supplier 1 (poor) to 5 (excellent) on each criterion.\nmcs     <- c(5, 4, 3, 3, 2)   # trusted, but production moving to Mexico\nparagon <- c(3, 3, 4, 5, 3)   # unproven, new tech, plant 4 h away, labour talks\n\nmcs_total     <- sum(weight * mcs)\nparagon_total <- sum(weight * paragon)\n\ntab <- data.frame(Criterion = criteria, Weight = weight,\n                  MCS = mcs, Paragon = paragon)\nprint(tab, row.names = FALSE)\ncat(sprintf(\"\\nWeighted score  MCS: %.2f   Paragon: %.2f\\n\", mcs_total, paragon_total))\ncat(sprintf(\"Recommended: %s\\n\", ifelse(mcs_total >= paragon_total, \"MCS\", \"Paragon\")))\ncat(\"Change the weights to your project's priorities and watch the answer move.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"supplier-scoring-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"buyer_reservation  <- 168000   # most you will pay\nseller_reservation <- 150000   # least they will accept\n\nzopa <- seller_reservation <= buyer_reservation\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nlo  <- min(buyer_reservation, seller_reservation)\nhi  <- max(buyer_reservation, seller_reservation)\npad <- max(hi - lo, 20000) * 0.5\nticks <- pretty(c(lo - pad, hi + pad), n = 5)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(NA, xlim = c(lo - pad, hi + pad), ylim = c(0, 1), xaxt = \"n\", yaxt = \"n\",\n     xlab = \"Price ($)\", ylab = \"\", main = \"Zone of possible agreement\")\nrect(lo, 0.3, hi, 0.7, col = if (zopa) \"#a9dfbf\" else \"#f5b7b1\", border = NA)\naxis(1, at = ticks, labels = format(ticks, big.mark = \" \", scientific = FALSE, trim = TRUE))\npoints(seller_reservation, 0.5, pch = 19, cex = 3, col = \"#2980b9\")\npoints(buyer_reservation, 0.5, pch = 19, cex = 3, col = \"#e67e22\")\ntext(seller_reservation, 0.85, \"Seller floor\", col = \"#2980b9\", cex = 1.2)\ntext(buyer_reservation, 0.15, \"Buyer ceiling\", col = \"#e67e22\", cex = 1.2)\n\nif (zopa) {\n  cat(sprintf(\"ZOPA exists: %s to %s\\n\", money(seller_reservation), money(buyer_reservation)))\n  cat(sprintf(\"ZOPA width  %s\\n\", money(buyer_reservation - seller_reservation)))\n} else {\n  cat(\"!!No ZOPA!!: the seller's floor is above the buyer's ceiling\\n\")\n  cat(sprintf(\"Gap between the two sides  %s\\n\", money(seller_reservation - buyer_reservation)))\n}","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"zopa-example-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Buyer's side: BATNA is Paragon at $150k, but carrying $25k of extra risk cost.\nparagon_price   <- 150000\nparagon_risk    <- 25000\nbuyer_reservation <- paragon_price + paragon_risk   # indifference point vs MCS\n\n# Seller's side (MCS): cost to make + minimum acceptable margin.\nmcs_cost   <- 132000\nmcs_margin <- 15000\nseller_reservation <- mcs_cost + mcs_margin\n\nzopa <- seller_reservation <= buyer_reservation\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nlo  <- min(buyer_reservation, seller_reservation)\nhi  <- max(buyer_reservation, seller_reservation)\npad <- max(hi - lo, 20000) * 0.5\nticks <- pretty(c(lo - pad, hi + pad), n = 5)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(NA, xlim = c(lo - pad, hi + pad), ylim = c(0, 1), xaxt = \"n\", yaxt = \"n\",\n     xlab = \"Price ($)\", ylab = \"\", main = \"Zone of possible agreement\")\nrect(lo, 0.3, hi, 0.7, col = if (zopa) \"#a9dfbf\" else \"#f5b7b1\", border = NA)\naxis(1, at = ticks, labels = format(ticks, big.mark = \" \", scientific = FALSE, trim = TRUE))\npoints(seller_reservation, 0.5, pch = 19, cex = 3, col = \"#2980b9\")\npoints(buyer_reservation, 0.5, pch = 19, cex = 3, col = \"#e67e22\")\ntext(seller_reservation, 0.85, \"Seller floor\", col = \"#2980b9\", cex = 1.2)\ntext(buyer_reservation, 0.15, \"Buyer ceiling\", col = \"#e67e22\", cex = 1.2)\n\nif (zopa) {\n  cat(sprintf(\"ZOPA width: %s: a deal is possible\\n\", money(buyer_reservation - seller_reservation)))\n} else {\n  cat(\"!!No ZOPA!!: improve your BATNA, expand the package, or walk away\\n\")\n}\ncat(sprintf(\"Buyer reservation (max)  %s\\n\", money(buyer_reservation)))\ncat(sprintf(\"Seller reservation (min)  %s\\n\", money(seller_reservation)))\nif (zopa) cat(sprintf(\"Midpoint settlement  about %s\\n\", money((buyer_reservation + seller_reservation) / 2)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"zopa-calc-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"criteria <- c(\"Quality record\", \"Delivery reliability\", \"Price\",\n              \"Technical capability\", \"Supply-chain risk\")\nweight   <- c(0.30, 0.25, 0.15, 0.15, 0.15)   # must sum to 1\n\n# Score each supplier 1 (poor) to 5 (excellent) on each criterion.\nmcs     <- c(5, 4, 3, 3, 2)   # trusted, but production moving to Mexico\nparagon <- c(3, 3, 4, 5, 3)   # unproven, new tech, plant 4 h away, labour talks\n\nmcs_total     <- sum(weight * mcs)\nparagon_total <- sum(weight * paragon)\n\ntab <- data.frame(Criterion = criteria, Weight = weight,\n                  MCS = mcs, Paragon = paragon)\nprint(tab, row.names = FALSE)\ncat(sprintf(\"\\nWeighted score  MCS: %.2f   Paragon: %.2f\\n\", mcs_total, paragon_total))\ncat(sprintf(\"Recommended: %s\\n\", ifelse(mcs_total >= paragon_total, \"MCS\", \"Paragon\")))\ncat(\"Change the weights to your project's priorities and watch the answer move.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"supplier-scoring-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2211,13 +2211,95 @@ Note
 <h3 data-number="10.5.1" class="anchored" data-anchor-id="worked-example-1-is-there-a-zopa"><span class="header-section-number">10.5.1</span> Worked Example 1: is there a ZOPA?</h3>
 <p>You are buying the motor/controller package. Your BATNA (Paragon’s quote plus the cost of the risk it carries) puts your <strong>reservation price at $168 000</strong> — you would not pay MCS more than that. MCS’s floor, given their costs and other customers, is <strong>$150 000</strong>.</p>
 <p>Live cell — move either side’s reservation price and see whether a deal still exists.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="zopa-example-10" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-handshake qwebr-calc-icon"></i>
+    <h4 class="anchored">ZOPA Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-example-10-buyer-reservation">Buyer's reservation price (most they'll pay)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-example-10-buyer-reservation" data-var="buyer_reservation" value="168000" min="50000" max="400000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-example-10-seller-reservation">Seller's reservation price (least they'll accept)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-example-10-seller-reservation" data-var="seller_reservation" value="150000" min="50000" max="400000" step="1000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 <section id="try-it-yourself-reservation-points-from-a-batna" class="level3" data-number="10.5.2">
 <h3 data-number="10.5.2" class="anchored" data-anchor-id="try-it-yourself-reservation-points-from-a-batna"><span class="header-section-number">10.5.2</span> Try it yourself: reservation points from a BATNA</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="zopa-calc-10" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-scale-balanced qwebr-calc-icon"></i>
+    <h4 class="anchored">Reservation Points from a BATNA</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-calc-10-paragon-price">BATNA: Paragon's price</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-calc-10-paragon-price" data-var="paragon_price" value="150000" min="50000" max="400000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-calc-10-paragon-risk">Extra risk cost of using Paragon</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-calc-10-paragon-risk" data-var="paragon_risk" value="25000" min="0" max="150000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-calc-10-mcs-cost">MCS cost to make</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-calc-10-mcs-cost" data-var="mcs_cost" value="132000" min="50000" max="400000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-zopa-calc-10-mcs-margin">MCS minimum margin</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-zopa-calc-10-mcs-margin" data-var="mcs_margin" value="15000" min="0" max="100000" step="1000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Why does improving your BATNA move the whole negotiation?

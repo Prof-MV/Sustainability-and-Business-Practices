@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -412,7 +412,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"BAC <- 620000\nplanned_pct <- 0.35\nactual_pct  <- 0.30\nAC <- 210000\n\nPV <- planned_pct * BAC\nEV <- actual_pct  * BAC\n\nSV  <- EV - PV\nCV  <- EV - AC\nSPI <- EV / PV\nCPI <- EV / AC\n\ncat(sprintf(\"PV  = $%s      EV  = $%s      AC  = $%s\\n\",\n            format(PV, big.mark = \" \"), format(EV, big.mark = \" \"),\n            format(AC, big.mark = \" \")))\ncat(sprintf(\"SV  = $%s  (%s schedule)\\n\", format(SV, big.mark = \" \"),\n            ifelse(SV < 0, \"behind\", \"ahead\")))\ncat(sprintf(\"CV  = $%s  (%s budget)\\n\", format(CV, big.mark = \" \"),\n            ifelse(CV < 0, \"over\", \"under\")))\ncat(sprintf(\"SPI = %.3f   (getting %.0f cents of schedule per planned dollar)\\n\",\n            SPI, SPI * 100))\ncat(sprintf(\"CPI = %.3f   (getting %.0f cents of work per dollar spent)\\n\",\n            CPI, CPI * 100))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"evm-example-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"BAC <- 620000\nEV  <- 186000\nAC  <- 210000\nPV  <- 217000\nCPI <- EV / AC\nSPI <- EV / PV\n\neac_cpi       <- BAC / CPI\neac_oneoff    <- AC + (BAC - EV)\neac_cost_sched<- AC + (BAC - EV) / (CPI * SPI)\n\ncat(sprintf(\"CPI = %.3f   SPI = %.3f\\n\\n\", CPI, SPI))\ncat(sprintf(\"EAC, cost efficiency continues : $%s\\n\", format(round(eac_cpi), big.mark = \" \")))\ncat(sprintf(\"EAC, overrun was a one-off     : $%s\\n\", format(round(eac_oneoff), big.mark = \" \")))\ncat(sprintf(\"EAC, cost AND schedule persist : $%s\\n\", format(round(eac_cost_sched), big.mark = \" \")))\n\netc  <- eac_cpi - AC\nvac  <- BAC - eac_cpi\ntcpi <- (BAC - EV) / (BAC - AC)\ncat(sprintf(\"\\nETC (money still needed)  : $%s\\n\", format(round(etc), big.mark = \" \")))\ncat(sprintf(\"VAC (projected overrun)   : $%s\\n\", format(round(vac), big.mark = \" \")))\ncat(sprintf(\"TCPI (efficiency needed)  : %.3f  \", tcpi))\ncat(ifelse(tcpi > 1.10, \"-- that is a big ask; the BAC is likely unrealistic now.\\n\",\n    ifelse(tcpi > 1.0, \"-- recoverable, but the team must run leaner than planned.\\n\",\n           \"-- achievable.\\n\")))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"eac-scenarios-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"BAC <- 620000\nplanned_pct <- 0.35\nactual_pct  <- 0.30\nAC <- 210000\n\nPV <- planned_pct * BAC\nEV <- actual_pct  * BAC\n\nSV  <- EV - PV\nCV  <- EV - AC\nSPI <- EV / PV\nCPI <- EV / AC\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(c(PV, EV, AC) / 1000, names.arg = c(\"PV\", \"EV\", \"AC\"), col = c(\"#bdc3c7\", \"#16a085\", ifelse(AC > EV, \"#e74c3c\", \"#2980b9\")),\n              ylim = c(0, max(PV, EV, AC) / 1000 * 1.2), ylab = \"$ thousand\",\n              main = \"Planned vs. earned vs. actual\")\n\nsched <- if (SV < 0) \"!!behind schedule!!\" else \"on or ahead of schedule\"\ncost  <- if (CV < 0) \"!!over budget!!\" else \"on or under budget\"\ncat(sprintf(\"Project is %s and %s\\n\", sched, cost))\ncat(sprintf(\"Planned value (PV)  %s\\n\", money(PV)))\ncat(sprintf(\"Earned value (EV)  %s\\n\", money(EV)))\ncat(sprintf(\"Actual cost (AC)  %s\\n\", money(AC)))\ncat(sprintf(\"Schedule variance (SV)  %s\\n\", money(SV)))\ncat(sprintf(\"Cost variance (CV)  %s\\n\", money(CV)))\ncat(sprintf(\"SPI  %.3f (%.0f cents of schedule per planned dollar)\\n\", SPI, SPI * 100))\ncat(sprintf(\"CPI  %.3f (%.0f cents of work per dollar spent)\\n\", CPI, CPI * 100))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"evm-example-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"BAC <- 620000\nEV  <- 186000\nAC  <- 210000\nPV  <- 217000\nCPI <- EV / AC\nSPI <- EV / PV\n\neac_cpi       <- BAC / CPI\neac_oneoff    <- AC + (BAC - EV)\neac_cost_sched<- AC + (BAC - EV) / (CPI * SPI)\n\netc  <- eac_cpi - AC\nvac  <- BAC - eac_cpi\ntcpi <- (BAC - EV) / (BAC - AC)\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\neacs <- c(\"BAC\\n(plan)\" = BAC, \"CPI\\ncontinues\" = eac_cpi, \"One-off\\noverrun\" = eac_oneoff,\n          \"Cost and\\nschedule\" = eac_cost_sched)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(eacs / 1000, col = c(\"#bdc3c7\", \"#2980b9\", \"#16a085\", \"#8e44ad\"),\n        ylim = c(0, max(eacs) / 1000 * 1.1), ylab = \"$ thousand\", main = \"Estimate at completion by scenario\")\nabline(h = BAC / 1000, lty = 2, lwd = 2, col = \"#e74c3c\")\n\nmsg <- if (tcpi > 1.10) {\n  \"!!a big ask; the BAC is likely unrealistic now!!\"\n} else if (tcpi > 1.0) {\n  \"recoverable, but the team must run leaner than planned\"\n} else {\n  \"achievable\"\n}\ncat(sprintf(\"TCPI %.3f: %s\\n\", tcpi, msg))\ncat(sprintf(\"CPI  %.3f\\n\", CPI))\ncat(sprintf(\"SPI  %.3f\\n\", SPI))\ncat(sprintf(\"EAC, cost efficiency continues  %s\\n\", money(eac_cpi)))\ncat(sprintf(\"EAC, overrun was a one-off  %s\\n\", money(eac_oneoff)))\ncat(sprintf(\"EAC, cost AND schedule persist  %s\\n\", money(eac_cost_sched)))\ncat(sprintf(\"ETC (money still needed)  %s\\n\", money(etc)))\ncat(sprintf(\"VAC (projected overrun)  %s\\n\", money(vac)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"eac-scenarios-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2305,8 +2305,53 @@ Figure&nbsp;12.2: The three curves through week 8 of the RC-vehicle project (BAC
 <h3 data-number="12.4.1" class="anchored" data-anchor-id="worked-example-1-the-rc-vehicle-project-at-week-8"><span class="header-section-number">12.4.1</span> Worked Example 1: the RC-vehicle project at week 8</h3>
 <p>Baseline budget <strong>BAC = $620 000</strong>. By week 8 the plan said <strong>35 %</strong> of the work should be done; <strong>30 %</strong> is actually done; <strong>$210 000</strong> has been spent.</p>
 <p>Live cell — change the planned %, the actual %, or the actual cost.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="evm-example-12" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-chart-line qwebr-calc-icon"></i>
+    <h4 class="anchored">Earned Value Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-evm-example-12-BAC">Budget at completion (BAC)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-evm-example-12-BAC" data-var="BAC" value="620000" min="100000" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-evm-example-12-planned-pct">Planned % complete</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-evm-example-12-planned-pct" data-var="planned_pct" value="0.35" min="0.05" max="1" step="0.01">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-evm-example-12-actual-pct">Actual % complete <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-evm-example-12-actual-pct" id="qcalc-evm-example-12-actual-pct-readout">0.3</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-evm-example-12-actual-pct" data-var="actual_pct" value="0.3" min="0" max="1" step="0.01">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-evm-example-12-AC">Actual cost to date (AC)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-evm-example-12-AC" data-var="AC" value="210000" min="1000" max="2000000" step="5000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <p>The project is <strong>behind schedule and over cost</strong> — and this is visible in week 8, while there is still time to act, instead of as a surprise at the end.</p>
 </section>
 </section>
@@ -2360,8 +2405,57 @@ Figure&nbsp;12.2: The three curves through week 8 of the RC-vehicle project (BAC
 </table>
 <section id="try-it-yourself-eac-scenarios" class="level3" data-number="12.5.1">
 <h3 data-number="12.5.1" class="anchored" data-anchor-id="try-it-yourself-eac-scenarios"><span class="header-section-number">12.5.1</span> Try it yourself: EAC scenarios</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="eac-scenarios-12" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-forward qwebr-calc-icon"></i>
+    <h4 class="anchored">Estimate-at-Completion Scenarios</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-eac-scenarios-12-BAC">Budget at completion (BAC)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-eac-scenarios-12-BAC" data-var="BAC" value="620000" min="100000" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-eac-scenarios-12-EV">Earned value (EV)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-eac-scenarios-12-EV" data-var="EV" value="186000" min="1000" max="2000000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-eac-scenarios-12-AC">Actual cost (AC)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-eac-scenarios-12-AC" data-var="AC" value="210000" min="1000" max="2000000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-eac-scenarios-12-PV">Planned value (PV)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-eac-scenarios-12-PV" data-var="PV" value="217000" min="1000" max="2000000" step="1000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Which EAC formula should you actually report?

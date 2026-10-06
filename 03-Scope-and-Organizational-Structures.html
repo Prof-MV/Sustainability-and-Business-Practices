@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -414,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"initial   <- 450000\nannual_cf <- 180000\nhorizon   <- 5\n\ncum <- cumsum(rep(annual_cf, horizon)) - initial\nyear_paid <- which(cum >= 0)[1]\n# Fractional year within the payback year:\nprev <- if (year_paid == 1) -initial else cum[year_paid - 1]\nfrac <- -prev / annual_cf\n\ncat(\"Cumulative cash flow by year:\", paste0(\"$\", format(cum, big.mark = \" \")), \"\\n\")\ncat(sprintf(\"Payback period: %.2f years\\n\", (year_paid - 1) + frac))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"payback-example-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"initial   <- 450000\ncash_flows<- c(180000, 180000, 180000, 120000, 90000)  # years 1..5\nr         <- 0.12   # required rate of return\n\nt   <- seq_along(cash_flows)\npv  <- cash_flows / (1 + r)^t\nnpv <- sum(pv) - initial\n\ncat(\"Year   Cash flow     Present value\\n\")\nfor (i in t) {\n  cat(sprintf(\" %d    $%s    $%s\\n\", i,\n              format(cash_flows[i], big.mark = \" \"),\n              format(round(pv[i]), big.mark = \" \")))\n}\ncat(sprintf(\"\\nSum of PVs : $%s\\n\", format(round(sum(pv)), big.mark = \" \")))\ncat(sprintf(\"Less outlay: $%s\\n\", format(initial, big.mark = \" \")))\ncat(sprintf(\"NPV        : $%s  -> %s\\n\",\n            format(round(npv), big.mark = \" \"),\n            ifelse(npv > 0, \"ACCEPT (beats the 12% hurdle)\", \"REJECT\")))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"npv-calc-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"stakeholders <- data.frame(\n  who      = c(\"Kestrel Retail Group\", \"Daniel Cho (sponsor)\", \"MCS (motor supplier)\",\n               \"Internal QA\", \"Fibro Source (trim supplier)\"),\n  power    = c(9, 9, 5, 5, 2),\n  interest = c(8, 8, 7, 5, 2)\n)\n\nstakeholders$quadrant <- with(stakeholders, ifelse(\n  power >= 5 & interest >= 5, \"Manage closely\",\n  ifelse(power >= 5 & interest < 5, \"Keep satisfied\",\n  ifelse(power < 5 & interest >= 5, \"Keep informed\", \"Monitor\"))))\n\nprint(stakeholders, row.names = FALSE)\ncat(\"\\nChange the power/interest scores (1-10) for your own project's stakeholders\\n\")\ncat(\"and re-run -- the quadrant assignment updates automatically.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"stakeholder-score-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# A stakeholder asks to add a second body colourway \"while we're at it\".\nextra_design_hours   <- 60\nextra_tooling_cost   <- 28000\ndesigner_rate        <- 46\nindirect_rate        <- 0.35\nschedule_days_added  <- 9\npenalty_per_day_late <- 1500     # retailer contract clause\n\ndirect  <- extra_design_hours * designer_rate + extra_tooling_cost\nloaded  <- direct * (1 + indirect_rate)\nsched   <- schedule_days_added * penalty_per_day_late\n\ncat(sprintf(\"Direct cost of the change        : $%s\\n\", format(round(direct), big.mark = \" \")))\ncat(sprintf(\"Fully burdened (x%.2f)            : $%s\\n\", 1 + indirect_rate,\n            format(round(loaded), big.mark = \" \")))\ncat(sprintf(\"Schedule slip: %d days -> penalty : $%s\\n\", schedule_days_added,\n            format(sched, big.mark = \" \")))\ncat(sprintf(\"--------\\nTotal impact of one 'small' change: $%s\\n\",\n            format(round(loaded + sched), big.mark = \" \")))\ncat(\"\\nThrough change control this gets a number and a decision.\\n\")\ncat(\"Without it, it just shows up as an overrun later.\\n\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"scope-change-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"initial   <- 450000\nannual_cf <- 180000\nhorizon   <- 5\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", trim = TRUE))\n\ncum <- cumsum(rep(annual_cf, horizon)) - initial\nyear_paid <- which(cum >= 0)[1]\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(cum / 1000, names.arg = 1:horizon, col = ifelse(cum >= 0, \"#16a085\", \"#e74c3c\"),\n        xlab = \"Year\", ylab = \"Cumulative cash flow ($ thousand)\", main = \"Cumulative cash flow\")\nabline(h = 0, lwd = 2)\n\nif (is.na(year_paid)) {\n  cat(sprintf(\"!!Not paid back within %d years!!\\n\", horizon))\n} else {\n  # Fractional year within the payback year:\n  prev <- if (year_paid == 1) -initial else cum[year_paid - 1]\n  frac <- -prev / annual_cf\n  cat(sprintf(\"Payback period: %.2f years\\n\", (year_paid - 1) + frac))\n}\nfor (t in 1:horizon) cat(sprintf(\"End of year %d  %s\\n\", t, money(cum[t])))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"payback-example-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"initial   <- 450000\ncash_flows<- c(180000, 180000, 180000, 120000, 90000)  # years 1..5\nr         <- 0.12   # required rate of return\n\nt   <- seq_along(cash_flows)\npv  <- cash_flows / (1 + r)^t\nnpv <- sum(pv) - initial\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(rbind(cash_flows, pv) / 1000, beside = TRUE, names.arg = t, col = c(\"#bdc3c7\", \"#2980b9\"), xlab = \"Year\", ylab = \"$ thousand\",\n              main = \"Cash flow (grey) vs. present value (blue)\")\n\nif (npv > 0) {\n  cat(sprintf(\"NPV %s: ACCEPT (beats the %s%% hurdle)\\n\", money(npv), format(100 * r)))\n} else {\n  cat(sprintf(\"NPV %s: !!REJECT!! (misses the %s%% hurdle)\\n\", money(npv), format(100 * r)))\n}\nfor (i in t) cat(sprintf(\"Year %d present value  %s\\n\", i, money(pv[i])))\ncat(sprintf(\"Sum of PVs  %s\\n\", money(sum(pv))))\ncat(sprintf(\"Less outlay  %s\\n\", money(initial)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"npv-calc-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"stakeholders <- data.frame(\n  who      = c(\"Kestrel Retail Group\", \"Daniel Cho (sponsor)\", \"MCS (motor supplier)\",\n               \"Internal QA\", \"Fibro Source (trim supplier)\"),\n  power    = c(9, 9, 5, 5, 2),\n  interest = c(8, 8, 7, 5, 2)\n)\n\nstakeholders$quadrant <- with(stakeholders, ifelse(\n  power >= 5 & interest >= 5, \"Manage closely\",\n  ifelse(power >= 5 & interest < 5, \"Keep satisfied\",\n  ifelse(power < 5 & interest >= 5, \"Keep informed\", \"Monitor\"))))\n\nprint(stakeholders, row.names = FALSE)\ncat(\"\\nChange the power/interest scores (1-10) for your own project's stakeholders\\n\")\ncat(\"and re-run -- the quadrant assignment updates automatically.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"stakeholder-score-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# A stakeholder asks to add a second body colourway \"while we're at it\".\nextra_design_hours   <- 60\nextra_tooling_cost   <- 28000\ndesigner_rate        <- 46\nindirect_rate        <- 0.35\nschedule_days_added  <- 9\npenalty_per_day_late <- 1500     # retailer contract clause\n\ndirect  <- extra_design_hours * designer_rate + extra_tooling_cost\nloaded  <- direct * (1 + indirect_rate)\nsched   <- schedule_days_added * penalty_per_day_late\n\nfmt <- function(x) paste0(\"$\", format(round(x), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nparts <- c(Direct = direct, Indirect = loaded - direct, \"Late penalty\" = sched)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(parts / 1000, col = c(\"#2980b9\", \"#8e44ad\", \"#e74c3c\"), ylim = c(0, max(parts / 1000) * 1.2), ylab = \"$ thousand\",\n              main = \"Where the cost of the change lands\")\ntext(bp, parts / 1000, labels = paste0(\"$\", round(parts / 1000, 1), \"k\"), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Total impact of one 'small' change: %s\\n\", fmt(loaded + sched)))\ncat(sprintf(\"Direct cost  %s\\n\", fmt(direct)))\ncat(sprintf(\"Fully burdened (x%.2f)  %s\\n\", 1 + indirect_rate, fmt(loaded)))\ncat(sprintf(\"Schedule penalty (%g days)  %s\\n\", schedule_days_added, fmt(sched)))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"scope-change-03","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2226,8 +2226,46 @@ Note
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="worked-example-1-payback-on-the-rc-vehicle-tooling-investment"><span class="header-section-number">3.3.2</span> Worked Example 1: payback on the RC-vehicle tooling investment</h3>
 <p>The project needs <strong>$450 000</strong> up front (tooling, setup, approvals). Once the 100 000-unit contract runs, it returns an estimated <strong>$180 000</strong> of net cash per year.</p>
 <p>Live cell — change the outlay, the annual cash flow, or the horizon.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="payback-example-03" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-clock-rotate-left qwebr-calc-icon"></i>
+    <h4 class="anchored">Payback Period Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-payback-example-03-initial">Initial outlay</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-payback-example-03-initial" data-var="initial" value="450000" min="10000" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-payback-example-03-annual-cf">Annual cash flow</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-payback-example-03-annual-cf" data-var="annual_cf" value="180000" min="10000" max="1000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-payback-example-03-horizon">Horizon (years) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-payback-example-03-horizon" id="qcalc-payback-example-03-horizon-readout">5</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-payback-example-03-horizon" data-var="horizon" value="5" min="1" max="10" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <p>Payback is quick to compute but ignores the <strong>time value of money</strong> and anything that happens after the payback point. NPV fixes both.</p>
 <p>The same story as a picture: the balance starts at $0, is spent down to <strong>-$450 000</strong> as tooling, setup, and approvals are paid for ahead of <strong>Start of Production (SOP)</strong>, then turns upward once production starts, as $180 000/year of net cash flow closes the gap until it crosses breakeven.</p>
 <div class="cell" data-layout-align="center">
@@ -2346,8 +2384,38 @@ Figure&nbsp;3.2: Discounted breakeven for Example 1. The dashed grey line is the
 </section>
 <section id="try-it-yourself-npv-of-the-project" class="level3" data-number="3.3.5">
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="try-it-yourself-npv-of-the-project"><span class="header-section-number">3.3.5</span> Try it yourself: NPV of the project</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="npv-calc-03" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-coins qwebr-calc-icon"></i>
+    <h4 class="anchored">NPV Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-npv-calc-03-initial">Initial outlay</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-npv-calc-03-initial" data-var="initial" value="450000" min="10000" max="2000000" step="10000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-npv-calc-03-r">Required rate of return <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-npv-calc-03-r" id="qcalc-npv-calc-03-r-readout">0.12</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-npv-calc-03-r" data-var="r" value="0.12" min="0" max="0.3" step="0.01">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 What happens to NPV if the hurdle rate rises to 18 %?
@@ -2461,8 +2529,71 @@ Figure&nbsp;3.3: Power-interest grid for the RC-vehicle project. Effort goes whe
 <p>Its usual causes are <strong>stakeholders changing requirements</strong> and <strong>internal miscommunication</strong>. It is <em>not always bad</em> — customer needs genuinely evolve, and refusing all change can deliver the wrong product. The problem is <strong>uncontrolled</strong> change. A good PM <strong>expects it and plans for it</strong> with a <strong>change-control process</strong>: every change request is logged, its impact on scope, schedule, and cost is assessed, and it is approved or rejected before work changes.</p>
 <section id="try-it-yourself-the-cost-of-an-innocent-change" class="level3" data-number="3.7.1">
 <h3 data-number="3.7.1" class="anchored" data-anchor-id="try-it-yourself-the-cost-of-an-innocent-change"><span class="header-section-number">3.7.1</span> Try it yourself: the cost of an “innocent” change</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="scope-change-03" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-file-circle-exclamation qwebr-calc-icon"></i>
+    <h4 class="anchored">Cost of a Scope Change</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-scope-change-03-extra-design-hours">Extra design hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-scope-change-03-extra-design-hours" data-var="extra_design_hours" value="60" min="0" max="400" step="5">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-scope-change-03-designer-rate">Designer rate</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-scope-change-03-designer-rate" data-var="designer_rate" value="46" min="10" max="150" step="1">
+        <span class="qwebr-calc-suffix">/ h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-scope-change-03-extra-tooling-cost">Extra tooling cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-scope-change-03-extra-tooling-cost" data-var="extra_tooling_cost" value="28000" min="0" max="200000" step="1000">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-scope-change-03-indirect-rate">Indirect rate</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-scope-change-03-indirect-rate" data-var="indirect_rate" value="0.35" min="0" max="1" step="0.05">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-scope-change-03-schedule-days-added">Schedule days added <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-scope-change-03-schedule-days-added" id="qcalc-scope-change-03-schedule-days-added-readout">9</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-scope-change-03-schedule-days-added" data-var="schedule_days_added" value="9" min="0" max="60" step="1">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-scope-change-03-penalty-per-day-late">Late penalty</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-scope-change-03-penalty-per-day-late" data-var="penalty_per_day_late" value="1500" min="0" max="10000" step="100">
+        <span class="qwebr-calc-suffix">/ day</span>
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="organizational-culture" class="level2" data-number="3.8">

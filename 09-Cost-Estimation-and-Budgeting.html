@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -414,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"designer_hours <- 220; designer_rate <- 46\njunior_hours   <- 120; junior_rate   <- 32\ndirect_materials <- 4500\nindirect_rate <- 0.35\n\ndirect_labour <- designer_hours * designer_rate + junior_hours * junior_rate\ndirect_cost   <- direct_labour + direct_materials\nindirect_cost <- indirect_rate * direct_cost\ntotal_cost    <- direct_cost + indirect_cost\n\ncat(\"Direct labour  :\", sprintf(\"$%s\", format(direct_labour, big.mark = \" \")), \"\\n\")\ncat(\"Direct materials:\", sprintf(\"$%s\", format(direct_materials, big.mark = \" \")), \"\\n\")\ncat(\"Direct cost    :\", sprintf(\"$%s\", format(direct_cost, big.mark = \" \")), \"\\n\")\ncat(\"Indirect (35%) :\", sprintf(\"$%s\", format(indirect_cost, big.mark = \" \")), \"\\n\")\ncat(\"-----\\n\")\ncat(\"Fully-burdened work-package cost:\",\n    sprintf(\"$%s\", format(round(total_cost), big.mark = \" \")), \"\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cost-wp-example-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"units             <- 120000\ncost_per_unit_CER <- 14.50      # $/unit, from archived projects\nfixed_project_cost<- 85000      # $, setup / PM / approvals\n\npoint_estimate <- units * cost_per_unit_CER + fixed_project_cost\n\nbands <- data.frame(\n  method   = c(\"Ballpark\", \"Parametric\", \"Feasibility\", \"Definitive\"),\n  accuracy = c(0.30,        0.15,         0.10,          0.05)\n)\nbands$low  <- round(point_estimate * (1 - bands$accuracy))\nbands$high <- round(point_estimate * (1 + bands$accuracy))\n\ncat(sprintf(\"Parametric point estimate: $%s\\n\\n\",\n            format(round(point_estimate), big.mark = \" \")))\nfor (i in seq_len(nrow(bands))) {\n  cat(sprintf(\"%-11s (+/- %2.0f%%):  $%s  ...  $%s\\n\",\n              bands$method[i], bands$accuracy[i] * 100,\n              format(bands$low[i],  big.mark = \" \"),\n              format(bands$high[i], big.mark = \" \")))\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"parametric-estimate-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# --- Step 3 & 4: cost the \"Assemble & test prototype\" activity from drivers ---\nlabour_rate   <- 38;  labour_hours   <- 160\nmachine_rate  <- 22;  machine_hours  <- 45\nmaterials     <- 2600\noverhead_rate <- 0.30            # 30% of direct\n\ndirect   <- labour_rate * labour_hours + machine_rate * machine_hours + materials\noverhead <- overhead_rate * direct\nplanned  <- direct + overhead\n\ncat(sprintf(\"Direct   : $%s\\n\", format(round(direct),   big.mark = \" \")))\ncat(sprintf(\"Overhead : $%s\\n\", format(round(overhead), big.mark = \" \")))\ncat(sprintf(\"Planned activity cost: $%s\\n\\n\", format(round(planned), big.mark = \" \")))\n\n# --- Variance: what actually happened ---\nactual <- 11800\nvariance <- planned - actual          # positive = under budget (favourable)\npct <- 100 * variance / planned\n\nverdict <- if (variance >= 0) \"UNDER budget (favourable)\" else \"OVER budget (unfavourable)\"\ncat(sprintf(\"Actual   : $%s\\n\", format(actual, big.mark = \" \")))\ncat(sprintf(\"Variance : $%s  (%.1f%%)  -> %s\\n\",\n            format(round(variance), big.mark = \" \"), pct, verdict))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"abc-activity-variance-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# --- Labour (annualised salaries prorated to a 7-month project = 7/12) ---\nmonths <- 7\npm_salary        <- 72000\nn_team           <- 4\nteam_salary_each <- 38000\nsundry_per_hour  <- 11\nsundry_hours     <- 1800          # total support hours booked to the project\n\nlabour <- (pm_salary + n_team * team_salary_each) * months / 12 +\n          sundry_per_hour * sundry_hours\n\n# --- Materials (one pick inside each brief range) ---\nmaterials <- c(\n  chassis_casting   = 55000,\n  fasteners         = 9000,\n  motor_controller  = 140000,\n  carbon_fibre      = 0,          # not selected this time\n  aluminium         = 85000,\n  welding           = 25000,\n  circuit_boards    = 32000,\n  gov_approval      = 6000,\n  testing           = 60000,\n  tooling           = 150000,\n  safety_equipment  = 50000,\n  packaging_shipping= 15000\n)\nmaterial_total <- sum(materials)\n\nsubtotal      <- labour + material_total\ncontingency_r <- 0.15\ncontingency   <- contingency_r * subtotal\ngrand_total   <- subtotal + contingency\n\ncat(sprintf(\"Labour subtotal      : $%s\\n\", format(round(labour),        big.mark = \" \")))\ncat(sprintf(\"Material subtotal     : $%s\\n\", format(round(material_total),big.mark = \" \")))\ncat(sprintf(\"Subtotal             : $%s\\n\", format(round(subtotal),      big.mark = \" \")))\ncat(sprintf(\"Contingency (%.0f%%)     : $%s\\n\", contingency_r * 100,\n            format(round(contingency), big.mark = \" \")))\ncat(sprintf(\"--------\\nGRAND TOTAL          : $%s\\n\",\n            format(round(grand_total), big.mark = \" \")))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rc-project-budget-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"designer_hours <- 220\ndesigner_rate  <- 46\njunior_hours   <- 120\njunior_rate    <- 32\ndirect_materials <- 4500\nindirect_rate <- 0.35\n\ndirect_labour <- designer_hours * designer_rate + junior_hours * junior_rate\ndirect_cost   <- direct_labour + direct_materials\nindirect_cost <- indirect_rate * direct_cost\ntotal_cost    <- direct_cost + indirect_cost\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nparts <- c(\"Direct labour\" = direct_labour, \"Direct materials\" = direct_materials, \"Indirect\" = indirect_cost)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(parts / 1000, col = c(\"#2980b9\", \"#16a085\", \"#8e44ad\"), ylim = c(0, max(parts / 1000) * 1.2), ylab = \"$ thousand\",\n              main = \"What makes up the work-package cost\")\ntext(bp, parts / 1000, labels = paste0(\"$\", round(parts / 1000, 1), \"k\"), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Fully-burdened work-package cost: %s\\n\", money(total_cost)))\ncat(sprintf(\"Direct labour  %s\\n\", money(direct_labour)))\ncat(sprintf(\"Direct materials  %s\\n\", money(direct_materials)))\ncat(sprintf(\"Direct cost  %s\\n\", money(direct_cost)))\ncat(sprintf(\"Indirect (%g%%)  %s\\n\", 100 * indirect_rate, money(indirect_cost)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cost-wp-example-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"units             <- 120000\ncost_per_unit_CER <- 14.50      # $/unit, from archived projects\nfixed_project_cost<- 85000      # $, setup / PM / approvals\n\npoint_estimate <- units * cost_per_unit_CER + fixed_project_cost\n\nbands <- data.frame(\n  method   = c(\"Ballpark\", \"Parametric\", \"Feasibility\", \"Definitive\"),\n  accuracy = c(0.30,        0.15,         0.10,          0.05)\n)\nbands$low  <- round(point_estimate * (1 - bands$accuracy))\nbands$high <- round(point_estimate * (1 + bands$accuracy))\n\nticks <- pretty(c(bands$low, bands$high), n = 3)\npar(mar = c(5, 13, 3, 3), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(NA, xlim = range(bands$low, bands$high), ylim = c(0.5, 4.5), yaxt = \"n\", xaxt = \"n\",\n     xlab = \"Estimate ($)\", ylab = \"\", main = \"Estimate accuracy band by method\")\nsegments(bands$low, 4:1, bands$high, 4:1, lwd = 10, lend = 1, col = \"#2980b9\")\naxis(1, at = ticks, labels = format(ticks, big.mark = \" \", scientific = FALSE, trim = TRUE))\naxis(2, at = 4:1, labels = bands$method, las = 1, tick = FALSE)\nabline(v = point_estimate, lty = 2, lwd = 2, col = \"#e74c3c\")\n\ncat(sprintf(\"Parametric point estimate: $%s\\n\", format(round(point_estimate), big.mark = \" \")))\nfor (i in seq_len(nrow(bands))) {\n  cat(sprintf(\"%s (+/- %.0f%%)  $%s to $%s\\n\", bands$method[i], bands$accuracy[i] * 100,\n              format(bands$low[i], big.mark = \" \"), format(bands$high[i], big.mark = \" \")))\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"parametric-estimate-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# --- Step 3 & 4: cost the \"Assemble & test prototype\" activity from drivers ---\nlabour_rate   <- 38\nlabour_hours  <- 160\nmachine_rate  <- 22\nmachine_hours <- 45\nmaterials     <- 2600\noverhead_rate <- 0.30            # 30% of direct\n\ndirect   <- labour_rate * labour_hours + machine_rate * machine_hours + materials\noverhead <- overhead_rate * direct\nplanned  <- direct + overhead\n\n# --- Variance: what actually happened ---\nactual <- 11800\nvariance <- planned - actual          # positive = under budget (favourable)\npct <- 100 * variance / planned\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(c(Planned = planned, Actual = actual) / 1000, col = c(\"#2980b9\", if (variance >= 0) \"#16a085\" else \"#e74c3c\"),\n              ylim = c(0, max(planned, actual) / 1000 * 1.2), ylab = \"$ thousand\",\n              main = \"Planned vs. actual activity cost\")\ntext(bp, c(planned, actual) / 1000, labels = paste0(\"$\", round(c(planned, actual) / 1000, 1), \"k\"), pos = 3, cex = 1.3)\n\nif (variance >= 0) {\n  cat(sprintf(\"Variance %s (%+.1f%%): UNDER budget (favourable)\\n\", money(variance), pct))\n} else {\n  cat(sprintf(\"Variance %s (%+.1f%%): !!OVER budget (unfavourable)!!\\n\", money(variance), pct))\n}\ncat(sprintf(\"Direct  %s\\n\", money(direct)))\ncat(sprintf(\"Overhead  %s\\n\", money(overhead)))\ncat(sprintf(\"Planned activity cost  %s\\n\", money(planned)))\ncat(sprintf(\"Actual  %s\\n\", money(actual)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"abc-activity-variance-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# --- Labour (annualised salaries prorated to a 7-month project = 7/12) ---\nmonths <- 7\npm_salary        <- 72000\nn_team           <- 4\nteam_salary_each <- 38000\nsundry_per_hour  <- 11\nsundry_hours     <- 1800          # total support hours booked to the project\n\nlabour <- (pm_salary + n_team * team_salary_each) * months / 12 +\n          sundry_per_hour * sundry_hours\n\n# --- Materials (one pick inside each brief range) ---\nmaterials <- c(\n  chassis_casting   = 55000,\n  fasteners         = 9000,\n  motor_controller  = 140000,\n  carbon_fibre      = 0,          # not selected this time\n  aluminium         = 85000,\n  welding           = 25000,\n  circuit_boards    = 32000,\n  gov_approval      = 6000,\n  testing           = 60000,\n  tooling           = 150000,\n  safety_equipment  = 50000,\n  packaging_shipping= 15000\n)\nmaterial_total <- sum(materials)\n\nsubtotal      <- labour + material_total\ncontingency_r <- 0.15\ncontingency   <- contingency_r * subtotal\ngrand_total   <- subtotal + contingency\n\ncharter_ceiling <- 800000         # what Senior Management has authorised\nheadroom <- charter_ceiling - grand_total\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nstack <- matrix(c(labour, material_total, contingency) / 1000, ncol = 1)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack, col = c(\"#2980b9\", \"#16a085\", \"#e67e22\"), xlim = c(0, 2.6),\n        ylim = c(0, max(grand_total, charter_ceiling) / 1000 * 1.1), names.arg = \"Budget\",\n        ylab = \"$ thousand\", main = \"Budget vs. ceiling\")\nmids <- cumsum(stack) - stack / 2\ntext(0.7, mids, c(\"Labour\", \"Materials\", \"Contingency\"), col = \"white\", cex = 1.2)\nabline(h = charter_ceiling / 1000, lty = 2, lwd = 3, col = \"#e74c3c\")\ntext(2.2, charter_ceiling / 1000, \"Ceiling\", pos = 3, col = \"#e74c3c\", cex = 1.2)\n\ncat(sprintf(\"GRAND TOTAL %s\\n\", money(grand_total)))\nif (headroom >= 0) {\n  cat(sprintf(\"Versus the %s ceiling  %s headroom\\n\", money(charter_ceiling), money(headroom)))\n} else {\n  cat(sprintf(\"Versus the %s ceiling  !!%s over!!\\n\", money(charter_ceiling), money(-headroom)))\n}\ncat(sprintf(\"Labour subtotal  %s\\n\", money(labour)))\ncat(sprintf(\"Material subtotal  %s\\n\", money(material_total)))\ncat(sprintf(\"Subtotal  %s\\n\", money(subtotal)))\ncat(sprintf(\"Contingency (%g%%)  %s\\n\", contingency_r * 100, money(contingency)))","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rc-project-budget-09","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2359,8 +2359,72 @@ Table&nbsp;9.1: The four cost dichotomies (eight types).
 <h3 data-number="9.4.2" class="anchored" data-anchor-id="worked-example-1-fully-burdened-cost-of-a-work-package"><span class="header-section-number">9.4.2</span> Worked Example 1: fully-burdened cost of a work package</h3>
 <p>The “Design body &amp; frame” work package needs <strong>1 mechanical designer for 220 h</strong> at $46/h and <strong>1 junior engineer for 120 h</strong> at $32/h. Direct materials for prototypes are $4 500. The company applies indirect cost at <strong>35 %</strong> of direct cost.</p>
 <p>Live cell — change the hours, rates, materials, or the indirect rate.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="cost-wp-example-09" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-calculator qwebr-calc-icon"></i>
+    <h4 class="anchored">Work-Package Cost Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cost-wp-example-09-designer-hours">Designer hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-cost-wp-example-09-designer-hours" data-var="designer_hours" value="220" min="0" max="1000" step="10">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cost-wp-example-09-designer-rate">Designer rate</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cost-wp-example-09-designer-rate" data-var="designer_rate" value="46" min="10" max="150" step="1">
+        <span class="qwebr-calc-suffix">/ h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cost-wp-example-09-junior-hours">Junior hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-cost-wp-example-09-junior-hours" data-var="junior_hours" value="120" min="0" max="1000" step="10">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cost-wp-example-09-junior-rate">Junior rate</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cost-wp-example-09-junior-rate" data-var="junior_rate" value="32" min="10" max="150" step="1">
+        <span class="qwebr-calc-suffix">/ h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-cost-wp-example-09-direct-materials">Direct materials</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-cost-wp-example-09-direct-materials" data-var="direct_materials" value="4500" min="0" max="50000" step="100">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-cost-wp-example-09-indirect-rate">Indirect rate <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-cost-wp-example-09-indirect-rate" id="qcalc-cost-wp-example-09-indirect-rate-readout">0.35</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-cost-wp-example-09-indirect-rate" data-var="indirect_rate" value="0.35" min="0" max="1" step="0.05">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Practice: classify the cost (from the MGMT-3105 budgeting case study)
@@ -2548,8 +2612,47 @@ Figure&nbsp;9.1: The cone of uncertainty. Early estimates can be off by +/- 30 %
 <section id="try-it-yourself-parametric-estimate-and-the-accuracy-band" class="level3" data-number="9.5.1">
 <h3 data-number="9.5.1" class="anchored" data-anchor-id="try-it-yourself-parametric-estimate-and-the-accuracy-band"><span class="header-section-number">9.5.1</span> Try it yourself: parametric estimate and the accuracy band</h3>
 <p>A <strong>parametric</strong> estimate uses a cost-estimating relationship (CER) from history — for example, “past RC-vehicle projects cost about $14.50 per assembled part plus $85 000 of fixed project cost.” The live cell builds the estimate and shows the band each method would put around it.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="parametric-estimate-09" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-chart-line qwebr-calc-icon"></i>
+    <h4 class="anchored">Parametric Estimate &amp; Accuracy Bands</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-parametric-estimate-09-units">Units produced <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-parametric-estimate-09-units" id="qcalc-parametric-estimate-09-units-readout">120 000</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-parametric-estimate-09-units" data-var="units" value="120000" min="10000" max="500000" step="10000">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-parametric-estimate-09-cost-per-unit-CER">Cost per unit (CER)</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-parametric-estimate-09-cost-per-unit-CER" data-var="cost_per_unit_CER" value="14.5" min="1" max="50" step="0.5">
+        <span class="qwebr-calc-suffix">/ unit</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-parametric-estimate-09-fixed-project-cost">Fixed project cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-parametric-estimate-09-fixed-project-cost" data-var="fixed_project_cost" value="85000" min="0" max="500000" step="5000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 Why quote a range at all — why not just give “the number”?
@@ -2759,8 +2862,82 @@ Table&nbsp;9.4: Preliminary ABC budget: direct vs. overhead by activity.
 <section id="try-it-yourself-cost-an-activity-then-a-variance" class="level3" data-number="9.8.2">
 <h3 data-number="9.8.2" class="anchored" data-anchor-id="try-it-yourself-cost-an-activity-then-a-variance"><span class="header-section-number">9.8.2</span> Try it yourself: cost an activity, then a variance</h3>
 <p>The live cell costs a single activity from its drivers, then compares planned vs.&nbsp;actual to get the <strong>variance</strong>. Change the rates, hours, or actuals.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="abc-activity-variance-09" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-scale-unbalanced qwebr-calc-icon"></i>
+    <h4 class="anchored">Activity Cost &amp; Variance Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-labour-rate">Labour rate</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-abc-activity-variance-09-labour-rate" data-var="labour_rate" value="38" min="10" max="150" step="1">
+        <span class="qwebr-calc-suffix">/ h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-labour-hours">Labour hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-abc-activity-variance-09-labour-hours" data-var="labour_hours" value="160" min="0" max="800" step="5">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-machine-rate">Machine rate</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-abc-activity-variance-09-machine-rate" data-var="machine_rate" value="22" min="5" max="150" step="1">
+        <span class="qwebr-calc-suffix">/ h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-machine-hours">Machine hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-abc-activity-variance-09-machine-hours" data-var="machine_hours" value="45" min="0" max="400" step="5">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-materials">Materials</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-abc-activity-variance-09-materials" data-var="materials" value="2600" min="0" max="20000" step="100">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-overhead-rate">Overhead rate</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-abc-activity-variance-09-overhead-rate" data-var="overhead_rate" value="0.3" min="0" max="1" step="0.05">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-abc-activity-variance-09-actual">Actual activity cost</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-abc-activity-variance-09-actual" data-var="actual" value="11800" min="0" max="30000" step="100">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2851,8 +3028,79 @@ Table&nbsp;9.5: Contingency reserve vs. management reserve.
 <section id="try-it-yourself-build-the-rc-vehicle-project-budget" class="level3" data-number="9.10.1">
 <h3 data-number="9.10.1" class="anchored" data-anchor-id="try-it-yourself-build-the-rc-vehicle-project-budget"><span class="header-section-number">9.10.1</span> Try it yourself: build the RC-vehicle project budget</h3>
 <p>The live cell builds a rough <strong>bottom-up</strong> budget from the project brief’s ranges (using a pick inside each range), rolls up labour and materials, and adds a contingency. Change the picks or the contingency rate and watch the total — then check it against what Senior Management is likely to approve.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="rc-project-budget-09" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-sack-dollar qwebr-calc-icon"></i>
+    <h4 class="anchored">RC-Vehicle Project Budget Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-months">Project length</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rc-project-budget-09-months" data-var="months" value="7" min="1" max="24" step="1">
+        <span class="qwebr-calc-suffix">months</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-pm-salary">Project manager salary</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-rc-project-budget-09-pm-salary" data-var="pm_salary" value="72000" min="30000" max="150000" step="1000">
+        <span class="qwebr-calc-suffix">/ yr</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-n-team">Team members</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rc-project-budget-09-n-team" data-var="n_team" value="4" min="0" max="12" step="1">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-team-salary-each">Salary per team member</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-rc-project-budget-09-team-salary-each" data-var="team_salary_each" value="38000" min="20000" max="120000" step="1000">
+        <span class="qwebr-calc-suffix">/ yr</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-sundry-hours">Support hours booked</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-rc-project-budget-09-sundry-hours" data-var="sundry_hours" value="1800" min="0" max="6000" step="100">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rc-project-budget-09-contingency-r">Contingency rate <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rc-project-budget-09-contingency-r" id="qcalc-rc-project-budget-09-contingency-r-readout">0.15</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rc-project-budget-09-contingency-r" data-var="contingency_r" value="0.15" min="0" max="0.5" step="0.01">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-rc-project-budget-09-charter-ceiling">Senior-management ceiling</label>
+      <div class="qwebr-calc-field">
+        <span class="qwebr-calc-prefix">$</span>
+        <input type="number" id="qcalc-rc-project-budget-09-charter-ceiling" data-var="charter_ceiling" value="800000" min="300000" max="1500000" step="10000">
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 <details>
 <summary>
 How would top-down vs.&nbsp;bottom-up change this number?

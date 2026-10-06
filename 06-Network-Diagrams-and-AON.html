@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -414,7 +414,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# The ten activities: id, duration, and comma-separated predecessors.\nacts <- data.frame(\n  id = LETTERS[1:10],\n  dur = c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5),\n  pred = c(\"\", \"A\", \"B\", \"A\", \"C\", \"C\", \"D,E\", \"F\", \"G\", \"H,I\"),\n  stringsAsFactors = FALSE\n)\n\n# A small critical-path solver (base R only).\ncpm <- function(df) {\n  df$pred <- strsplit(df$pred, \",\")\n  n <- nrow(df); id <- df$id\n  ES <- EF <- LS <- LF <- setNames(rep(NA_real_, n), id)\n\n  # Forward pass (ids are already in a valid topological order here)\n  for (i in seq_len(n)) {\n    p <- df$pred[[i]]; p <- p[p != \"\"]\n    ES[i] <- if (length(p) == 0) 0 else max(EF[p])\n    EF[i] <- ES[i] + df$dur[i]\n  }\n  proj <- max(EF)\n\n  # Backward pass\n  for (i in rev(seq_len(n))) {\n    succ <- id[sapply(df$pred, function(pp) id[i] %in% pp)]\n    LF[i] <- if (length(succ) == 0) proj else min(LS[succ])\n    LS[i] <- LF[i] - df$dur[i]\n  }\n\n  data.frame(Activity = id, Dur = df$dur,\n             ES = ES, EF = EF, LS = LS, LF = LF,\n             Float = LS - ES,\n             Critical = ifelse(LS - ES == 0, \"  <- critical\", \"\"))\n}\n\nres <- cpm(acts)\nprint(res, row.names = FALSE)\ncat(sprintf(\"\\nProject duration: %d days\\n\", max(res$EF)))\ncat(\"Critical path:\", paste(res$Activity[res$Float == 0], collapse = \" - \"), \"\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cpm-solve-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"tasks <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ntasks$te <- round((tasks$o + 4 * tasks$m + tasks$p) / 6, 2)\ntasks$sd <- round((tasks$p - tasks$o) / 6, 2)   # activity standard deviation\n\nprint(tasks, row.names = FALSE)\ncat(sprintf(\"\\nSum of expected durations along this chain: %.2f days\\n\", sum(tasks$te)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-te-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# All start-to-finish paths through the sub-project network, with activity durations.\ndur <- c(A = 5, B = 8, C = 3, D = 4, E = 5, F = 7, G = 6, H = 8, I = 6, J = 5)\n\npaths <- list(\n  \"A-B-C-E-G-I-J\" = c(\"A\",\"B\",\"C\",\"E\",\"G\",\"I\",\"J\"),\n  \"A-B-C-F-H-J\"   = c(\"A\",\"B\",\"C\",\"F\",\"H\",\"J\"),\n  \"A-D-G-I-J\"     = c(\"A\",\"D\",\"G\",\"I\",\"J\")\n)\n\npath_len <- sapply(paths, function(p) sum(dur[p]))\ncat(\"Baseline path lengths:\\n\"); print(path_len)\ncat(sprintf(\"Critical path: %s (%d days)\\n\\n\", names(which.max(path_len)), max(path_len)))\n\n# Now crash B from 8 to 5 days and re-check:\ndur[\"B\"] <- 5\npath_len2 <- sapply(paths, function(p) sum(dur[p]))\ncat(\"After crashing B by 3 days:\\n\"); print(path_len2)\ncat(sprintf(\"New critical path: %s (%d days)\\n\", names(which.max(path_len2)), max(path_len2)))\ncat(\"Note how the critical path can *shift* to a different chain once you crash enough.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"path-duration-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"dur  <- c(A = 10, B = 8, C = 20, D = 15, E = 25, F = 6, G = 5, H = 12, I = 4, J = 2)\npred <- list(A = c(), B = \"A\", C = \"B\", D = \"B\", E = \"B\",\n             F = c(\"C\", \"D\", \"E\"), G = \"F\", H = \"F\", I = c(\"G\", \"H\"), J = \"I\")\n\nproject_duration <- function(dur, pred) {\n  id <- names(dur)\n  EF <- setNames(rep(NA_real_, length(id)), id)\n  for (a in id) {\n    p  <- pred[[a]]\n    ES <- if (length(p) == 0) 0 else max(EF[p])\n    EF[a] <- ES + dur[a]\n  }\n  max(EF)\n}\n\nbaseline <- project_duration(dur, pred)\ncat(sprintf(\"Baseline project duration: %d days\\n\\n\", baseline))\n\ncat(\"Add 2 days to one activity at a time and see what happens to the finish date:\\n\")\nfor (a in names(dur)) {\n  bumped  <- dur; bumped[a] <- bumped[a] + 2\n  new_dur <- project_duration(bumped, pred)\n  impact  <- new_dur - baseline\n  cat(sprintf(\"  +2 days to %s  ->  finish moves by %d day(s)%s\\n\",\n              a, impact, if (impact == 0) \"  (has float -- absorbed)\" else \"  <- CRITICAL\"))\n}","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"float-sensitivity-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"# The ten activities: id, duration, and comma-separated predecessors.\nacts <- data.frame(\n  id = LETTERS[1:10],\n  dur = c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5),\n  pred = c(\"\", \"A\", \"B\", \"A\", \"C\", \"C\", \"D,E\", \"F\", \"G\", \"H,I\"),\n  stringsAsFactors = FALSE\n)\n\n# A small critical-path solver (base R only).\ncpm <- function(df) {\n  df$pred <- strsplit(df$pred, \",\")\n  n <- nrow(df); id <- df$id\n  ES <- EF <- LS <- LF <- setNames(rep(NA_real_, n), id)\n\n  # Forward pass (ids are already in a valid topological order here)\n  for (i in seq_len(n)) {\n    p <- df$pred[[i]]; p <- p[p != \"\"]\n    ES[i] <- if (length(p) == 0) 0 else max(EF[p])\n    EF[i] <- ES[i] + df$dur[i]\n  }\n  proj <- max(EF)\n\n  # Backward pass\n  for (i in rev(seq_len(n))) {\n    succ <- id[sapply(df$pred, function(pp) id[i] %in% pp)]\n    LF[i] <- if (length(succ) == 0) proj else min(LS[succ])\n    LS[i] <- LF[i] - df$dur[i]\n  }\n\n  data.frame(Activity = id, Dur = df$dur,\n             ES = ES, EF = EF, LS = LS, LF = LF,\n             Float = LS - ES,\n             Critical = ifelse(LS - ES == 0, \"  <- critical\", \"\"))\n}\n\nres <- cpm(acts)\nprint(res, row.names = FALSE)\ncat(sprintf(\"\\nProject duration: %d days\\n\", max(res$EF)))\ncat(\"Critical path:\", paste(res$Activity[res$Float == 0], collapse = \" - \"), \"\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"cpm-solve-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"tasks <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ntasks$te <- round((tasks$o + 4 * tasks$m + tasks$p) / 6, 2)\ntasks$sd <- round((tasks$p - tasks$o) / 6, 2)   # activity standard deviation\n\nprint(tasks, row.names = FALSE)\ncat(sprintf(\"\\nSum of expected durations along this chain: %.2f days\\n\", sum(tasks$te)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-te-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"b_crashed_days <- 5    # B crashed from its normal 8 days\ne_crashed_days <- 5    # E crashed from its normal 5 days (5 = not crashed)\n\n# All start-to-finish paths through the sub-project network, with activity durations.\ndur <- c(A = 5, B = 8, C = 3, D = 4, E = 5, F = 7, G = 6, H = 8, I = 6, J = 5)\n\npaths <- list(\n  \"A-B-C-E-G-I-J\" = c(\"A\",\"B\",\"C\",\"E\",\"G\",\"I\",\"J\"),\n  \"A-B-C-F-H-J\"   = c(\"A\",\"B\",\"C\",\"F\",\"H\",\"J\"),\n  \"A-D-G-I-J\"     = c(\"A\",\"D\",\"G\",\"I\",\"J\")\n)\n\npath_len <- sapply(paths, function(p) sum(dur[p]))\n\n# Now crash B and E and re-check:\ndur[\"B\"] <- b_crashed_days\ndur[\"E\"] <- e_crashed_days\npath_len2 <- sapply(paths, function(p) sum(dur[p]))\n\ncrit_before <- names(which.max(path_len))\ncrit_after  <- names(which.max(path_len2))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(rbind(path_len, path_len2), beside = TRUE, names.arg = paste(\"Path\", 1:3), col = c(\"#bdc3c7\", \"#2980b9\"), ylab = \"Path length (days)\",\n              ylim = c(0, max(path_len, path_len2) * 1.25), main = \"Path length: before (grey), after (blue)\")\n\ncat(sprintf(\"New critical path: %s (%g days)\n\", crit_after, max(path_len2)))\ncat(sprintf(\"Critical path shifted?  %s\n\", if (crit_before != crit_after) \"Yes, to a different chain\" else \"No, same chain\"))\nfor (i in seq_along(paths)) {\n  cat(sprintf(\"Path %d: %s  %g d -> %g d\n\", i, names(paths)[i], path_len[i], path_len2[i]))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"path-duration-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"bump_days <- 2    # delay added to one activity at a time\nc_days    <- 20\ne_days    <- 25\n\ndur  <- c(A = 10, B = 8, C = c_days, D = 15, E = e_days, F = 6, G = 5, H = 12, I = 4, J = 2)\npred <- list(A = c(), B = \"A\", C = \"B\", D = \"B\", E = \"B\",\n             F = c(\"C\", \"D\", \"E\"), G = \"F\", H = \"F\", I = c(\"G\", \"H\"), J = \"I\")\n\nproject_duration <- function(dur, pred) {\n  id <- names(dur)\n  EF <- setNames(rep(NA_real_, length(id)), id)\n  for (a in id) {\n    p  <- pred[[a]]\n    ES <- if (length(p) == 0) 0 else max(EF[p])\n    EF[a] <- ES + dur[a]\n  }\n  max(EF)\n}\n\nbaseline <- project_duration(dur, pred)\n\n# Add the delay to one activity at a time and see what happens to the finish date.\nimpact <- setNames(numeric(length(dur)), names(dur))\nfor (a in names(dur)) {\n  bumped  <- dur; bumped[a] <- bumped[a] + bump_days\n  impact[a] <- project_duration(bumped, pred) - baseline\n}\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(impact, col = ifelse(impact > 0, \"#e74c3c\", \"#bdc3c7\"), xlab = \"Activity delayed\", ylab = \"Finish-date slip (days)\",\n        main = paste(\"Effect of a\", bump_days, \"day delay on the finish\"))\n\ncat(sprintf(\"Baseline project duration: %g days\\n\", baseline))\ncat(sprintf(\"Critical activities  %s\\n\", paste(names(impact)[impact > 0], collapse = \", \")))\nfor (a in names(dur)) {\n  cat(sprintf(\"+%g days to %s  finish moves %g day(s)%s\\n\", bump_days, a, impact[a],\n              if (impact[a] == 0) \" (float absorbs it)\" else \" (CRITICAL)\"))\n}","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"float-sensitivity-06","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2879,14 +2879,83 @@ Why the weight of 4 on the most-likely value?
 </ol>
 <section id="try-it-yourself-recompute-the-critical-path-after-a-change" class="level3" data-number="6.7.1">
 <h3 data-number="6.7.1" class="anchored" data-anchor-id="try-it-yourself-recompute-the-critical-path-after-a-change"><span class="header-section-number">6.7.1</span> Try it yourself: recompute the critical path after a change</h3>
+<p>Try it — crash B as far as you like: both long chains share it, so the critical path stays put. Then drag E’s crashed duration down and watch the critical path flip to the other chain.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="path-duration-06" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-route qwebr-calc-icon"></i>
+    <h4 class="anchored">Critical-Path Shift Explorer</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-path-duration-06-b-crashed-days">Activity B crashed to (normally 8)</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-path-duration-06-b-crashed-days" data-var="b_crashed_days" value="5" min="1" max="8" step="1">
+        <span class="qwebr-calc-suffix">days</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-path-duration-06-e-crashed-days">Activity E crashed to (normally 5) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-path-duration-06-e-crashed-days" id="qcalc-path-duration-06-e-crashed-days-readout">5</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-path-duration-06-e-crashed-days" data-var="e_crashed_days" value="5" min="1" max="5" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 <section id="try-it-yourself-which-activities-actually-threaten-the-finish-date" class="level3" data-number="6.7.2">
 <h3 data-number="6.7.2" class="anchored" data-anchor-id="try-it-yourself-which-activities-actually-threaten-the-finish-date"><span class="header-section-number">6.7.2</span> Try it yourself: which activities actually threaten the finish date?</h3>
-<p>Float answers this precisely: bump every activity by the same 2 days, one at a time, and see which ones move the finish date and which get absorbed. This is the Week 6 Meridian network from the case study below. Live cell — change a duration or the network and re-run.</p>
+<p>Float answers this precisely: bump every activity by the same 2 days, one at a time, and see which ones move the finish date and which get absorbed. This is the Week 6 Meridian network from the case study below. Live cell — drag the delay, or lengthen C or E, and watch which activities threaten the finish date.</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="float-sensitivity-06" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-gauge-high qwebr-calc-icon"></i>
+    <h4 class="anchored">Float Sensitivity Explorer</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-float-sensitivity-06-bump-days">Delay added to each activity <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-float-sensitivity-06-bump-days" id="qcalc-float-sensitivity-06-bump-days-readout">2</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-float-sensitivity-06-bump-days" data-var="bump_days" value="2" min="1" max="20" step="1">
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-float-sensitivity-06-c-days">Activity C duration</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-float-sensitivity-06-c-days" data-var="c_days" value="20" min="1" max="40" step="1">
+        <span class="qwebr-calc-suffix">days</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-float-sensitivity-06-e-days">Activity E duration</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-float-sensitivity-06-e-days" data-var="e_days" value="25" min="1" max="40" step="1">
+        <span class="qwebr-calc-suffix">days</span>
+      </div>
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="from-network-to-gantt-chart" class="level2" data-number="6.8">

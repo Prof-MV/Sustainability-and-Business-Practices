@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -412,7 +412,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"running_day12 <- data.frame(\n  task = c(\"D\", \"E\", \"H\", \"J\"),\n  float = c(12, 0, 0, 5),\n  duration = c(6, 6, 7, 3),\n  successors = c(1, 2, 1, 0),\n  people = c(3, 3, 3, 1)\n)\nprint(running_day12, row.names = FALSE)\n\n# Only tasks with float can move without extending the project.\nmovable <- running_day12[running_day12$float > 0, ]\n# Among movable tasks, prefer smallest float, then smallest duration.\npick <- movable[order(movable$float, movable$duration), ][1, ]\ncat(sprintf(\"\\nMovable tasks: %s\\n\", paste(movable$task, collapse = \", \")))\ncat(sprintf(\"Move first: task %s (float %d, duration %d) -- shift it later within its slack.\\n\",\n            pick$task, pick$float, pick$duration))\ncat(\"E and H are on the critical path (float 0) -- moving them would extend the project.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leveling-example-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Weekly demand for one resource, and the resource's weekly limit.\nweekly_demand <- c(52, 30, 61, 24, 45, 20, 58)\nlimit <- 45\n\npeak <- max(weekly_demand)\ntotal_work <- sum(weekly_demand)\nweeks <- length(weekly_demand)\nideal_flat <- total_work / weeks\n\ncat(sprintf(\"Peak week demand   : %d  (limit %d -> %d over)\\n\", peak, limit, max(0, peak - limit)))\ncat(sprintf(\"Total work         : %d resource-weeks over %d weeks\\n\", total_work, weeks))\ncat(sprintf(\"Perfectly smooth   : %.1f per week\\n\", ideal_flat))\n\nif (ideal_flat <= limit) {\n  cat(\"\\nThe work FITS within the limit if spread evenly -> smoothing can solve this\\n\")\n  cat(\"by shifting tasks into their float, no schedule change needed.\\n\")\n} else {\n  cat(sprintf(\"\\nEven perfectly smoothed (%.1f/wk) still exceeds the limit -> this needs\\n\", ideal_flat))\n  cat(\"leveling (extend duration) or more resource, not just smoothing.\\n\")\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"smoothing-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"nominal_hours <- 40\n# Each additional concurrent project imposes a context-switching loss.\nswitch_loss_per_extra_project <- 0.15   # 15% of capacity lost per extra project\n\nfor (projects in 1:4) {\n  extras <- projects - 1\n  effective <- nominal_hours * (1 - switch_loss_per_extra_project * extras)\n  effective <- max(effective, 0)\n  cat(sprintf(\"On %d project(s): %.0f 'nominal' hours -> %.1f effective hours (%.0f%% productive)\\n\",\n              projects, nominal_hours, effective, 100 * effective / nominal_hours))\n}\ncat(\"\\nAssigning a person to a project at '40 hours' while they carry two others\\n\")\ncat(\"is really assigning maybe 28 -- which is how resource-leveled plans still slip.\\n\")","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"multitask-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"running_day12 <- data.frame(\n  task = c(\"D\", \"E\", \"H\", \"J\"),\n  float = c(12, 0, 0, 5),\n  duration = c(6, 6, 7, 3),\n  successors = c(1, 2, 1, 0),\n  people = c(3, 3, 3, 1)\n)\nprint(running_day12, row.names = FALSE)\n\n# Only tasks with float can move without extending the project.\nmovable <- running_day12[running_day12$float > 0, ]\n# Among movable tasks, prefer smallest float, then smallest duration.\npick <- movable[order(movable$float, movable$duration), ][1, ]\ncat(sprintf(\"\\nMovable tasks: %s\\n\", paste(movable$task, collapse = \", \")))\ncat(sprintf(\"Move first: task %s (float %d, duration %d) -- shift it later within its slack.\\n\",\n            pick$task, pick$float, pick$duration))\ncat(\"E and H are on the critical path (float 0) -- moving them would extend the project.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leveling-example-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Weekly demand for one resource, and the resource's weekly limit.\nweekly_demand <- c(52, 30, 61, 24, 45, 20, 58)\nlimit <- 45\n\npeak <- max(weekly_demand)\ntotal_work <- sum(weekly_demand)\nweeks <- length(weekly_demand)\nideal_flat <- total_work / weeks\n\ncat(sprintf(\"Peak week demand   : %d  (limit %d -> %d over)\\n\", peak, limit, max(0, peak - limit)))\ncat(sprintf(\"Total work         : %d resource-weeks over %d weeks\\n\", total_work, weeks))\ncat(sprintf(\"Perfectly smooth   : %.1f per week\\n\", ideal_flat))\n\nif (ideal_flat <= limit) {\n  cat(\"\\nThe work FITS within the limit if spread evenly -> smoothing can solve this\\n\")\n  cat(\"by shifting tasks into their float, no schedule change needed.\\n\")\n} else {\n  cat(sprintf(\"\\nEven perfectly smoothed (%.1f/wk) still exceeds the limit -> this needs\\n\", ideal_flat))\n  cat(\"leveling (extend duration) or more resource, not just smoothing.\\n\")\n}","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"smoothing-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"nominal_hours <- 40\n# Each additional concurrent project imposes a context-switching loss.\nswitch_loss_per_extra_project <- 0.15   # 15% of capacity lost per extra project\nprojects_carried <- 3\n\neffective_hours <- function(projects) {\n  extras <- projects - 1\n  max(nominal_hours * (1 - switch_loss_per_extra_project * extras), 0)\n}\n\ncounts <- 1:6\neff <- sapply(counts, effective_hours)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(eff, names.arg = counts, ylim = c(0, nominal_hours * 1.1),\n              col = ifelse(counts == projects_carried, \"#e74c3c\", \"#2980b9\"),\n              xlab = \"Projects carried at once\", ylab = \"Effective hours per week\",\n              main = \"Nominal hours are not effective hours\")\nabline(h = nominal_hours, lty = 2, lwd = 2, col = \"#7f8c8d\")\n\nnow <- effective_hours(projects_carried)\ncat(sprintf(\"On %g project(s): %.1f effective hours of %g (%.0f%% productive)\\n\",\n            projects_carried, now, nominal_hours, 100 * now / nominal_hours))\nfor (projects in counts) {\n  cat(sprintf(\"On %d project(s)  %.1f effective hours (%.0f%% productive)\\n\",\n              projects, eff[projects], 100 * eff[projects] / nominal_hours))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"multitask-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -2301,8 +2301,45 @@ Figure&nbsp;11.2: Resource utilization across a project. The shaded area is capa
 </section>
 <section id="try-it-yourself-40-hours-is-not-one-weeks-work" class="level3" data-number="11.8.2">
 <h3 data-number="11.8.2" class="anchored" data-anchor-id="try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.2</span> Try it yourself: “40 hours is not one week’s work”</h3>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card" data-qwebr-label="multitask-11" data-fig-width="1200" data-fig-height="700">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-layer-group qwebr-calc-icon"></i>
+    <h4 class="anchored">Multitasking Capacity Calculator</h4>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-row">
+      <label for="qcalc-multitask-11-nominal-hours">Nominal weekly hours</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-multitask-11-nominal-hours" data-var="nominal_hours" value="40" min="10" max="60" step="1">
+        <span class="qwebr-calc-suffix">h</span>
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row">
+      <label for="qcalc-multitask-11-switch-loss-per-extra-project">Capacity lost per extra project</label>
+      <div class="qwebr-calc-field">
+        <input type="number" id="qcalc-multitask-11-switch-loss-per-extra-project" data-var="switch_loss_per_extra_project" value="0.15" min="0" max="0.3" step="0.01">
+      </div>
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-multitask-11-projects-carried">Projects carried at once <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-multitask-11-projects-carried" id="qcalc-multitask-11-projects-carried-readout">3</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-multitask-11-projects-carried" data-var="projects_carried" value="3" min="1" max="6" step="1">
+    </div>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this calculator
+</summary>
+<p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
 </section>
 </section>
 <section id="sustainability-and-resources" class="level2" data-number="11.9">
