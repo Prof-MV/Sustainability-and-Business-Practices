@@ -144,7 +144,9 @@ qwebr_calc_card(
     qwebr_calc_input("colourway_revenue_at_risk", "Revenue lost by cutting scope", value = 62000, min = 0, max = 300000, step = 1000, prefix = "$"),
     qwebr_calc_input("skip_test_prob_failure", "Chance a defect escapes", value = 0.08, min = 0, max = 1, step = 0.01),
     qwebr_calc_input("field_failure_cost", "Cost if it does", value = 240000, min = 0, max = 1000000, step = 10000, prefix = "$")
-  )
+  ),
+  goal = "Find the chance of a defect escaping at which skipping the test stops being the cheapest option.",
+  goal_test = "expected_quality_cost > min(cost_of_holding_scope, colourway_revenue_at_risk)"
 )
 ```
 
@@ -399,6 +401,45 @@ for (extra in 0:4) {
 
 </details>
 
+### Try it yourself: a merger by hand
+
+A team is about to take on extra people. Work out how much the coordination
+load grows. Each team picks its own **data set**.
+
+```{r tryit-channels-02, echo=FALSE, results='asis'}
+ch_fun <- function(n) n * (n - 1) / 2
+ch_sets <- list(c(core = 6, added = 3), c(core = 8, added = 4), c(core = 5, added = 5), c(core = 10, added = 2))
+ch_given <- function(v) c("Current team size" = v[["core"]], "People joining" = v[["added"]])
+ch_answers <- function(v) {
+  b <- ch_fun(v[["core"]]); a <- ch_fun(v[["core"]] + v[["added"]])
+  list(tryit_answer("Channels before", b, tol = 0),
+       tryit_answer("Channels after", a, tol = 0),
+       tryit_answer("Increase in headcount", 100 * v[["added"]] / v[["core"]], tol = 0.5, suffix = "%"),
+       tryit_answer("Increase in channels", 100 * (a / b - 1), tol = 0.5, suffix = "%"))
+}
+tryit_number(
+  "channels-by-hand", "Two-way channels before and after a merger",
+  answers = ch_answers(ch_sets[[1]]), given = ch_given(ch_sets[[1]]),
+  teams = lapply(ch_sets[-1], function(v) list(given = ch_given(v), answers = ch_answers(v))),
+  intro = "Channels = n(n - 1) / 2. Percentages to the nearest whole number.")
+
+tryit_number(
+  "channels-twin", "Channels after a merger (graded)", show = FALSE,
+  answers = ch_answers(c(core = 7, added = 4)),
+  question = paste0("<p>A project team of 7 people is merged with 4 supplier engineers, all becoming full ",
+    "team members. Calculate the number of two-way channels before and after, the percentage increase in ",
+    "headcount, and the percentage increase in channels (nearest whole number).</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Channels = n(n - 1)/2. For data set 1: before, 6 x 5 / 2 = 15; after,
+9 x 8 / 2 = 36. Headcount rises 50 % but channels rise 140 %: adding people
+grows the load faster than the headcount.
+
+</details>
+
 ## Listening: the mode we use most and understand least
 
 The four modes of communication, by share of a typical day and by how well they
@@ -499,6 +540,48 @@ Should a PM try to control **all** communication between team members and
 outsiders? **Yes** --- and can they? **No.** The plan defines the important
 routes; it cannot police every hallway conversation.
 
+### Try it yourself: pick the method
+
+```{r tryit-methods-02, echo=FALSE, results='asis'}
+method_bins <- c("Formal written", "Formal verbal", "Informal written", "Informal verbal")
+tryit_sort(
+  "comm-method", "Which communication method fits each message?",
+  bins = method_bins,
+  cards = data.frame(
+    text = c("A signed change order to a supplier",
+             "The project charter, sent for approval",
+             "Presenting the risk register to the steering committee",
+             "A closing speech to the client's executives",
+             "A text: the truck arrives at 3 p.m.",
+             "A short email reminding a colleague a drawing is due Friday",
+             "A hallway chat with a quality technician about a gauge",
+             "The daily 10-minute stand-up with the assembly team"),
+    bin = c("Formal written", "Formal written", "Formal verbal", "Formal verbal",
+            "Informal written", "Informal written", "Informal verbal", "Informal verbal"),
+    why = c("Contractual weight and a record: formal written.",
+            "Plans and charters are formal written documents.",
+            "A presentation to a committee is formal verbal.",
+            "Speeches and presentations are formal verbal.",
+            "Texts and notes are informal written.",
+            "Short emails are informal written (but email can still be a contract).",
+            "Conversations are informal verbal.",
+            "Meetings and conversations are informal verbal."),
+    stringsAsFactors = FALSE),
+  intro = "Pick formal or informal, and written or verbal, for every message.", question = NULL)
+
+tryit_sort(
+  "comm-method-twin", "Communication method (graded)", bins = method_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A formal notice that a delivered lot failed acceptance testing",
+             "A weekly progress presentation to the sponsor",
+             "A quick chat-app message that the jig is free",
+             "A one-to-one conversation to settle a scheduling clash",
+             "A statement of work for a new subcontractor"),
+    bin = c("Formal written", "Formal verbal", "Informal written", "Informal verbal", "Formal written"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each message, choose the communication method that fits it best.</p>")
+```
+
 ## Performance reporting
 
 Different stakeholder questions need different reports:
@@ -515,6 +598,44 @@ Different stakeholder questions need different reports:
 Orion Tech's stakeholders were right to expect regular **status, progress, and
 forecast** reports --- they fund and approve the project, and reports give them
 transparency, accountability, and early warning.
+
+### Try it yourself: which report answers the question?
+
+```{r tryit-reports-02, echo=FALSE, results='asis'}
+report_bins <- c("Status", "Progress", "Trend", "Forecast", "Variance", "Earned value")
+tryit_sort(
+  "report-type", "Which performance report answers each stakeholder question?",
+  bins = report_bins,
+  cards = data.frame(
+    text = c("Where does the project stand today?",
+             "What has the team finished since the last report?",
+             "Is the defect find-rate getting better or worse over six weeks?",
+             "On the current rate, when will we launch?",
+             "How far is tooling cost from what we budgeted?",
+             "Given what is spent and what is done, are we ahead or behind overall?",
+             "Are issues being closed faster than they are raised?",
+             "Will we finish under budget at completion?"),
+    bin = c("Status", "Progress", "Trend", "Forecast", "Variance", "Earned value", "Trend", "Forecast"),
+    why = c("Status is the position right now.", "Progress is what has been accomplished.",
+            "Trend: improving or deteriorating over time.", "Forecast: the future status.",
+            "Variance compares actual results with the plan.",
+            "Earned value integrates scope, cost and schedule.",
+            "A direction over time: trend.", "Looking ahead to completion: forecast."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the report type for each question.", question = NULL)
+
+tryit_sort(
+  "report-type-twin", "Performance report type (graded)", bins = report_bins, show = FALSE,
+  cards = data.frame(
+    text = c("What share of the work packages is complete?",
+             "Has the schedule slipped further each week this month?",
+             "What is the difference between actual and planned spend?",
+             "What will the project cost at completion?",
+             "Is the project on track right now?"),
+    bin = c("Progress", "Trend", "Variance", "Forecast", "Status"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each stakeholder question, choose the report type that answers it.</p>")
+```
 
 ## Key Takeaways
 
