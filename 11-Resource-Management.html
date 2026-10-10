@@ -1803,10 +1803,14 @@ globalThis.qwebrExecuteCode = async function (
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">11.1</span> Learning Objectives</a></li>
   <li><a href="#introduction-the-optimism-of-the-first-schedule" id="toc-introduction-the-optimism-of-the-first-schedule" class="nav-link" data-scroll-target="#introduction-the-optimism-of-the-first-schedule"><span class="header-section-number">11.2</span> Introduction: the optimism of the first schedule</a></li>
-  <li><a href="#resource-loading-and-the-histogram" id="toc-resource-loading-and-the-histogram" class="nav-link" data-scroll-target="#resource-loading-and-the-histogram"><span class="header-section-number">11.3</span> Resource loading and the histogram</a></li>
+  <li><a href="#resource-loading-and-the-histogram" id="toc-resource-loading-and-the-histogram" class="nav-link" data-scroll-target="#resource-loading-and-the-histogram"><span class="header-section-number">11.3</span> Resource loading and the histogram</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-build-the-histogram" id="toc-try-it-yourself-build-the-histogram" class="nav-link" data-scroll-target="#try-it-yourself-build-the-histogram"><span class="header-section-number">11.3.1</span> Try it yourself: build the histogram</a></li>
+  </ul></li>
   <li><a href="#resource-leveling" id="toc-resource-leveling" class="nav-link" data-scroll-target="#resource-leveling"><span class="header-section-number">11.4</span> Resource leveling</a>
   <ul class="collapse">
   <li><a href="#worked-example-1-which-task-do-you-move" id="toc-worked-example-1-which-task-do-you-move" class="nav-link" data-scroll-target="#worked-example-1-which-task-do-you-move"><span class="header-section-number">11.4.1</span> Worked Example 1: which task do you move?</a></li>
+  <li><a href="#try-it-yourself-which-task-do-you-move-first" id="toc-try-it-yourself-which-task-do-you-move-first" class="nav-link" data-scroll-target="#try-it-yourself-which-task-do-you-move-first"><span class="header-section-number">11.4.2</span> Try it yourself: which task do you move first?</a></li>
   </ul></li>
   <li><a href="#time-constrained-vs.-resource-constrained" id="toc-time-constrained-vs.-resource-constrained" class="nav-link" data-scroll-target="#time-constrained-vs.-resource-constrained"><span class="header-section-number">11.5</span> Time-constrained vs.&nbsp;resource-constrained</a></li>
   <li><a href="#resource-smoothing" id="toc-resource-smoothing" class="nav-link" data-scroll-target="#resource-smoothing"><span class="header-section-number">11.6</span> Resource smoothing</a>
@@ -1817,7 +1821,9 @@ globalThis.qwebrExecuteCode = async function (
   <li><a href="#the-multi-project-resource-problem" id="toc-the-multi-project-resource-problem" class="nav-link" data-scroll-target="#the-multi-project-resource-problem"><span class="header-section-number">11.8</span> The multi-project resource problem</a>
   <ul class="collapse">
   <li><a href="#priority-rules-for-allocating-shared-resources" id="toc-priority-rules-for-allocating-shared-resources" class="nav-link" data-scroll-target="#priority-rules-for-allocating-shared-resources"><span class="header-section-number">11.8.1</span> Priority rules for allocating shared resources</a></li>
-  <li><a href="#try-it-yourself-40-hours-is-not-one-weeks-work" id="toc-try-it-yourself-40-hours-is-not-one-weeks-work" class="nav-link" data-scroll-target="#try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.2</span> Try it yourself: “40 hours is not one week’s work”</a></li>
+  <li><a href="#try-it-yourself-which-priority-rule" id="toc-try-it-yourself-which-priority-rule" class="nav-link" data-scroll-target="#try-it-yourself-which-priority-rule"><span class="header-section-number">11.8.2</span> Try it yourself: which priority rule?</a></li>
+  <li><a href="#try-it-yourself-40-hours-is-not-one-weeks-work" id="toc-try-it-yourself-40-hours-is-not-one-weeks-work" class="nav-link" data-scroll-target="#try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.3</span> Try it yourself: “40 hours is not one week’s work”</a></li>
+  <li><a href="#try-it-yourself-effective-hours-by-hand" id="toc-try-it-yourself-effective-hours-by-hand" class="nav-link" data-scroll-target="#try-it-yourself-effective-hours-by-hand"><span class="header-section-number">11.8.4</span> Try it yourself: effective hours by hand</a></li>
   </ul></li>
   <li><a href="#sustainability-and-resources" id="toc-sustainability-and-resources" class="nav-link" data-scroll-target="#sustainability-and-resources"><span class="header-section-number">11.9</span> Sustainability and resources</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">11.10</span> Key Takeaways</a></li>
@@ -2190,6 +2196,20 @@ Figure&nbsp;11.1: Resource histogram before and after leveling, against a limit 
 </div>
 </div>
 </div>
+<section id="try-it-yourself-build-the-histogram" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="try-it-yourself-build-the-histogram"><span class="header-section-number">11.3.1</span> Try it yourself: build the histogram</h3>
+<p>Four tasks run on a fixed schedule. For each day, add up the people needed and decide whether the day is over the limit. Each team picks its own <strong>data set</strong> (and its own limit).</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-histogram-by-hand" data-tryit="grid">
+<script type="application/json">{"title":"Resource histogram: people needed per day","intro":"The columns for Tasks A to D show the people each task needs on that day (0 if it is not running).","columns":[{"label":"Day","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Task A","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Task B","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Task C","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Task D","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Limit","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Total","blank":true,"tol":0,"choices":null,"hint":null},{"label":"Over the limit?","blank":true,"tol":null,"choices":["Yes","No"],"hint":null}],"rows":[["1","3","0","0","0","8",3,"No"],["2","3","0","0","0","8",3,"No"],["3","3","4","0","0","8",7,"No"],["4","3","4","0","3","8",10,"Yes"],["5","3","4","0","3","8",10,"Yes"],["6","0","4","2","3","8",9,"Yes"],["7","0","4","2","3","8",9,"Yes"],["8","0","4","2","0","8",6,"No"],["9","0","0","2","0","8",2,"No"],["10","0","0","2","0","8",2,"No"]],"answers":[{"label":"Peak demand","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"people","hint":null,"digits":0},{"label":"Number of days over the limit","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":0}],"variants":[{"rows":[["1","3","0","0","0","8",3,"No"],["2","3","0","0","0","8",3,"No"],["3","3","4","0","0","8",7,"No"],["4","3","4","0","3","8",10,"Yes"],["5","3","4","0","3","8",10,"Yes"],["6","0","4","2","3","8",9,"Yes"],["7","0","4","2","3","8",9,"Yes"],["8","0","4","2","0","8",6,"No"],["9","0","0","2","0","8",2,"No"],["10","0","0","2","0","8",2,"No"]],"answers":[{"label":"Peak demand","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"people","hint":null,"digits":0},{"label":"Number of days over the limit","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":0}]},{"rows":[["1","4","0","0","0","6",4,"No"],["2","4","3","0","0","6",7,"Yes"],["3","4","3","0","0","6",7,"Yes"],["4","4","3","0","0","6",7,"Yes"],["5","0","3","4","0","6",7,"Yes"],["6","0","3","4","0","6",7,"Yes"],["7","0","0","4","2","6",6,"No"],["8","0","0","4","2","6",6,"No"],["9","0","0","4","2","6",6,"No"],["10","0","0","0","2","6",2,"No"]],"answers":[{"label":"Peak demand","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"people","hint":null,"digits":0},{"label":"Number of days over the limit","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":0}]},{"rows":[["1","2","0","0","0","8",2,"No"],["2","2","5","0","0","8",7,"No"],["3","2","5","0","0","8",7,"No"],["4","2","5","3","0","8",10,"Yes"],["5","2","5","3","0","8",10,"Yes"],["6","2","0","3","0","8",5,"No"],["7","0","0","3","0","8",3,"No"],["8","0","0","3","4","8",7,"No"],["9","0","0","3","4","8",7,"No"],["10","0","0","0","4","8",4,"No"]],"answers":[{"label":"Peak demand","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"people","hint":null,"digits":0},{"label":"Number of days over the limit","answer":2,"tol":0,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":0}]},{"rows":[["1","5","0","0","0","9",5,"No"],["2","5","3","0","0","9",8,"No"],["3","5","3","4","0","9",12,"Yes"],["4","0","3","4","0","9",7,"No"],["5","0","3","4","0","9",7,"No"],["6","0","3","0","3","9",6,"No"],["7","0","3","0","3","9",6,"No"],["8","0","0","0","3","9",3,"No"],["9","0","0","0","3","9",3,"No"],["10","0","0","0","3","9",3,"No"]],"answers":[{"label":"Peak demand","answer":12,"tol":0,"tolPct":null,"prefix":"","suffix":"people","hint":null,"digits":0},{"label":"Number of days over the limit","answer":1,"tol":0,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":0}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>Add the four task columns for each day. In data set 1 the totals are 3, 3, 7, 10, 10, 9, 9, 6, 2, 2 against a limit of 8, so days 4 to 7 are over the limit: four days, with a peak of 10. Those are the days leveling has to fix, by moving tasks that have float.</p>
+</details>
+</section>
 </section>
 <section id="resource-leveling" class="level2" data-number="11.4">
 <h2 data-number="11.4" class="anchored" data-anchor-id="resource-leveling"><span class="header-section-number">11.4</span> Resource leveling</h2>
@@ -2211,6 +2231,13 @@ Figure&nbsp;11.1: Resource histogram before and after leveling, against a limit 
 <p>Live cell — change the float, duration, successors, or people for each task.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="try-it-yourself-which-task-do-you-move-first" class="level3" data-number="11.4.2">
+<h3 data-number="11.4.2" class="anchored" data-anchor-id="try-it-yourself-which-task-do-you-move-first"><span class="header-section-number">11.4.2</span> Try it yourself: which task do you move first?</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-leveling-order" data-tryit="order">
+<script type="application/json">{"title":"Order the tasks by the leveling rule","intro":"All five can move. Put the one to try first at the top: smallest float, then smallest duration, then lowest ID.","steps":["S: float 2 days, duration 4 days, ID 5","Q: float 2 days, duration 4 days, ID 8","P: float 2 days, duration 6 days, ID 3","R: float 5 days, duration 3 days, ID 2","T: float 9 days, duration 7 days, ID 1"]}</script>
+</div>
 </section>
 </section>
 <section id="time-constrained-vs.-resource-constrained" class="level2" data-number="11.5">
@@ -2299,8 +2326,15 @@ Figure&nbsp;11.2: Resource utilization across a project. The shaded area is capa
 </tbody>
 </table>
 </section>
-<section id="try-it-yourself-40-hours-is-not-one-weeks-work" class="level3" data-number="11.8.2">
-<h3 data-number="11.8.2" class="anchored" data-anchor-id="try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.2</span> Try it yourself: “40 hours is not one week’s work”</h3>
+<section id="try-it-yourself-which-priority-rule" class="level3" data-number="11.8.2">
+<h3 data-number="11.8.2" class="anchored" data-anchor-id="try-it-yourself-which-priority-rule"><span class="header-section-number">11.8.2</span> Try it yourself: which priority rule?</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-priority-rules" data-tryit="sort">
+<script type="application/json">{"title":"Which priority rule is each decision using?","intro":"Pick the rule each decision follows.","bins":["First in line","Greatest resource demand","Greatest resource utilization","Minimum late finish","Mathematical programming"],"cards":[{"text":"Whichever project was approved first gets the CMM first.","bin":0,"why":"First come, first served."},{"text":"Put the project with the biggest peak demand in first so bottlenecks surface early.","bin":1,"why":"Most resource-hungry first."},{"text":"Favour the project using the widest mix of resource types, to keep them all busy.","bin":2,"why":"Widest mix of resource types first."},{"text":"The project with the earliest late-finish date goes first.","bin":3,"why":"Earliest late-finish first."},{"text":"An optimization model minimizes total lateness across 40 projects.","bin":4,"why":"Optimization: powerful but slow for large problems."},{"text":"Follow the master calendar and ignore commercial value.","bin":0,"why":"The simplest rule; ignores priority."},{"text":"One launch date is immovable and tighter than all the others, so that project goes first.","bin":3,"why":"Tightest deadline first."}]}</script>
+</div>
+</section>
+<section id="try-it-yourself-40-hours-is-not-one-weeks-work" class="level3" data-number="11.8.3">
+<h3 data-number="11.8.3" class="anchored" data-anchor-id="try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.3</span> Try it yourself: “40 hours is not one week’s work”</h3>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card" data-qwebr-label="multitask-11" data-fig-width="1200" data-fig-height="700">
@@ -2339,6 +2373,20 @@ Show the live R code behind this calculator
 <p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
+</section>
+<section id="try-it-yourself-effective-hours-by-hand" class="level3" data-number="11.8.4">
+<h3 data-number="11.8.4" class="anchored" data-anchor-id="try-it-yourself-effective-hours-by-hand"><span class="header-section-number">11.8.4</span> Try it yourself: effective hours by hand</h3>
+<p>Each extra project you carry costs a share of your capacity. Work out what is left. Each team picks its own <strong>data set</strong>.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-multitask-by-hand" data-tryit="number">
+<script type="application/json">{"title":"Effective capacity when multitasking","intro":"Effective hours = nominal x (1 - loss x (projects - 1)).","given":[{"label":"Nominal weekly hours","value":"40"},{"label":"Capacity lost per extra project","value":"15 %"},{"label":"Projects carried","value":"3"}],"answers":[{"label":"Effective hours per week","answer":28,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Productive share of nominal hours","answer":70,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Hours lost per week","answer":12,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Effective hours with one project fewer","answer":34,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2}],"variants":[{"given":[{"label":"Nominal weekly hours","value":"40"},{"label":"Capacity lost per extra project","value":"15 %"},{"label":"Projects carried","value":"3"}],"answers":[{"label":"Effective hours per week","answer":28,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Productive share of nominal hours","answer":70,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Hours lost per week","answer":12,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Effective hours with one project fewer","answer":34,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2}]},{"given":[{"label":"Nominal weekly hours","value":"38"},{"label":"Capacity lost per extra project","value":"12 %"},{"label":"Projects carried","value":"4"}],"answers":[{"label":"Effective hours per week","answer":24.32,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Productive share of nominal hours","answer":64,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Hours lost per week","answer":13.68,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Effective hours with one project fewer","answer":28.88,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2}]},{"given":[{"label":"Nominal weekly hours","value":"45"},{"label":"Capacity lost per extra project","value":"10 %"},{"label":"Projects carried","value":"5"}],"answers":[{"label":"Effective hours per week","answer":27,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Productive share of nominal hours","answer":60,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Hours lost per week","answer":18,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Effective hours with one project fewer","answer":31.5,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2}]},{"given":[{"label":"Nominal weekly hours","value":"35"},{"label":"Capacity lost per extra project","value":"20 %"},{"label":"Projects carried","value":"2"}],"answers":[{"label":"Effective hours per week","answer":28,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Productive share of nominal hours","answer":80,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Hours lost per week","answer":7,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2},{"label":"Effective hours with one project fewer","answer":35,"tol":0.05,"tolPct":null,"prefix":"","suffix":"h","hint":null,"digits":2}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>With n projects there are n - 1 “extra” ones. Data set 1: 40 x (1 - 0.15 x 2) = 28 effective hours, 70 % productive, 12 h lost; dropping to 2 projects gives 40 x 0.85 = 34 h. Cutting one project recovers 6 h: the nominal 40 hours were never real.</p>
 </details>
 </section>
 </section>

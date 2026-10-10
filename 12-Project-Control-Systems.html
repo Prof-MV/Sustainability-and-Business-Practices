@@ -1836,12 +1836,17 @@ window.Quarto = {
   <li><a href="#the-six-core-metrics" id="toc-the-six-core-metrics" class="nav-link" data-scroll-target="#the-six-core-metrics"><span class="header-section-number">12.4</span> The six core metrics</a>
   <ul class="collapse">
   <li><a href="#worked-example-1-the-rc-vehicle-project-at-week-8" id="toc-worked-example-1-the-rc-vehicle-project-at-week-8" class="nav-link" data-scroll-target="#worked-example-1-the-rc-vehicle-project-at-week-8"><span class="header-section-number">12.4.1</span> Worked Example 1: the RC-vehicle project at week 8</a></li>
+  <li><a href="#try-it-yourself-earned-value-by-work-package" id="toc-try-it-yourself-earned-value-by-work-package" class="nav-link" data-scroll-target="#try-it-yourself-earned-value-by-work-package"><span class="header-section-number">12.4.2</span> Try it yourself: earned value by work package</a></li>
   </ul></li>
   <li><a href="#forecasting" id="toc-forecasting" class="nav-link" data-scroll-target="#forecasting"><span class="header-section-number">12.5</span> Forecasting</a>
   <ul class="collapse">
   <li><a href="#try-it-yourself-eac-scenarios" id="toc-try-it-yourself-eac-scenarios" class="nav-link" data-scroll-target="#try-it-yourself-eac-scenarios"><span class="header-section-number">12.5.1</span> Try it yourself: EAC scenarios</a></li>
+  <li><a href="#try-it-yourself-which-forecast-do-you-report" id="toc-try-it-yourself-which-forecast-do-you-report" class="nav-link" data-scroll-target="#try-it-yourself-which-forecast-do-you-report"><span class="header-section-number">12.5.2</span> Try it yourself: which forecast do you report?</a></li>
   </ul></li>
-  <li><a href="#reading-the-s-curve-honestly" id="toc-reading-the-s-curve-honestly" class="nav-link" data-scroll-target="#reading-the-s-curve-honestly"><span class="header-section-number">12.6</span> Reading the S-curve honestly</a></li>
+  <li><a href="#reading-the-s-curve-honestly" id="toc-reading-the-s-curve-honestly" class="nav-link" data-scroll-target="#reading-the-s-curve-honestly"><span class="header-section-number">12.6</span> Reading the S-curve honestly</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-read-the-status" id="toc-try-it-yourself-read-the-status" class="nav-link" data-scroll-target="#try-it-yourself-read-the-status"><span class="header-section-number">12.6.1</span> Try it yourself: read the status</a></li>
+  </ul></li>
   <li><a href="#integrated-change-control" id="toc-integrated-change-control" class="nav-link" data-scroll-target="#integrated-change-control"><span class="header-section-number">12.7</span> Integrated change control</a></li>
   <li><a href="#status-reporting" id="toc-status-reporting" class="nav-link" data-scroll-target="#status-reporting"><span class="header-section-number">12.8</span> Status reporting</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">12.9</span> Key Takeaways</a></li>
@@ -2354,6 +2359,20 @@ Show the live R code behind this calculator
 </details>
 <p>The project is <strong>behind schedule and over cost</strong> — and this is visible in week 8, while there is still time to act, instead of as a surprise at the end.</p>
 </section>
+<section id="try-it-yourself-earned-value-by-work-package" class="level3" data-number="12.4.2">
+<h3 data-number="12.4.2" class="anchored" data-anchor-id="try-it-yourself-earned-value-by-work-package"><span class="header-section-number">12.4.2</span> Try it yourself: earned value by work package</h3>
+<p>Each work package has its budget, how much of it was planned to be done by now, how much is actually done, and what it has cost. Work out PV, EV, CV and SV for each package, then the project indices and forecast. Each team picks its own <strong>data set</strong>.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-evm-by-package" data-tryit="grid">
+<script type="application/json">{"title":"Earned value by work package","intro":"SPI and CPI use the project totals. Three decimals for the indices.","columns":[{"label":"Work package","blank":false,"tol":null,"choices":null,"hint":null},{"label":"BAC ($)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Planned %","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Complete %","blank":false,"tol":null,"choices":null,"hint":null},{"label":"AC ($)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"PV ($)","blank":true,"tol":1,"choices":null,"hint":"BAC x planned %."},{"label":"EV ($)","blank":true,"tol":1,"choices":null,"hint":"BAC x complete %."},{"label":"CV ($)","blank":true,"tol":1,"choices":null,"hint":"EV - AC."},{"label":"SV ($)","blank":true,"tol":1,"choices":null,"hint":"EV - PV."}],"rows":[["Design","80000","100","100","84000",80000,80000,-4000,0],["Tooling","150000","80","60","100000",120000,90000,-10000,-30000],["Assembly","60000","50","40","28000",30000,24000,-4000,-6000],["Testing","40000","25","10","5000",10000,4000,-1000,-6000]],"answers":[{"label":"Project SPI","answer":0.825,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"Project CPI","answer":0.912442396313364,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"EAC = BAC / CPI","answer":361666.666666667,"tol":1,"tolPct":0.2,"prefix":"$","suffix":"","hint":null,"digits":0}],"variants":[{"rows":[["Design","80000","100","100","84000",80000,80000,-4000,0],["Tooling","150000","80","60","100000",120000,90000,-10000,-30000],["Assembly","60000","50","40","28000",30000,24000,-4000,-6000],["Testing","40000","25","10","5000",10000,4000,-1000,-6000]],"answers":[{"label":"Project SPI","answer":0.825,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"Project CPI","answer":0.912442396313364,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"EAC = BAC / CPI","answer":361666.666666667,"tol":1,"tolPct":0.2,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Design","120000","100","100","125000",120000,120000,-5000,0],["Tooling","200000","70","75","150000",140000,150000,0,10000],["Assembly","90000","40","30","40000",36000,27000,-13000,-9000],["Testing","50000","10","0","2000",5000,0,-2000,-5000]],"answers":[{"label":"Project SPI","answer":0.98671096345515,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"Project CPI","answer":0.936908517350158,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"EAC = BAC / CPI","answer":490976.430976431,"tol":1,"tolPct":0.2,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Design","60000","100","100","58000",60000,60000,2000,0],["Tooling","180000","100","85","175000",180000,153000,-22000,-27000],["Assembly","120000","50","60","70000",60000,72000,2000,12000],["Testing","30000","20","25","9000",6000,7500,-1500,1500]],"answers":[{"label":"Project SPI","answer":0.955882352941177,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"Project CPI","answer":0.9375,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"EAC = BAC / CPI","answer":416000,"tol":1,"tolPct":0.2,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Design","90000","100","90","95000",90000,81000,-14000,-9000],["Tooling","110000","60","70","70000",66000,77000,7000,11000],["Assembly","140000","30","20","36000",42000,28000,-8000,-14000],["Testing","60000","0","0","0",0,0,0,0]],"answers":[{"label":"Project SPI","answer":0.939393939393939,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"Project CPI","answer":0.925373134328358,"tol":0.005,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":3},{"label":"EAC = BAC / CPI","answer":432258.064516129,"tol":1,"tolPct":0.2,"prefix":"$","suffix":"","hint":null,"digits":0}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>PV = BAC x planned %, EV = BAC x actual %, CV = EV - AC, SV = EV - PV. For data set 1 the totals are BAC $330 000, PV $240 000, EV $198 000 and AC $217 000, so SPI = 198 / 240 = <strong>0.825</strong>, CPI = 198 / 217 = <strong>0.912</strong> and EAC = 330 000 / 0.912 = <strong>about $361 700</strong>. Tooling is the package doing the damage: it is both behind (SV = -$30 000) and over (CV = -$10 000).</p>
+</details>
+</section>
 </section>
 <section id="forecasting" class="level2" data-number="12.5">
 <h2 data-number="12.5" class="anchored" data-anchor-id="forecasting"><span class="header-section-number">12.5</span> Forecasting</h2>
@@ -2446,6 +2465,10 @@ Show the live R code behind this calculator
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="tcpi <= 1">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Find the actual cost to date at which the original budget is still achievable (TCPI of 1 or less).</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2463,6 +2486,13 @@ Which EAC formula should you actually report?
 <p>It depends on <em>why</em> you are over. If a one-time event caused it (a failed test you have since fixed), <span class="math inline">\(AC + (BAC - EV)\)</span> is fair. If the overrun reflects how the team is fundamentally working (rates, productivity), <span class="math inline">\(BAC/CPI\)</span> is the honest number. If you are <em>also</em> behind schedule and recovery will cost overtime, the <span class="math inline">\(CPI \times SPI\)</span> version is the most conservative. Report the one your evidence supports — and say which assumption you made.</p>
 </details>
 </section>
+<section id="try-it-yourself-which-forecast-do-you-report" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="try-it-yourself-which-forecast-do-you-report"><span class="header-section-number">12.5.2</span> Try it yourself: which forecast do you report?</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-eac-formula" data-tryit="sort">
+<script type="application/json">{"title":"Which EAC formula does each situation call for?","intro":"Report the formula your evidence supports.","bins":["BAC / CPI (efficiency continues)","AC + (BAC - EV) (one-off overrun)","AC + (BAC - EV) / (CPI x SPI) (cost and schedule persist)"],"cards":[{"text":"A one-off equipment failure caused the overrun and it has been repaired.","bin":1,"why":"A one-off: assume the rest of the work goes to budget."},{"text":"The overrun reflects how this team works: its rates and productivity will not change.","bin":0,"why":"The fundamentals persist: BAC / CPI is the honest number."},{"text":"The project is over cost and behind schedule, and catching up will need overtime.","bin":2,"why":"Both cost and schedule performance persist: the most conservative."},{"text":"A single failed test cost $30 000 and will not happen again.","bin":1,"why":"A one-time event: add the remaining budgeted work to AC."},{"text":"The cost efficiency so far is typical of this team.","bin":0,"why":"Cost efficiency continues: BAC / CPI."},{"text":"The slip must be recovered with premium-rate crews, so both indices will persist.","bin":2,"why":"Both indices persist: the conservative formula."}]}</script>
+</div>
+</section>
 </section>
 <section id="reading-the-s-curve-honestly" class="level2" data-number="12.6">
 <h2 data-number="12.6" class="anchored" data-anchor-id="reading-the-s-curve-honestly"><span class="header-section-number">12.6</span> Reading the S-curve honestly</h2>
@@ -2471,6 +2501,13 @@ Which EAC formula should you actually report?
 <li><strong>The “watermelon” report</strong> — green on the outside, red on the inside. High-level status shows green because spend matches plan, while the earned value underneath is red.</li>
 <li><strong>Leading vs.&nbsp;lagging indicators.</strong> SPI and CPI are somewhat lagging. Leading signals — rising defect find-rate, slipping sub-milestones, key staff leaving — warn you earlier. Watch both.</li>
 </ul>
+<section id="try-it-yourself-read-the-status" class="level3" data-number="12.6.1">
+<h3 data-number="12.6.1" class="anchored" data-anchor-id="try-it-yourself-read-the-status"><span class="header-section-number">12.6.1</span> Try it yourself: read the status</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-status-quadrant" data-tryit="sort">
+<script type="application/json">{"title":"What is each project's real condition?","intro":"An index above 1 is good. Work out SPI = EV / PV and CPI = EV / AC where needed.","bins":["Ahead and under budget","Behind but under budget","Ahead but over budget","Behind and over budget"],"cards":[{"text":"SPI 1.10, CPI 1.05","bin":0,"why":"Both indices above 1."},{"text":"SPI 0.85, CPI 1.10","bin":1,"why":"SPI below 1 (behind), CPI above 1 (under budget)."},{"text":"SPI 1.12, CPI 0.90","bin":2,"why":"SPI above 1, CPI below 1."},{"text":"SPI 0.80, CPI 0.92","bin":3,"why":"Both below 1."},{"text":"PV $300k, EV $270k, AC $250k","bin":1,"why":"SPI = 270/300 = 0.90, CPI = 270/250 = 1.08."},{"text":"PV $200k, EV $230k, AC $260k","bin":2,"why":"SPI = 230/200 = 1.15, CPI = 230/260 = 0.88."},{"text":"PV $400k, EV $380k, AC $410k","bin":3,"why":"SPI = 380/400 = 0.95, CPI = 380/410 = 0.93."},{"text":"PV $150k, EV $165k, AC $150k","bin":0,"why":"SPI = 165/150 = 1.10, CPI = 165/150 = 1.10."}]}</script>
+</div>
+</section>
 </section>
 <section id="integrated-change-control" class="level2" data-number="12.7">
 <h2 data-number="12.7" class="anchored" data-anchor-id="integrated-change-control"><span class="header-section-number">12.7</span> Integrated change control</h2>

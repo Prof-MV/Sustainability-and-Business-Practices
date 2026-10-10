@@ -1848,14 +1848,21 @@ window.Quarto = {
   <li><a href="#communication-channels-grow-faster-than-the-team" id="toc-communication-channels-grow-faster-than-the-team" class="nav-link" data-scroll-target="#communication-channels-grow-faster-than-the-team"><span class="header-section-number">2.6.3</span> Communication channels grow faster than the team</a></li>
   <li><a href="#worked-example-1-channels-on-the-rc-vehicle-project" id="toc-worked-example-1-channels-on-the-rc-vehicle-project" class="nav-link" data-scroll-target="#worked-example-1-channels-on-the-rc-vehicle-project"><span class="header-section-number">2.6.4</span> Worked Example 1: channels on the RC-vehicle project</a></li>
   <li><a href="#try-it-yourself-channel-growth-and-the-cost-of-one-more-stakeholder" id="toc-try-it-yourself-channel-growth-and-the-cost-of-one-more-stakeholder" class="nav-link" data-scroll-target="#try-it-yourself-channel-growth-and-the-cost-of-one-more-stakeholder"><span class="header-section-number">2.6.5</span> Try it yourself: channel growth and the cost of one more stakeholder</a></li>
+  <li><a href="#try-it-yourself-a-merger-by-hand" id="toc-try-it-yourself-a-merger-by-hand" class="nav-link" data-scroll-target="#try-it-yourself-a-merger-by-hand"><span class="header-section-number">2.6.6</span> Try it yourself: a merger by hand</a></li>
   </ul></li>
   <li><a href="#listening-the-mode-we-use-most-and-understand-least" id="toc-listening-the-mode-we-use-most-and-understand-least" class="nav-link" data-scroll-target="#listening-the-mode-we-use-most-and-understand-least"><span class="header-section-number">2.7</span> Listening: the mode we use most and understand least</a>
   <ul class="collapse">
   <li><a href="#the-listening-filters" id="toc-the-listening-filters" class="nav-link" data-scroll-target="#the-listening-filters"><span class="header-section-number">2.7.1</span> The listening filters</a></li>
   <li><a href="#try-it-yourself-the-tune-out-budget" id="toc-try-it-yourself-the-tune-out-budget" class="nav-link" data-scroll-target="#try-it-yourself-the-tune-out-budget"><span class="header-section-number">2.7.2</span> Try it yourself: the tune-out budget</a></li>
   </ul></li>
-  <li><a href="#choosing-a-communication-method" id="toc-choosing-a-communication-method" class="nav-link" data-scroll-target="#choosing-a-communication-method"><span class="header-section-number">2.8</span> Choosing a communication method</a></li>
-  <li><a href="#performance-reporting" id="toc-performance-reporting" class="nav-link" data-scroll-target="#performance-reporting"><span class="header-section-number">2.9</span> Performance reporting</a></li>
+  <li><a href="#choosing-a-communication-method" id="toc-choosing-a-communication-method" class="nav-link" data-scroll-target="#choosing-a-communication-method"><span class="header-section-number">2.8</span> Choosing a communication method</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-pick-the-method" id="toc-try-it-yourself-pick-the-method" class="nav-link" data-scroll-target="#try-it-yourself-pick-the-method"><span class="header-section-number">2.8.1</span> Try it yourself: pick the method</a></li>
+  </ul></li>
+  <li><a href="#performance-reporting" id="toc-performance-reporting" class="nav-link" data-scroll-target="#performance-reporting"><span class="header-section-number">2.9</span> Performance reporting</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-which-report-answers-the-question" id="toc-try-it-yourself-which-report-answers-the-question" class="nav-link" data-scroll-target="#try-it-yourself-which-report-answers-the-question"><span class="header-section-number">2.9.1</span> Try it yourself: which report answers the question?</a></li>
+  </ul></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways"><span class="header-section-number">2.10</span> Key Takeaways</a></li>
   <li><a href="#case-study-meridian-rc-week-2" id="toc-case-study-meridian-rc-week-2" class="nav-link" data-scroll-target="#case-study-meridian-rc-week-2"><span class="header-section-number">2.11</span> Case Study: Meridian R/C — Week 2</a></li>
   <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">2.12</span> Practice Problems</a></li>
@@ -2330,6 +2337,10 @@ Think about it: the retailer moves the RC-vehicle launch four weeks earlier. Whi
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="expected_quality_cost > min(cost_of_holding_scope, colourway_revenue_at_risk)">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Find the chance of a defect escaping at which skipping the test stops being the cheapest option.</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2514,6 +2525,20 @@ Show the live R code behind this calculator
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </details>
 </section>
+<section id="try-it-yourself-a-merger-by-hand" class="level3" data-number="2.6.6">
+<h3 data-number="2.6.6" class="anchored" data-anchor-id="try-it-yourself-a-merger-by-hand"><span class="header-section-number">2.6.6</span> Try it yourself: a merger by hand</h3>
+<p>A team is about to take on extra people. Work out how much the coordination load grows. Each team picks its own <strong>data set</strong>.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-channels-by-hand" data-tryit="number">
+<script type="application/json">{"title":"Two-way channels before and after a merger","intro":"Channels = n(n - 1) / 2. Percentages to the nearest whole number.","given":[{"label":"Current team size","value":"6"},{"label":"People joining","value":"3"}],"answers":[{"label":"Channels before","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Channels after","answer":36,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Increase in headcount","answer":50,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Increase in channels","answer":140,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}],"variants":[{"given":[{"label":"Current team size","value":"6"},{"label":"People joining","value":"3"}],"answers":[{"label":"Channels before","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Channels after","answer":36,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Increase in headcount","answer":50,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Increase in channels","answer":140,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Current team size","value":"8"},{"label":"People joining","value":"4"}],"answers":[{"label":"Channels before","answer":28,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Channels after","answer":66,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Increase in headcount","answer":50,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Increase in channels","answer":135.714285714286,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Current team size","value":"5"},{"label":"People joining","value":"5"}],"answers":[{"label":"Channels before","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Channels after","answer":45,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Increase in headcount","answer":100,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Increase in channels","answer":350,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Current team size","value":"10"},{"label":"People joining","value":"2"}],"answers":[{"label":"Channels before","answer":45,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Channels after","answer":66,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"Increase in headcount","answer":20,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Increase in channels","answer":46.6666666666667,"tol":0.5,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>Channels = n(n - 1)/2. For data set 1: before, 6 x 5 / 2 = 15; after, 9 x 8 / 2 = 36. Headcount rises 50 % but channels rise 140 %: adding people grows the load faster than the headcount.</p>
+</details>
+</section>
 </section>
 <section id="listening-the-mode-we-use-most-and-understand-least" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="listening-the-mode-we-use-most-and-understand-least"><span class="header-section-number">2.7</span> Listening: the mode we use most and understand least</h2>
@@ -2649,6 +2674,13 @@ Listening de-railers — which one is Orion Tech’s problem?
 </tbody>
 </table>
 <p>Should a PM try to control <strong>all</strong> communication between team members and outsiders? <strong>Yes</strong> — and can they? <strong>No.</strong> The plan defines the important routes; it cannot police every hallway conversation.</p>
+<section id="try-it-yourself-pick-the-method" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="try-it-yourself-pick-the-method"><span class="header-section-number">2.8.1</span> Try it yourself: pick the method</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-comm-method" data-tryit="sort">
+<script type="application/json">{"title":"Which communication method fits each message?","intro":"Pick formal or informal, and written or verbal, for every message.","bins":["Formal written","Formal verbal","Informal written","Informal verbal"],"cards":[{"text":"A signed change order to a supplier","bin":0,"why":"Contractual weight and a record: formal written."},{"text":"The project charter, sent for approval","bin":0,"why":"Plans and charters are formal written documents."},{"text":"Presenting the risk register to the steering committee","bin":1,"why":"A presentation to a committee is formal verbal."},{"text":"A closing speech to the client's executives","bin":1,"why":"Speeches and presentations are formal verbal."},{"text":"A text: the truck arrives at 3 p.m.","bin":2,"why":"Texts and notes are informal written."},{"text":"A short email reminding a colleague a drawing is due Friday","bin":2,"why":"Short emails are informal written (but email can still be a contract)."},{"text":"A hallway chat with a quality technician about a gauge","bin":3,"why":"Conversations are informal verbal."},{"text":"The daily 10-minute stand-up with the assembly team","bin":3,"why":"Meetings and conversations are informal verbal."}]}</script>
+</div>
+</section>
 </section>
 <section id="performance-reporting" class="level2" data-number="2.9">
 <h2 data-number="2.9" class="anchored" data-anchor-id="performance-reporting"><span class="header-section-number">2.9</span> Performance reporting</h2>
@@ -2688,6 +2720,13 @@ Listening de-railers — which one is Orion Tech’s problem?
 </tbody>
 </table>
 <p>Orion Tech’s stakeholders were right to expect regular <strong>status, progress, and forecast</strong> reports — they fund and approve the project, and reports give them transparency, accountability, and early warning.</p>
+<section id="try-it-yourself-which-report-answers-the-question" class="level3" data-number="2.9.1">
+<h3 data-number="2.9.1" class="anchored" data-anchor-id="try-it-yourself-which-report-answers-the-question"><span class="header-section-number">2.9.1</span> Try it yourself: which report answers the question?</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-report-type" data-tryit="sort">
+<script type="application/json">{"title":"Which performance report answers each stakeholder question?","intro":"Pick the report type for each question.","bins":["Status","Progress","Trend","Forecast","Variance","Earned value"],"cards":[{"text":"Where does the project stand today?","bin":0,"why":"Status is the position right now."},{"text":"What has the team finished since the last report?","bin":1,"why":"Progress is what has been accomplished."},{"text":"Is the defect find-rate getting better or worse over six weeks?","bin":2,"why":"Trend: improving or deteriorating over time."},{"text":"On the current rate, when will we launch?","bin":3,"why":"Forecast: the future status."},{"text":"How far is tooling cost from what we budgeted?","bin":4,"why":"Variance compares actual results with the plan."},{"text":"Given what is spent and what is done, are we ahead or behind overall?","bin":5,"why":"Earned value integrates scope, cost and schedule."},{"text":"Are issues being closed faster than they are raised?","bin":2,"why":"A direction over time: trend."},{"text":"Will we finish under budget at completion?","bin":3,"why":"Looking ahead to completion: forecast."}]}</script>
+</div>
+</section>
 </section>
 <section id="key-takeaways" class="level2" data-number="2.10">
 <h2 data-number="2.10" class="anchored" data-anchor-id="key-takeaways"><span class="header-section-number">2.10</span> Key Takeaways</h2>

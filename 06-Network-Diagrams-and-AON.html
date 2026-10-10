@@ -1834,7 +1834,10 @@ window.Quarto = {
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">6.1</span> Learning Objectives</a></li>
   <li><a href="#introduction-when-can-we-launch" id="toc-introduction-when-can-we-launch" class="nav-link" data-scroll-target="#introduction-when-can-we-launch"><span class="header-section-number">6.2</span> Introduction: when can we launch?</a></li>
-  <li><a href="#from-wbs-to-precedence-table" id="toc-from-wbs-to-precedence-table" class="nav-link" data-scroll-target="#from-wbs-to-precedence-table"><span class="header-section-number">6.3</span> From WBS to precedence table</a></li>
+  <li><a href="#from-wbs-to-precedence-table" id="toc-from-wbs-to-precedence-table" class="nav-link" data-scroll-target="#from-wbs-to-precedence-table"><span class="header-section-number">6.3</span> From WBS to precedence table</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-is-this-network-valid" id="toc-try-it-yourself-is-this-network-valid" class="nav-link" data-scroll-target="#try-it-yourself-is-this-network-valid"><span class="header-section-number">6.3.1</span> Try it yourself: is this network valid?</a></li>
+  </ul></li>
   <li><a href="#aon-node-anatomy" id="toc-aon-node-anatomy" class="nav-link" data-scroll-target="#aon-node-anatomy"><span class="header-section-number">6.4</span> AON node anatomy</a></li>
   <li><a href="#worked-example-the-rc-vehicle-sub-project-network" id="toc-worked-example-the-rc-vehicle-sub-project-network" class="nav-link" data-scroll-target="#worked-example-the-rc-vehicle-sub-project-network"><span class="header-section-number">6.5</span> Worked Example: the RC-vehicle sub-project network</a>
   <ul class="collapse">
@@ -1862,7 +1865,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/06-Network-Diagrams-and-AON.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
 <script type="module" id="qwebr-monaco-editor-init">
 
@@ -2220,6 +2223,14 @@ Note
 <li>It is common (not required) to start from a <strong>single start node</strong>…</li>
 <li>…and end at a <strong>single end node</strong>.</li>
 </ol>
+<section id="try-it-yourself-is-this-network-valid" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="try-it-yourself-is-this-network-valid"><span class="header-section-number">6.3.1</span> Try it yourself: is this network valid?</h3>
+<p>The rules above are easy to recite and easy to break. Decide which rule, if any, each description breaks. (More than one start node, or more than one end node, is <em>allowed</em> — rules 7 and 8 only say it is common.)</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-network-rules" data-tryit="sort">
+<script type="application/json">{"title":"Valid network, or which rule does it break?","intro":"Pick one for every card.","bins":["Valid","Loop (rule 6)","Duplicate ID (rule 5)","Starts too early (rule 3)"],"cards":[{"text":"Activity C lists B as its predecessor, and B lists C as its predecessor.","bin":1,"why":"A cycle: neither can start until the other has finished, so the schedule can never be solved."},{"text":"Two different activities are both labelled F: a 'Paint' and a 'Fit-out'.","bin":2,"why":"Every activity needs a unique identifier, or a predecessor list is ambiguous."},{"text":"H needs both D and E to finish, but the network has H starting as soon as D finishes.","bin":3,"why":"An activity cannot begin until ALL of its predecessors are complete: H waits for the later of D and E."},{"text":"A and B both have no predecessors, and both feed C.","bin":0,"why":"Several start nodes are allowed; a single start node is only common practice."},{"text":"B and C both start when A finishes, and run in parallel.","bin":0,"why":"A burst: two successors of one activity."},{"text":"F starts only when both D and E are complete.","bin":0,"why":"A merge: the start waits for the latest incoming finish."},{"text":"G follows F, F follows H, and H follows G.","bin":1,"why":"A three-activity loop, the same fault as a two-activity one."},{"text":"Two separate end activities, K and L, with nothing after either.","bin":0,"why":"Several end nodes are allowed; the project finishes when the last one does."}]}</script>
+</div>
+</section>
 </section>
 <section id="aon-node-anatomy" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="aon-node-anatomy"><span class="header-section-number">6.4</span> AON node anatomy</h2>
@@ -2240,7 +2251,7 @@ Figure&nbsp;6.1: The six-number activity node. Forward pass fills the top row (E
 </div>
 <p>An activity with 2+ predecessors flowing <strong>in</strong> is a <strong>merge</strong>; one with 2+ successors flowing <strong>out</strong> is a <strong>burst</strong>.</p>
 </section>
-<section id="worked-example-the-rc-vehicle-sub-project-network" class="level2" data-number="6.5">
+<section id="worked-example-the-rc-vehicle-sub-project-network" class="level2 page-columns page-full" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="worked-example-the-rc-vehicle-sub-project-network"><span class="header-section-number">6.5</span> Worked Example: the RC-vehicle sub-project network</h2>
 <p>Ten activities (a simplified slice of the project):</p>
 <div class="cell">
@@ -2339,515 +2350,876 @@ Figure&nbsp;6.2: Total float per activity. The zero-float bars (A, B, C, E, G, I
 </div>
 <p>The whole forward/backward/float sequence is one connected calculation — change any duration and every downstream number moves — so work it as a block, not as isolated steps.</p>
 </section>
-<section id="try-it-yourself-fill-in-the-aon-node-boxes" class="level3" data-number="6.5.4">
+<section id="try-it-yourself-fill-in-the-aon-node-boxes" class="level3 page-columns page-full" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="try-it-yourself-fill-in-the-aon-node-boxes"><span class="header-section-number">6.5.4</span> Try it yourself: fill in the AON node boxes</h3>
-<p>Now do the math yourself, by hand, on a fresh network. It is a small renovation sub-project — seven activities — and it is <strong>pre-drawn</strong>: every node already shows its activity ID and duration, and the arrows already show precedence, so you do not need to draw anything. Your job is the forward and backward pass: type ES, EF, LS, and LF straight into each box (float fills itself in once a box has both ES and LS). Click <strong>Check my numbers</strong> as often as you like — correct cells turn green, wrong ones turn red. Once you are confident, click every node you think belongs on the <strong>critical path</strong> and then click <strong>Check critical path</strong>.</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-striped table-condensed caption-top table-sm small">
-<thead>
-<tr class="header">
-<th style="text-align: center;" data-quarto-table-cell-role="th">Activity</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Description</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">Duration (days)</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Predecessors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">A</td>
-<td style="text-align: left;">Site prep</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">B</td>
-<td style="text-align: left;">Foundation pour</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: left;">A</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">C</td>
-<td style="text-align: left;">Utility rough-in</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: left;">A</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">D</td>
-<td style="text-align: left;">Framing</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">B</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">E</td>
-<td style="text-align: left;">Inspection sign-off</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: left;">C</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">F</td>
-<td style="text-align: left;">Drywall &amp; finish</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: left;">D,E</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">G</td>
-<td style="text-align: left;">Final walkthrough</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: left;">F</td>
-</tr>
-</tbody>
-</table>
+<p>Now do the math yourself, by hand, on a fresh network. It is a small renovation sub-project — seven activities — and it is <strong>pre-drawn</strong>: every node already shows its activity ID and duration, and the arrows already show precedence, so you do not need to draw anything. Your job is the forward and backward pass: type ES, EF, LS, and LF into each box (float fills itself in once a box has both ES and LS). Then tick every box you think is on the <strong>critical path</strong>. Click <strong>Check my answers</strong> as often as you like — correct entries get a green tick, wrong ones a red cross. In class, each team picks its own <strong>data set</strong> (or opens the page with <code>?team=2</code>, <code>?team=3</code>…), so neighbouring teams get different durations on the same network.</p>
+<div class="column-body-outset">
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-aon6-renovation" data-tryit="diagram">
+<script type="application/json">{"title":"Forward and backward pass: renovation sub-project","intro":"ES and LS are start days, EF and LF finish days; the project starts on day 0.","direction":"right","arrows":true,"nodes":[{"id":"A","label":"A","layer":1,"sub":"Site prep","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"B","label":"B","layer":2,"sub":"Foundation pour","given":[{"label":"Duration","value":"6 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"C","label":"C","layer":2,"sub":"Utility rough-in","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"D","label":"D","layer":3,"sub":"Framing","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"E","label":"E","layer":3,"sub":"Inspection sign-off","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"F","label":"F","layer":4,"sub":"Drywall & finish","given":[{"label":"Duration","value":"2 d"}],"blank":[{"label":"ES","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"G","label":"G","layer":5,"sub":"Final walkthrough","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]}],"mark":"On the critical path","markIds":["A","B","D","F","G"],"variants":[{"nodes":[{"id":"A","label":"A","layer":1,"sub":"Site prep","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"B","label":"B","layer":2,"sub":"Foundation pour","given":[{"label":"Duration","value":"6 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"C","label":"C","layer":2,"sub":"Utility rough-in","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"D","label":"D","layer":3,"sub":"Framing","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"E","label":"E","layer":3,"sub":"Inspection sign-off","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"F","label":"F","layer":4,"sub":"Drywall & finish","given":[{"label":"Duration","value":"2 d"}],"blank":[{"label":"ES","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"G","label":"G","layer":5,"sub":"Final walkthrough","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":17,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]}],"answers":[],"markIds":["A","B","D","F","G"]},{"nodes":[{"id":"A","label":"A","layer":1,"sub":"Site prep","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"B","label":"B","layer":2,"sub":"Foundation pour","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"C","label":"C","layer":2,"sub":"Utility rough-in","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":5,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":9,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":12,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"D","label":"D","layer":3,"sub":"Framing","given":[{"label":"Duration","value":"6 d"}],"blank":[{"label":"ES","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"E","label":"E","layer":3,"sub":"Inspection sign-off","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":9,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":13,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":12,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"F","label":"F","layer":4,"sub":"Drywall & finish","given":[{"label":"Duration","value":"2 d"}],"blank":[{"label":"ES","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"G","label":"G","layer":5,"sub":"Final walkthrough","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":21,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":21,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]}],"answers":[],"markIds":["A","B","D","F","G"]},{"nodes":[{"id":"A","label":"A","layer":1,"sub":"Site prep","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":3,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":3,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"B","label":"B","layer":2,"sub":"Foundation pour","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":3,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"C","label":"C","layer":2,"sub":"Utility rough-in","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":3,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":3,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"D","label":"D","layer":3,"sub":"Framing","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":7,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":11,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"E","label":"E","layer":3,"sub":"Inspection sign-off","given":[{"label":"Duration","value":"7 d"}],"blank":[{"label":"ES","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"F","label":"F","layer":4,"sub":"Drywall & finish","given":[{"label":"Duration","value":"3 d"}],"blank":[{"label":"ES","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"G","label":"G","layer":5,"sub":"Final walkthrough","given":[{"label":"Duration","value":"2 d"}],"blank":[{"label":"ES","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":18,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]}],"answers":[],"markIds":["A","C","E","F","G"]},{"nodes":[{"id":"A","label":"A","layer":1,"sub":"Site prep","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":0,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"B","label":"B","layer":2,"sub":"Foundation pour","given":[{"label":"Duration","value":"6 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"C","label":"C","layer":2,"sub":"Utility rough-in","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":4,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":6,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"D","label":"D","layer":3,"sub":"Framing","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"E","label":"E","layer":3,"sub":"Inspection sign-off","given":[{"label":"Duration","value":"5 d"}],"blank":[{"label":"ES","answer":8,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":13,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":10,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"F","label":"F","layer":4,"sub":"Drywall & finish","given":[{"label":"Duration","value":"1 d"}],"blank":[{"label":"ES","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":15,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]},{"id":"G","label":"G","layer":5,"sub":"Final walkthrough","given":[{"label":"Duration","value":"4 d"}],"blank":[{"label":"ES","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"EF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LS","answer":16,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0},{"label":"LF","answer":20,"tol":0,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":0}],"derived":[{"label":"Float","minuend":"LS","subtrahend":"ES"}]}],"answers":[],"markIds":["A","B","D","F","G"]}],"edges":[["A","B"],["A","C"],["B","D"],["C","E"],["D","F"],["E","F"],["F","G"]],"answers":[]}</script>
 </div>
 </div>
-<div id="aon6-widget" class="aon-widget">
-<div class="aon-diagram-scroll">
-<div id="aon6-diagram" class="aon-diagram">
-<svg class="aon-svg-layer" id="aon6-svg">
-<defs> <marker id="aon6-arrowhead" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse"> <path d="M0,0 L10,5 L0,10 z" fill="#2E86C1"></path> </marker> </defs>
-</svg>
-<div class="aon-col">
-<div id="aon6-node-A" class="aon-node" data-id="A">
-<div class="aon-node-id">
-A
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-A" aria-label="ES for activity A">
-</div>
-<div class="aon-cell static">
-4
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-A" aria-label="EF for activity A">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-A" aria-label="LS for activity A">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-A">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-A" aria-label="LF for activity A">
-</div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div id="aon6-node-B" class="aon-node" data-id="B">
-<div class="aon-node-id">
-B
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-B" aria-label="ES for activity B">
-</div>
-<div class="aon-cell static">
-6
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-B" aria-label="EF for activity B">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-B" aria-label="LS for activity B">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-B">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-B" aria-label="LF for activity B">
-</div>
-</div>
-</div>
-<div id="aon6-node-C" class="aon-node" data-id="C">
-<div class="aon-node-id">
-C
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-C" aria-label="ES for activity C">
-</div>
-<div class="aon-cell static">
-3
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-C" aria-label="EF for activity C">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-C" aria-label="LS for activity C">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-C">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-C" aria-label="LF for activity C">
-</div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div id="aon6-node-D" class="aon-node" data-id="D">
-<div class="aon-node-id">
-D
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-D" aria-label="ES for activity D">
-</div>
-<div class="aon-cell static">
-5
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-D" aria-label="EF for activity D">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-D" aria-label="LS for activity D">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-D">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-D" aria-label="LF for activity D">
-</div>
-</div>
-</div>
-<div id="aon6-node-E" class="aon-node" data-id="E">
-<div class="aon-node-id">
-E
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-E" aria-label="ES for activity E">
-</div>
-<div class="aon-cell static">
-4
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-E" aria-label="EF for activity E">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-E" aria-label="LS for activity E">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-E">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-E" aria-label="LF for activity E">
-</div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div id="aon6-node-F" class="aon-node" data-id="F">
-<div class="aon-node-id">
-F
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-F" aria-label="ES for activity F">
-</div>
-<div class="aon-cell static">
-2
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-F" aria-label="EF for activity F">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-F" aria-label="LS for activity F">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-F">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-F" aria-label="LF for activity F">
-</div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div id="aon6-node-G" class="aon-node" data-id="G">
-<div class="aon-node-id">
-G
-</div>
-<div class="aon-node-grid">
-<div class="aon-cell">
-<input type="number" id="aon6-ES-G" aria-label="ES for activity G">
-</div>
-<div class="aon-cell static">
-3
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-EF-G" aria-label="EF for activity G">
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LS-G" aria-label="LS for activity G">
-</div>
-<div class="aon-cell">
-<span id="aon6-FLT-G">&nbsp;</span>
-</div>
-<div class="aon-cell">
-<input type="number" id="aon6-LF-G" aria-label="LF for activity G">
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="aon-controls">
-<button type="button" class="aon-btn" id="aon6-btn-check">
-Check my numbers
-</button>
-<button type="button" class="aon-btn secondary" id="aon6-btn-cp">
-Check critical path
-</button>
-<button type="button" class="aon-btn secondary" id="aon6-btn-reset">
-Reset
-</button>
-</div>
-<div id="aon6-feedback" class="aon-feedback">
-
-</div>
-<div id="aon6-cpfeedback" class="aon-cp-feedback">
-
-</div>
-</div>
-<script>
-(function () {
-  var nodes = [
-    { id: "A", dur: 4, pred: [] },
-    { id: "B", dur: 6, pred: ["A"] },
-    { id: "C", dur: 3, pred: ["A"] },
-    { id: "D", dur: 5, pred: ["B"] },
-    { id: "E", dur: 4, pred: ["C"] },
-    { id: "F", dur: 2, pred: ["D", "E"] },
-    { id: "G", dur: 3, pred: ["F"] }
-  ];
-  var edges = [["A","B"], ["A","C"], ["B","D"], ["C","E"], ["D","F"], ["E","F"], ["F","G"]];
-
-  var succ = {};
-  nodes.forEach(function (n) { succ[n.id] = []; });
-  edges.forEach(function (e) { succ[e[0]].push(e[1]); });
-
-  // Correct answers, computed once with the same forward/backward pass taught above.
-  var ES = {}, EF = {}, LS = {}, LF = {}, FLOAT = {}, CRIT = {};
-  nodes.forEach(function (n) {
-    var es = n.pred.length === 0 ? 0 : Math.max.apply(null, n.pred.map(function (p) { return EF[p]; }));
-    ES[n.id] = es;
-    EF[n.id] = es + n.dur;
-  });
-  var proj = Math.max.apply(null, nodes.map(function (n) { return EF[n.id]; }));
-  nodes.slice().reverse().forEach(function (n) {
-    var s = succ[n.id];
-    var lf = s.length === 0 ? proj : Math.min.apply(null, s.map(function (x) { return LS[x]; }));
-    LF[n.id] = lf;
-    LS[n.id] = lf - n.dur;
-  });
-  nodes.forEach(function (n) {
-    FLOAT[n.id] = LS[n.id] - ES[n.id];
-    CRIT[n.id] = FLOAT[n.id] === 0;
-  });
-
-  var diagram = document.getElementById("aon6-diagram");
-  var svg = document.getElementById("aon6-svg");
-  var feedback = document.getElementById("aon6-feedback");
-  var cpFeedback = document.getElementById("aon6-cpfeedback");
-
-  function el(id) { return document.getElementById(id); }
-
-  function updateFloat(id) {
-    var esVal = parseFloat(el("aon6-ES-" + id).value);
-    var lsVal = parseFloat(el("aon6-LS-" + id).value);
-    var span = el("aon6-FLT-" + id);
-    if (!isNaN(esVal) && !isNaN(lsVal)) {
-      span.textContent = lsVal - esVal;
-    } else {
-      span.innerHTML = "&nbsp;";
-    }
-  }
-
-  function layoutArrows() {
-    var rect = diagram.getBoundingClientRect();
-    var w = diagram.scrollWidth, h = diagram.scrollHeight;
-    svg.setAttribute("width", w);
-    svg.setAttribute("height", h);
-    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
-    while (svg.children.length > 1) { svg.removeChild(svg.lastChild); }
-    edges.forEach(function (e) {
-      var a = el("aon6-node-" + e[0]).getBoundingClientRect();
-      var b = el("aon6-node-" + e[1]).getBoundingClientRect();
-      var x1 = a.right - rect.left, y1 = a.top - rect.top + a.height / 2;
-      var x2 = b.left - rect.left, y2 = b.top - rect.top + b.height / 2;
-      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", x1); line.setAttribute("y1", y1);
-      line.setAttribute("x2", x2 - 6); line.setAttribute("y2", y2);
-      line.setAttribute("stroke", "#2E86C1");
-      line.setAttribute("stroke-width", "2");
-      line.setAttribute("marker-end", "url(#aon6-arrowhead)");
-      svg.appendChild(line);
-    });
-  }
-
-  nodes.forEach(function (n) {
-    ["ES", "LS"].forEach(function (f) {
-      el("aon6-" + f + "-" + n.id).addEventListener("input", function () { updateFloat(n.id); });
-    });
-    el("aon6-node-" + n.id).addEventListener("click", function (ev) {
-      if (ev.target.tagName.toLowerCase() === "input") return;
-      this.classList.toggle("cp-selected");
-    });
-  });
-
-  el("aon6-btn-check").addEventListener("click", function () {
-    var total = 0, correct = 0;
-    var answers = { ES: ES, EF: EF, LS: LS, LF: LF };
-    nodes.forEach(function (n) {
-      ["ES", "EF", "LS", "LF"].forEach(function (f) {
-        total++;
-        var input = el("aon6-" + f + "-" + n.id);
-        var cell = input.parentElement;
-        cell.classList.remove("correct", "incorrect");
-        var val = parseFloat(input.value);
-        if (!isNaN(val) && val === answers[f][n.id]) {
-          cell.classList.add("correct");
-          correct++;
-        } else {
-          cell.classList.add("incorrect");
-        }
-      });
-      updateFloat(n.id);
-    });
-    feedback.textContent = correct + " of " + total + " cells correct." +
-      (correct === total ? " Every number checks out -- on to the critical path." : " Fix the red cells and check again.");
-  });
-
-  el("aon6-btn-cp").addEventListener("click", function () {
-    nodes.forEach(function (n) {
-      var node = el("aon6-node-" + n.id);
-      var selected = node.classList.contains("cp-selected");
-      node.classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
-      if (selected && CRIT[n.id]) node.classList.add("cp-correct");
-      else if (!selected && CRIT[n.id]) node.classList.add("cp-missed");
-      else if (selected && !CRIT[n.id]) node.classList.add("cp-wrong");
-    });
-    var chain = nodes.filter(function (n) { return CRIT[n.id]; }).map(function (n) { return n.id; }).join("-");
-    cpFeedback.textContent = "Critical path: " + chain + " (" + proj + " days). Green = correctly on the critical path, red outline = missed or wrongly selected.";
-  });
-
-  el("aon6-btn-reset").addEventListener("click", function () {
-    nodes.forEach(function (n) {
-      ["ES", "EF", "LS", "LF"].forEach(function (f) {
-        var input = el("aon6-" + f + "-" + n.id);
-        input.value = "";
-        input.parentElement.classList.remove("correct", "incorrect");
-      });
-      el("aon6-FLT-" + n.id).innerHTML = "&nbsp;";
-      el("aon6-node-" + n.id).classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
-    });
-    feedback.textContent = "";
-    cpFeedback.textContent = "";
-  });
-
-  layoutArrows();
-  window.addEventListener("resize", layoutArrows);
-  window.addEventListener("load", layoutArrows);
-  setTimeout(layoutArrows, 200);
-})();
-</script>
-<details>
+<details class="tryit-solution">
 <summary>
-Show the fully solved network
+Show the fully solved network (all four data sets)
 </summary>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-striped table-condensed caption-top table-sm small">
+<p><strong>Data set 1</strong> — durations A = 4, B = 6, C = 3, D = 5, E = 4, F = 2, G = 3.</p>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Activity</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Dur</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">ES</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">EF</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">LS</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">LF</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Float</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Critical</th>
+<tr>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Dur
+</th>
+<th style="text-align:right;">
+ES
+</th>
+<th style="text-align:right;">
+EF
+</th>
+<th style="text-align:right;">
+LS
+</th>
+<th style="text-align:right;">
+LF
+</th>
+<th style="text-align:right;">
+Float
+</th>
+<th style="text-align:left;">
+Critical
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: left;">A</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">&lt;- critical</td>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">B</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">&lt;- critical</td>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">C</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;"></td>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">D</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">&lt;- critical</td>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">E</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;"></td>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">&lt;- critical</td>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">G</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">&lt;- critical</td>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<p>Project duration: 20 days. Critical path: A-B-D-F-G. C and E each carry 4 days of float — they can slip into that cushion without moving the finish date, which is exactly why they are not on the critical path even though they sit “in the middle” of the network.</p>
+<p>Project duration: 20 days. Critical path: A-B-D-F-G. Activities off the critical path carry float: C (4), E (4).</p>
+<p><strong>Data set 2</strong> — durations A = 5, B = 5, C = 4, D = 6, E = 4, F = 2, G = 3.</p>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Dur
+</th>
+<th style="text-align:right;">
+ES
+</th>
+<th style="text-align:right;">
+EF
+</th>
+<th style="text-align:right;">
+LS
+</th>
+<th style="text-align:right;">
+LF
+</th>
+<th style="text-align:right;">
+Float
+</th>
+<th style="text-align:left;">
+Critical
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+</tbody>
+</table>
+<p>Project duration: 21 days. Critical path: A-B-D-F-G. Activities off the critical path carry float: C (3), E (3).</p>
+<p><strong>Data set 3</strong> — durations A = 3, B = 4, C = 5, D = 4, E = 7, F = 3, G = 2.</p>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Dur
+</th>
+<th style="text-align:right;">
+ES
+</th>
+<th style="text-align:right;">
+EF
+</th>
+<th style="text-align:right;">
+LS
+</th>
+<th style="text-align:right;">
+LF
+</th>
+<th style="text-align:right;">
+Float
+</th>
+<th style="text-align:left;">
+Critical
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+</tbody>
+</table>
+<p>Project duration: 20 days. Critical path: A-C-E-F-G. Activities off the critical path carry float: B (4), D (4).</p>
+<p><strong>Data set 4</strong> — durations A = 4, B = 6, C = 4, D = 5, E = 5, F = 1, G = 4.</p>
+<table class="table table-striped table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Activity
+</th>
+<th style="text-align:right;">
+Dur
+</th>
+<th style="text-align:right;">
+ES
+</th>
+<th style="text-align:right;">
+EF
+</th>
+<th style="text-align:right;">
+LS
+</th>
+<th style="text-align:right;">
+LF
+</th>
+<th style="text-align:right;">
+Float
+</th>
+<th style="text-align:left;">
+Critical
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+&lt;- critical
+</td>
+</tr>
+</tbody>
+</table>
+<p>Project duration: 20 days. Critical path: A-B-D-F-G. Activities off the critical path carry float: C (2), E (2).</p>
+<p>Data set 1 in words: project duration 20 days, critical path A-B-D-F-G. C and E each carry 4 days of float — they can slip into that cushion without moving the finish date, which is exactly why they are not on the critical path even though they sit “in the middle” of the network.</p>
 </details>
 </section>
 </section>
@@ -2865,6 +3237,75 @@ Show the fully solved network
 Why the weight of 4 on the most-likely value?
 </summary>
 <p>PERT assumes each activity duration follows a Beta distribution skewed toward the most-likely value, with the optimistic and pessimistic values as the tails. Weighting <span class="math inline">\(m\)</span> by 4 and <span class="math inline">\(o\)</span>, <span class="math inline">\(p\)</span> by 1 each (dividing by 6) is the standard approximation of that distribution’s mean. The activity standard deviation <span class="math inline">\((p - o)/6\)</span> becomes important in <a href="./08-Project-Scheduling.html">Chapter 8</a>, where you combine them to find the probability of finishing on time.</p>
+</details>
+<p>Now do it by hand on a fresh set of estimates. Calculate each activity’s expected duration and standard deviation, then total the expected durations along the chain.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-pert-by-hand" data-tryit="grid">
+<script type="application/json">{"title":"PERT by hand: expected duration and standard deviation","intro":"Give each answer to two decimal places.","columns":[{"label":"Activity","blank":false,"tol":null,"hint":null},{"label":"o","blank":false,"tol":null,"hint":null},{"label":"m","blank":false,"tol":null,"hint":null},{"label":"p","blank":false,"tol":null,"hint":null},{"label":"t_e","blank":true,"tol":0.01,"hint":"(o + 4m + p) / 6. The most-likely value counts four times."},{"label":"SD","blank":true,"tol":0.01,"hint":"(p - o) / 6: only the two extremes matter."}],"rows":[["A","4","6","14",7,1.66666666666667],["B","8","10","18",11,1.66666666666667],["C","3","5","7",5,0.666666666666667],["D","10","14","24",15,2.33333333333333],["E","2","3","8",3.66666666666667,1]],"answers":[{"label":"Sum of expected durations, A to E","answer":41.6666666666667,"tol":0.01,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-condensed caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Activity</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">o</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">m</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">t_e</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">SD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">A</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7.00</td>
+<td style="text-align: center;">1.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">11.00</td>
+<td style="text-align: center;">1.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">5.00</td>
+<td style="text-align: center;">0.67</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">D</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">15.00</td>
+<td style="text-align: center;">2.33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">E</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3.67</td>
+<td style="text-align: center;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Activity D shows the skew: with o = 10, m = 14 and p = 24, the long tail pulls t_e up to 15 — a day above the most-likely value — and gives the largest standard deviation (2.33), so it is the activity most worth watching.</p>
 </details>
 </section>
 </section>
@@ -2902,6 +3343,10 @@ Why the weight of 4 on the most-likely value?
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="max(path_len2) <= 31">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Get the whole sub-project down to 31 days or fewer. Watch which path is longest after each change.</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -3131,8 +3576,8 @@ Figure&nbsp;6.4: The seven-activity renovation network as a Gantt chart. Critica
 <td>F</td>
 <td>49</td>
 <td>54</td>
-<td>51</td>
 <td>56</td>
+<td>61</td>
 <td>7</td>
 </tr>
 <tr class="even">

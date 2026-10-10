@@ -1839,11 +1839,14 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#direct-labour-cost" id="toc-direct-labour-cost" class="nav-link" data-scroll-target="#direct-labour-cost"><span class="header-section-number">9.4.1</span> Direct labour cost</a></li>
   <li><a href="#worked-example-1-fully-burdened-cost-of-a-work-package" id="toc-worked-example-1-fully-burdened-cost-of-a-work-package" class="nav-link" data-scroll-target="#worked-example-1-fully-burdened-cost-of-a-work-package"><span class="header-section-number">9.4.2</span> Worked Example 1: fully-burdened cost of a work package</a></li>
-  <li><a href="#the-dichotomies-on-the-running-project" id="toc-the-dichotomies-on-the-running-project" class="nav-link" data-scroll-target="#the-dichotomies-on-the-running-project"><span class="header-section-number">9.4.3</span> The dichotomies on the running project</a></li>
+  <li><a href="#try-it-yourself-cost-and-variance-by-hand" id="toc-try-it-yourself-cost-and-variance-by-hand" class="nav-link" data-scroll-target="#try-it-yourself-cost-and-variance-by-hand"><span class="header-section-number">9.4.3</span> Try it yourself: cost and variance by hand</a></li>
+  <li><a href="#try-it-yourself-label-each-cost-three-ways" id="toc-try-it-yourself-label-each-cost-three-ways" class="nav-link" data-scroll-target="#try-it-yourself-label-each-cost-three-ways"><span class="header-section-number">9.4.4</span> Try it yourself: label each cost three ways</a></li>
+  <li><a href="#the-dichotomies-on-the-running-project" id="toc-the-dichotomies-on-the-running-project" class="nav-link" data-scroll-target="#the-dichotomies-on-the-running-project"><span class="header-section-number">9.4.5</span> The dichotomies on the running project</a></li>
   </ul></li>
   <li><a href="#estimating-methods-and-their-accuracy" id="toc-estimating-methods-and-their-accuracy" class="nav-link" data-scroll-target="#estimating-methods-and-their-accuracy"><span class="header-section-number">9.5</span> Estimating methods and their accuracy</a>
   <ul class="collapse">
   <li><a href="#try-it-yourself-parametric-estimate-and-the-accuracy-band" id="toc-try-it-yourself-parametric-estimate-and-the-accuracy-band" class="nav-link" data-scroll-target="#try-it-yourself-parametric-estimate-and-the-accuracy-band"><span class="header-section-number">9.5.1</span> Try it yourself: parametric estimate and the accuracy band</a></li>
+  <li><a href="#try-it-yourself-which-estimating-method" id="toc-try-it-yourself-which-estimating-method" class="nav-link" data-scroll-target="#try-it-yourself-which-estimating-method"><span class="header-section-number">9.5.2</span> Try it yourself: which estimating method?</a></li>
   </ul></li>
   <li><a href="#what-makes-estimates-good-or-bad" id="toc-what-makes-estimates-good-or-bad" class="nav-link" data-scroll-target="#what-makes-estimates-good-or-bad"><span class="header-section-number">9.6</span> What makes estimates good or bad</a>
   <ul class="collapse">
@@ -1856,7 +1859,10 @@ window.Quarto = {
   <li><a href="#a-preliminary-abc-budget" id="toc-a-preliminary-abc-budget" class="nav-link" data-scroll-target="#a-preliminary-abc-budget"><span class="header-section-number">9.8.1</span> A preliminary ABC budget</a></li>
   <li><a href="#try-it-yourself-cost-an-activity-then-a-variance" id="toc-try-it-yourself-cost-an-activity-then-a-variance" class="nav-link" data-scroll-target="#try-it-yourself-cost-an-activity-then-a-variance"><span class="header-section-number">9.8.2</span> Try it yourself: cost an activity, then a variance</a></li>
   </ul></li>
-  <li><a href="#the-time-phased-budget-and-the-s-curve" id="toc-the-time-phased-budget-and-the-s-curve" class="nav-link" data-scroll-target="#the-time-phased-budget-and-the-s-curve"><span class="header-section-number">9.9</span> The time-phased budget and the S-curve</a></li>
+  <li><a href="#the-time-phased-budget-and-the-s-curve" id="toc-the-time-phased-budget-and-the-s-curve" class="nav-link" data-scroll-target="#the-time-phased-budget-and-the-s-curve"><span class="header-section-number">9.9</span> The time-phased budget and the S-curve</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-build-the-s-curve" id="toc-try-it-yourself-build-the-s-curve" class="nav-link" data-scroll-target="#try-it-yourself-build-the-s-curve"><span class="header-section-number">9.9.1</span> Try it yourself: build the S-curve</a></li>
+  </ul></li>
   <li><a href="#contingency-reserves" id="toc-contingency-reserves" class="nav-link" data-scroll-target="#contingency-reserves"><span class="header-section-number">9.10</span> Contingency reserves</a>
   <ul class="collapse">
   <li><a href="#try-it-yourself-build-the-rc-vehicle-project-budget" id="toc-try-it-yourself-build-the-rc-vehicle-project-budget" class="nav-link" data-scroll-target="#try-it-yourself-build-the-rc-vehicle-project-budget"><span class="header-section-number">9.10.1</span> Try it yourself: build the RC-vehicle project budget</a></li>
@@ -2425,6 +2431,20 @@ Show the live R code behind this calculator
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </details>
+</section>
+<section id="try-it-yourself-cost-and-variance-by-hand" class="level3" data-number="9.4.3">
+<h3 data-number="9.4.3" class="anchored" data-anchor-id="try-it-yourself-cost-and-variance-by-hand"><span class="header-section-number">9.4.3</span> Try it yourself: cost and variance by hand</h3>
+<p>Cost a test campaign from its drivers, apply the indirect rate, and compare with what was actually spent. Each team picks its own <strong>data set</strong>.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-burdened-by-hand" data-tryit="number">
+<script type="application/json">{"title":"Fully burdened cost and variance","intro":"Planned cost = direct cost x (1 + indirect rate).","given":[{"label":"Technicians x weeks","value":"3 x 4"},{"label":"Hours per week each","value":"37.5"},{"label":"Labour rate","value":"$36 / h"},{"label":"Consumables","value":"$5 400"},{"label":"Indirect rate","value":"30 % of direct cost"},{"label":"Actual cost","value":"$24 600"}],"answers":[{"label":"Direct labour","answer":16200,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Direct cost (labour + consumables)","answer":21600,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Planned, fully burdened","answer":28080,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance (planned - actual; negative = over budget)","answer":3480,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance as % of planned","answer":12.3931623931624,"tol":0.1,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}],"variants":[{"given":[{"label":"Technicians x weeks","value":"3 x 4"},{"label":"Hours per week each","value":"37.5"},{"label":"Labour rate","value":"$36 / h"},{"label":"Consumables","value":"$5 400"},{"label":"Indirect rate","value":"30 % of direct cost"},{"label":"Actual cost","value":"$24 600"}],"answers":[{"label":"Direct labour","answer":16200,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Direct cost (labour + consumables)","answer":21600,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Planned, fully burdened","answer":28080,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance (planned - actual; negative = over budget)","answer":3480,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance as % of planned","answer":12.3931623931624,"tol":0.1,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Technicians x weeks","value":"2 x 5"},{"label":"Hours per week each","value":"40"},{"label":"Labour rate","value":"$42 / h"},{"label":"Consumables","value":"$7 200"},{"label":"Indirect rate","value":"25 % of direct cost"},{"label":"Actual cost","value":"$31 500"}],"answers":[{"label":"Direct labour","answer":16800,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Direct cost (labour + consumables)","answer":24000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Planned, fully burdened","answer":30000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance (planned - actual; negative = over budget)","answer":-1500,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance as % of planned","answer":-5,"tol":0.1,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Technicians x weeks","value":"4 x 3"},{"label":"Hours per week each","value":"35"},{"label":"Labour rate","value":"$30 / h"},{"label":"Consumables","value":"$3 800"},{"label":"Indirect rate","value":"40 % of direct cost"},{"label":"Actual cost","value":"$23 900"}],"answers":[{"label":"Direct labour","answer":12600,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Direct cost (labour + consumables)","answer":16400,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Planned, fully burdened","answer":22960,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance (planned - actual; negative = over budget)","answer":-940,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance as % of planned","answer":-4.09407665505227,"tol":0.1,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]},{"given":[{"label":"Technicians x weeks","value":"2 x 6"},{"label":"Hours per week each","value":"37.5"},{"label":"Labour rate","value":"$38 / h"},{"label":"Consumables","value":"$9 100"},{"label":"Indirect rate","value":"35 % of direct cost"},{"label":"Actual cost","value":"$36 000"}],"answers":[{"label":"Direct labour","answer":17100,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Direct cost (labour + consumables)","answer":26200,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Planned, fully burdened","answer":35370,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance (planned - actual; negative = over budget)","answer":-630,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Variance as % of planned","answer":-1.78117048346056,"tol":0.1,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>Data set 1: labour = 3 x 4 x 37.5 x $36 = $16 200; plus $5 400 of consumables gives a direct cost of $21 600; at 30 % indirect the planned cost is $28 080. Against an actual of $24 600 the variance is +$3 480, or 12.4 %: under budget (favourable).</p>
+</details>
 <details>
 <summary>
 Practice: classify the cost (from the MGMT-3105 budgeting case study)
@@ -2538,8 +2558,16 @@ Answers
 </details>
 </details>
 </section>
-<section id="the-dichotomies-on-the-running-project" class="level3" data-number="9.4.3">
-<h3 data-number="9.4.3" class="anchored" data-anchor-id="the-dichotomies-on-the-running-project"><span class="header-section-number">9.4.3</span> The dichotomies on the running project</h3>
+<section id="try-it-yourself-label-each-cost-three-ways" class="level3" data-number="9.4.4">
+<h3 data-number="9.4.4" class="anchored" data-anchor-id="try-it-yourself-label-each-cost-three-ways"><span class="header-section-number">9.4.4</span> Try it yourself: label each cost three ways</h3>
+<p>Every cost carries a label from each of the three pairs below. Pick one option in each column.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-cost-types" data-tryit="grid">
+<script type="application/json">{"title":"Direct or indirect, fixed or variable, normal or expedited","intro":"Direct = charged straight to the project; expedited = paid to go faster than planned.","columns":[{"label":"Cost","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Direct or indirect","blank":true,"tol":null,"choices":["Direct","Indirect"],"hint":null},{"label":"Fixed or variable","blank":true,"tol":null,"choices":["Fixed","Variable"],"hint":null},{"label":"Normal or expedited","blank":true,"tol":null,"choices":["Normal","Expedited"],"hint":null}],"rows":[["Assembler wages on the pilot build","Direct","Variable","Normal"],["Plant insurance premium","Indirect","Fixed","Normal"],["Overnight air freight for a late circuit board","Direct","Variable","Expedited"],["Flat-fee lease of a CMM taken for this project only","Direct","Fixed","Normal"],["Electricity for the whole plant's compressed air","Indirect","Variable","Normal"],["Weekend overtime to recover an unplanned slip","Direct","Variable","Expedited"],["Prototype material bought for this project","Direct","Variable","Normal"],["Administrative staff salaries","Indirect","Fixed","Normal"]],"answers":[],"variants":null}</script>
+</div>
+</section>
+<section id="the-dichotomies-on-the-running-project" class="level3" data-number="9.4.5">
+<h3 data-number="9.4.5" class="anchored" data-anchor-id="the-dichotomies-on-the-running-project"><span class="header-section-number">9.4.5</span> The dichotomies on the running project</h3>
 <ul>
 <li><strong>Fixed vs.&nbsp;variable.</strong> The 6-month lease on the CMM is <strong>fixed</strong> — the fee is the same whether you measure 50 parts or 5 000. The machine-hour charge on the rented moulding press is <strong>variable</strong>. Leasing an expensive machine is a real PM judgement call: will the usage justify the flat fee?</li>
 <li><strong>Normal vs.&nbsp;expedited.</strong> Air-freighting circuit boards from the supplier to recover a slipped date is <strong>expedited</strong> and <strong>direct</strong>. The overtime you <em>planned</em> into the schedule from day one is still <strong>normal</strong>.</li>
@@ -2659,6 +2687,13 @@ Why quote a range at all — why not just give “the number”?
 </summary>
 <p>Because a single number reads as a <strong>commitment</strong>. If you say “$1.8M” at the concept stage and the definitive estimate later lands at $2.0M, you have “overrun by $200k” — even though $2.0M was always inside the ±30 % ballpark band. Quoting “$1.3M–$2.3M, ballpark” sets the expectation honestly and buys you room to refine. A clear distinction between an <strong>estimate</strong> and a <strong>commitment</strong> is one of the most important things a PM can establish early.</p>
 </details>
+</section>
+<section id="try-it-yourself-which-estimating-method" class="level3" data-number="9.5.2">
+<h3 data-number="9.5.2" class="anchored" data-anchor-id="try-it-yourself-which-estimating-method"><span class="header-section-number">9.5.2</span> Try it yourself: which estimating method?</h3>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-estimating-method" data-tryit="sort">
+<script type="application/json">{"title":"Which estimating method, and so which accuracy band, fits each situation?","intro":"The method follows how much you know, which depends on how far into the project you are.","bins":["Ballpark (+/- 30 %)","Parametric (+/- 15 %)","Feasibility (+/- 10 %)","Definitive (+/- 5 %)"],"cards":[{"text":"A hallway question about a new product line; all you have is a one-page concept.","bin":0,"why":"Very early with scarce information: ballpark."},{"text":"You have costed three near-identical launches and kept clean actuals.","bin":1,"why":"A genuinely similar past project: parametric."},{"text":"Scope is clear and the first supplier quotes are back.","bin":2,"why":"Clear scope and first quotes: feasibility."},{"text":"Major purchase orders are drafted and most of the design is released, for a fixed-price bid.","bin":3,"why":"Most design complete: definitive."},{"text":"You are deciding whether to bid at all, with little time and few people.","bin":0,"why":"Deciding whether to bid: ballpark."},{"text":"A reliable historical cost-per-unit relationship exists for this product family.","bin":1,"why":"Archived actuals and a CER: parametric."},{"text":"A construction project with defined scope and preliminary subcontractor quotes.","bin":2,"why":"Quotes plus clear scope: feasibility."},{"text":"Contract signature is next week and the detailed drawings are complete.","bin":3,"why":"Detail is known: definitive."}]}</script>
+</div>
 </section>
 </section>
 <section id="what-makes-estimates-good-or-bad" class="level2" data-number="9.6">
@@ -2964,13 +2999,27 @@ Warning
 <img src="09-Cost-Estimation-and-Budgeting_files/figure-html/fig-s-curve-09-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-s-curve-09-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.3: Time-phased budget for a six-activity project. Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.
+Figure&nbsp;9.3: Time-phased budget for the six-activity project of the ABC table (total $38,500). Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Matching the cost baseline to the schedule baseline is what lets you set <strong>milestones for both schedule and budget</strong> and later tell whether a project that has spent 60 % of its money is 60 %, 40 %, or 80 % done.</p>
+<section id="try-it-yourself-build-the-s-curve" class="level3" data-number="9.9.1">
+<h3 data-number="9.9.1" class="anchored" data-anchor-id="try-it-yourself-build-the-s-curve"><span class="header-section-number">9.9.1</span> Try it yourself: build the S-curve</h3>
+<p>Time-phase a small budget: add each month’s spend across the activities, then the running total is the cumulative baseline. Each team picks its own <strong>data set</strong>. Amounts in dollars.</p>
+<script src="js/tryit.js"></script>
+<div class="tryit" id="tryit-time-phased" data-tryit="grid">
+<script type="application/json">{"title":"Time-phased budget and cumulative baseline","intro":"Warehouse fit-out: planned spend by activity and month.","columns":[{"label":"Month","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Demolition","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Wiring","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Racking","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Painting","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Signage","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Month total","blank":true,"tol":1,"choices":null,"hint":"Add across the activities for that month."},{"label":"Cumulative","blank":true,"tol":1,"choices":null,"hint":"Running total of the month totals."}],"rows":[["Jan","4000","0","0","0","0",4000,4000],["Feb","2000","3000","0","0","0",5000,9000],["Mar","0","5000","6000","0","0",11000,20000],["Apr","0","2000","8000","2000","0",12000,32000],["May","0","0","3000","3000","1500",7500,39500],["Jun","0","0","0","1000","2500",3500,43000]],"answers":[{"label":"Peak monthly spend","answer":12000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Cumulative spend at the end of March","answer":20000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}],"variants":[{"rows":[["Jan","4000","0","0","0","0",4000,4000],["Feb","2000","3000","0","0","0",5000,9000],["Mar","0","5000","6000","0","0",11000,20000],["Apr","0","2000","8000","2000","0",12000,32000],["May","0","0","3000","3000","1500",7500,39500],["Jun","0","0","0","1000","2500",3500,43000]],"answers":[{"label":"Peak monthly spend","answer":12000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Cumulative spend at the end of March","answer":20000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Jan","3000","0","0","0","0",3000,3000],["Feb","3000","2000","0","0","0",5000,8000],["Mar","0","4000","5000","0","0",9000,17000],["Apr","0","4000","7000","1500","0",12500,29500],["May","0","0","4000","2500","1000",7500,37000],["Jun","0","0","0","2000","3000",5000,42000]],"answers":[{"label":"Peak monthly spend","answer":12500,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Cumulative spend at the end of March","answer":17000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Jan","5000","0","0","0","0",5000,5000],["Feb","1000","2500","0","0","0",3500,8500],["Mar","0","3500","4000","0","0",7500,16000],["Apr","0","3000","6000","2500","0",11500,27500],["May","0","0","5000","3500","2000",10500,38000],["Jun","0","0","0","500","2000",2500,40500]],"answers":[{"label":"Peak monthly spend","answer":11500,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Cumulative spend at the end of March","answer":16000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["Jan","2000","0","0","0","0",2000,2000],["Feb","2000","0","0","0","0",2000,4000],["Mar","2000","4500","0","0","0",6500,10500],["Apr","0","4500","6500","0","0",11000,21500],["May","0","0","6500","3000","0",9500,31000],["Jun","0","0","2000","3000","3500",8500,39500]],"answers":[{"label":"Peak monthly spend","answer":11000,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0},{"label":"Cumulative spend at the end of March","answer":10500,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]}]}</script>
+</div>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>Data set 1: monthly totals are $4 000, $5 000, $11 000, $12 000, $7 500 and $3 500; the cumulative baseline is $4 000, $9 000, $20 000, $32 000, $39 500 and $43 000. Peak spend is $12 000 in April and the baseline stands at $20 000 at the end of March. Plotted, the cumulative column is the S-curve you will track earned value against in Chapter 12.</p>
+</details>
+</section>
 </section>
 <section id="contingency-reserves" class="level2" data-number="9.10">
 <h2 data-number="9.10" class="anchored" data-anchor-id="contingency-reserves"><span class="header-section-number">9.10</span> Contingency reserves</h2>
@@ -3209,7 +3258,7 @@ Solution
 <summary>
 Problem 3: Variance analysis on the ABC budget
 </summary>
-<p>Using the preliminary ABC budget above (total planned $63 250), the project finishes with these actuals: Survey $4 250, Design $8 000, Clear site $3 500, Foundation $8 500, Framing $11 250, Plumb &amp; wire $5 150. Find the variance per activity and overall, and flag the activities that need a post-mortem.</p>
+<p>Using the preliminary ABC budget above (total planned $38 500), the project finishes with these actuals: Survey $4 250, Design $8 000, Clear site $3 500, Foundation $8 500, Framing $11 250, Plumb &amp; wire $5 150. Find the variance per activity and overall, and flag the activities that need a post-mortem.</p>
 <details>
 <summary>
 Solution
@@ -3244,7 +3293,7 @@ Solution
 TOTAL planned $38 500  actual $40 650  variance $-2 150 (-5.6%)</code></pre>
 </div>
 </div>
-<p>Design and (roughly) Survey held. <strong>Foundation (-13 %)</strong> and <strong>Framing (-13 %)</strong> blew through and drove the whole project $2 150 (3.4 %) over — those two get the post-mortem.</p>
+<p>Design and (roughly) Survey held. <strong>Foundation (-13 %)</strong> and <strong>Framing (-13 %)</strong> blew through and drove the whole project $2 150 (5.6 %) over — those two get the post-mortem.</p>
 </details>
 </details>
 <details>
