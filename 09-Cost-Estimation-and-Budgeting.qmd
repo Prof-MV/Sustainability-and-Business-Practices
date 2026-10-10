@@ -198,6 +198,59 @@ cat(sprintf("Indirect (%g%%)  %s\n", 100 * indirect_rate, money(indirect_cost)))
 
 </details>
 
+### Try it yourself: cost and variance by hand
+
+Cost a test campaign from its drivers, apply the indirect rate, and compare
+with what was actually spent. Each team picks its own **data set**.
+
+```{r tryit-burdened-09, echo=FALSE, results='asis'}
+bd_sets <- list(
+  c(techs = 3, weeks = 4, hrs = 37.5, rate = 36, cons = 5400, ind = 30, actual = 24600),
+  c(techs = 2, weeks = 5, hrs = 40,   rate = 42, cons = 7200, ind = 25, actual = 31500),
+  c(techs = 4, weeks = 3, hrs = 35,   rate = 30, cons = 3800, ind = 40, actual = 23900),
+  c(techs = 2, weeks = 6, hrs = 37.5, rate = 38, cons = 9100, ind = 35, actual = 36000))
+bd_given <- function(v) c(
+  "Technicians x weeks" = sprintf("%g x %g", v[["techs"]], v[["weeks"]]),
+  "Hours per week each" = v[["hrs"]], "Labour rate" = sprintf("$%g / h", v[["rate"]]),
+  "Consumables" = sprintf("$%s", format(v[["cons"]], big.mark = " ")),
+  "Indirect rate" = sprintf("%g %% of direct cost", v[["ind"]]),
+  "Actual cost" = sprintf("$%s", format(v[["actual"]], big.mark = " ")))
+bd_answers <- function(v) {
+  labour <- v[["techs"]] * v[["weeks"]] * v[["hrs"]] * v[["rate"]]
+  direct <- labour + v[["cons"]]
+  planned <- direct * (1 + v[["ind"]] / 100)
+  var <- planned - v[["actual"]]
+  list(tryit_answer("Direct labour", labour, tol = 1, prefix = "$"),
+       tryit_answer("Direct cost (labour + consumables)", direct, tol = 1, prefix = "$"),
+       tryit_answer("Planned, fully burdened", planned, tol = 1, prefix = "$"),
+       tryit_answer("Variance (planned - actual; negative = over budget)", var, tol = 1, prefix = "$"),
+       tryit_answer("Variance as % of planned", 100 * var / planned, tol = 0.1, suffix = "%"))
+}
+tryit_number(
+  "burdened-by-hand", "Fully burdened cost and variance",
+  answers = bd_answers(bd_sets[[1]]), given = bd_given(bd_sets[[1]]),
+  teams = lapply(bd_sets[-1], function(v) list(given = bd_given(v), answers = bd_answers(v))),
+  intro = "Planned cost = direct cost x (1 + indirect rate).")
+
+tryit_number(
+  "burdened-twin", "Fully burdened cost and variance (graded)", show = FALSE,
+  answers = bd_answers(c(techs = 5, weeks = 2, hrs = 40, rate = 33, cons = 4500, ind = 28, actual = 21000)),
+  question = paste0("<p>A test campaign uses 5 technicians for 2 weeks at 40 h/week each, at $33/h, ",
+    "plus $4 500 of consumables. Indirect cost is applied at 28 % of direct cost. The actual cost was ",
+    "$21 000. Calculate the direct labour, the direct cost, the planned fully burdened cost, the ",
+    "variance (planned - actual) and the variance as a percentage of planned.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Data set 1: labour = 3 x 4 x 37.5 x \$36 = \$16 200; plus \$5 400 of consumables
+gives a direct cost of \$21 600; at 30 % indirect the planned cost is
+\$28 080. Against an actual of \$24 600 the variance is +\$3 480, or 12.4 %:
+under budget (favourable).
+
+</details>
+
 <details>
 <summary>Practice: classify the cost (from the MGMT-3105 budgeting case study)</summary>
 
@@ -240,6 +293,48 @@ Non-recurring.** Most items are genuinely two or three of these at once.
 </details>
 
 </details>
+
+### Try it yourself: label each cost three ways
+
+Every cost carries a label from each of the three pairs below. Pick one
+option in each column.
+
+```{r tryit-costtypes-09, echo=FALSE, results='asis'}
+ct_items <- data.frame(
+  Cost = c("Assembler wages on the pilot build",
+           "Plant insurance premium",
+           "Overnight air freight for a late circuit board",
+           "Flat-fee lease of a CMM taken for this project only",
+           "Electricity for the whole plant's compressed air",
+           "Weekend overtime to recover an unplanned slip",
+           "Prototype material bought for this project",
+           "Administrative staff salaries"),
+  `Direct or indirect` = c("Direct", "Indirect", "Direct", "Direct", "Indirect", "Direct", "Direct", "Indirect"),
+  `Fixed or variable` = c("Variable", "Fixed", "Variable", "Fixed", "Variable", "Variable", "Variable", "Fixed"),
+  `Normal or expedited` = c("Normal", "Normal", "Expedited", "Normal", "Normal", "Expedited", "Normal", "Normal"),
+  check.names = FALSE, stringsAsFactors = FALSE)
+ct_cols <- c("Direct or indirect", "Fixed or variable", "Normal or expedited")
+ct_choice <- list(`Direct or indirect` = c("Direct", "Indirect"),
+                  `Fixed or variable` = c("Fixed", "Variable"),
+                  `Normal or expedited` = c("Normal", "Expedited"))
+tryit_grid(
+  "cost-types", "Direct or indirect, fixed or variable, normal or expedited",
+  data = ct_items, blank = ct_cols, choice = ct_choice,
+  intro = "Direct = charged straight to the project; expedited = paid to go faster than planned.")
+
+ct_twin <- data.frame(
+  Cost = c("Machine-hour charge on a rented moulding press", "Office rent for headquarters",
+           "Rush shipping of tooling inserts", "Training course for the project team, once at the start",
+           "Subcontract laboratory test fee, agreed price"),
+  `Direct or indirect` = c("Direct", "Indirect", "Direct", "Direct", "Direct"),
+  `Fixed or variable` = c("Variable", "Fixed", "Variable", "Fixed", "Fixed"),
+  `Normal or expedited` = c("Normal", "Normal", "Expedited", "Normal", "Normal"),
+  check.names = FALSE, stringsAsFactors = FALSE)
+tryit_grid(
+  "cost-types-twin", "Cost types (graded)", show = FALSE,
+  data = ct_twin, blank = ct_cols, choice = ct_choice,
+  question = "<p>For each cost, state whether it is direct or indirect, fixed or variable, and normal or expedited.</p>")
+```
 
 ### The dichotomies on the running project
 
@@ -383,6 +478,46 @@ you room to refine. A clear distinction between an **estimate** and a
 **commitment** is one of the most important things a PM can establish early.
 
 </details>
+
+### Try it yourself: which estimating method?
+
+```{r tryit-estimating-09, echo=FALSE, results='asis'}
+est_bins <- c("Ballpark (+/- 30 %)", "Parametric (+/- 15 %)", "Feasibility (+/- 10 %)", "Definitive (+/- 5 %)")
+tryit_sort(
+  "estimating-method", "Which estimating method, and so which accuracy band, fits each situation?",
+  bins = est_bins,
+  cards = data.frame(
+    text = c("A hallway question about a new product line; all you have is a one-page concept.",
+             "You have costed three near-identical launches and kept clean actuals.",
+             "Scope is clear and the first supplier quotes are back.",
+             "Major purchase orders are drafted and most of the design is released, for a fixed-price bid.",
+             "You are deciding whether to bid at all, with little time and few people.",
+             "A reliable historical cost-per-unit relationship exists for this product family.",
+             "A construction project with defined scope and preliminary subcontractor quotes.",
+             "Contract signature is next week and the detailed drawings are complete."),
+    bin = c("Ballpark (+/- 30 %)", "Parametric (+/- 15 %)", "Feasibility (+/- 10 %)", "Definitive (+/- 5 %)",
+            "Ballpark (+/- 30 %)", "Parametric (+/- 15 %)", "Feasibility (+/- 10 %)", "Definitive (+/- 5 %)"),
+    why = c("Very early with scarce information: ballpark.", "A genuinely similar past project: parametric.",
+            "Clear scope and first quotes: feasibility.", "Most design complete: definitive.",
+            "Deciding whether to bid: ballpark.", "Archived actuals and a CER: parametric.",
+            "Quotes plus clear scope: feasibility.", "Detail is known: definitive."),
+    stringsAsFactors = FALSE),
+  intro = "The method follows how much you know, which depends on how far into the project you are.",
+  question = NULL)
+
+tryit_sort(
+  "estimating-twin", "Estimating method (graded)", bins = est_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A customer asks for a rough number from a sketch.",
+             "All purchase orders are written and the design is 95 % released.",
+             "Costs scale reliably with part count from archived projects.",
+             "Scope is defined and two of five quotes are back.",
+             "A first look at whether a bid is worthwhile."),
+    bin = c("Ballpark (+/- 30 %)", "Definitive (+/- 5 %)", "Parametric (+/- 15 %)",
+            "Feasibility (+/- 10 %)", "Ballpark (+/- 30 %)"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each situation, choose the estimating method (and its typical accuracy band) that fits the stage of the project.</p>")
+```
 
 ## What makes estimates good or bad
 
@@ -634,6 +769,68 @@ ggplot(phased, aes(x = month)) +
 Matching the cost baseline to the schedule baseline is what lets you set
 **milestones for both schedule and budget** and later tell whether a project
 that has spent 60 % of its money is 60 %, 40 %, or 80 % done.
+
+### Try it yourself: build the S-curve
+
+Time-phase a small budget: add each month's spend across the activities, then
+the running total is the cumulative baseline. Each team picks its own **data
+set**. Amounts in dollars.
+
+```{r tryit-phased-09, echo=FALSE, results='asis'}
+ph_months <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun")
+ph_sets <- list(
+  data.frame(Demolition = c(4000, 2000, 0, 0, 0, 0), Wiring = c(0, 3000, 5000, 2000, 0, 0),
+             Racking = c(0, 0, 6000, 8000, 3000, 0), Painting = c(0, 0, 0, 2000, 3000, 1000),
+             Signage = c(0, 0, 0, 0, 1500, 2500)),
+  data.frame(Demolition = c(3000, 3000, 0, 0, 0, 0), Wiring = c(0, 2000, 4000, 4000, 0, 0),
+             Racking = c(0, 0, 5000, 7000, 4000, 0), Painting = c(0, 0, 0, 1500, 2500, 2000),
+             Signage = c(0, 0, 0, 0, 1000, 3000)),
+  data.frame(Demolition = c(5000, 1000, 0, 0, 0, 0), Wiring = c(0, 2500, 3500, 3000, 0, 0),
+             Racking = c(0, 0, 4000, 6000, 5000, 0), Painting = c(0, 0, 0, 2500, 3500, 500),
+             Signage = c(0, 0, 0, 0, 2000, 2000)),
+  data.frame(Demolition = c(2000, 2000, 2000, 0, 0, 0), Wiring = c(0, 0, 4500, 4500, 0, 0),
+             Racking = c(0, 0, 0, 6500, 6500, 2000), Painting = c(0, 0, 0, 0, 3000, 3000),
+             Signage = c(0, 0, 0, 0, 0, 3500)))
+ph_table <- function(s) {
+  month_total <- rowSums(s)
+  cbind(Month = ph_months, s, `Month total` = month_total, `Cumulative` = cumsum(month_total))
+}
+ph_answers <- function(s) {
+  tot <- rowSums(s)
+  list(tryit_answer("Peak monthly spend", max(tot), tol = 1, prefix = "$"),
+       tryit_answer("Cumulative spend at the end of March", sum(tot[1:3]), tol = 1, prefix = "$"))
+}
+tryit_grid(
+  "time-phased", "Time-phased budget and cumulative baseline",
+  data = ph_table(ph_sets[[1]]), blank = c("Month total", "Cumulative"), tol = 1, digits = 0,
+  answers = ph_answers(ph_sets[[1]]),
+  teams = lapply(ph_sets[-1], function(s) list(data = ph_table(s), answers = ph_answers(s))),
+  hints = c(`Month total` = "Add across the activities for that month.",
+            Cumulative = "Running total of the month totals."),
+  intro = "Warehouse fit-out: planned spend by activity and month.")
+
+ph_twin <- data.frame(Excavation = c(6000, 3000, 0, 0, 0, 0), Slab = c(0, 5000, 7000, 0, 0, 0),
+                      Frame = c(0, 0, 4000, 9000, 3000, 0), Cladding = c(0, 0, 0, 2000, 6000, 2000),
+                      `Fit-out` = c(0, 0, 0, 0, 2500, 4500), check.names = FALSE)
+tryit_grid(
+  "time-phased-twin", "Time-phased budget (graded)", show = FALSE,
+  data = ph_table(ph_twin), blank = c("Month total", "Cumulative"), tol = 1, digits = 0,
+  answers = ph_answers(ph_twin),
+  question = paste0("<p>The planned spend ($) for each activity in each month of a small building ",
+    "project is given. Calculate the monthly total and the cumulative baseline for every month, then ",
+    "state the peak monthly spend and the cumulative spend at the end of March.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Data set 1: monthly totals are \$4 000, \$5 000, \$11 000, \$12 000, \$7 500 and
+\$3 500; the cumulative baseline is \$4 000, \$9 000, \$20 000, \$32 000,
+\$39 500 and \$43 000. Peak spend is \$12 000 in April and the baseline stands at
+\$20 000 at the end of March. Plotted, the cumulative column is the S-curve you
+will track earned value against in Chapter 12.
+
+</details>
 
 ## Contingency reserves
 
