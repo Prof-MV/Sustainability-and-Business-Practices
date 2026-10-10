@@ -434,8 +434,8 @@ Which cause does each statement point to?
 <details>
 <summary>Problem 2: ZOPA and a walk-away</summary>
 
-You will pay at most \$95 000 for a tooling package (your BATNA: build it
-in-house for \$98 000). The vendor's floor is \$102 000.
+Your BATNA for a tooling package is to build it in-house for \$98 000, so
+that is the most you will pay. The vendor's floor is \$102 000.
 
 (a) Is there a ZOPA? (b) What are your options?
 
@@ -443,13 +443,13 @@ in-house for \$98 000). The vendor's floor is \$102 000.
 <summary>Solution</summary>
 
 ```{r p2-zopa-10, echo=TRUE}
-buyer_max  <- 95000
+buyer_max  <- 98000   # set by your BATNA: the in-house cost
 seller_min <- 102000
 cat(ifelse(seller_min <= buyer_max, "ZOPA exists", "No ZOPA"), "\n")
 cat(sprintf("Gap to close: $%s\n", format(seller_min - buyer_max, big.mark = " ")))
 ```
 
-(a) No --- the vendor's floor is \$7 000 above your ceiling. (b) Exercise your
+(a) No --- the vendor's floor is \$4 000 above your ceiling. (b) Exercise your
 BATNA (build in-house at \$98 000), expand the package so the vendor's per-unit
 economics improve, split tooling ownership, or find a third vendor.
 
