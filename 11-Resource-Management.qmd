@@ -104,6 +104,59 @@ ggplot(df, aes(day, people)) +
   )
 ```
 
+### Try it yourself: build the histogram
+
+Four tasks run on a fixed schedule. For each day, add up the people needed
+and decide whether the day is over the limit. Each team picks its own **data
+set** (and its own limit).
+
+```{r tryit-histogram-11, echo=FALSE, results='asis'}
+hg_sets <- list(
+  list(start = c(1, 3, 6, 4), dur = c(5, 6, 5, 4), ppl = c(3, 4, 2, 3), limit = 8),
+  list(start = c(1, 2, 5, 7), dur = c(4, 5, 5, 4), ppl = c(4, 3, 4, 2), limit = 6),
+  list(start = c(1, 2, 4, 8), dur = c(6, 4, 6, 3), ppl = c(2, 5, 3, 4), limit = 8),
+  list(start = c(1, 2, 3, 6), dur = c(3, 6, 3, 5), ppl = c(5, 3, 4, 3), limit = 9))
+hg_table <- function(s) {
+  days <- 1:10
+  d <- sapply(1:4, function(k) ifelse(days >= s$start[k] & days < s$start[k] + s$dur[k], s$ppl[k], 0))
+  colnames(d) <- paste("Task", LETTERS[1:4])
+  total <- rowSums(d)
+  data.frame(Day = days, d, Limit = s$limit, Total = total,
+             `Over the limit?` = ifelse(total > s$limit, "Yes", "No"), check.names = FALSE)
+}
+hg_answers <- function(s) {
+  t <- hg_table(s)
+  list(tryit_answer("Peak demand", max(t$Total), tol = 0, suffix = "people"),
+       tryit_answer("Number of days over the limit", sum(t$Total > s$limit), tol = 0, suffix = "days"))
+}
+hg_choice <- list(`Over the limit?` = c("Yes", "No"))
+tryit_grid(
+  "histogram-by-hand", "Resource histogram: people needed per day",
+  data = hg_table(hg_sets[[1]]), blank = c("Total", "Over the limit?"), choice = hg_choice,
+  tol = 0, digits = 0, answers = hg_answers(hg_sets[[1]]),
+  teams = lapply(hg_sets[-1], function(s) list(data = hg_table(s), answers = hg_answers(s))),
+  intro = "The columns for Tasks A to D show the people each task needs on that day (0 if it is not running).")
+
+hg_twin <- list(start = c(1, 3, 4, 7), dur = c(4, 5, 5, 4), ppl = c(3, 2, 4, 5), limit = 7)
+tryit_grid(
+  "histogram-twin", "Resource histogram (graded)", show = FALSE,
+  data = hg_table(hg_twin), blank = c("Total", "Over the limit?"), choice = hg_choice,
+  tol = 0, digits = 0, answers = hg_answers(hg_twin),
+  question = paste0("<p>Four tasks need the numbers of people shown on each day. The resource limit is ",
+    "7 people per day. Complete the Total for each day and say whether it is over the limit, then ",
+    "give the peak demand and the number of days over the limit.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Add the four task columns for each day. In data set 1 the totals are 3, 3,
+7, 10, 10, 9, 9, 6, 2, 2 against a limit of 8, so days 4 to 7 are over the
+limit: four days, with a peak of 10. Those are the days leveling has to fix,
+by moving tasks that have float.
+
+</details>
+
 ## Resource leveling
 
 > **PMBOK:** *a technique in which start and finish dates are adjusted based on
@@ -148,6 +201,28 @@ cat(sprintf("\nMovable tasks: %s\n", paste(movable$task, collapse = ", ")))
 cat(sprintf("Move first: task %s (float %d, duration %d) -- shift it later within its slack.\n",
             pick$task, pick$float, pick$duration))
 cat("E and H are on the critical path (float 0) -- moving them would extend the project.\n")
+```
+
+### Try it yourself: which task do you move first?
+
+```{r tryit-leveling-order-11, echo=FALSE, results='asis'}
+tryit_order(
+  "leveling-order", "Order the tasks by the leveling rule",
+  steps = c("S: float 2 days, duration 4 days, ID 5",
+            "Q: float 2 days, duration 4 days, ID 8",
+            "P: float 2 days, duration 6 days, ID 3",
+            "R: float 5 days, duration 3 days, ID 2",
+            "T: float 9 days, duration 7 days, ID 1"),
+  intro = "All five can move. Put the one to try first at the top: smallest float, then smallest duration, then lowest ID.",
+  question = NULL)
+
+tryit_order(
+  "leveling-order-twin", "Order the tasks by the leveling rule (graded)", show = FALSE,
+  steps = c("H: float 1 day, duration 3 days, ID 4", "K: float 1 day, duration 3 days, ID 9",
+            "M: float 1 day, duration 5 days, ID 2", "J: float 4 days, duration 2 days, ID 6"),
+  question = paste0("<p>Four tasks running on an over-allocated day can all be moved within their float. ",
+    "Using the chapter's rule (smallest float first, then smallest duration, then lowest ID), put them ",
+    "in the order you would try to move them.</p>"))
 ```
 
 ## Time-constrained vs. resource-constrained
@@ -247,6 +322,44 @@ ggplot(df_long, aes(wk, res, fill = kind)) +
 | **Minimum late finish** (earliest finish first) | Prioritize the project with the earliest late-finish date |
 | **Mathematical programming** | Optimize (minimize total time / utilization loss / lateness); powerful but complex and slow for large problems |
 
+### Try it yourself: which priority rule?
+
+```{r tryit-priority-11, echo=FALSE, results='asis'}
+pr_bins <- c("First in line", "Greatest resource demand", "Greatest resource utilization",
+             "Minimum late finish", "Mathematical programming")
+tryit_sort(
+  "priority-rules", "Which priority rule is each decision using?",
+  bins = pr_bins,
+  cards = data.frame(
+    text = c("Whichever project was approved first gets the CMM first.",
+             "Put the project with the biggest peak demand in first so bottlenecks surface early.",
+             "Favour the project using the widest mix of resource types, to keep them all busy.",
+             "The project with the earliest late-finish date goes first.",
+             "An optimization model minimizes total lateness across 40 projects.",
+             "Follow the master calendar and ignore commercial value.",
+             "One launch date is immovable and tighter than all the others, so that project goes first."),
+    bin = c("First in line", "Greatest resource demand", "Greatest resource utilization",
+            "Minimum late finish", "Mathematical programming", "First in line", "Minimum late finish"),
+    why = c("First come, first served.", "Most resource-hungry first.", "Widest mix of resource types first.",
+            "Earliest late-finish first.", "Optimization: powerful but slow for large problems.",
+            "The simplest rule; ignores priority.", "Tightest deadline first."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the rule each decision follows.", question = NULL)
+
+tryit_sort(
+  "priority-rules-twin", "Priority rules (graded)", bins = pr_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Requests are served in the order they arrived.",
+             "The project needing the most people goes first.",
+             "The project whose deadline is nearest goes first.",
+             "A solver finds the schedule with the least total lateness.",
+             "The project that uses the most different kinds of resource goes first."),
+    bin = c("First in line", "Greatest resource demand", "Minimum late finish",
+            "Mathematical programming", "Greatest resource utilization"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each description, choose the priority rule for allocating shared resources that it follows.</p>")
+```
+
 ### Try it yourself: "40 hours is not one week's work"
 
 ```{r calc-multitask-11, echo=FALSE, results='asis'}
@@ -296,6 +409,49 @@ for (projects in counts) {
               projects, eff[projects], 100 * eff[projects] / nominal_hours))
 }
 ```
+
+</details>
+
+### Try it yourself: effective hours by hand
+
+Each extra project you carry costs a share of your capacity. Work out what is
+left. Each team picks its own **data set**.
+
+```{r tryit-multitask-11, echo=FALSE, results='asis'}
+mt_sets <- list(c(hrs = 40, loss = 15, n = 3), c(hrs = 38, loss = 12, n = 4),
+                c(hrs = 45, loss = 10, n = 5), c(hrs = 35, loss = 20, n = 2))
+mt_given <- function(v) c("Nominal weekly hours" = v[["hrs"]],
+                          "Capacity lost per extra project" = sprintf("%g %%", v[["loss"]]),
+                          "Projects carried" = v[["n"]])
+mt_answers <- function(v) {
+  eff <- function(n) v[["hrs"]] * (1 - v[["loss"]] / 100 * (n - 1))
+  list(tryit_answer("Effective hours per week", eff(v[["n"]]), tol = 0.05, suffix = "h"),
+       tryit_answer("Productive share of nominal hours", 100 * eff(v[["n"]]) / v[["hrs"]], tol = 0.5, suffix = "%"),
+       tryit_answer("Hours lost per week", v[["hrs"]] - eff(v[["n"]]), tol = 0.05, suffix = "h"),
+       tryit_answer("Effective hours with one project fewer", eff(v[["n"]] - 1), tol = 0.05, suffix = "h"))
+}
+tryit_number(
+  "multitask-by-hand", "Effective capacity when multitasking",
+  answers = mt_answers(mt_sets[[1]]), given = mt_given(mt_sets[[1]]),
+  teams = lapply(mt_sets[-1], function(v) list(given = mt_given(v), answers = mt_answers(v))),
+  intro = "Effective hours = nominal x (1 - loss x (projects - 1)).")
+
+tryit_number(
+  "multitask-twin", "Effective capacity (graded)", show = FALSE,
+  answers = mt_answers(c(hrs = 42, loss = 14, n = 4)),
+  question = paste0("<p>An engineer has 42 nominal hours per week. Each extra project carried at once ",
+    "costs 14 % of nominal capacity. The engineer carries 4 projects. Calculate the effective hours per ",
+    "week, the productive share of nominal hours (nearest whole per cent), the hours lost, and the ",
+    "effective hours with one project fewer.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+With n projects there are n - 1 "extra" ones. Data set 1: 40 x (1 - 0.15 x 2) =
+28 effective hours, 70 % productive, 12 h lost; dropping to 2 projects gives
+40 x 0.85 = 34 h. Cutting one project recovers 6 h: the nominal 40 hours were
+never real.
 
 </details>
 
