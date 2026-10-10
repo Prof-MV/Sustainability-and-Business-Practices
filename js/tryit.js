@@ -100,6 +100,37 @@
     };
   }
 
+  // One dropdown cell, marked against a correct string. Same shape as
+  // numericField() so grids can mix the two.
+  function choiceField(options, correct, ariaLabel, wrap) {
+    const select = el("select", { "aria-label": ariaLabel }, [el("option", { value: "" }, ["Choose…"])]);
+    options.forEach((o) => select.appendChild(el("option", { value: o }, [o])));
+    const mark = el("span", { class: "tryit-mark", "aria-hidden": "true" });
+    function clear() { wrap.classList.remove("tryit-ok", "tryit-no"); mark.textContent = ""; }
+    select.addEventListener("change", clear);
+    return {
+      input: select,
+      mark,
+      check() {
+        clear();
+        if (select.value === "") return "blank";
+        const ok = select.value === correct;
+        wrap.classList.add(ok ? "tryit-ok" : "tryit-no");
+        mark.textContent = ok ? "✓" : "✗";
+        return ok ? "ok" : "no";
+      },
+      reset() { select.value = ""; clear(); },
+    };
+  }
+
+  // The "given" values of a number exercise (needed when teams differ).
+  function givenList(given) {
+    if (!given || given.length === 0) return null;
+    return el("dl", { class: "tryit-given" }, given.flatMap((g) => [
+      el("dt", {}, [g.label]), el("dd", {}, [g.value]),
+    ]));
+  }
+
   // A labelled list of numeric answers (the whole of a "number" exercise,
   // and the part of a "grid" exercise that sits under the table).
   function answerList(answers) {
@@ -146,6 +177,8 @@
   }
 
   function buildNumber(spec, body) {
+    const g = givenList(spec.given);
+    if (g) body.appendChild(g);
     const { list, fields } = answerList(spec.answers);
     body.appendChild(list);
     return {
@@ -164,7 +197,9 @@
       const col = spec.columns[c];
       if (!col.blank) return el("td", {}, [String(value)]);
       const td = el("td", { class: "tryit-cell" });
-      const field = numericField({ answer: value, tol: col.tol }, `${col.label}, row ${r + 1}`, td);
+      const field = col.choices
+        ? choiceField(col.choices, String(value), `${col.label}, row ${r + 1}`, td)
+        : numericField({ answer: value, tol: col.tol }, `${col.label}, row ${r + 1}`, td);
       td.appendChild(field.input);
       td.appendChild(field.mark);
       cells.push({ field, column: c });

@@ -835,3 +835,18 @@ details.tryit-solution.tryit-locked > summary::after {
 }
 .tryit-node-tick label { margin-right: 0.4em; }
 .tryit-derived { min-width: 2em; font-weight: 600; }
+
+/* Given values and dropdown cells in number / grid exercises */
+.tryit-given {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.15em 1em;
+  margin: 0 0 0.9em;
+  padding: 0.6em 0.9em;
+  background: #fff;
+  border: 1px solid #d7dde3;
+  border-radius: 6px;
+}
+.tryit-given dt { font-weight: 600; color: #5d6d7e; }
+.tryit-given dd { margin: 0; }
+.tryit-cell select { max-width: 100%; }

@@ -195,17 +195,36 @@ tryit_html_table <- function(header, rows) {
 #' @param question The full problem statement as HTML. Supplying it exports a
 #'   Brightspace twin (one Short Answer question per answer).
 #' @param show `FALSE` exports the twin without showing the exercise.
-tryit_number <- function(id, title, answers, intro = NULL, question = NULL, show = TRUE) {
+#' @param given Optional named vector of given values, shown in the card
+#'   (needed when `teams` are used, since the numbers differ per team).
+#' @param teams Optional list of alternative data sets, each
+#'   `list(given = <named vector>, answers = <list of tryit_answer()>)`.
+tryit_number <- function(id, title, answers, intro = NULL, question = NULL, show = TRUE,
+                         given = NULL, teams = NULL) {
   if (!is.null(question)) {
     for (i in seq_along(answers)) tryit_export_answer(id, i, title, question, answers[[i]])
   }
   if (!show) return(invisible(NULL))
 
   if (tryit_html()) {
-    tryit_emit("number", id, list(title = title, intro = intro, answers = answers))
+    given_spec <- function(g) lapply(names(g), function(n) list(label = n, value = as.character(g[[n]])))
+    variants <- if (is.null(teams)) NULL else c(
+      list(list(given = given_spec(given), answers = answers)),
+      lapply(teams, function(t) list(given = given_spec(t$given), answers = t$answers)))
+    tryit_emit("number", id, list(title = title, intro = intro, given = given_spec(given),
+                                  answers = answers, variants = variants))
   } else {
-    cat(sprintf("\n\n**%s**\n\n", title))
-    if (!is.null(intro)) cat(intro, "\n\n")
+    cat(sprintf("
+
+**%s**
+
+", title))
+    if (!is.null(intro)) cat(intro, "
+
+")
+    if (!is.null(given)) cat(sprintf("- %s: %s
+", names(given), as.character(given)), sep = "", "
+")
     tryit_print_answers(answers)
   }
 }
@@ -230,22 +249,34 @@ tryit_number <- function(id, title, answers, intro = NULL, question = NULL, show
 #' @param intro,question,show As for `tryit_number()`. The twin is one Short
 #'   Answer question per entry in `answers`, plus one Written Response
 #'   question for the table itself.
+#' @param choice Optional named list: a blank column whose cells are picked
+#'   from a dropdown. The column of `data` holds the correct string and the
+#'   list entry the options, e.g. `list(Type = c("Direct", "Indirect"))`.
+#' @param teams Optional list of alternative data sets, each
+#'   `list(data = <data frame, same columns and rows>, answers = <optional>)`.
 tryit_grid <- function(id, title, data, blank, tol = 0.005, hints = NULL, digits = 2,
-                       answers = list(), intro = NULL, question = NULL, show = TRUE) {
+                       answers = list(), intro = NULL, question = NULL, show = TRUE,
+                       choice = NULL, teams = NULL) {
   stopifnot(is.data.frame(data), all(blank %in% names(data)))
-  if (is.null(names(tol))) tol <- stats::setNames(rep(tol, length(blank)), blank)
+  numeric_blank <- setdiff(blank, names(choice))
+  if (is.null(names(tol))) tol <- stats::setNames(rep(tol, length(numeric_blank)), numeric_blank)
+  stopifnot(all(unlist(choice) %in% unlist(choice)), all(names(choice) %in% blank))
 
   given <- function(x) if (is.numeric(x)) formatC(x, digits = digits, format = "f") else as.character(x)
   given_cols <- setdiff(names(data), blank)
   given_rows <- lapply(seq_len(nrow(data)), function(i) {
     vapply(given_cols, function(col) given(data[[col]][i]), character(1))
   })
+  cell_rows <- function(d) lapply(seq_len(nrow(d)), function(i) {
+    lapply(names(d), function(col) if (col %in% blank) d[[col]][i] else given(d[[col]][i]))
+  })
 
   if (!is.null(question)) {
     stated <- paste0(question, tryit_html_table(given_cols, given_rows))
     solved <- lapply(seq_len(nrow(data)), function(i) {
       vapply(names(data), function(col) {
-        if (col %in% blank) formatC(data[[col]][i], digits = tryit_digits(tol[[col]]), format = "f")
+        if (col %in% names(choice)) as.character(data[[col]][i])
+        else if (col %in% blank) formatC(data[[col]][i], digits = tryit_digits(tol[[col]]), format = "f")
         else given(data[[col]][i])
       }, character(1))
     })
@@ -253,7 +284,7 @@ tryit_grid <- function(id, title, data, blank, tol = 0.005, hints = NULL, digits
       c("NewQuestion", "WR"),
       c("ID", tryit_qid(id, 0)),
       c("Title", sprintf("%s - table", title)),
-      c("QuestionText", sprintf("%s<p>For every row, calculate: <b>%s</b>. Show one sample calculation.</p>",
+      c("QuestionText", sprintf("%s<p>For every row, fill in: <b>%s</b>. Show one sample calculation or reason.</p>",
                                 stated, paste(blank, collapse = ", ")), "HTML"),
       c("Points", as.character(length(blank))),
       c("Difficulty", "3"),
@@ -267,25 +298,38 @@ tryit_grid <- function(id, title, data, blank, tol = 0.005, hints = NULL, digits
     columns <- lapply(names(data), function(col) {
       is_blank <- col %in% blank
       list(label = col, blank = is_blank,
-           tol = if (is_blank) tol[[col]] else NULL,
+           tol = if (is_blank && !(col %in% names(choice))) tol[[col]] else NULL,
+           choices = if (col %in% names(choice)) as.list(choice[[col]]) else NULL,
            hint = if (is_blank && !is.null(hints) && col %in% names(hints)) hints[[col]] else NULL)
     })
-    rows <- lapply(seq_len(nrow(data)), function(i) {
-      lapply(names(data), function(col) {
-        if (col %in% blank) data[[col]][i] else given(data[[col]][i])
-      })
-    })
+    variants <- if (is.null(teams)) NULL else c(
+      list(list(rows = cell_rows(data), answers = answers)),
+      lapply(teams, function(t) {
+        stopifnot(identical(names(t$data), names(data)), nrow(t$data) == nrow(data))
+        list(rows = cell_rows(t$data), answers = if (is.null(t$answers)) answers else t$answers)
+      }))
     tryit_emit("grid", id, list(title = title, intro = intro, columns = columns,
-                                rows = rows, answers = answers))
+                                rows = cell_rows(data), answers = answers, variants = variants))
   } else {
-    cat(sprintf("\n\n**%s**\n\n", title))
-    if (!is.null(intro)) cat(intro, "\n\n")
+    cat(sprintf("
+
+**%s**
+
+", title))
+    if (!is.null(intro)) cat(intro, "
+
+")
     sheet <- data
     for (col in names(sheet)) {
       sheet[[col]] <- if (col %in% blank) "" else given(data[[col]])
     }
+    for (col in names(choice)) {
+      names(sheet)[names(sheet) == col] <- sprintf("%s (%s)", col, paste(choice[[col]], collapse = " / "))
+    }
     print(knitr::kable(sheet, align = "c"))
-    cat("\n\n")
+    cat("
+
+")
     tryit_print_answers(answers)
   }
 }
