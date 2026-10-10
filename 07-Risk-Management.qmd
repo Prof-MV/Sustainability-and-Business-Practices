@@ -139,6 +139,36 @@ ggplot(grid, aes(prob, impact)) +
   )
 ```
 
+### Try it yourself: colour the risks
+
+Zones follow probability x impact (each scored 1 to 5): up to 6 is
+**green**, 7 to 12 is **yellow**, above 12 is **red**.
+
+```{r tryit-zones-07, echo=FALSE, results='asis'}
+zone_bins <- c("Green", "Yellow", "Red")
+tryit_sort(
+  "pi-zones", "Which zone is each risk in?",
+  bins = zone_bins,
+  cards = data.frame(
+    text = c("Likelihood 4, impact 4", "Likelihood 2, impact 3", "Likelihood 3, impact 4",
+             "Likelihood 5, impact 1", "Likelihood 3, impact 5", "Likelihood 2, impact 5",
+             "Likelihood 1, impact 5", "Likelihood 4, impact 2"),
+    bin = c("Red", "Green", "Yellow", "Green", "Red", "Yellow", "Green", "Yellow"),
+    why = c("4 x 4 = 16, above 12.", "2 x 3 = 6, which is still green.", "3 x 4 = 12, the top of yellow.",
+            "5 x 1 = 5.", "3 x 5 = 15.", "2 x 5 = 10.", "1 x 5 = 5.", "4 x 2 = 8."),
+    stringsAsFactors = FALSE),
+  intro = "Multiply, then use the cut-offs 6 and 12.", question = NULL)
+
+tryit_sort(
+  "pi-zones-twin", "Probability-impact zones (graded)", bins = zone_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Likelihood 5, impact 4", "Likelihood 2, impact 2", "Likelihood 3, impact 3",
+             "Likelihood 4, impact 5", "Likelihood 1, impact 4"),
+    bin = c("Red", "Green", "Yellow", "Red", "Green"),
+    stringsAsFactors = FALSE),
+  question = "<p>Score each risk as probability x impact (each 1 to 5). Up to 6 is green, 7 to 12 is yellow, above 12 is red. Choose the zone for each risk.</p>")
+```
+
 ## Quantitative analysis
 
 Tools: **sensitivity analysis** (which risks move the outcome most),
@@ -264,6 +294,56 @@ instead of leaving it to gut feel.
 
 </details>
 
+### Try it yourself: a risk register by hand
+
+Fill in the EMV for each risk, then total them to size the contingency
+reserve. Each team picks its own **data set**.
+
+```{r tryit-register-07, echo=FALSE, results='asis'}
+reg_names <- c("Tool-steel delivery slips", "Supplier fails qualification", "Test lab double-booked",
+               "Key engineer leaves", "Import exchange rate jumps")
+reg_sets <- list(
+  data.frame(p = c(30, 20, 50, 10, 40), impact = c(40000, 90000, 12000, 60000, 25000)),
+  data.frame(p = c(15, 35, 60, 25, 10), impact = c(70000, 50000, 8000, 30000, 120000)),
+  data.frame(p = c(45, 10, 25, 5, 30), impact = c(20000, 150000, 36000, 90000, 45000)),
+  data.frame(p = c(20, 40, 15, 55, 35), impact = c(55000, 22000, 80000, 10000, 48000)))
+reg_table <- function(s) {
+  data.frame(Risk = reg_names, `Probability (%)` = s$p, `Impact ($)` = s$impact,
+             `EMV ($)` = s$p / 100 * s$impact, check.names = FALSE)
+}
+reg_answers <- function(s) {
+  emv <- s$p / 100 * s$impact
+  list(tryit_answer("Total EMV (contingency reserve)", sum(emv), tol = 1, prefix = "$"),
+       tryit_answer("EMV of the highest-ranked risk", max(emv), tol = 1, prefix = "$"))
+}
+tryit_grid(
+  "risk-register", "Risk register: expected monetary value",
+  data = reg_table(reg_sets[[1]]), blank = "EMV ($)", tol = 1, digits = 0,
+  answers = reg_answers(reg_sets[[1]]),
+  teams = lapply(reg_sets[-1], function(s) list(data = reg_table(s), answers = reg_answers(s))),
+  hints = c(`EMV ($)` = "Probability as a decimal x impact. 30 % of $40 000 is 0.30 x 40 000."),
+  intro = "EMV = probability x impact.")
+
+reg_twin <- data.frame(p = c(25, 40, 10, 60, 5), impact = c(48000, 30000, 100000, 9000, 150000))
+tryit_grid(
+  "risk-register-twin", "Risk register (graded)", show = FALSE,
+  data = reg_table(reg_twin), blank = "EMV ($)", tol = 1, digits = 0, answers = reg_answers(reg_twin),
+  question = paste0("<p>A project has five identified risks, with probability and impact as given. ",
+    "Calculate the expected monetary value (EMV) of each risk, then the total EMV (the size of the ",
+    "contingency reserve) and the EMV of the highest-ranked risk.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+EMV = probability x impact for each row, for example 0.30 x \$40 000 = \$12 000
+for the tool-steel slip. In data set 1 the EMVs are \$12 000, \$18 000,
+\$6 000, \$6 000 and \$10 000: the total, **\$52 000**, is the reserve, and
+the supplier-qualification risk ranks first at **\$18 000** even though the
+tool-steel slip is the most likely of the large risks.
+
+</details>
+
 ## Response strategies
 
 | Strategy | What it means | Example on our project |
@@ -277,6 +357,42 @@ instead of leaving it to gut feel.
 
 For **opportunities**, the mirror strategies are **exploit, share, enhance,** and
 **accept**.
+
+### Try it yourself: choose the response
+
+```{r tryit-strategies-07, echo=FALSE, results='asis'}
+strat_bins <- c("Accept", "Minimize", "Share", "Transfer", "Contingency reserve")
+tryit_sort(
+  "response-strategy", "Which response strategy is each action?",
+  bins = strat_bins,
+  cards = data.frame(
+    text = c("Sign a fixed-price contract so the vendor absorbs cost overruns",
+             "Audit the unproven supplier and put your quality engineer on site",
+             "Co-develop the control system with a partner under a shared-savings deal",
+             "A cosmetic blemish on an internal bracket: log it and move on",
+             "Hold 12 % of the budget against the carbon-fibre disruption risk",
+             "Add a liquidated-damages clause for late delivery",
+             "Form a joint venture with another firm to build the new airframe",
+             "Pre-qualify a second motor supplier"),
+    bin = c("Transfer", "Minimize", "Share", "Accept", "Contingency reserve", "Transfer", "Share", "Minimize"),
+    why = c("Shifts the risk to the vendor.", "Reduces probability or impact.", "Splits risk and reward.",
+            "Minor and unlikely enough to live with.", "Funds set aside in case the risk hits.",
+            "Shifts the consequence of lateness to the supplier.", "Splits the risk across partners.",
+            "Reduces the impact of one supplier failing."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the response strategy each action represents.", question = NULL)
+
+tryit_sort(
+  "response-strategy-twin", "Risk response (graded)", bins = strat_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Buy insurance against transit damage", "Run an extra pre-test before certification",
+             "Do nothing about a one-day risk of a late drawing review",
+             "Set aside 10 % schedule float for the learning-curve risk",
+             "Split development cost with the supplier in return for shared IP"),
+    bin = c("Transfer", "Minimize", "Accept", "Contingency reserve", "Share"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each action, choose the risk response strategy it represents.</p>")
+```
 
 ## Contingency reserves
 
@@ -558,6 +674,55 @@ RPN is a useful sort, not a verdict: most teams still flag any S >= 8 for
 action even if its RPN is not the top of the list, the same way the
 probability--impact matrix earlier in this chapter still red-flags a
 low-probability event if its impact is severe enough.
+
+</details>
+
+### Try it yourself: rank the failure modes
+
+Calculate the RPN for each failure mode, rank them (1 = highest RPN), and
+flag the ones that earn action regardless of rank because Severity is 8 or
+more. Each team picks its own **data set**.
+
+```{r tryit-fmea-07, echo=FALSE, results='asis'}
+fm_names <- c("Hose clamp loosens", "Sensor connector corrodes", "Label misprinted",
+              "Seal extrudes from groove", "Fastener under-torqued")
+fm_sets <- list(
+  data.frame(S = c(7, 9, 3, 8, 6), O = c(4, 3, 6, 5, 7), D = c(5, 6, 2, 4, 5)),
+  data.frame(S = c(8, 5, 9, 4, 7), O = c(3, 8, 2, 5, 6), D = c(6, 4, 7, 3, 6)),
+  data.frame(S = c(6, 9, 3, 8, 5), O = c(5, 4, 8, 6, 5), D = c(6, 3, 5, 4, 2)),
+  data.frame(S = c(7, 8, 2, 9, 6), O = c(7, 5, 9, 2, 4), D = c(3, 7, 4, 5, 8)))
+fm_table <- function(s) {
+  rpn <- s$S * s$O * s$D
+  data.frame(`Failure mode` = fm_names, S = s$S, O = s$O, D = s$D, RPN = rpn,
+             Rank = rank(-rpn), `Flag S >= 8` = ifelse(s$S >= 8, "Yes", "No"), check.names = FALSE)
+}
+fm_cols <- c("RPN", "Rank", "Flag S >= 8")
+tryit_grid(
+  "fmea-rank", "FMEA: RPN, rank and severity flag",
+  data = fm_table(fm_sets[[1]]), blank = fm_cols, tol = 0, digits = 0,
+  choice = list(`Flag S >= 8` = c("Yes", "No")),
+  teams = lapply(fm_sets[-1], function(s) list(data = fm_table(s))),
+  hints = c(RPN = "S x O x D.", Rank = "1 is the highest RPN."),
+  intro = "A high severity earns action even when the RPN is not near the top.")
+
+fm_twin <- data.frame(S = c(8, 4, 7, 9, 5), O = c(4, 7, 6, 3, 5), D = c(6, 5, 3, 8, 7))
+tryit_grid(
+  "fmea-rank-twin", "FMEA ranking (graded)", show = FALSE,
+  data = fm_table(fm_twin), blank = fm_cols, tol = 0, digits = 0,
+  choice = list(`Flag S >= 8` = c("Yes", "No")),
+  question = paste0("<p>Five failure modes were rated with Severity (S), Occurrence (O) and Detection (D) ",
+    "as given. Calculate each RPN (S x O x D), rank the modes (1 = highest RPN), and say whether ",
+    "each one should be flagged for action regardless of rank because S is 8 or more.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+For data set 1 the RPNs are 140, 162, 36, 160 and 210, so the order is
+fastener (1), connector (2), seal (3), clamp (4), label (5). The connector
+(S = 9) and the seal (S = 8) are flagged for action because severity is 8 or
+more; the seal would be flagged even if its RPN were lower. RPN is a sort, not a
+verdict.
 
 </details>
 
