@@ -111,6 +111,46 @@ Most dependencies are **finish-to-start**, but there are four:
 A **lead** lets a successor start early (overlap); a **lag** forces a wait
 (e.g. "wait 2 days for the paint to cure" is FS + 2-day lag).
 
+### Try it yourself: which relationship is it?
+
+```{r tryit-relations-08, echo=FALSE, results='asis'}
+rel_bins <- c("Finish-to-Start (FS)", "Finish-to-Finish (FF)", "Start-to-Start (SS)", "Start-to-Finish (SF)")
+tryit_sort(
+  "precedence-types", "Which precedence relationship does each statement describe?",
+  bins = rel_bins,
+  cards = data.frame(
+    text = c("The concrete must cure before the wall is painted.",
+             "Editing cannot finish until the writing has finished.",
+             "Trimming the edges starts when the mowing starts.",
+             "The old system is switched off only once the new system has started up.",
+             "Final testing cannot be completed until the last build is completed.",
+             "Cleaning of each room can begin once painting in that room has begun.",
+             "Assembly begins only after the long-lead part has arrived.",
+             "The outgoing shift stops only when the incoming shift has started."),
+    bin = c("Finish-to-Start (FS)", "Finish-to-Finish (FF)", "Start-to-Start (SS)", "Start-to-Finish (SF)",
+            "Finish-to-Finish (FF)", "Start-to-Start (SS)", "Finish-to-Start (FS)", "Start-to-Finish (SF)"),
+    why = c("The predecessor finishes, then the successor starts: FS, the usual case.",
+            "B cannot finish until A finishes: FF.", "B starts when A starts: SS.",
+            "A starting triggers B finishing: the rare SF.", "The two finishes are tied together: FF.",
+            "The two starts are tied together: SS.", "FS: wait for the part, then start.",
+            "The successor's start releases the predecessor's finish: SF."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the relationship each statement describes.", question = NULL)
+
+tryit_sort(
+  "precedence-twin", "Precedence relationships (graded)", bins = rel_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Wiring cannot start until the conduit is installed.",
+             "Documentation cannot be completed until the software is completed.",
+             "Surveying starts as soon as clearing starts.",
+             "The temporary supply can be shut off only after the permanent supply has started.",
+             "The first article is inspected once machining of it has ended."),
+    bin = c("Finish-to-Start (FS)", "Finish-to-Finish (FF)", "Start-to-Start (SS)",
+            "Start-to-Finish (SF)", "Finish-to-Start (FS)"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each statement, choose the precedence relationship between the two activities.</p>")
+```
+
 ## Probabilistic scheduling with PERT
 
 A single duration hides uncertainty. Using three-point estimates
@@ -218,6 +258,127 @@ to reach 85--90 % confidence is how you turn a schedule into a promise you can
 keep, and it is the honest version of the "padding" problem from
 [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd) --- one visible buffer at the
 project level, not hidden padding in every task.
+
+</details>
+
+### Try it yourself: how likely is the target date?
+
+Take the three-point estimates for the activities on the critical path and
+work through to the probability of finishing by the target. Each team picks
+its own **data set** (and its own target day).
+
+```{r tryit-pert-prob-08, echo=FALSE, results='asis'}
+pp_sets <- list(
+  list(o = c(4, 8, 5, 6, 3),  m = c(6, 10, 7, 9, 4),  p = c(10, 16, 9, 18, 5),  target = 41),
+  list(o = c(5, 10, 4, 7, 2), m = c(8, 12, 6, 10, 3), p = c(17, 14, 14, 13, 10), target = 45),
+  list(o = c(3, 6, 8, 4, 5),  m = c(5, 9, 10, 6, 8),  p = c(13, 12, 12, 8, 17), target = 43),
+  list(o = c(10, 2, 6, 12, 4), m = c(14, 5, 8, 15, 5), p = c(18, 14, 10, 24, 6), target = 52))
+pp_table <- function(s) {
+  data.frame(Activity = LETTERS[1:5], o = s$o, m = s$m, p = s$p,
+             `t_e` = (s$o + 4 * s$m + s$p) / 6, Variance = ((s$p - s$o) / 6)^2)
+}
+pp_answers <- function(s) {
+  d <- pp_table(s); mu <- sum(d$`t_e`); sg <- sqrt(sum(d$Variance)); z <- (s$target - mu) / sg
+  list(tryit_answer("Project mean duration", mu, tol = 0.05, suffix = "days"),
+       tryit_answer("Project standard deviation", sg, tol = 0.02, suffix = "days"),
+       tryit_answer(sprintf("z for a target of day %d", s$target), z, tol = 0.02),
+       tryit_answer(sprintf("Probability of finishing by day %d", s$target), 100 * pnorm(z), tol = 0.6, suffix = "%"),
+       tryit_answer("Day to promise for 90 % confidence", mu + qnorm(0.90) * sg, tol = 0.1, suffix = "day"))
+}
+tryit_grid(
+  "pert-probability", "Probability of finishing on time",
+  data = pp_table(pp_sets[[1]]), blank = c("t_e", "Variance"), tol = 0.01, digits = 0,
+  answers = pp_answers(pp_sets[[1]]),
+  teams = lapply(pp_sets[-1], function(s) list(data = pp_table(s), answers = pp_answers(s))),
+  hints = c(`t_e` = "(o + 4m + p) / 6.", Variance = "((p - o) / 6) squared."),
+  intro = "Variance is the square of the standard deviation. Two decimal places.")
+
+pp_twin <- list(o = c(6, 4, 9, 3, 7), m = c(8, 6, 12, 5, 9), p = c(16, 8, 21, 9, 17), target = 47)
+tryit_grid(
+  "pert-probability-twin", "Probability of finishing on time (graded)", show = FALSE,
+  data = pp_table(pp_twin), blank = c("t_e", "Variance"), tol = 0.01, digits = 0,
+  answers = pp_answers(pp_twin),
+  question = paste0("<p>The critical path A to E has the three-point estimates below (days). Calculate ",
+    "each activity's expected duration t<sub>e</sub> and variance, then the project mean and standard ",
+    "deviation, the z-score and probability of finishing by day 47, and the day to promise for 90 % ",
+    "confidence (two decimal places).</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+For data set 1: t_e = 6.33, 10.67, 7.00, 10.00, 4.00, which sum to a mean of
+**38.0 days**; the variances 1.00, 1.78, 0.44, 4.00 and 0.11 sum to 7.33, so
+sigma = **2.71 days**. For a target of day 41, z = (41 - 38) / 2.71 = 1.11 and
+the normal CDF gives about **87 %**. For 90 % confidence use
+38.0 + 1.2816 x 2.71 = **day 41.5**. The mean (38) alone would be a 50 % date.
+
+</details>
+
+### Try it yourself: simulate the schedule
+
+The formula above assumes the project total is normally distributed. Check it
+by brute force: each run draws every activity's duration from a PERT
+(beta-shaped) distribution and adds them up. Press **Run again** for a new set
+of 2 000 runs; in class, each team enters its own run number.
+
+```{r calc-schedule-sim-08, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "schedule-sim-08",
+  title = "Schedule Simulation",
+  icon = "dice",
+  inputs = list(
+    qwebr_calc_input("seed", "Run number (team number)", value = 1, min = 1, max = 999, step = 1),
+    qwebr_calc_input("target_day", "Target finish day", value = 80, min = 60, max = 110, step = 1, type = "slider")
+  ),
+  rerun = "seed",
+  goal = "Move the target day until at least 90 % of the simulated runs finish on time. Does the formula's 90 % day agree?",
+  goal_test = "pct_on_time >= 90"
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this simulation</summary>
+
+The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
+```{webr-r}
+#| label: schedule-sim-08
+seed       <- 1
+target_day <- 80
+
+# The chapter's critical path A to E (days): optimistic, most likely, pessimistic.
+o <- c(12, 7, 15, 9, 24)
+m <- c(15, 10, 19, 13, 26)
+p <- c(17, 13, 23, 16, 30)
+runs <- 2000
+
+set.seed(seed)
+# PERT-beta: mean (o + 4m + p) / 6, spread set by the same three numbers.
+a <- 1 + 4 * (m - o) / (p - o)
+b <- 1 + 4 * (p - m) / (p - o)
+total <- numeric(runs)
+for (i in seq_along(o)) total <- total + o[i] + (p[i] - o[i]) * rbeta(runs, a[i], b[i])
+
+pct_on_time <- 100 * mean(total <= target_day)
+mu    <- sum((o + 4 * m + p) / 6)
+sigma <- sqrt(sum(((p - o) / 6)^2))
+formula_pct <- 100 * pnorm((target_day - mu) / sigma)
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+hist(total, breaks = 30, col = "#aed6f1", border = "white",
+     xlab = "Project finish (day)", ylab = "Runs", main = "Simulated project durations")
+abline(v = target_day, lty = 2, lwd = 3, col = "#e74c3c")
+
+if (pct_on_time >= 90) {
+  cat(sprintf("%.1f%% of runs finish by day %g: meets a 90%% promise\n", pct_on_time, target_day))
+} else {
+  cat(sprintf("%.1f%% of runs finish by day %g: !!below a 90%% promise!!\n", pct_on_time, target_day))
+}
+cat(sprintf("Normal-curve formula  %.1f%%\n", formula_pct))
+cat(sprintf("Mean simulated finish  day %.1f\n", mean(total)))
+cat(sprintf("Middle 90%% of runs  day %.1f to %.1f\n", quantile(total, 0.05), quantile(total, 0.95)))
+```
 
 </details>
 
@@ -346,6 +507,60 @@ if (remaining > 0) {
 }
 for (s in steps) cat(s, "\n", sep = "")
 ```
+
+</details>
+
+### Try it yourself: crash slopes and the cheapest cut
+
+All four activities are on the critical path. Work out each slope and each
+activity's maximum crash, then the least cost of the cut asked for. Each team
+picks its own **data set**.
+
+```{r tryit-crash-08, echo=FALSE, results='asis'}
+cr_sets <- list(
+  list(t0 = c(10, 8, 6, 9), t1 = c(7, 6, 5, 6), c0 = c(20000, 15000, 9000, 18000), c1 = c(29000, 19000, 12500, 23400), cut = 5),
+  list(t0 = c(12, 7, 10, 5), t1 = c(9, 5, 8, 4),  c0 = c(22000, 14000, 16000, 8000),  c1 = c(28000, 19000, 22000, 9800),  cut = 4),
+  list(t0 = c(9, 7, 5, 8),   t1 = c(6, 4, 3, 7),  c0 = c(12000, 10000, 7000, 11000),  c1 = c(17400, 17500, 10200, 13300), cut = 6),
+  list(t0 = c(6, 11, 8, 10), t1 = c(4, 8, 7, 6),  c0 = c(9000, 20000, 12000, 15000),  c1 = c(13400, 26900, 14100, 25000), cut = 5))
+cr_table <- function(s) {
+  data.frame(Activity = LETTERS[1:4], `Normal (wk)` = s$t0, `Crash (wk)` = s$t1,
+             `Normal cost ($)` = s$c0, `Crash cost ($)` = s$c1,
+             `Slope ($/wk)` = (s$c1 - s$c0) / (s$t0 - s$t1), `Max crash (wk)` = s$t0 - s$t1,
+             check.names = FALSE)
+}
+cr_answers <- function(s) {
+  d <- cr_table(s); d <- d[order(d$`Slope ($/wk)`), ]
+  left <- s$cut; cost <- 0
+  for (i in seq_len(nrow(d))) { take <- min(left, d$`Max crash (wk)`[i]); cost <- cost + take * d$`Slope ($/wk)`[i]; left <- left - take }
+  list(tryit_answer(sprintf("Least cost to cut %d weeks", s$cut), cost, tol = 1, prefix = "$"))
+}
+cr_cols <- c("Slope ($/wk)", "Max crash (wk)")
+tryit_grid(
+  "crash-slopes", "Crash cost slopes", data = cr_table(cr_sets[[1]]), blank = cr_cols, tol = 0.5, digits = 0,
+  answers = cr_answers(cr_sets[[1]]),
+  teams = lapply(cr_sets[-1], function(s) list(data = cr_table(s), answers = cr_answers(s))),
+  hints = c(`Slope ($/wk)` = "(crash cost - normal cost) / (normal time - crash time).",
+            `Max crash (wk)` = "Normal time minus crash time."),
+  intro = "Crash the cheapest slope first, up to each activity's maximum.")
+
+cr_twin <- list(t0 = c(8, 10, 6, 7), t1 = c(6, 7, 4, 6), c0 = c(10000, 21000, 8000, 12000),
+                c1 = c(14400, 27600, 12000, 14100), cut = 5)
+tryit_grid(
+  "crash-slopes-twin", "Crash cost slopes (graded)", show = FALSE,
+  data = cr_table(cr_twin), blank = cr_cols, tol = 0.5, digits = 0, answers = cr_answers(cr_twin),
+  question = paste0("<p>Four activities in series make up the critical path. Normal and crash times ",
+    "(weeks) and costs ($) are given. Calculate each crash cost slope and maximum crash, then the ",
+    "least cost of shortening the project by 5 weeks.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Slope = (crash cost - normal cost) / (normal time - crash time). For data set
+1 the slopes are A \$3 000, B \$2 000, C \$3 500 and D \$1 800 per week. Cheapest
+first: D for 3 weeks (\$5 400), then B for 2 weeks (\$4 000), so the 5-week cut
+costs **\$9 400**. A and C are never touched. Re-check the network afterwards:
+the critical path can shift.
 
 </details>
 
