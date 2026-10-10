@@ -206,6 +206,76 @@ Define elements as **results** ("Training module completed"), not **actions**
 or too few steps --- breaking the 100 % rule --- and they over-prescribe *how* the
 work is done, killing the team's ingenuity.
 
+### Try it yourself: outcome or action?
+
+```{r tryit-outcome-05, echo=FALSE, results='asis'}
+oa_bins <- c("Outcome (a good WBS element)", "Action (rewrite it)")
+tryit_sort(
+  "outcome-or-action", "Is each WBS entry an outcome or an action?",
+  bins = oa_bins,
+  cards = data.frame(
+    text = c("Compressor skid commissioned", "Write the test report", "Supplier selected and contracted",
+             "Call three vendors", "Drawings released to manufacturing", "Run the line for two shifts",
+             "Training module completed", "Record the demo video"),
+    bin = c("Outcome (a good WBS element)", "Action (rewrite it)", "Outcome (a good WBS element)",
+            "Action (rewrite it)", "Outcome (a good WBS element)", "Action (rewrite it)",
+            "Outcome (a good WBS element)", "Action (rewrite it)"),
+    why = c("A result you can mark done or not done.", "A verb phrase that prescribes how: rewrite as 'Test report issued'.",
+            "A result.", "An action: rewrite as 'Vendor quotes obtained'.", "A result.",
+            "An action: rewrite as 'Process capability demonstrated'.", "A result.",
+            "An action: rewrite as 'Demo video published'."),
+    stringsAsFactors = FALSE),
+  intro = "Outcomes name a result; actions name a task.", question = NULL)
+
+tryit_sort(
+  "outcome-twin", "Outcome or action? (graded)", bins = oa_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Welding jig qualified", "Email the drawings to the customer", "Packaging design approved",
+             "Measure twenty samples", "Operator training delivered"),
+    bin = c("Outcome (a good WBS element)", "Action (rewrite it)", "Outcome (a good WBS element)",
+            "Action (rewrite it)", "Outcome (a good WBS element)"),
+    stringsAsFactors = FALSE),
+  question = "<p>A WBS should plan outcomes, not actions. For each entry, decide whether it is an outcome or an action.</p>")
+```
+
+### Try it yourself: does it roll up to 100 %?
+
+```{r tryit-hundred-05, echo=FALSE, results='asis'}
+hundred_bins <- c("OK", "Gap: scope missing", "Over: children exceed parent", "Overlap: not mutually exclusive")
+tryit_sort(
+  "hundred-rule", "What is wrong with each decomposition, if anything?",
+  bins = hundred_bins,
+  cards = data.frame(
+    text = c("Parent 200 h; children 80 + 70 + 50 h",
+             "Parent 300 h; children 120 + 100 + 60 h",
+             "Parent 150 h; children 70 + 60 + 40 h",
+             "'Prototype assembly' and 'Assemble prototype and rework' are listed under the same parent",
+             "Parent 420 h; children 150 + 140 + 130 h",
+             "Parent 90 h; children 40 + 30 h",
+             "Two packages both include 'prepare test fixtures' in their descriptions",
+             "Parent 250 h; children 100 + 90 + 80 h"),
+    bin = c("OK", "Gap: scope missing", "Over: children exceed parent", "Overlap: not mutually exclusive",
+            "OK", "Gap: scope missing", "Overlap: not mutually exclusive", "Over: children exceed parent"),
+    why = c("200 = 200: children sum to the parent.", "280 is 20 h short of 300: some scope is in no package.",
+            "170 exceeds 150 by 20 h: scope has crept in or the parent is understated.",
+            "The same work appears twice: duplicated effort and unclear ownership.",
+            "420 = 420.", "70 is 20 h short of 90.", "Shared work is counted twice and nobody owns it.",
+            "270 exceeds 250 by 20 h."),
+    stringsAsFactors = FALSE),
+  intro = "Add the children and compare with the parent. Pick one verdict per card.", question = NULL)
+
+tryit_sort(
+  "hundred-twin", "The 100 % rule (graded)", bins = hundred_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Parent 180 h; children 90 + 60 + 30 h", "Parent 360 h; children 150 + 120 + 70 h",
+             "Parent 120 h; children 60 + 40 + 40 h",
+             "'Install guard' and 'Install guard and test interlock' sit under one parent",
+             "Parent 75 h; children 45 + 30 h"),
+    bin = c("OK", "Gap: scope missing", "Over: children exceed parent", "Overlap: not mutually exclusive", "OK"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each decomposition, decide whether it satisfies the 100 % rule, and if not, what is wrong with it.</p>")
+```
+
 ## Level of detail
 
 A work package at the **activity level** is a task that:
@@ -315,6 +385,44 @@ for (i in seq_len(nrow(packages))) {
 
 </details>
 
+### Try it yourself: is the package the right size?
+
+```{r tryit-size-05, echo=FALSE, results='asis'}
+size_bins <- c("About right", "Too big: split it", "Too small: roll it up", "Longer than a reporting period")
+tryit_sort(
+  "package-size", "Is each work package the right size? (status is reported weekly)",
+  bins = size_bins,
+  cards = data.frame(
+    text = c("Fixture design: 40 h over 5 days",
+             "Full environmental test campaign: 210 h over 3 weeks",
+             "Tighten the guard screws: 1 h",
+             "Supplier qualification audit: 30 h of effort spread over 3 weeks of waiting for replies",
+             "Wiring harness layout: 72 h over 5 days",
+             "Label the sample boxes: 2 h",
+             "Complete tooling design: 150 h",
+             "Prototype shake-down: 24 h over 4 weeks of intermittent runs"),
+    bin = c("About right", "Too big: split it", "Too small: roll it up", "Longer than a reporting period",
+            "About right", "Too small: roll it up", "Too big: split it", "Longer than a reporting period"),
+    why = c("Between 8 h and 80 h and inside one week.", "Over 80 h.", "Under 8 h: micromanaging.",
+            "The effort is fine but the span is longer than the weekly reporting period: split it or report % complete.",
+            "Between 8 h and 80 h and inside one week.", "Under 8 h: roll it into a larger package.",
+            "Over 80 h.", "Effort is fine; the span exceeds one reporting period."),
+    stringsAsFactors = FALSE),
+  intro = "Apply the 8 h floor, the 80 h ceiling and the one-reporting-period rule.", question = NULL)
+
+tryit_sort(
+  "package-size-twin", "Work package size (graded)", bins = size_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Machine-vision commissioning: 120 h", "Deburr one bracket: 1.5 h",
+             "Gauge calibration: 16 h over 2 days",
+             "Customer approval loop: 12 h of effort over 4 weeks",
+             "Wiring check: 60 h over 5 days"),
+    bin = c("Too big: split it", "Too small: roll it up", "About right",
+            "Longer than a reporting period", "About right"),
+    stringsAsFactors = FALSE),
+  question = "<p>Status is reported weekly. Using the 8-hour floor, the 80-hour ceiling and the one-reporting-period rule, decide whether each work package is the right size.</p>")
+```
+
 ## Why the WBS matters
 
 ```{r fig-wbs-hub-05, fig.cap="The WBS feeds four downstream planning activities. Get it wrong and the estimate, the schedule, the staffing plan, and the risk register are all built on sand.", fig.align='center', fig.width=9, fig.height=5.5}
@@ -401,6 +509,71 @@ cat(sprintf("\nLevel 1 (total project direct cost): $%s\n",
 cat("\nThis roll-up only works because the WBS obeys the 100% and\n")
 cat("mutually-exclusive rules -- every dollar is counted once, and all of them.\n")
 ```
+
+### Try it yourself: roll the hours up the tree
+
+The leaf work packages carry their hours. Work up the tree: each deliverable
+is the sum of its packages, and the project is the sum of the deliverables.
+Each team picks its own **data set**.
+
+```{r tryit-rollup-05, echo=FALSE, results='asis'}
+wbs_structure <- list(
+  list(id = "1.1", label = "1.1 Enclosure",
+       kids = c("1.1.1 Housing design", "1.1.2 Tooling quote", "1.1.3 Prototype housing")),
+  list(id = "1.2", label = "1.2 Electronics",
+       kids = c("1.2.1 PCB layout", "1.2.2 Firmware")),
+  list(id = "1.3", label = "1.3 Test and release",
+       kids = c("1.3.1 Compliance test", "1.3.2 Release review")))
+wbs_hours <- list(c(60, 35, 70, 80, 95, 50, 30), c(45, 40, 60, 70, 110, 55, 25),
+                  c(80, 20, 50, 60, 75, 40, 45), c(30, 50, 40, 90, 85, 65, 20))
+wbs_build <- function(h) {
+  nodes <- list(); edges <- list(); k <- 0; sums <- c()
+  for (d in wbs_structure) {
+    n <- length(d$kids)
+    idx <- k + seq_len(n); k <- k + n
+    sums[d$id] <- sum(h[idx])
+    nodes[[length(nodes) + 1]] <- tryit_node(d$id, d$label, 2,
+      blank = list(tryit_answer("Hours", sum(h[idx]), tol = 0, digits = 0)))
+    edges[[length(edges) + 1]] <- c("1.0", d$id)
+    for (i in seq_len(n)) {
+      leaf_id <- strsplit(d$kids[i], " ")[[1]][1]
+      nodes[[length(nodes) + 1]] <- tryit_node(leaf_id, d$kids[i], 3,
+        given = c(Hours = sprintf("%g h", h[idx[i]])))
+      edges[[length(edges) + 1]] <- c(d$id, leaf_id)
+    }
+  }
+  root <- tryit_node("1.0", "1.0 Charging-station kit", 1,
+                     blank = list(tryit_answer("Hours", sum(h), tol = 0, digits = 0)))
+  list(nodes = c(list(root), nodes), edges = edges,
+       answers = list(tryit_answer("Share of the project in 1.2 Electronics", 100 * sums[["1.2"]] / sum(h),
+                                   tol = 0.5, suffix = "%")))
+}
+w1 <- wbs_build(wbs_hours[[1]])
+tryit_diagram(
+  "wbs-rollup-tree", "Charging-station kit: WBS hours", w1$nodes, w1$edges,
+  direction = "down", arrows = FALSE, answers = w1$answers,
+  teams = lapply(wbs_hours[-1], function(h) { w <- wbs_build(h); list(nodes = w$nodes, answers = w$answers) }),
+  intro = "Level 1 is the project, Level 2 the deliverables, Level 3 the work packages.")
+
+wt <- wbs_build(c(35, 45, 55, 100, 60, 30, 40))
+tryit_diagram(
+  "wbs-rollup-twin", "WBS hours roll-up (graded)", wt$nodes, wt$edges, direction = "down",
+  arrows = FALSE, answers = wt$answers, show = FALSE,
+  question = paste0("<p>The charging-station kit WBS below has work-package hours as given. Roll the ",
+    "hours up to each deliverable and to the project total, then give the share of the project in ",
+    "1.2 Electronics (nearest whole per cent). Packages: 1.1.1 = 35 h, 1.1.2 = 45 h, 1.1.3 = 55 h, ",
+    "1.2.1 = 100 h, 1.2.2 = 60 h, 1.3.1 = 30 h, 1.3.2 = 40 h.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+For data set 1: 1.1 = 60 + 35 + 70 = 165 h; 1.2 = 80 + 95 = 175 h; 1.3 =
+50 + 30 = 80 h; the project is 165 + 175 + 80 = **420 h**. The electronics
+branch is 175 / 420 = 42 % of the work. The roll-up only works because every
+hour is in exactly one package: the 100 % rule and mutual exclusivity.
+
+</details>
 
 ## Key Takeaways
 
