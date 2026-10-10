@@ -310,7 +310,9 @@ qwebr_calc_card(
   inputs = list(
     qwebr_calc_input("initial", "Initial outlay", value = 450000, min = 10000, max = 2000000, step = 10000, prefix = "$"),
     qwebr_calc_input("r", "Required rate of return", value = 0.12, min = 0, max = 0.3, step = 0.01, type = "slider")
-  )
+  ),
+  goal = "Make the project fail its hurdle: push the NPV below zero. Which input has to move, and how far?",
+  goal_test = "npv < 0"
 )
 ```
 
@@ -356,6 +358,69 @@ arrive later, so NPV falls --- a project that clears a 12 % hurdle may fail an
 demands a risk premium) is choosier about which projects it starts. Course
 Learning Outcome 1 is exactly this: *communicate the philosophy of project
 selection using the NPV method.*
+
+</details>
+
+### Try it yourself: a discounting table by hand
+
+Build the year-by-year table for a fresh project, then read off its NPV and
+discounted payback. Amounts are in \$ thousand. Each team picks its own **data
+set**.
+
+```{r tryit-npv-03, echo=FALSE, results='asis'}
+npv_sets <- list(
+  list(outlay = 320, r = 0.10, cf = c(110, 120, 130, 90, 70)),
+  list(outlay = 250, r = 0.08, cf = c(70, 80, 90, 100, 60)),
+  list(outlay = 500, r = 0.12, cf = c(150, 160, 170, 120, 100)),
+  list(outlay = 180, r = 0.15, cf = c(60, 70, 80, 50, 40)))
+npv_table <- function(s) {
+  t <- 0:5
+  cash <- c(-s$outlay, s$cf)
+  df <- 1 / (1 + s$r)^t
+  pv <- cash * df
+  data.frame(Year = t, `Rate` = sprintf("%g %%", 100 * s$r), `Cash flow ($k)` = cash, `Discount factor` = df,
+             `Present value ($k)` = pv, `Cumulative PV ($k)` = cumsum(pv), check.names = FALSE)
+}
+npv_answers <- function(s) {
+  d <- npv_table(s)
+  cum <- d$`Cumulative PV ($k)`; pv <- d$`Present value ($k)`
+  k <- which(cum >= 0)[1]
+  list(tryit_answer("NPV at the end of year 5", tail(cum, 1), tol = 0.3, suffix = "$k"),
+       tryit_answer("Discounted payback", (k - 2) + (-cum[k - 1] / pv[k]), tol = 0.05, suffix = "years"))
+}
+npv_cols <- c("Discount factor", "Present value ($k)", "Cumulative PV ($k)")
+tryit_grid(
+  "npv-by-hand", "Discounted cash flow table",
+  data = npv_table(npv_sets[[1]]), blank = npv_cols,
+  tol = c(`Discount factor` = 0.001, `Present value ($k)` = 0.1, `Cumulative PV ($k)` = 0.3),
+  digits = 1, answers = npv_answers(npv_sets[[1]]),
+  teams = lapply(npv_sets[-1], function(s) list(data = npv_table(s), answers = npv_answers(s))),
+  hints = c(`Discount factor` = "1 / (1 + r)^t. Year 0 is not discounted, so its factor is 1.",
+            `Present value ($k)` = "Cash flow x discount factor.",
+            `Cumulative PV ($k)` = "Running total of the present values, starting with year 0."),
+  intro = "The required rate of return is in the Rate column. Year 0 is the outlay.")
+
+# Graded twin: a different project.
+npv_twin <- list(outlay = 400, r = 0.09, cf = c(130, 140, 150, 110, 90))
+tryit_grid(
+  "npv-twin", "Discounted cash flow table (graded)", show = FALSE,
+  data = npv_table(npv_twin), blank = npv_cols,
+  tol = c(`Discount factor` = 0.001, `Present value ($k)` = 0.1, `Cumulative PV ($k)` = 0.3),
+  digits = 1, answers = npv_answers(npv_twin),
+  question = paste0("<p>A project costs $400 000 at year 0 and returns $130k, $140k, $150k, $110k ",
+    "and $90k in years 1 to 5. The required rate of return is 9 %. Complete the table (amounts in ",
+    "$ thousand), then give the NPV at the end of year 5 and the discounted payback in years ",
+    "(interpolate within the year the cumulative present value turns positive).</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+For data set 1 (outlay \$320k, r = 10 %): the present values are 100.0, 99.2,
+97.7, 61.5 and 43.5, so the cumulative PV runs -220.0, -120.8, -23.2, +38.3 and
++81.8. The NPV is **\$81.8k**. The cumulative PV turns positive in year 4:
+discounted payback = 3 + 23.2 / 61.5 = **3.38 years**. The nominal payback
+would be shorter; the gap is the cost of the time value of money.
 
 </details>
 
@@ -468,6 +533,43 @@ stakeholders$quadrant <- with(stakeholders, ifelse(
 print(stakeholders, row.names = FALSE)
 cat("\nChange the power/interest scores (1-10) for your own project's stakeholders\n")
 cat("and re-run -- the quadrant assignment updates automatically.\n")
+```
+
+### Try it yourself: place each stakeholder on the grid
+
+```{r tryit-stakeholders-03, echo=FALSE, results='asis'}
+sh_bins <- c("Manage closely", "Keep satisfied", "Keep informed", "Monitor")
+tryit_sort(
+  "stakeholder-quadrants", "Which quadrant is each stakeholder in?",
+  bins = sh_bins,
+  cards = data.frame(
+    text = c("City building inspector (power 8, interest 3)",
+             "Assembly team lead (power 4, interest 9)",
+             "Retail buyer (power 9, interest 9)",
+             "Neighbouring business (power 2, interest 3)",
+             "Environmental agency (power 7, interest 2)",
+             "Motor supplier (power 6, interest 8)",
+             "Local newspaper (power 3, interest 6)",
+             "Finance director (power 9, interest 4)"),
+    bin = c("Keep satisfied", "Keep informed", "Manage closely", "Monitor",
+            "Keep satisfied", "Manage closely", "Keep informed", "Keep satisfied"),
+    why = c("High power, low interest: keep satisfied.", "Low power, high interest: keep informed.",
+            "High on both: manage closely.", "Low on both: monitor.",
+            "High power, low interest: keep satisfied.", "High on both: manage closely.",
+            "Low power, high interest: keep informed.", "High power, low interest: keep satisfied."),
+    stringsAsFactors = FALSE),
+  intro = "Scores are out of 10; 5 and above counts as high. Pick the quadrant for each stakeholder.",
+  question = NULL)
+
+tryit_sort(
+  "stakeholder-twin", "Power-interest grid (graded)", bins = sh_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Union steward (power 3, interest 8)", "Project sponsor (power 9, interest 8)",
+             "Municipal planner (power 7, interest 3)", "Industry association (power 2, interest 2)",
+             "Key customer (power 8, interest 9)"),
+    bin = c("Keep informed", "Manage closely", "Keep satisfied", "Monitor", "Manage closely"),
+    stringsAsFactors = FALSE),
+  question = "<p>Using the power-interest grid (a score of 5 or more is high), choose the strategy for each stakeholder.</p>")
 ```
 
 ## The scope statement
@@ -630,6 +732,46 @@ conflict" of [Chapter 10](10-Negotiation-and-Conflict-Management.qmd): every
 matrix team member has two bosses.
 
 </details>
+
+### Try it yourself: which structure is it?
+
+```{r tryit-structures-03, echo=FALSE, results='asis'}
+org_bins <- c("Functional", "Projectized", "Weak matrix", "Balanced matrix", "Strong matrix")
+tryit_sort(
+  "org-structures", "Which organizational structure does each description fit?",
+  bins = org_bins,
+  cards = data.frame(
+    text = c("Each department runs its own projects; any PM is a part-time coordinator inside one department.",
+             "The company only does projects; the whole team is co-located and reports to the PM.",
+             "Staff report to functional managers; the PM mainly coordinates and expedites.",
+             "The PM and the functional managers share authority and negotiate over people.",
+             "A full-time PM with a project office controls the budget and assignments; functions supply specialists.",
+             "The main worry is team anxiety about 'what next' when the project ends.",
+             "Projects drag because staff have day jobs and other priorities.",
+             "Every team member has two bosses, and the PM and functional manager negotiate for their time as equals."),
+    bin = c("Functional", "Projectized", "Weak matrix", "Balanced matrix", "Strong matrix",
+            "Projectized", "Functional", "Balanced matrix"),
+    why = c("Grouped by specialty, one clear boss, each department runs its own projects.",
+            "One reporting line, fast decisions, strong PM.",
+            "Little PM authority: the weak end of the matrix.", "Authority split evenly: balanced.",
+            "More PM authority than the functional managers: strong.",
+            "A weakness of projectized teams: where do we go next?",
+            "A weakness of functional organizations.", "Two bosses with equal say: balanced matrix."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the structure each description fits best.", question = NULL)
+
+tryit_sort(
+  "org-structures-twin", "Organizational structure (graded)", bins = org_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A team seconded from several departments; the PM has formal authority over budget and schedule.",
+             "Engineers sit in their department; the PM must ask each manager for hours.",
+             "A dedicated design-build team is set up for each contract and disbanded afterwards.",
+             "Authority over people is shared equally between the PM and the function heads.",
+             "Customers must pass through several layers to reach the people doing the work."),
+    bin = c("Strong matrix", "Weak matrix", "Projectized", "Balanced matrix", "Functional"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each description, choose the organizational structure it fits best.</p>")
+```
 
 ## Key Takeaways
 
