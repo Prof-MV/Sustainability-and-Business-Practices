@@ -432,3 +432,15 @@ chapter was already at four exercises), and the Practice-Problem answer boxes
 
 **Open:** whether to add the Practice-Problem answer boxes (phase 4d); whether
 to keep the sorters' "why" text visible only after a correct card (as built).
+
+---
+
+## 9. Ch 6 AON exercise reverted
+
+At the author's request the ch 6 node-box exercise is back to the original
+hand-written widget (same HTML, inline script and `.aon-*` CSS as before this
+work). The new ch 6 PERT grid, network-rules sorter and crash challenge stay.
+`tryit_aon()` / the diagram extensions remain in the library, unused on the
+page except for the hidden Brightspace twin (`quizzes/tryit_06-...csv`), which
+is unchanged. The other chapters' diagram exercises (ch 5 WBS tree) are
+unaffected.
