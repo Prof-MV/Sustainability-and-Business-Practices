@@ -250,6 +250,55 @@ alternative.
 
 </details>
 
+### Try it yourself: reservation points and the ZOPA by hand
+
+The buyer's reservation price comes from their BATNA, the seller's from their
+costs. Work out both and the width of the zone of possible agreement. Each
+team picks its own **data set**.
+
+```{r tryit-zopa-10, echo=FALSE, results='asis'}
+zp_sets <- list(
+  c(alt = 150000, risk = 25000, cost = 132000, margin = 15000),
+  c(alt = 90000,  risk = 8000,  cost = 85000,  margin = 12000),
+  c(alt = 210000, risk = 15000, cost = 205000, margin = 30000),
+  c(alt = 60000,  risk = 12000, cost = 50000,  margin = 5000))
+zp_given <- function(v) c(
+  "Buyer's BATNA: alternative supplier's price" = sprintf("$%s", format(v[["alt"]], big.mark = " ")),
+  "Extra risk cost of using that alternative" = sprintf("$%s", format(v[["risk"]], big.mark = " ")),
+  "Seller's cost to make" = sprintf("$%s", format(v[["cost"]], big.mark = " ")),
+  "Seller's minimum margin" = sprintf("$%s", format(v[["margin"]], big.mark = " ")))
+zp_answers <- function(v) {
+  b <- v[["alt"]] + v[["risk"]]; s <- v[["cost"]] + v[["margin"]]
+  list(tryit_answer("Buyer's reservation price (most they will pay)", b, tol = 1, prefix = "$"),
+       tryit_answer("Seller's reservation price (least they will accept)", s, tol = 1, prefix = "$"),
+       tryit_answer("ZOPA width (negative means there is no ZOPA)", b - s, tol = 1, prefix = "$"))
+}
+tryit_number(
+  "zopa-by-hand", "Is there a zone of possible agreement?",
+  answers = zp_answers(zp_sets[[1]]), given = zp_given(zp_sets[[1]]),
+  teams = lapply(zp_sets[-1], function(v) list(given = zp_given(v), answers = zp_answers(v))),
+  intro = "Reservation price = BATNA price plus its risk cost (buyer); cost plus minimum margin (seller).")
+
+tryit_number(
+  "zopa-twin", "Zone of possible agreement (graded)", show = FALSE,
+  answers = zp_answers(c(alt = 300000, risk = 20000, cost = 270000, margin = 40000)),
+  question = paste0("<p>You are buying a tooling package. Your BATNA is an alternative supplier at ",
+    "$300 000, which would carry an extra $20 000 of risk cost. The seller's cost to make it is $270 000 ",
+    "and they need at least a $40 000 margin. Calculate your reservation price, the seller's reservation ",
+    "price, and the width of the ZOPA (enter a negative number if there is no ZOPA).</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Buyer's reservation price = BATNA price + risk cost; seller's = cost to make +
+margin. Data set 1: buyer \$175 000, seller \$147 000, so the ZOPA is
+\$147 000 to \$175 000, width **\$28 000**. In data set 3 the seller's floor
+(\$235 000) is above the buyer's ceiling (\$225 000): width **-\$10 000**, no
+ZOPA at these terms; the buyer must improve their BATNA or change the package.
+
+</details>
+
 ## Language and tells
 
 A few sample moves: *"My colleagues and I cannot settle for that"* (establish
@@ -274,6 +323,44 @@ Three types on projects:
 - **Goal-oriented** --- disagreement over end results, scope outcomes, specs, priorities. Fuelled by vague goals that let people fill in their own interpretation (and hidden agendas).
 - **Administrative** --- who has authority or control over functions, tasks, and decisions. The **matrix** structure breeds this --- everyone has two bosses.
 - **Interpersonal** --- personality differences: work ethic, behavioural style, ego, personalities that don't mesh.
+
+### Try it yourself: what type of conflict is it?
+
+```{r tryit-conflict-types-10, echo=FALSE, results='asis'}
+ct_bins <- c("Goal-oriented", "Administrative", "Interpersonal")
+tryit_sort(
+  "conflict-types", "Goal-oriented, administrative or interpersonal?",
+  bins = ct_bins,
+  cards = data.frame(
+    text = c("Marketing and engineering disagree on what the finished prototype must demonstrate.",
+             "Who signs off a design change: the PM or the functional manager?",
+             "Two engineers have clashed on every project since a personal falling-out.",
+             "Vague specifications let each side read the requirement its own way.",
+             "A matrix employee takes instructions from two bosses who contradict each other.",
+             "One teammate's blunt style keeps rubbing another the wrong way.",
+             "The customer wants it lighter and the sponsor wants it cheaper.",
+             "A disagreement over who controls the test-lab schedule."),
+    bin = c("Goal-oriented", "Administrative", "Interpersonal", "Goal-oriented", "Administrative",
+            "Interpersonal", "Goal-oriented", "Administrative"),
+    why = c("Disagreement over end results.", "Authority over decisions: administrative.",
+            "Personality and history: interpersonal.", "Vague goals let people fill in their own meaning.",
+            "The two-bosses problem of the matrix: administrative.", "Style clash: interpersonal.",
+            "Priorities conflict over end results.", "Authority and control over a function."),
+    stringsAsFactors = FALSE),
+  intro = "Remember: personality is the first diagnosis and usually the wrong one.", question = NULL)
+
+tryit_sort(
+  "conflict-types-twin", "Type of conflict (graded)", bins = ct_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Quality and production disagree about the acceptance criteria.",
+             "Two managers both claim the right to assign the test technician.",
+             "A designer and a buyer simply do not get along.",
+             "Nobody agrees what 'done' means for the first article.",
+             "It is unclear whether the PM or the department head approves overtime."),
+    bin = c("Goal-oriented", "Administrative", "Interpersonal", "Goal-oriented", "Administrative"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each conflict, choose whether it is goal-oriented, administrative or interpersonal.</p>")
+```
 
 ### Three views of conflict
 
@@ -326,6 +413,46 @@ content), personal grudges.
 | **Smoothing** | Emphasize agreement, play down differences | Preserving the relationship matters more right now |
 | **Forcing** | Push one view at the other's expense | A true emergency, or a matter of safety/ethics |
 
+### Try it yourself: choose the resolution method
+
+```{r tryit-resolution-10, echo=FALSE, results='asis'}
+res_bins <- c("Confronting", "Compromising", "Withdrawal", "Smoothing", "Forcing")
+tryit_sort(
+  "conflict-methods", "Which resolution method fits each situation?",
+  bins = res_bins,
+  cards = data.frame(
+    text = c("A disagreement over a spec detail, with plenty of time and goodwill: solve the real problem.",
+             "The two sides are far apart and the gate review is tomorrow: each gives something.",
+             "A trivial scheduling grumble, with tempers high: postpone it.",
+             "Preserving a key relationship matters more than winning this point today.",
+             "A safety interlock has been bypassed on the line: stop it now.",
+             "Repeated hand-off errors need a joint working session on the root cause.",
+             "Time is short, so split the difference between the two delivery dates.",
+             "Emphasize what the two teams agree on and play down the disagreement for now."),
+    bin = c("Confronting", "Compromising", "Withdrawal", "Smoothing", "Forcing", "Confronting",
+            "Compromising", "Smoothing"),
+    why = c("Confronting solves the underlying problem; it needs time and goodwill.",
+            "Positions far apart and a deadline looming: compromise.",
+            "Trivial issue or emotions need to cool: withdraw.",
+            "Smoothing protects the relationship.", "Forcing is for a true emergency or a safety or ethics matter.",
+            "The durable fix is to confront the real problem together.",
+            "Each side gives something: compromise.", "Emphasizing agreement is smoothing."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the method that fits best.", question = NULL)
+
+tryit_sort(
+  "conflict-methods-twin", "Conflict resolution method (graded)", bins = res_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A minor wording dispute in a memo; let it lie for now.",
+             "A genuine design disagreement and two weeks to resolve it properly.",
+             "Both teams give up part of their request to hit tomorrow's deadline.",
+             "An unsafe procedure must stop immediately, whatever the objections.",
+             "The relationship with the customer is fragile this week, so stress common ground."),
+    bin = c("Withdrawal", "Confronting", "Compromising", "Forcing", "Smoothing"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each situation, choose the conflict-resolution method that fits best.</p>")
+```
+
 ### Try it yourself: score the supplier choice
 
 Multi-criteria scoring turns "MCS feels safer" into a defensible number.
@@ -350,6 +477,54 @@ cat(sprintf("\nWeighted score  MCS: %.2f   Paragon: %.2f\n", mcs_total, paragon_
 cat(sprintf("Recommended: %s\n", ifelse(mcs_total >= paragon_total, "MCS", "Paragon")))
 cat("Change the weights to your project's priorities and watch the answer move.\n")
 ```
+
+### Try it yourself: weighted supplier scoring by hand
+
+Multiply each score by its weight, then total each supplier's column. Each
+team picks its own **data set**.
+
+```{r tryit-scoring-10, echo=FALSE, results='asis'}
+sc_crit <- c("Quality record", "Delivery reliability", "Price", "Technical capability")
+sc_sets <- list(
+  list(w = c(.40, .30, .20, .10), Alpha = c(4, 3, 5, 2), Beta = c(5, 4, 2, 3), Gamma = c(3, 5, 4, 5)),
+  list(w = c(.35, .25, .25, .15), Alpha = c(5, 2, 4, 3), Beta = c(3, 5, 3, 4), Gamma = c(4, 4, 5, 2)),
+  list(w = c(.50, .20, .20, .10), Alpha = c(3, 5, 4, 4), Beta = c(4, 2, 5, 2), Gamma = c(5, 3, 2, 5)),
+  list(w = c(.30, .30, .25, .15), Alpha = c(2, 4, 5, 5), Beta = c(5, 3, 3, 2), Gamma = c(4, 5, 2, 3)))
+sc_table <- function(s) {
+  data.frame(Criterion = sc_crit, Weight = s$w, `Alpha score` = s$Alpha, `Beta score` = s$Beta,
+             `Gamma score` = s$Gamma, `Alpha x weight` = s$Alpha * s$w, `Beta x weight` = s$Beta * s$w,
+             `Gamma x weight` = s$Gamma * s$w, check.names = FALSE)
+}
+sc_answers <- function(s) {
+  list(tryit_answer("Alpha total", sum(s$Alpha * s$w), tol = 0.01),
+       tryit_answer("Beta total", sum(s$Beta * s$w), tol = 0.01),
+       tryit_answer("Gamma total", sum(s$Gamma * s$w), tol = 0.01))
+}
+sc_cols <- c("Alpha x weight", "Beta x weight", "Gamma x weight")
+tryit_grid(
+  "supplier-scoring", "Weighted supplier score",
+  data = sc_table(sc_sets[[1]]), blank = sc_cols, tol = 0.01, digits = 2,
+  answers = sc_answers(sc_sets[[1]]),
+  teams = lapply(sc_sets[-1], function(s) list(data = sc_table(s), answers = sc_answers(s))),
+  intro = "Scores run from 1 (poor) to 5 (excellent); the weights sum to 1.")
+
+sc_twin <- list(w = c(.40, .20, .25, .15), Alpha = c(4, 5, 3, 2), Beta = c(3, 3, 5, 4), Gamma = c(5, 2, 2, 5))
+tryit_grid(
+  "supplier-scoring-twin", "Weighted supplier score (graded)", show = FALSE,
+  data = sc_table(sc_twin), blank = sc_cols, tol = 0.01, digits = 2, answers = sc_answers(sc_twin),
+  question = paste0("<p>Three suppliers were scored from 1 to 5 against four weighted criteria. ",
+    "Calculate each score x weight, then each supplier's weighted total (two decimal places).</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Weighted total = sum of (score x weight) down each supplier's column. In data
+set 1: Alpha 3.70, Beta 3.90, Gamma 4.00, so Gamma is recommended. The ranking
+depends on the weights: shift weight from Price to Quality and re-run the sums
+to see how fragile a narrow win can be.
+
+</details>
 
 ## Key Takeaways
 
