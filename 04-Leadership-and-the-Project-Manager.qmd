@@ -185,9 +185,11 @@ team_member <- "Owen (co-op student, mounting-tab idea)"
 competence  <- 0.3   # 0-1: skill/experience on this specific task
 commitment  <- 0.8   # 0-1: confidence and motivation to do it
 
-style <- if (competence < 0.5 && commitment < 0.5) {
+# Readiness model: a newcomer who is keen but unskilled needs direction;
+# one who is losing confidence as the work gets hard needs coaching.
+style <- if (competence < 0.5 && commitment >= 0.5) {
   "Directing (high direction, low support)"
-} else if (competence < 0.5 && commitment >= 0.5) {
+} else if (competence < 0.5 && commitment < 0.5) {
   "Coaching (high direction, high support)"
 } else if (competence >= 0.5 && commitment < 0.5) {
   "Supporting (low direction, high support)"
@@ -200,7 +202,7 @@ plot(NA, xlim = c(0, 1), ylim = c(0, 1), xlab = "Competence on this task", ylab 
      main = "Situational leadership quadrant")
 abline(v = 0.5, h = 0.5, col = "#bdc3c7", lwd = 2)
 text(c(0.25, 0.25, 0.75, 0.75), c(0.25, 0.75, 0.25, 0.75),
-     labels = c("Directing", "Coaching", "Supporting", "Delegating"), col = "#7f8c8d", cex = 1.3)
+     labels = c("Coaching", "Directing", "Supporting", "Delegating"), col = "#7f8c8d", cex = 1.3)
 points(competence, commitment, pch = 19, cex = 3, col = "#e74c3c")
 
 cat(sprintf("Recommended style: %s\n", style))
