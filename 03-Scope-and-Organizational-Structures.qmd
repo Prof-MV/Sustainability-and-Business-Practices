@@ -322,7 +322,7 @@ The card above re-runs this exact webR code every time you change an input, subs
 ```{webr-r}
 #| label: npv-calc-03
 initial   <- 450000
-cash_flows<- c(180000, 180000, 180000, 120000, 90000)  # years 1..5
+cash_flows<- rep(180000, 5)   # years 1..5, as in Worked Example 1
 r         <- 0.12   # required rate of return
 
 t   <- seq_along(cash_flows)
