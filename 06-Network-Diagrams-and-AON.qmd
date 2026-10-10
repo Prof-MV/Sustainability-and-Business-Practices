@@ -79,6 +79,61 @@ network:
 7. It is common (not required) to start from a **single start node**...
 8. ...and end at a **single end node**.
 
+### Try it yourself: is this network valid?
+
+The rules above are easy to recite and easy to break. Decide which rule, if
+any, each description breaks. (More than one start node, or more than one end
+node, is *allowed* --- rules 7 and 8 only say it is common.)
+
+```{r tryit-rules-06, echo=FALSE, results='asis'}
+rule_bins <- c("Valid", "Loop (rule 6)", "Duplicate ID (rule 5)",
+               "Starts too early (rule 3)")
+tryit_sort(
+  id = "network-rules",
+  title = "Valid network, or which rule does it break?",
+  bins = rule_bins,
+  cards = data.frame(
+    text = c(
+      "Activity C lists B as its predecessor, and B lists C as its predecessor.",
+      "Two different activities are both labelled F: a 'Paint' and a 'Fit-out'.",
+      "H needs both D and E to finish, but the network has H starting as soon as D finishes.",
+      "A and B both have no predecessors, and both feed C.",
+      "B and C both start when A finishes, and run in parallel.",
+      "F starts only when both D and E are complete.",
+      "G follows F, F follows H, and H follows G.",
+      "Two separate end activities, K and L, with nothing after either."),
+    bin = c("Loop (rule 6)", "Duplicate ID (rule 5)", "Starts too early (rule 3)",
+            "Valid", "Valid", "Valid", "Loop (rule 6)", "Valid"),
+    why = c(
+      "A cycle: neither can start until the other has finished, so the schedule can never be solved.",
+      "Every activity needs a unique identifier, or a predecessor list is ambiguous.",
+      "An activity cannot begin until ALL of its predecessors are complete: H waits for the later of D and E.",
+      "Several start nodes are allowed; a single start node is only common practice.",
+      "A burst: two successors of one activity.",
+      "A merge: the start waits for the latest incoming finish.",
+      "A three-activity loop, the same fault as a two-activity one.",
+      "Several end nodes are allowed; the project finishes when the last one does."),
+    stringsAsFactors = FALSE),
+  intro = "Pick one for every card.",
+  question = NULL, print_key = TRUE)
+
+# Graded twin for Brightspace: different cards.
+tryit_sort(
+  id = "network-rules-twin", title = "Valid network, or which rule does it break?",
+  bins = rule_bins, show = FALSE,
+  cards = data.frame(
+    text = c(
+      "P lists Q as a predecessor, Q lists R, and R lists P.",
+      "The precedence table has two rows both called 'M'.",
+      "T requires S and U to be finished, but is scheduled to start when S finishes.",
+      "X, Y and Z all start the project and all feed W.",
+      "N feeds both O and P, which then both feed R."),
+    bin = c("Loop (rule 6)", "Duplicate ID (rule 5)", "Starts too early (rule 3)",
+            "Valid", "Valid"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each description of a network, choose whether it is valid or which construction rule it breaks.</p>")
+```
+
 ## AON node anatomy
 
 Each activity is a box with six numbers:
@@ -245,14 +300,15 @@ Now do the math yourself, by hand, on a fresh network. It is a small
 renovation sub-project --- seven activities --- and it is **pre-drawn**: every
 node already shows its activity ID and duration, and the arrows already show
 precedence, so you do not need to draw anything. Your job is the forward and
-backward pass: type ES, EF, LS, and LF straight into each box (float fills
-itself in once a box has both ES and LS). Click **Check my numbers** as often
-as you like --- correct cells turn green, wrong ones turn red. Once you are
-confident, click every node you think belongs on the **critical path** and
-then click **Check critical path**.
+backward pass: type ES, EF, LS, and LF into each box (float fills itself in
+once a box has both ES and LS). Then tick every box you think is on the
+**critical path**. Click **Check my answers** as often as you like --- correct
+entries get a green tick, wrong ones a red cross. In class, each team picks
+its own **data set** (or opens the page with `?team=2`, `?team=3`...), so
+neighbouring teams get different durations on the same network.
 
-```{r aon6-input-table, echo=FALSE}
-aon6_tbl <- data.frame(
+```{r aon6-exercise, echo=FALSE, results='asis'}
+aon6_acts <- data.frame(
   id   = LETTERS[1:7],
   desc = c("Site prep", "Foundation pour", "Utility rough-in", "Framing",
            "Inspection sign-off", "Drywall & finish", "Final walkthrough"),
@@ -260,280 +316,61 @@ aon6_tbl <- data.frame(
   pred = c("", "A", "A", "B", "C", "D,E", "F"),
   stringsAsFactors = FALSE
 )
-knitr::kable(aon6_tbl, col.names = c("Activity", "Description", "Duration (days)", "Predecessors"),
-             align = c("c", "l", "c", "l")) |>
-  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE)
+# Data sets 2 to 4: same network, other durations. Set 3 moves the critical
+# path onto the C-E chain.
+aon6_alt <- list(c(5, 5, 4, 6, 4, 2, 3), c(3, 4, 5, 4, 7, 3, 2), c(4, 6, 4, 5, 5, 1, 4))
+tryit_aon(
+  "aon6-renovation", "Forward and backward pass: renovation sub-project",
+  aon6_acts, alt_dur = aon6_alt,
+  intro = "ES and LS are start days, EF and LF finish days; the project starts on day 0.")
+
+# Graded twin for Brightspace: a different network, same method.
+tryit_aon(
+  "aon6-twin", "Forward and backward pass: product-launch sub-project",
+  data.frame(
+    id = LETTERS[1:9], dur = c(2, 4, 5, 6, 8, 5, 4, 3, 6),
+    pred = c("", "A", "A", "B", "C", "D", "D", "E,F", "G,H"),
+    stringsAsFactors = FALSE),
+  teams = 1, show = FALSE,
+  question = paste0(
+    "<p>A product-launch sub-project has nine activities. The table gives each ",
+    "activity's duration (days) and the activities it leads to. The project ",
+    "starts on day 0. Do the forward and backward pass for every activity ",
+    "(ES, EF, LS, LF, float), then state which activities are on the ",
+    "critical path and the project duration.</p>"))
 ```
 
-<div class="aon-widget" id="aon6-widget">
-<div class="aon-diagram-scroll">
-<div class="aon-diagram" id="aon6-diagram">
-<svg class="aon-svg-layer" id="aon6-svg">
-<defs>
-<marker id="aon6-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-<path d="M0,0 L10,5 L0,10 z" fill="#2E86C1"></path>
-</marker>
-</defs>
-</svg>
-<div class="aon-col">
-<div class="aon-node" id="aon6-node-A" data-id="A">
-<div class="aon-node-id">A</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-A" aria-label="ES for activity A"></div>
-<div class="aon-cell static">4</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-A" aria-label="EF for activity A"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-A" aria-label="LS for activity A"></div>
-<div class="aon-cell"><span id="aon6-FLT-A">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-A" aria-label="LF for activity A"></div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div class="aon-node" id="aon6-node-B" data-id="B">
-<div class="aon-node-id">B</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-B" aria-label="ES for activity B"></div>
-<div class="aon-cell static">6</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-B" aria-label="EF for activity B"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-B" aria-label="LS for activity B"></div>
-<div class="aon-cell"><span id="aon6-FLT-B">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-B" aria-label="LF for activity B"></div>
-</div>
-</div>
-<div class="aon-node" id="aon6-node-C" data-id="C">
-<div class="aon-node-id">C</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-C" aria-label="ES for activity C"></div>
-<div class="aon-cell static">3</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-C" aria-label="EF for activity C"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-C" aria-label="LS for activity C"></div>
-<div class="aon-cell"><span id="aon6-FLT-C">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-C" aria-label="LF for activity C"></div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div class="aon-node" id="aon6-node-D" data-id="D">
-<div class="aon-node-id">D</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-D" aria-label="ES for activity D"></div>
-<div class="aon-cell static">5</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-D" aria-label="EF for activity D"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-D" aria-label="LS for activity D"></div>
-<div class="aon-cell"><span id="aon6-FLT-D">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-D" aria-label="LF for activity D"></div>
-</div>
-</div>
-<div class="aon-node" id="aon6-node-E" data-id="E">
-<div class="aon-node-id">E</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-E" aria-label="ES for activity E"></div>
-<div class="aon-cell static">4</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-E" aria-label="EF for activity E"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-E" aria-label="LS for activity E"></div>
-<div class="aon-cell"><span id="aon6-FLT-E">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-E" aria-label="LF for activity E"></div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div class="aon-node" id="aon6-node-F" data-id="F">
-<div class="aon-node-id">F</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-F" aria-label="ES for activity F"></div>
-<div class="aon-cell static">2</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-F" aria-label="EF for activity F"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-F" aria-label="LS for activity F"></div>
-<div class="aon-cell"><span id="aon6-FLT-F">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-F" aria-label="LF for activity F"></div>
-</div>
-</div>
-</div>
-<div class="aon-col">
-<div class="aon-node" id="aon6-node-G" data-id="G">
-<div class="aon-node-id">G</div>
-<div class="aon-node-grid">
-<div class="aon-cell"><input type="number" id="aon6-ES-G" aria-label="ES for activity G"></div>
-<div class="aon-cell static">3</div>
-<div class="aon-cell"><input type="number" id="aon6-EF-G" aria-label="EF for activity G"></div>
-<div class="aon-cell"><input type="number" id="aon6-LS-G" aria-label="LS for activity G"></div>
-<div class="aon-cell"><span id="aon6-FLT-G">&nbsp;</span></div>
-<div class="aon-cell"><input type="number" id="aon6-LF-G" aria-label="LF for activity G"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="aon-controls">
-<button type="button" class="aon-btn" id="aon6-btn-check">Check my numbers</button>
-<button type="button" class="aon-btn secondary" id="aon6-btn-cp">Check critical path</button>
-<button type="button" class="aon-btn secondary" id="aon6-btn-reset">Reset</button>
-</div>
-<div class="aon-feedback" id="aon6-feedback"></div>
-<div class="aon-cp-feedback" id="aon6-cpfeedback"></div>
-</div>
+<details class="tryit-solution">
+<summary>Show the fully solved network (all four data sets)</summary>
 
-<script>
-(function () {
-  var nodes = [
-    { id: "A", dur: 4, pred: [] },
-    { id: "B", dur: 6, pred: ["A"] },
-    { id: "C", dur: 3, pred: ["A"] },
-    { id: "D", dur: 5, pred: ["B"] },
-    { id: "E", dur: 4, pred: ["C"] },
-    { id: "F", dur: 2, pred: ["D", "E"] },
-    { id: "G", dur: 3, pred: ["F"] }
-  ];
-  var edges = [["A","B"], ["A","C"], ["B","D"], ["C","E"], ["D","F"], ["E","F"], ["F","G"]];
+```{r aon6-solution, echo=FALSE, results='asis'}
+for (k in 1:4) {
+  d <- aon6_acts
+  if (k > 1) d$dur <- aon6_alt[[k - 1]]
+  solved <- cpm(d)
+  if (k == 1) aon6_solved <- solved   # data set 1 feeds the Gantt chart below
+  cat(sprintf("
 
-  var succ = {};
-  nodes.forEach(function (n) { succ[n.id] = []; });
-  edges.forEach(function (e) { succ[e[0]].push(e[1]); });
+**Data set %d** --- durations %s.
 
-  // Correct answers, computed once with the same forward/backward pass taught above.
-  var ES = {}, EF = {}, LS = {}, LF = {}, FLOAT = {}, CRIT = {};
-  nodes.forEach(function (n) {
-    var es = n.pred.length === 0 ? 0 : Math.max.apply(null, n.pred.map(function (p) { return EF[p]; }));
-    ES[n.id] = es;
-    EF[n.id] = es + n.dur;
-  });
-  var proj = Math.max.apply(null, nodes.map(function (n) { return EF[n.id]; }));
-  nodes.slice().reverse().forEach(function (n) {
-    var s = succ[n.id];
-    var lf = s.length === 0 ? proj : Math.min.apply(null, s.map(function (x) { return LS[x]; }));
-    LF[n.id] = lf;
-    LS[n.id] = lf - n.dur;
-  });
-  nodes.forEach(function (n) {
-    FLOAT[n.id] = LS[n.id] - ES[n.id];
-    CRIT[n.id] = FLOAT[n.id] === 0;
-  });
+", k,
+              paste(sprintf("%s = %g", d$id, d$dur), collapse = ", ")))
+  print(knitr::kable(solved, row.names = FALSE) |>
+    kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE))
+  cat(sprintf("
 
-  var diagram = document.getElementById("aon6-diagram");
-  var svg = document.getElementById("aon6-svg");
-  var feedback = document.getElementById("aon6-feedback");
-  var cpFeedback = document.getElementById("aon6-cpfeedback");
-
-  function el(id) { return document.getElementById(id); }
-
-  function updateFloat(id) {
-    var esVal = parseFloat(el("aon6-ES-" + id).value);
-    var lsVal = parseFloat(el("aon6-LS-" + id).value);
-    var span = el("aon6-FLT-" + id);
-    if (!isNaN(esVal) && !isNaN(lsVal)) {
-      span.textContent = lsVal - esVal;
-    } else {
-      span.innerHTML = "&nbsp;";
-    }
-  }
-
-  function layoutArrows() {
-    var rect = diagram.getBoundingClientRect();
-    var w = diagram.scrollWidth, h = diagram.scrollHeight;
-    svg.setAttribute("width", w);
-    svg.setAttribute("height", h);
-    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
-    while (svg.children.length > 1) { svg.removeChild(svg.lastChild); }
-    edges.forEach(function (e) {
-      var a = el("aon6-node-" + e[0]).getBoundingClientRect();
-      var b = el("aon6-node-" + e[1]).getBoundingClientRect();
-      var x1 = a.right - rect.left, y1 = a.top - rect.top + a.height / 2;
-      var x2 = b.left - rect.left, y2 = b.top - rect.top + b.height / 2;
-      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", x1); line.setAttribute("y1", y1);
-      line.setAttribute("x2", x2 - 6); line.setAttribute("y2", y2);
-      line.setAttribute("stroke", "#2E86C1");
-      line.setAttribute("stroke-width", "2");
-      line.setAttribute("marker-end", "url(#aon6-arrowhead)");
-      svg.appendChild(line);
-    });
-  }
-
-  nodes.forEach(function (n) {
-    ["ES", "LS"].forEach(function (f) {
-      el("aon6-" + f + "-" + n.id).addEventListener("input", function () { updateFloat(n.id); });
-    });
-    el("aon6-node-" + n.id).addEventListener("click", function (ev) {
-      if (ev.target.tagName.toLowerCase() === "input") return;
-      this.classList.toggle("cp-selected");
-    });
-  });
-
-  el("aon6-btn-check").addEventListener("click", function () {
-    var total = 0, correct = 0;
-    var answers = { ES: ES, EF: EF, LS: LS, LF: LF };
-    nodes.forEach(function (n) {
-      ["ES", "EF", "LS", "LF"].forEach(function (f) {
-        total++;
-        var input = el("aon6-" + f + "-" + n.id);
-        var cell = input.parentElement;
-        cell.classList.remove("correct", "incorrect");
-        var val = parseFloat(input.value);
-        if (!isNaN(val) && val === answers[f][n.id]) {
-          cell.classList.add("correct");
-          correct++;
-        } else {
-          cell.classList.add("incorrect");
-        }
-      });
-      updateFloat(n.id);
-    });
-    feedback.textContent = correct + " of " + total + " cells correct." +
-      (correct === total ? " Every number checks out -- on to the critical path." : " Fix the red cells and check again.");
-  });
-
-  el("aon6-btn-cp").addEventListener("click", function () {
-    nodes.forEach(function (n) {
-      var node = el("aon6-node-" + n.id);
-      var selected = node.classList.contains("cp-selected");
-      node.classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
-      if (selected && CRIT[n.id]) node.classList.add("cp-correct");
-      else if (!selected && CRIT[n.id]) node.classList.add("cp-missed");
-      else if (selected && !CRIT[n.id]) node.classList.add("cp-wrong");
-    });
-    var chain = nodes.filter(function (n) { return CRIT[n.id]; }).map(function (n) { return n.id; }).join("-");
-    cpFeedback.textContent = "Critical path: " + chain + " (" + proj + " days). Green = correctly on the critical path, red outline = missed or wrongly selected.";
-  });
-
-  el("aon6-btn-reset").addEventListener("click", function () {
-    nodes.forEach(function (n) {
-      ["ES", "EF", "LS", "LF"].forEach(function (f) {
-        var input = el("aon6-" + f + "-" + n.id);
-        input.value = "";
-        input.parentElement.classList.remove("correct", "incorrect");
-      });
-      el("aon6-FLT-" + n.id).innerHTML = "&nbsp;";
-      el("aon6-node-" + n.id).classList.remove("cp-selected", "cp-correct", "cp-missed", "cp-wrong");
-    });
-    feedback.textContent = "";
-    cpFeedback.textContent = "";
-  });
-
-  layoutArrows();
-  window.addEventListener("resize", layoutArrows);
-  window.addEventListener("load", layoutArrows);
-  setTimeout(layoutArrows, 200);
-})();
-</script>
-
-<details>
-<summary>Show the fully solved network</summary>
-
-```{r aon6-solution, echo=FALSE}
-aon6_solved <- cpm(data.frame(
-  id = LETTERS[1:7],
-  dur = c(4, 6, 3, 5, 4, 2, 3),
-  pred = c("", "A", "A", "B", "C", "D,E", "F"),
-  stringsAsFactors = FALSE
-))
-knitr::kable(aon6_solved, row.names = FALSE) |>
-  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE)
+Project duration: %g days. Critical path: %s. Activities off the critical path carry float: %s.
+",
+              max(solved$EF),
+              paste(solved$Activity[solved$Float == 0], collapse = "-"),
+              paste(sprintf("%s (%g)", solved$Activity[solved$Float > 0], solved$Float[solved$Float > 0]), collapse = ", ")))
+}
 ```
 
-Project duration: 20 days. Critical path: A-B-D-F-G. C and E each carry 4 days
-of float --- they can slip into that cushion without moving the finish date,
-which is exactly why they are not on the critical path even though they sit
-"in the middle" of the network.
+Data set 1 in words: project duration 20 days, critical path A-B-D-F-G. C and E
+each carry 4 days of float --- they can slip into that cushion without moving
+the finish date, which is exactly why they are not on the critical path even
+though they sit "in the middle" of the network.
 
 </details>
 
@@ -580,6 +417,64 @@ you combine them to find the probability of finishing on time.
 
 </details>
 
+Now do it by hand on a fresh set of estimates. Calculate each activity's
+expected duration and standard deviation, then total the expected durations
+along the chain.
+
+```{r tryit-pert-06, echo=FALSE, results='asis'}
+pert_tasks <- data.frame(
+  Activity = c("A", "B", "C", "D", "E"),
+  o = c(4, 8, 3, 10, 2),
+  m = c(6, 10, 5, 14, 3),
+  p = c(14, 18, 7, 24, 8)
+)
+pert_tasks$`t_e` <- (pert_tasks$o + 4 * pert_tasks$m + pert_tasks$p) / 6
+pert_tasks$SD    <- (pert_tasks$p - pert_tasks$o) / 6
+
+tryit_grid(
+  id = "pert-by-hand",
+  title = "PERT by hand: expected duration and standard deviation",
+  data = pert_tasks,
+  blank = c("t_e", "SD"),
+  tol = 0.01, digits = 0,
+  hints = c(`t_e` = "(o + 4m + p) / 6. The most-likely value counts four times.",
+            SD = "(p - o) / 6: only the two extremes matter."),
+  answers = list(
+    tryit_answer("Sum of expected durations, A to E", sum(pert_tasks$`t_e`), tol = 0.01, suffix = "days")),
+  intro = "Give each answer to two decimal places.")
+
+# Graded twin for Brightspace: different estimates.
+pert_twin <- data.frame(
+  Activity = c("F", "G", "H", "J"),
+  o = c(5, 9, 12, 6), m = c(8, 12, 15, 7), p = c(17, 15, 27, 14)
+)
+pert_twin$`t_e` <- (pert_twin$o + 4 * pert_twin$m + pert_twin$p) / 6
+pert_twin$SD    <- (pert_twin$p - pert_twin$o) / 6
+tryit_grid(
+  id = "pert-twin", title = "PERT by hand (graded)",
+  data = pert_twin, blank = c("t_e", "SD"), tol = 0.01, digits = 0, show = FALSE,
+  answers = list(tryit_answer("Sum of expected durations", sum(pert_twin$`t_e`), tol = 0.01, suffix = "days")),
+  question = paste0(
+    "<p>Four activities in a chain have the three-point estimates below (days). ",
+    "For each, calculate the PERT expected duration t<sub>e</sub> = (o + 4m + p)/6 and the ",
+    "standard deviation (p - o)/6, to two decimal places.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+```{r tryit-pert-solution-06, echo=FALSE}
+knitr::kable(pert_tasks, digits = c(0, 0, 0, 0, 2, 2), align = "c",
+             col.names = c("Activity", "o", "m", "p", "t_e", "SD")) |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE)
+```
+
+Activity D shows the skew: with o = 10, m = 14 and p = 24, the long tail pulls
+t_e up to 15 --- a day above the most-likely value --- and gives the largest
+standard deviation (2.33), so it is the activity most worth watching.
+
+</details>
+
 ## Shortening the critical path
 
 Only work on the **critical path** shortens the project. Options, roughly in
@@ -602,7 +497,9 @@ qwebr_calc_card(
   inputs = list(
     qwebr_calc_input("b_crashed_days", "Activity B crashed to (normally 8)", value = 5, min = 1, max = 8, step = 1, suffix = "days"),
     qwebr_calc_input("e_crashed_days", "Activity E crashed to (normally 5)", value = 5, min = 1, max = 5, step = 1, suffix = "days", type = "slider")
-  )
+  ),
+  goal = "Get the whole sub-project down to 31 days or fewer. Watch which path is longest after each change.",
+  goal_test = "max(path_len2) <= 31"
 )
 ```
 
@@ -832,7 +729,7 @@ You flag one thing for the team before the meeting ends: activity E is both the 
 | D | Frame tooling build | 15 | B | 18 | 33 | 28 | 43 | 10 |
 | E | Motor & controls procurement (MCS) | 25 | B | 18 | 43 | 18 | 43 | 0 |
 | F | Prototype assembly | 6 | C, D, E | 43 | 49 | 43 | 49 | 0 |
-| G | Drop/durability test | 5 | F | 49 | 54 | 51 | 56 | 7 |
+| G | Drop/durability test | 5 | F | 49 | 54 | 56 | 61 | 7 |
 | H | Toy-safety certification | 12 | F | 49 | 61 | 49 | 61 | 0 |
 | I | Packaging & client sample ship | 4 | G, H | 61 | 65 | 61 | 65 | 0 |
 | J | PM sign-off / report to Kestrel | 2 | I | 65 | 67 | 65 | 67 | 0 |
