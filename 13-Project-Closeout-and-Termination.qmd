@@ -87,6 +87,48 @@ ggplot(tt, aes(x, 0)) +
 - **Integration** --- the team and resources are **reabsorbed** into the existing structure. Common but complicated --- and organizations often **lose key people** here, who leave for fresh project challenges rather than return to the old department.
 - **Starvation** --- not really a termination act but *"a willful form of neglect"*: the budget is decreased slowly until the project cannot remain viable. Kept "on the books" for political reasons, a powerful sponsor's pet project, or so it can be reactivated when budgets recover.
 
+### Try it yourself: which way did the project end?
+
+```{r tryit-termination-13, echo=FALSE, results='asis'}
+term_bins <- c("Extinction", "Addition", "Integration", "Starvation")
+tryit_sort(
+  "termination-types", "Which type of termination is each scenario?",
+  bins = term_bins,
+  cards = data.frame(
+    text = c("A new vehicle's launch team is kept on permanently as the production-support team.",
+             "A failed pilot is shut down, its budget audited and its test rig sold.",
+             "A cancelled R&D team's engineers return to the design department.",
+             "A sponsor's favourite project keeps a token budget so it stays 'active' on paper.",
+             "A successful product line becomes a permanent business unit.",
+             "The team and equipment are reabsorbed into functional departments, and some key people leave.",
+             "The budget is trimmed a little every quarter until the project can no longer deliver.",
+             "The contract ends, assets are transferred per its terms, and the team is reassigned."),
+    bin = c("Addition", "Extinction", "Integration", "Starvation", "Addition", "Integration",
+            "Starvation", "Extinction"),
+    why = c("A successful project becomes a formal part of the organization.",
+            "The project is stopped, audited and its assets dispersed.",
+            "Resources are reabsorbed into the existing structure.",
+            "A slow, willful form of neglect: starvation.",
+            "Institutionalized as a permanent part of the organization.",
+            "Reabsorbed: common but complicated, and key people often leave.",
+            "Budget slowly cut until the project can't survive.",
+            "Stopped, with assets dispersed per the contract: extinction."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the termination type for each scenario.", question = NULL)
+
+tryit_sort(
+  "termination-types-twin", "Types of termination (graded)", bins = term_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A canceled program is closed and its equipment auctioned.",
+             "The commissioning team becomes the plant's maintenance group.",
+             "Project engineers go back to their home departments.",
+             "Funding is cut a little each year, but the project is never formally ended.",
+             "A pilot line is formally adopted as a permanent line."),
+    bin = c("Extinction", "Addition", "Integration", "Starvation", "Addition"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each scenario, choose the type of project termination: extinction, addition, integration or starvation.</p>")
+```
+
 ## The seven elements of closeout
 
 ```{r tbl-closeout-13}
@@ -121,6 +163,23 @@ knitr::kable(close, align = c("c", "l", "l"),
 - **Lessons learned** is dismissed as a bookkeeping chore.
 - People assume that because every project is unique, **carryover is minimal**.
 - People just want to **move on** to the next challenge.
+
+### Try it yourself: the seven elements in order
+
+```{r tryit-closeout-13, echo=FALSE, results='asis'}
+close_steps <- c("Verify scope", "Closeout contracts", "Closeout administration",
+                 "Conduct a lessons-learned review", "Build a project history file",
+                 "Create the final project report", "Celebrate success")
+tryit_order(
+  "closeout-order", "Put the seven closeout elements in order",
+  steps = close_steps,
+  intro = "Use the order of the table above: from checking what was delivered to celebrating the team.",
+  question = NULL)
+
+tryit_order(
+  "closeout-order-twin", "Closeout elements in order (graded)", steps = close_steps, show = FALSE,
+  question = "<p>Put the seven elements of project closeout in the order in which they are worked.</p>")
+```
 
 ## Project failure
 
@@ -201,6 +260,40 @@ it must not enter the decision. From here, spending \$260 000 to get \$300 000 i
 still worth \$40 000. (The sunk-cost fallacy --- "we've come too far to stop" ---
 is what keeps doomed projects alive.)
 
+### Try it yourself: what counts in the decision?
+
+```{r tryit-sunk-13, echo=FALSE, results='asis'}
+sunk_bins <- c("Counts in the decision", "Ignore: it is sunk")
+tryit_sort(
+  "sunk-or-relevant", "Which items belong in the continue-or-cancel decision?",
+  bins = sunk_bins,
+  cards = data.frame(
+    text = c("$480 000 already spent on tooling", "$260 000 still needed to finish",
+             "The $300 000 benefit expected if the product is delivered",
+             "The software licence fee already paid, which the project cannot resell",
+             "A $40 000 penalty payable only if the contract is cancelled",
+             "$25 000 salvage value of the test rig if sold now",
+             "Salaries paid last quarter", "The non-refundable deposit already paid to the supplier"),
+    bin = c(sunk_bins[2], sunk_bins[1], sunk_bins[1], sunk_bins[2], sunk_bins[1], sunk_bins[1],
+            sunk_bins[2], sunk_bins[2]),
+    why = c("Spent whether you continue or not.", "A future cost of continuing.",
+            "A future benefit of continuing.", "Already gone either way.",
+            "A future cost that only one branch carries.", "A future gain that only cancelling brings.",
+            "In the past: sunk.", "Already paid and not recoverable: sunk."),
+    stringsAsFactors = FALSE),
+  intro = "Only money that changes depending on what you decide now belongs in the decision.", question = NULL)
+
+tryit_sort(
+  "sunk-or-relevant-twin", "Sunk or relevant (graded)", bins = sunk_bins, show = FALSE,
+  cards = data.frame(
+    text = c("$1.2M already spent on development", "$150 000 remaining to complete testing",
+             "The contract penalty for abandoning the project", "Engineering hours logged to date",
+             "Expected revenue from the first year of sales"),
+    bin = c(sunk_bins[2], sunk_bins[1], sunk_bins[1], sunk_bins[2], sunk_bins[1]),
+    stringsAsFactors = FALSE),
+  question = "<p>A project is being reviewed for cancellation. For each item, decide whether it counts in the continue-or-cancel decision or is a sunk cost to ignore.</p>")
+```
+
 ### Try it yourself: the cancel decision under uncertainty
 
 ```{r calc-cancel-decision-13b, echo=FALSE, results='asis'}
@@ -253,6 +346,55 @@ for (i in seq_along(benefits)) {
   cat(sprintf("If benefit = %s  net %s: %s\n", money(benefits[i]), smoney(net[i]), verdict))
 }
 ```
+
+</details>
+
+### Try it yourself: continue or cancel, with an uncertain benefit
+
+The sunk cost is given on purpose: it should not change your answers. Each
+team picks its own **data set**.
+
+```{r tryit-cancel-13, echo=FALSE, results='asis'}
+cc_sets <- list(
+  c(sunk = 640000, finish = 180000, high = 260000, low = 100000, p = 60),
+  c(sunk = 300000, finish = 150000, high = 200000, low = 60000,  p = 40),
+  c(sunk = 900000, finish = 400000, high = 520000, low = 250000, p = 50),
+  c(sunk = 120000, finish = 90000,  high = 180000, low = 70000,  p = 70))
+cc_given <- function(v) {
+  m <- function(x) sprintf("$%s", format(x, big.mark = " ", scientific = FALSE))
+  c("Already spent (sunk)" = m(v[["sunk"]]), "Cost to finish" = m(v[["finish"]]),
+    "Benefit if the market is strong" = sprintf("%s (probability %g %%)", m(v[["high"]]), v[["p"]]),
+    "Benefit if the market is weak" = m(v[["low"]]))
+}
+cc_answers <- function(v) {
+  expb <- v[["p"]] / 100 * v[["high"]] + (1 - v[["p"]] / 100) * v[["low"]]
+  list(tryit_answer("Expected remaining benefit", expb, tol = 1, prefix = "$"),
+       tryit_answer("Expected net value of finishing, from here (negative = lose money)", expb - v[["finish"]], tol = 1, prefix = "$"),
+       tryit_answer("Benefit needed for finishing to break even", v[["finish"]], tol = 1, prefix = "$"))
+}
+tryit_number(
+  "cancel-by-hand", "Continue or cancel?",
+  answers = cc_answers(cc_sets[[1]]), given = cc_given(cc_sets[[1]]),
+  teams = lapply(cc_sets[-1], function(v) list(given = cc_given(v), answers = cc_answers(v))),
+  intro = "Use only future costs and benefits. Expected benefit = probability-weighted average.")
+
+tryit_number(
+  "cancel-twin", "Continue or cancel? (graded)", show = FALSE,
+  answers = cc_answers(c(sunk = 750000, finish = 220000, high = 330000, low = 90000, p = 50)),
+  question = paste0("<p>A project has already spent $750 000. Finishing needs another $220 000. If the ",
+    "market is strong (probability 50 %) the finished product is worth $330 000; if weak, $90 000. ",
+    "Calculate the expected remaining benefit, the expected net value of finishing from here, and the ",
+    "benefit needed for finishing to break even.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+The sunk cost never enters. Data set 1: expected benefit = 0.6 x \$260 000 +
+0.4 x \$100 000 = \$196 000; less the \$180 000 still to spend, finishing is
+worth **+\$16 000** from here. The break-even benefit is simply the cost to
+finish, \$180 000. In data set 2 the expected benefit (\$116 000) falls short
+of the \$150 000 needed, so cancel, however much has been spent.
 
 </details>
 
