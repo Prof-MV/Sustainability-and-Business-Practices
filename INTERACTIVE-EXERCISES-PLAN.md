@@ -1,7 +1,7 @@
 # Interactive exercises: audit and plan
 
 Book: *Sustainability and Business Practices* (MGMT-3105), 13 chapters.
-Status: **Phase 3 (library + ch 6 pilot) built on branch `interactive-exercises`, waiting for browser review. Phase 4 not started.** Decisions and what was built are in sections 5 and 7.
+Status: **Phases 3 and 4 built on branch `interactive-exercises`: all 13 chapters have 4 exercises, 6 of them with a graded Brightspace twin set, plus 7 challenge cards and 1 simulation.** What was built is in sections 7 and 8; open items at the end of section 8.
 
 Legend for the tables: **S** = student alone, **C** = also works on a projector;
 effort **S/M/L**; ★ = build first in that chapter. "Twin" = also exported to
@@ -364,3 +364,71 @@ last column needs a sideways scroll (the page says so), as in the home book.
 
 **Rendering a PDF re-executes every chapter** and rewrites `_freeze/*/tex.json`
 and figure PDFs; those changes were discarded, not committed.
+
+---
+
+## 8. Phase 4: built (chapters 1 to 13)
+
+One commit per chapter on `interactive-exercises`. "Teams" = four data sets
+(picker or `?team=N`). Every number/grid exercise and the AON/WBS diagrams
+have a hidden twin with different numbers; every sorter and ordering has a
+twin with different cards. Brightspace files: `quizzes/tryit_<chapter>.csv`
+(gitignored; 6 to 10 questions each).
+
+| Ch | Exercises (type; teams) | Challenge / sim |
+|---|---|---|
+| 1 | Material reduction by hand (number, teams); resin-code sorter; sustainability-checklist sorter | Whole-life cost: make "cheap" cheaper to own |
+| 2 | Channels after a merger (number, teams); communication-method sorter; report-type sorter | Triple constraint: crossover defect probability |
+| 3 | Discounted cash flow table (grid, teams); stakeholder-quadrant sorter; organizational-structure sorter | NPV below zero (finds the IRR) |
+| 4 | Leadership-style sorter; Tuckman sorter; Herzberg sorter; expectancy by hand (number, teams) | |
+| 5 | WBS roll-up tree (diagram, teams); outcome-or-action sorter; 100 % rule sorter; package-size sorter | |
+| 6 | AON node boxes (diagram, teams; replaced hand-written widget); PERT by hand (grid); network-rules sorter | Crash to 31 days |
+| 7 | Risk register EMV (grid, teams); response-strategy sorter; P-I zone sorter; FMEA rank with dropdown flag (grid, teams) | |
+| 8 | Probability of finishing (grid + answers, teams); crash slopes (grid, teams); precedence-type sorter | Schedule Monte Carlo (simulation, run number = team) |
+| 9 | Cost and variance by hand (number, teams); three-way cost labels (grid, dropdowns); estimating-method sorter; time-phased S-curve (grid, teams) | |
+| 10 | ZOPA by hand (number, teams); resolution-method sorter; conflict-type sorter; weighted supplier scoring (grid, teams) | |
+| 11 | Resource histogram (grid with dropdown, teams); leveling-order (ordering); priority-rule sorter; multitasking capacity (number, teams) | |
+| 12 | Earned value by work package (grid, teams); EAC-formula sorter; status-quadrant sorter | TCPI: find the AC at which BAC is achievable |
+| 13 | Termination-type sorter; closeout-elements ordering; sunk-or-relevant sorter; continue-or-cancel with uncertain benefit (number, teams) | |
+
+Dropped from the proposal: ch 7 mitigation challenge, ch 9 budget challenge and
+band numbers, ch 10 BATNA challenge and ch 13 reconciliation challenge (each
+chapter was already at four exercises), and the Practice-Problem answer boxes
+(phase 4d). The ch 6 "second network" became the four data sets. The ch 9
+"which method / what band" was kept as the sorter only.
+
+**Library additions this phase (carry back to Process Engineering):**
+
+- `tryit_number()`: `given` and `teams` (the givens live in the card because
+  they differ per team).
+- `tryit_grid()`: `teams` (alternative data frames) and `choice` (dropdown
+  columns; the cell holds the correct string).
+- `js/tryit.js`: `choiceField()` and the given-values list; the data-set
+  picker works for any builder.
+- `.tryit-given`, `.tryit-cell select` CSS.
+
+**Verified:**
+
+- Headless Edge on every rendered chapter, at every data set: exact key,
+  rounded key, a wrong answer flagged, Reset clean, console clean.
+- Challenge goals run in plain R (default unmet, one solution met): ch 1, 2, 3,
+  6, 8, 12. The ch 8 simulation over run numbers 1 to 12 with target day 88:
+  met on 12 of 12, never met at the default.
+- Cards driven in a real browser with webR: ch 6 crash challenge and the ch 8
+  simulation ("Run again" changes the result; the goal flips to Reached).
+- Every number quoted in the worked solutions recomputed from the givens
+  (`verify.R` in the session scratchpad): all agree.
+- Full-book PDF render: worksheets with blank cells and dropdown options, no raw
+  HTML or script in the LaTeX.
+
+**Not verified / yours:**
+
+- The Brightspace CSVs have not been imported.
+- No visual review beyond screenshots of the ch 5 and ch 6 diagrams.
+- Wide diagrams (ch 5 tree, ch 6 network) need a sideways scroll on narrower
+  screens; the page says so.
+- Numbers in twins were checked against the same R functions as the on-page
+  versions but not by a second person.
+
+**Open:** whether to add the Practice-Problem answer boxes (phase 4d); whether
+to keep the sorters' "why" text visible only after a correct card (as built).
