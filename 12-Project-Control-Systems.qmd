@@ -227,6 +227,63 @@ cat(sprintf("CPI  %.3f (%.0f cents of work per dollar spent)\n", CPI, CPI * 100)
 The project is **behind schedule and over cost** --- and this is visible in week 8,
 while there is still time to act, instead of as a surprise at the end.
 
+### Try it yourself: earned value by work package
+
+Each work package has its budget, how much of it was planned to be done by
+now, how much is actually done, and what it has cost. Work out PV, EV, CV and
+SV for each package, then the project indices and forecast. Each team picks
+its own **data set**.
+
+```{r tryit-evm-12, echo=FALSE, results='asis'}
+ev_names <- c("Design", "Tooling", "Assembly", "Testing")
+ev_sets <- list(
+  data.frame(bac = c(80000, 150000, 60000, 40000), plan = c(100, 80, 50, 25), done = c(100, 60, 40, 10), ac = c(84000, 100000, 28000, 5000)),
+  data.frame(bac = c(120000, 200000, 90000, 50000), plan = c(100, 70, 40, 10), done = c(100, 75, 30, 0), ac = c(125000, 150000, 40000, 2000)),
+  data.frame(bac = c(60000, 180000, 120000, 30000), plan = c(100, 100, 50, 20), done = c(100, 85, 60, 25), ac = c(58000, 175000, 70000, 9000)),
+  data.frame(bac = c(90000, 110000, 140000, 60000), plan = c(100, 60, 30, 0), done = c(90, 70, 20, 0), ac = c(95000, 70000, 36000, 0)))
+ev_table <- function(s) {
+  pv <- s$bac * s$plan / 100; ev <- s$bac * s$done / 100
+  data.frame(`Work package` = ev_names, `BAC ($)` = s$bac, `Planned %` = s$plan, `Complete %` = s$done,
+             `AC ($)` = s$ac, `PV ($)` = pv, `EV ($)` = ev, `CV ($)` = ev - s$ac, `SV ($)` = ev - pv,
+             check.names = FALSE)
+}
+ev_answers <- function(s) {
+  t <- ev_table(s); bac <- sum(s$bac); pv <- sum(t$`PV ($)`); ev <- sum(t$`EV ($)`); ac <- sum(s$ac)
+  list(tryit_answer("Project SPI", ev / pv, tol = 0.005),
+       tryit_answer("Project CPI", ev / ac, tol = 0.005),
+       tryit_answer("EAC = BAC / CPI", bac / (ev / ac), tol = 1, tol_pct = 0.2, prefix = "$"))
+}
+ev_cols <- c("PV ($)", "EV ($)", "CV ($)", "SV ($)")
+tryit_grid(
+  "evm-by-package", "Earned value by work package",
+  data = ev_table(ev_sets[[1]]), blank = ev_cols, tol = 1, digits = 0,
+  answers = ev_answers(ev_sets[[1]]),
+  teams = lapply(ev_sets[-1], function(s) list(data = ev_table(s), answers = ev_answers(s))),
+  hints = c(`PV ($)` = "BAC x planned %.", `EV ($)` = "BAC x complete %.",
+            `CV ($)` = "EV - AC.", `SV ($)` = "EV - PV."),
+  intro = "SPI and CPI use the project totals. Three decimals for the indices.")
+
+ev_twin <- data.frame(bac = c(70000, 130000, 100000, 45000), plan = c(100, 90, 40, 0),
+                      done = c(100, 80, 35, 5), ac = c(66000, 118000, 46000, 3000))
+tryit_grid(
+  "evm-twin", "Earned value by work package (graded)", show = FALSE,
+  data = ev_table(ev_twin), blank = ev_cols, tol = 1, digits = 0, answers = ev_answers(ev_twin),
+  question = paste0("<p>A project has four work packages with the budget (BAC), planned % complete, ",
+    "actual % complete and actual cost (AC) shown. For each package calculate PV, EV, CV and SV. Then ",
+    "for the whole project give SPI, CPI (three decimals) and the estimate at completion BAC / CPI.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+PV = BAC x planned %, EV = BAC x actual %, CV = EV - AC, SV = EV - PV. For data
+set 1 the totals are BAC \$330 000, PV \$240 000, EV \$198 000 and AC \$217 000,
+so SPI = 198 / 240 = **0.825**, CPI = 198 / 217 = **0.912** and EAC = 330 000 /
+0.912 = **about $361 700**. Tooling is the package doing the damage: it is both
+behind (SV = -\$30 000) and over (CV = -\$10 000).
+
+</details>
+
 ## Forecasting
 
 | Forecast | Formula | Meaning |
@@ -250,7 +307,9 @@ qwebr_calc_card(
     qwebr_calc_input("EV", "Earned value (EV)", value = 186000, min = 1000, max = 2000000, step = 1000, prefix = "$"),
     qwebr_calc_input("AC", "Actual cost (AC)", value = 210000, min = 1000, max = 2000000, step = 1000, prefix = "$"),
     qwebr_calc_input("PV", "Planned value (PV)", value = 217000, min = 1000, max = 2000000, step = 1000, prefix = "$")
-  )
+  ),
+  goal = "Find the actual cost to date at which the original budget is still achievable (TCPI of 1 or less).",
+  goal_test = "tcpi <= 1"
 )
 ```
 
@@ -316,11 +375,73 @@ supports --- and say which assumption you made.
 
 </details>
 
+### Try it yourself: which forecast do you report?
+
+```{r tryit-eac-12, echo=FALSE, results='asis'}
+eac_bins <- c("BAC / CPI (efficiency continues)", "AC + (BAC - EV) (one-off overrun)",
+              "AC + (BAC - EV) / (CPI x SPI) (cost and schedule persist)")
+tryit_sort(
+  "eac-formula", "Which EAC formula does each situation call for?",
+  bins = eac_bins,
+  cards = data.frame(
+    text = c("A one-off equipment failure caused the overrun and it has been repaired.",
+             "The overrun reflects how this team works: its rates and productivity will not change.",
+             "The project is over cost and behind schedule, and catching up will need overtime.",
+             "A single failed test cost $30 000 and will not happen again.",
+             "The cost efficiency so far is typical of this team.",
+             "The slip must be recovered with premium-rate crews, so both indices will persist."),
+    bin = c(eac_bins[2], eac_bins[1], eac_bins[3], eac_bins[2], eac_bins[1], eac_bins[3]),
+    why = c("A one-off: assume the rest of the work goes to budget.",
+            "The fundamentals persist: BAC / CPI is the honest number.",
+            "Both cost and schedule performance persist: the most conservative.",
+            "A one-time event: add the remaining budgeted work to AC.",
+            "Cost efficiency continues: BAC / CPI.", "Both indices persist: the conservative formula."),
+    stringsAsFactors = FALSE),
+  intro = "Report the formula your evidence supports.", question = NULL)
+
+tryit_sort(
+  "eac-formula-twin", "EAC formula (graded)", bins = eac_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A supplier's late delivery cost $12 000 once and is resolved.",
+             "The new line is simply slower than planned, and will stay that way.",
+             "Behind schedule and over budget, with overtime planned to recover."),
+    bin = c(eac_bins[2], eac_bins[1], eac_bins[3]), stringsAsFactors = FALSE),
+  question = "<p>For each situation, choose the estimate-at-completion formula that matches the assumption.</p>")
+```
+
 ## Reading the S-curve honestly
 
 - **Spend is not progress.** A project can be on budget (AC ≈ PV) and badly behind (EV ≪ PV) --- it just has not done the work yet.
 - **The "watermelon" report** --- green on the outside, red on the inside. High-level status shows green because spend matches plan, while the earned value underneath is red.
 - **Leading vs. lagging indicators.** SPI and CPI are somewhat lagging. Leading signals --- rising defect find-rate, slipping sub-milestones, key staff leaving --- warn you earlier. Watch both.
+
+### Try it yourself: read the status
+
+```{r tryit-status-12, echo=FALSE, results='asis'}
+st_bins <- c("Ahead and under budget", "Behind but under budget", "Ahead but over budget", "Behind and over budget")
+tryit_sort(
+  "status-quadrant", "What is each project's real condition?",
+  bins = st_bins,
+  cards = data.frame(
+    text = c("SPI 1.10, CPI 1.05", "SPI 0.85, CPI 1.10", "SPI 1.12, CPI 0.90", "SPI 0.80, CPI 0.92",
+             "PV $300k, EV $270k, AC $250k", "PV $200k, EV $230k, AC $260k",
+             "PV $400k, EV $380k, AC $410k", "PV $150k, EV $165k, AC $150k"),
+    bin = c(st_bins[1], st_bins[2], st_bins[3], st_bins[4], st_bins[2], st_bins[3], st_bins[4], st_bins[1]),
+    why = c("Both indices above 1.", "SPI below 1 (behind), CPI above 1 (under budget).",
+            "SPI above 1, CPI below 1.", "Both below 1.",
+            "SPI = 270/300 = 0.90, CPI = 270/250 = 1.08.", "SPI = 230/200 = 1.15, CPI = 230/260 = 0.88.",
+            "SPI = 380/400 = 0.95, CPI = 380/410 = 0.93.", "SPI = 165/150 = 1.10, CPI = 165/150 = 1.10."),
+    stringsAsFactors = FALSE),
+  intro = "An index above 1 is good. Work out SPI = EV / PV and CPI = EV / AC where needed.", question = NULL)
+
+tryit_sort(
+  "status-quadrant-twin", "Project status (graded)", bins = st_bins, show = FALSE,
+  cards = data.frame(
+    text = c("PV $500k, EV $450k, AC $430k", "PV $250k, EV $275k, AC $240k", "SPI 1.08, CPI 0.88",
+             "SPI 0.90, CPI 0.85"),
+    bin = c(st_bins[2], st_bins[1], st_bins[3], st_bins[4]), stringsAsFactors = FALSE),
+  question = "<p>For each project (SPI = EV/PV, CPI = EV/AC), choose its condition.</p>")
+```
 
 ## Integrated change control
 
