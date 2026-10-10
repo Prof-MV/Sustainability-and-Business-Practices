@@ -279,7 +279,7 @@ tryit_grid(
 PV = BAC x planned %, EV = BAC x actual %, CV = EV - AC, SV = EV - PV. For data
 set 1 the totals are BAC \$330 000, PV \$240 000, EV \$198 000 and AC \$217 000,
 so SPI = 198 / 240 = **0.825**, CPI = 198 / 217 = **0.912** and EAC = 330 000 /
-0.912 = **about $361 700**. Tooling is the package doing the damage: it is both
+0.912 = **about \$361 700**. Tooling is the package doing the damage: it is both
 behind (SV = -\$30 000) and over (CV = -\$10 000).
 
 </details>
