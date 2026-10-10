@@ -155,6 +155,48 @@ ggplot(sl, aes(x, y)) +
                                   face = "bold", hjust = 0.5))
 ```
 
+### Try it yourself: pick the style
+
+```{r tryit-styles-04, echo=FALSE, results='asis'}
+style_bins <- c("Command & control", "Relating", "Democratic", "Hands-on", "Coaching")
+tryit_sort(
+  "leadership-styles", "Which leadership style fits each moment?",
+  bins = style_bins,
+  cards = data.frame(
+    text = c("A fire-alarm panel fault at 2 a.m.; the line must restart in 20 minutes.",
+             "Kick-off of planning: you need buy-in from the people who will do the work.",
+             "Two engineers have barely spoken since a design dispute, and the goal is slipping from view.",
+             "A task is stuck, so you sit down and show how the weld sequence is done.",
+             "A promising junior stalls on supplier negotiation; you ask questions until they find an approach.",
+             "A brand-new co-op student has never used the company's PLM system.",
+             "The team is bruised after a missed milestone and needs its trust rebuilt.",
+             "A capable designer wants to grow, and the deadline is months away."),
+    bin = c("Command & control", "Democratic", "Relating", "Hands-on", "Coaching",
+            "Command & control", "Relating", "Coaching"),
+    why = c("A crisis, and you know the best way: take charge.",
+            "Planning is where democratic style gets buy-in and reality-based plans.",
+            "Relating bonds the team around common goals.",
+            "Hands-on: step in and model the way to get a stuck task done.",
+            "Coaching asks questions that lead people to their own solutions.",
+            "Beginners need direction first.",
+            "Relating builds rapport and focuses people on common goals.",
+            "Long-term development with time available: coaching."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the style that fits best for each situation.", question = NULL)
+
+tryit_sort(
+  "leadership-styles-twin", "Leadership style (graded)", bins = style_bins, show = FALSE,
+  cards = data.frame(
+    text = c("A supplier line goes down and a shipment is due tonight.",
+             "You want the assembly team's help to draw up the changeover plan.",
+             "A new hire is overwhelmed and asks how to start.",
+             "A senior technician is stuck on a calibration routine, so you do it together at the bench.",
+             "You want a talented analyst to find her own answer to a costing problem."),
+    bin = c("Command & control", "Democratic", "Command & control", "Hands-on", "Coaching"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each situation, choose the leadership style that fits best.</p>")
+```
+
 ### Try it yourself: which quadrant is this team member in?
 
 Rate the person's **competence** on the specific task and their **commitment**
@@ -272,6 +314,43 @@ ggplot(df, aes(x, perf)) +
 - **Performing** --- the team runs itself. Leader: **delegate**.
 - **Adjourning** --- the project ends; recognize contributions and manage the transition (see [Chapter 13](13-Project-Closeout-and-Termination.qmd)).
 
+### Try it yourself: which stage is the team in?
+
+```{r tryit-tuckman-04, echo=FALSE, results='asis'}
+tuck_bins <- c("Forming", "Storming", "Norming", "Performing", "Adjourning")
+tryit_sort(
+  "tuckman-stages", "Which stage of team development does each observation show?",
+  bins = tuck_bins,
+  cards = data.frame(
+    text = c("Everyone is polite and waits to be told what to do.",
+             "Two engineers argue over whose approach to follow, and output dips.",
+             "The team agrees how meetings run and how work is reviewed.",
+             "The team solves its own problems; the leader mostly removes obstacles.",
+             "The sample has shipped; the PM thanks everyone and handles reassignments.",
+             "The leader's first job is to clarify goals, roles and the charter.",
+             "Trust is building and norms have settled.",
+             "Whole workstreams are delegated to the team."),
+    bin = c("Forming", "Storming", "Norming", "Performing", "Adjourning", "Forming", "Norming", "Performing"),
+    why = c("Polite, uncertain: forming.", "Conflict over approach and authority; performance dips: storming.",
+            "Norms settle: norming.", "The team runs itself: performing.",
+            "The project ends: adjourning.", "Forming needs direction: clarify goals and roles.",
+            "Norming: norms settle and trust builds.", "Performing: the leader delegates."),
+    stringsAsFactors = FALSE),
+  intro = "Pick the stage for each observation.", question = NULL)
+
+tryit_sort(
+  "tuckman-twin", "Team development stage (graded)", bins = tuck_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Members are cautious and unsure who decides what.",
+             "Disagreements surface openly and positions harden.",
+             "Roles are accepted and the team has working agreements.",
+             "The team hits milestones with little supervision.",
+             "The final report is filed and the team starts to disperse."),
+    bin = c("Forming", "Storming", "Norming", "Performing", "Adjourning"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each observation, choose the stage of Tuckman's model it shows.</p>")
+```
+
 ## Motivating the team
 
 ### Worked Example 1: Herzberg --- is this a hygiene problem or a motivator problem?
@@ -297,6 +376,38 @@ fix_first <- complaints$issue[complaints$type == "Hygiene"]
 cat("\nFix the hygiene issues to stop dissatisfaction:\n - ",
     paste(fix_first, collapse = "\n - "), "\n", sep = "")
 cat("\nThen add motivators (recognition, varied/owned work) to actually raise engagement.\n")
+```
+
+### Try it yourself: hygiene or motivator?
+
+```{r tryit-herzberg-04, echo=FALSE, results='asis'}
+herz_bins <- c("Hygiene factor", "Motivator")
+tryit_sort(
+  "herzberg", "Is each complaint or wish a hygiene factor or a motivator?",
+  bins = herz_bins,
+  cards = data.frame(
+    text = c("Broken heating in the project room", "Being given ownership of the test plan",
+             "A confusing travel-expense policy", "Public recognition for hitting the drop-test milestone",
+             "Slow, shared CAD licences", "A chance to present results to the client",
+             "Noisy open-plan seating", "The same repetitive data entry every week, with no variety"),
+    bin = c("Hygiene factor", "Motivator", "Hygiene factor", "Motivator", "Hygiene factor",
+            "Motivator", "Hygiene factor", "Motivator"),
+    why = c("Working conditions: hygiene.", "Responsibility: a motivator.", "Policy: hygiene.",
+            "Recognition: a motivator.", "Working conditions and tools: hygiene.",
+            "Achievement and growth: a motivator.", "Working conditions: hygiene.",
+            "The work itself: a motivator."),
+    stringsAsFactors = FALSE),
+  intro = "Hygiene factors prevent dissatisfaction; motivators raise engagement.", question = NULL)
+
+tryit_sort(
+  "herzberg-twin", "Hygiene factors and motivators (graded)", bins = herz_bins, show = FALSE,
+  cards = data.frame(
+    text = c("Pay that is below the market rate", "A promotion path to project lead",
+             "An unreasonable supervisor", "Increased responsibility for supplier selection",
+             "Poor parking"),
+    bin = c("Hygiene factor", "Motivator", "Hygiene factor", "Motivator", "Hygiene factor"),
+    stringsAsFactors = FALSE),
+  question = "<p>For each item, decide whether it is a Herzberg hygiene factor or a motivator.</p>")
 ```
 
 ### Try it yourself: expectancy theory
@@ -325,6 +436,47 @@ cat(sprintf("\nLowest motivation: %s\n", weakest))
 cat("Look at which of E, I, V is dragging the product down -- that is where the leader intervenes.\n")
 cat("(Sam doesn't believe performance leads to the reward; Dev doesn't believe he can hit the target.)\n")
 ```
+
+### Try it yourself: expectancy by hand
+
+Compute each person's motivation as E x I x V, then find who is least
+motivated. Each team picks its own **data set**.
+
+```{r tryit-expectancy-04, echo=FALSE, results='asis'}
+exp_sets <- list(
+  list(Ana = c(0.9, 0.6, 0.8), Ben = c(0.5, 0.9, 0.9), Cal = c(0.8, 0.2, 0.9)),
+  list(Ana = c(0.7, 0.7, 0.7), Ben = c(0.95, 0.4, 0.6), Cal = c(0.3, 0.9, 0.9)),
+  list(Ana = c(0.6, 0.8, 0.5), Ben = c(0.9, 0.9, 0.3), Cal = c(0.5, 0.5, 0.9)),
+  list(Ana = c(0.8, 0.8, 0.8), Ben = c(0.4, 0.7, 0.6), Cal = c(0.9, 0.1, 0.7)))
+exp_given <- function(s) vapply(s, function(v) sprintf("E = %s, I = %s, V = %s", v[1], v[2], v[3]), character(1))
+exp_answers <- function(s) {
+  m <- vapply(s, prod, numeric(1))
+  c(lapply(names(s), function(n) tryit_answer(paste(n, ": motivation"), m[[n]], tol = 0.005)),
+    list(tryit_answer("Lowest motivation score", min(m), tol = 0.005)))
+}
+tryit_number(
+  "expectancy-by-hand", "Motivation = E x I x V",
+  answers = exp_answers(exp_sets[[1]]), given = exp_given(exp_sets[[1]]),
+  teams = lapply(exp_sets[-1], function(s) list(given = exp_given(s), answers = exp_answers(s))),
+  intro = "Three decimal places.")
+
+exp_twin <- list(Ana = c(0.85, 0.55, 0.7), Ben = c(0.4, 0.9, 0.8), Cal = c(0.75, 0.3, 0.95))
+tryit_number(
+  "expectancy-twin", "Expectancy (graded)", show = FALSE, answers = exp_answers(exp_twin),
+  question = paste0("<p>Using Vroom's expectancy model (Motivation = E x I x V), three team members ",
+    "have: Ana E = 0.85, I = 0.55, V = 0.70; Ben E = 0.40, I = 0.90, V = 0.80; Cal E = 0.75, ",
+    "I = 0.30, V = 0.95. Calculate each person's motivation score and the lowest score.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+Multiply the three factors for each person. In data set 1, Cal's motivation is
+0.8 x 0.2 x 0.9 = 0.144: instrumentality is the weak factor, so the leader's job
+is to make the link from performance to reward visible. Because the model is a
+product, one factor near zero drags the whole score down.
+
+</details>
 
 ## Emotional intelligence
 
