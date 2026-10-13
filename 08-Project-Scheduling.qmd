@@ -168,6 +168,27 @@ The critical path is A--B--C--D--E with these three-point estimates:
 
 Live cell --- change any activity's optimistic, most-likely, or pessimistic estimate.
 
+```{r calc-pert-project-08, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "pert-project-08",
+  title = "Project Duration and Its Spread",
+  icon = "chart-line",
+  tables = list(qwebr_calc_table(
+    frame = "cp",
+    columns = list(
+      qwebr_calc_col("id", c("A", "B", "C", "D", "E"), type = "label", label = "Activity"),
+      qwebr_calc_col("o", c(12, 7, 15, 9, 24), label = "Optimistic (o)", min = 0, step = 1),
+      qwebr_calc_col("m", c(15, 10, 19, 13, 26), label = "Most likely (m)", min = 0, step = 1),
+      qwebr_calc_col("p", c(17, 13, 23, 16, 30), label = "Pessimistic (p)", min = 0, step = 1)),
+    note = "Critical-path activities A-B-C-D-E, in days."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: pert-project-08
 cp <- data.frame(
@@ -182,14 +203,15 @@ cp$var <- ((cp$p - cp$o) / 6)^2
 mu    <- sum(cp$te)
 sigma <- sqrt(sum(cp$var))
 
-cp_show <- cp
-cp_show[c("te", "var")] <- lapply(cp_show[c("te", "var")], round, 2)
-print(cp_show, row.names = FALSE)
-cat(sprintf("\nProject mean duration : %.1f days\n", mu))
-cat(sprintf("Project variance      : %.2f\n", sum(cp$var)))
-cat(sprintf("Project std deviation : %.2f days\n", sigma))
-cat(sprintf("Rough 95%% range        : %.0f to %.0f days\n", mu - 2 * sigma, mu + 2 * sigma))
+cat(sprintf("Project mean duration: %.1f days\n", mu))
+cat(sprintf("Project variance  %.2f\n", sum(cp$var)))
+cat(sprintf("Project std deviation  %.2f days\n", sigma))
+cat(sprintf("Rough 95%% range  %.0f to %.0f days\n", mu - 2 * sigma, mu + 2 * sigma))
+for (i in seq_len(nrow(cp)))
+  cat(sprintf("%s  te %.2f days, variance %.2f\n", cp$id[i], cp$te[i], cp$var[i]))
 ```
+
+</details>
 
 ### Try it yourself: probability of hitting a target date
 

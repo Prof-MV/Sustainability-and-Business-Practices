@@ -457,6 +457,28 @@ tryit_sort(
 
 Multi-criteria scoring turns "MCS feels safer" into a defensible number.
 
+```{r calc-supplier-scoring-10, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "supplier-scoring-10",
+  title = "Weighted Supplier Scoring",
+  icon = "scale-balanced",
+  tables = list(qwebr_calc_table(
+    columns = list(
+      qwebr_calc_col("criteria", c("Quality record", "Delivery reliability", "Price",
+                                   "Technical capability", "Supply-chain risk"),
+                     var = "criteria", type = "label", label = "Criterion"),
+      qwebr_calc_col("weight", c(0.30, 0.25, 0.15, 0.15, 0.15), var = "weight", label = "Weight", min = 0, max = 1, step = 0.05),
+      qwebr_calc_col("mcs", c(5, 4, 3, 3, 2), var = "mcs", label = "MCS (1-5)", min = 1, max = 5, step = 1),
+      qwebr_calc_col("paragon", c(3, 3, 4, 5, 3), var = "paragon", label = "Paragon (1-5)", min = 1, max = 5, step = 1)),
+    note = "Weights should sum to 1. Score each supplier 1 (poor) to 5 (excellent)."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: supplier-scoring-10
 criteria <- c("Quality record", "Delivery reliability", "Price",
@@ -470,13 +492,15 @@ paragon <- c(3, 3, 4, 5, 3)   # unproven, new tech, plant 4 h away, labour talks
 mcs_total     <- sum(weight * mcs)
 paragon_total <- sum(weight * paragon)
 
-tab <- data.frame(Criterion = criteria, Weight = weight,
-                  MCS = mcs, Paragon = paragon)
-print(tab, row.names = FALSE)
-cat(sprintf("\nWeighted score  MCS: %.2f   Paragon: %.2f\n", mcs_total, paragon_total))
 cat(sprintf("Recommended: %s\n", ifelse(mcs_total >= paragon_total, "MCS", "Paragon")))
+cat(sprintf("MCS weighted score  %.2f\n", mcs_total))
+cat(sprintf("Paragon weighted score  %.2f\n", paragon_total))
+cat(sprintf("Weights sum to  %s\n", ifelse(abs(sum(weight) - 1) < 1e-9, "1.00 (ok)",
+                                          sprintf("!!%.2f (should be 1)!!", sum(weight)))))
 cat("Change the weights to your project's priorities and watch the answer move.\n")
 ```
+
+</details>
 
 ### Try it yourself: weighted supplier scoring by hand
 

@@ -475,6 +475,31 @@ bodies of the mass each material would need for equal stiffness. Change the
 numbers, add a recycled-content option, or change the run size and see what
 happens to cost, energy, and carbon.
 
+```{r calc-material-choice-01, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "material-choice-compare-01",
+  title = "Material Choice: Cost, Energy and Carbon",
+  icon = "scale-balanced",
+  inputs = list(
+    qwebr_calc_input("units", "Run size (bodies)", value = 120000, min = 10000, max = 1000000, step = 10000, type = "slider")
+  ),
+  tables = list(qwebr_calc_table(
+    columns = list(
+      qwebr_calc_col("material", c("Steel", "Aluminium", "Carbon-fibre"), var = "material", type = "text", label = "Material"),
+      qwebr_calc_col("mass_g", c(140, 70, 38), var = "mass_g", label = "Mass (g/body)", min = 0, step = 1),
+      qwebr_calc_col("cost_kg", c(1.20, 3.00, 28.00), var = "cost_kg", label = "Cost ($/kg)", min = 0, step = 0.1),
+      qwebr_calc_col("energy_kg", c(25, 155, 300), var = "energy_kg", label = "Energy (MJ/kg)", min = 0, step = 1),
+      qwebr_calc_col("co2_kg", c(2, 11, 24), var = "co2_kg", label = "CO2e (kg/kg)", min = 0, step = 0.5)),
+    note = "Edit any figure, or rename a row and change its numbers to test a recycled-content option.")),
+  fig_width = 1200, fig_height = 600
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: material-choice-compare-01
 # Rough per-unit body mass for equal stiffness, and cradle-to-gate factors.
@@ -499,12 +524,22 @@ result <- data.frame(
   Energy_MWh   = round(energy_total / 3600, 1),
   CO2e_t       = round(co2_total / 1000, 1)
 )
-print(result, row.names = FALSE)
 
-cat("\nLightest body:", material[which.min(mass_g)], "\n")
-cat("Lowest material cost:", material[which.min(cost_total)], "\n")
+money <- function(x) paste0("$", format(round(x), big.mark = " ", scientific = FALSE, trim = TRUE))
+
 cat("Lowest cradle-to-gate CO2e:", material[which.min(co2_total)], "\n")
+cat("Lightest body  ", material[which.min(mass_g)], "\n", sep = "")
+cat("Lowest material cost  ", material[which.min(cost_total)], "\n", sep = "")
+for (i in seq_along(material))
+  cat(sprintf("%s  %s | %s MWh | %s t CO2e\n", material[i], money(cost_total[i]),
+              format(result$Energy_MWh[i], big.mark = " "), format(result$CO2e_t[i], big.mark = " ")))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+barplot(result$CO2e_t, names.arg = material, col = c("#7f8c8d", "#2980b9", "#8e44ad"),
+        ylab = "Cradle-to-gate CO2e (tonnes)", main = "Carbon footprint of one production run")
 ```
+
+</details>
 
 <details>
 <summary>What the numbers usually show --- and why the "greenest" answer is not obvious</summary>

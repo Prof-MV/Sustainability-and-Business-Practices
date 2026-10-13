@@ -182,6 +182,28 @@ day:
 
 Live cell --- change the float, duration, successors, or people for each task.
 
+```{r calc-leveling-example-11, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "leveling-example-11",
+  title = "Which Task Do You Move?",
+  icon = "arrows-left-right",
+  tables = list(qwebr_calc_table(
+    frame = "running_day12",
+    columns = list(
+      qwebr_calc_col("task", c("D", "E", "H", "J"), type = "label", label = "Task"),
+      qwebr_calc_col("float", c(12, 0, 0, 5), label = "Float (days)", min = 0, step = 1),
+      qwebr_calc_col("duration", c(6, 6, 7, 3), label = "Duration (days)", min = 1, step = 1),
+      qwebr_calc_col("successors", c(1, 2, 1, 0), label = "Successors", min = 0, step = 1),
+      qwebr_calc_col("people", c(3, 3, 3, 1), label = "People", min = 0, step = 1)),
+    note = "Only tasks with float can move without extending the project."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: leveling-example-11
 running_day12 <- data.frame(
@@ -191,17 +213,25 @@ running_day12 <- data.frame(
   successors = c(1, 2, 1, 0),
   people = c(3, 3, 3, 1)
 )
-print(running_day12, row.names = FALSE)
 
 # Only tasks with float can move without extending the project.
 movable <- running_day12[running_day12$float > 0, ]
 # Among movable tasks, prefer smallest float, then smallest duration.
 pick <- movable[order(movable$float, movable$duration), ][1, ]
-cat(sprintf("\nMovable tasks: %s\n", paste(movable$task, collapse = ", ")))
-cat(sprintf("Move first: task %s (float %d, duration %d) -- shift it later within its slack.\n",
-            pick$task, pick$float, pick$duration))
-cat("E and H are on the critical path (float 0) -- moving them would extend the project.\n")
+
+if (nrow(movable) == 0) {
+  cat("!!No task has float: leveling would extend the project!!\n")
+} else {
+  cat(sprintf("Move first: task %s (float %g, duration %g)\n", pick$task, pick$float, pick$duration))
+  cat(sprintf("Movable tasks  %s\n", paste(movable$task, collapse = ", ")))
+}
+crit <- running_day12$task[running_day12$float == 0]
+if (length(crit) > 0)
+  cat(sprintf("Critical (float 0)  !!%s!!\n", paste(crit, collapse = ", ")))
+cat("Critical tasks cannot move without extending the project.\n")
 ```
+
+</details>
 
 ### Try it yourself: which task do you move first?
 
@@ -238,6 +268,29 @@ from the peaks.
 
 ### Try it yourself: smooth a resource within its float
 
+```{r calc-smoothing-11, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "smoothing-11",
+  title = "Can Smoothing Fix This Resource Peak?",
+  icon = "chart-column",
+  inputs = list(
+    qwebr_calc_input("limit", "Weekly resource limit", value = 45, min = 10, max = 100, step = 1, suffix = "per week")
+  ),
+  tables = list(qwebr_calc_table(
+    columns = list(
+      qwebr_calc_col("week", paste("Week", 1:7), type = "label", label = "Week"),
+      qwebr_calc_col("weekly_demand", c(52, 30, 61, 24, 45, 20, 58), var = "weekly_demand",
+                     label = "Demand", min = 0, step = 1)))
+  ),
+  fig_width = 1200, fig_height = 600
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: smoothing-11
 # Weekly demand for one resource, and the resource's weekly limit.
@@ -249,18 +302,25 @@ total_work <- sum(weekly_demand)
 weeks <- length(weekly_demand)
 ideal_flat <- total_work / weeks
 
-cat(sprintf("Peak week demand   : %d  (limit %d -> %d over)\n", peak, limit, max(0, peak - limit)))
-cat(sprintf("Total work         : %d resource-weeks over %d weeks\n", total_work, weeks))
-cat(sprintf("Perfectly smooth   : %.1f per week\n", ideal_flat))
-
 if (ideal_flat <= limit) {
-  cat("\nThe work FITS within the limit if spread evenly -> smoothing can solve this\n")
-  cat("by shifting tasks into their float, no schedule change needed.\n")
+  cat("Smoothing can solve this: the work fits the limit if spread evenly\n")
 } else {
-  cat(sprintf("\nEven perfectly smoothed (%.1f/wk) still exceeds the limit -> this needs\n", ideal_flat))
-  cat("leveling (extend duration) or more resource, not just smoothing.\n")
+  cat("!!Smoothing is not enough: needs leveling or more resource!!\n")
 }
+cat(sprintf("Peak week demand  %g (limit %g, %g over)\n", peak, limit, max(0, peak - limit)))
+cat(sprintf("Total work  %g resource-weeks over %d weeks\n", total_work, weeks))
+cat(sprintf("Perfectly smooth  %.1f per week\n", ideal_flat))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bar_col <- ifelse(weekly_demand > limit, "#c0392b", "#2980b9")
+barplot(weekly_demand, names.arg = seq_len(weeks), col = bar_col,
+        xlab = "Week", ylab = "Resource demand",
+        main = "Red weeks exceed the limit (dashed line)")
+abline(h = limit, lty = 2, lwd = 2)
+abline(h = ideal_flat, lty = 3, lwd = 2, col = "#16a085")
 ```
+
+</details>
 
 ## Splitting a task
 

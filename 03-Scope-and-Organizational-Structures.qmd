@@ -516,6 +516,27 @@ Rate each stakeholder's **power** and **interest** on a 1--10 scale and the
 quadrant follows automatically --- the same rule the figure above was built
 from. Live cell --- edit the table or add rows for your own project.
 
+```{r calc-stakeholder-score-03, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "stakeholder-score-03",
+  title = "Stakeholder Power / Interest Grid",
+  icon = "users",
+  tables = list(qwebr_calc_table(
+    frame = "stakeholders", add_rows = TRUE,
+    columns = list(
+      qwebr_calc_col("who", c("Kestrel Retail Group", "Daniel Cho (sponsor)", "MCS (motor supplier)",
+                              "Internal QA", "Fibro Source (trim supplier)"), type = "text", label = "Stakeholder"),
+      qwebr_calc_col("power", c(9, 9, 5, 5, 2), label = "Power (1-10)", min = 1, max = 10, step = 1),
+      qwebr_calc_col("interest", c(8, 8, 7, 5, 2), label = "Interest (1-10)", min = 1, max = 10, step = 1)),
+    note = "Scores of 5 or more count as high. Add rows for your own project's stakeholders."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: stakeholder-score-03
 stakeholders <- data.frame(
@@ -530,10 +551,14 @@ stakeholders$quadrant <- with(stakeholders, ifelse(
   ifelse(power >= 5 & interest < 5, "Keep satisfied",
   ifelse(power < 5 & interest >= 5, "Keep informed", "Monitor"))))
 
-print(stakeholders, row.names = FALSE)
-cat("\nChange the power/interest scores (1-10) for your own project's stakeholders\n")
-cat("and re-run -- the quadrant assignment updates automatically.\n")
+n_close <- sum(stakeholders$quadrant == "Manage closely")
+cat(sprintf("%d of %d stakeholders to manage closely\n", n_close, nrow(stakeholders)))
+for (i in seq_len(nrow(stakeholders)))
+  cat(sprintf("%s  %s\n", stakeholders$who[i], stakeholders$quadrant[i]))
+cat("Change the power/interest scores (1-10) and the quadrant assignment updates.\n")
 ```
+
+</details>
 
 ### Try it yourself: place each stakeholder on the grid
 

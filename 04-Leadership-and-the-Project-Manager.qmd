@@ -262,6 +262,25 @@ agree). Items **1, 4, 7, 10, 13, 16** sum to a **command & control** score;
 items **2, 5, 8, 11, 14, 17** to a **democratic** score; items **3, 6, 9, 12,
 15, 18** to a **relating** score. Enter your 18 answers and run.
 
+```{r calc-leadership-score-04, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "leadership-score-04",
+  title = "Leadership Style Self-Assessment",
+  icon = "compass",
+  tables = list(qwebr_calc_table(
+    columns = list(
+      qwebr_calc_col("item", paste("Item", 1:18), type = "label", label = "Statement"),
+      qwebr_calc_col("responses", c(2, 4, 3, 2, 5, 4, 2, 4, 4, 2, 4, 4, 2, 5, 2, 2, 4, 3),
+                     var = "responses", label = "Your answer (1-5)", min = 1, max = 5, step = 1)),
+    note = "1 = strongly disagree, 5 = strongly agree."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: leadership-score-04
 # Replace with your own 1-5 answers to items 1..18, in order:
@@ -274,10 +293,12 @@ dem <- sum(responses[c(2, 5, 8, 11, 14, 17)])
 rel <- sum(responses[c(3, 6, 9, 12, 15, 18)])
 
 scores <- c("Command & Control" = cc, "Democratic" = dem, "Relating" = rel)
-for (nm in names(scores)) cat(sprintf("%-18s %2d / 30\n", nm, scores[nm]))
-cat(sprintf("\nYour dominant style: %s\n", names(which.max(scores))))
+cat(sprintf("Your dominant style: %s\n", names(which.max(scores))))
+for (nm in names(scores)) cat(sprintf("%s  %g / 30\n", nm, scores[nm]))
 cat("Remember: the best PMs deliberately use all three depending on the situation.\n")
 ```
+
+</details>
 
 ## Building the team
 
@@ -362,6 +383,28 @@ responsibility, growth --- these drive engagement).
 
 Live cell --- re-classify the complaints, or add your own, and see which get fixed first.
 
+```{r calc-herzberg-example-04, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "herzberg-example-04",
+  title = "Hygiene Factor or Motivator?",
+  icon = "face-smile",
+  tables = list(qwebr_calc_table(
+    frame = "complaints", add_rows = TRUE,
+    columns = list(
+      qwebr_calc_col("issue", c("Cramped, hot project room", "No recognition for hitting the drop-test milestone",
+                                "Confusing expense policy", "Same repetitive CAD cleanup every week",
+                                "Parking is far from the building"), type = "text", label = "Complaint"),
+      qwebr_calc_col("type", c("Hygiene", "Motivator", "Hygiene", "Motivator", "Hygiene"),
+                     type = "select", options = c("Hygiene", "Motivator"), label = "Herzberg type")),
+    note = "Re-classify a complaint with the drop-down, or add your own."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: herzberg-example-04
 complaints <- data.frame(
@@ -370,13 +413,18 @@ complaints <- data.frame(
             "Parking is far from the building"),
   type = c("Hygiene", "Motivator", "Hygiene", "Motivator", "Hygiene")
 )
-print(complaints, row.names = FALSE)
 
-fix_first <- complaints$issue[complaints$type == "Hygiene"]
-cat("\nFix the hygiene issues to stop dissatisfaction:\n - ",
-    paste(fix_first, collapse = "\n - "), "\n", sep = "")
-cat("\nThen add motivators (recognition, varied/owned work) to actually raise engagement.\n")
+fix_first  <- complaints$issue[complaints$type == "Hygiene"]
+then_build <- complaints$issue[complaints$type == "Motivator"]
+
+cat(sprintf("%d hygiene issues to fix first, %d motivators to build\n",
+            length(fix_first), length(then_build)))
+for (x in fix_first)  cat("Fix first  ", x, "\n", sep = "")
+for (x in then_build) cat("Then add  ", x, "\n", sep = "")
+cat("Fixing hygiene stops dissatisfaction; only motivators raise engagement.\n")
 ```
+
+</details>
 
 ### Try it yourself: hygiene or motivator?
 
@@ -420,6 +468,27 @@ $$\text{Motivation} = E \times I \times V$$
 
 Because it is a product, **any factor near zero kills motivation**.
 
+```{r calc-expectancy-04, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "expectancy-04",
+  title = "Expectancy Theory: Motivation = E x I x V",
+  icon = "bullseye",
+  tables = list(qwebr_calc_table(
+    frame = "team_member",
+    columns = list(
+      qwebr_calc_col("name", c("Priya", "Sam", "Dev"), type = "text", label = "Team member"),
+      qwebr_calc_col("expectancy", c(0.9, 0.8, 0.4), label = "Expectancy (E)", min = 0, max = 1, step = 0.05),
+      qwebr_calc_col("instrumentality", c(0.8, 0.3, 0.9), label = "Instrumentality (I)", min = 0, max = 1, step = 0.05),
+      qwebr_calc_col("valence", c(0.7, 0.9, 0.8), label = "Valence (V)", min = 0, max = 1, step = 0.05)),
+    note = "Each belief runs from 0 to 1; any one near zero kills the product."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: expectancy-04
 team_member <- data.frame(
@@ -430,12 +499,18 @@ team_member <- data.frame(
 )
 team_member$motivation <- with(team_member, expectancy * instrumentality * valence)
 
-print(team_member, row.names = FALSE)
 weakest <- team_member$name[which.min(team_member$motivation)]
-cat(sprintf("\nLowest motivation: %s\n", weakest))
-cat("Look at which of E, I, V is dragging the product down -- that is where the leader intervenes.\n")
-cat("(Sam doesn't believe performance leads to the reward; Dev doesn't believe he can hit the target.)\n")
+cat(sprintf("Lowest motivation: %s\n", weakest))
+factors <- c("Expectancy", "Instrumentality", "Valence")
+for (i in seq_len(nrow(team_member))) {
+  ev <- unlist(team_member[i, c("expectancy", "instrumentality", "valence")])
+  cat(sprintf("%s  %.2f (weakest link: %s)\n", team_member$name[i],
+              team_member$motivation[i], factors[which.min(ev)]))
+}
+cat("The weakest of E, I, V is where the leader intervenes.\n")
 ```
+
+</details>
 
 ### Try it yourself: expectancy by hand
 

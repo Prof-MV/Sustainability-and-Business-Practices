@@ -202,6 +202,27 @@ together they form the **critical path**.
 Live cell --- a base-R critical-path solver. Run it, then change a duration or a
 predecessor in `acts` and watch the project duration and the critical path move.
 
+```{r calc-cpm-solve-06, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "cpm-solve-06",
+  title = "Critical Path Solver",
+  icon = "route",
+  tables = list(qwebr_calc_table(
+    frame = "acts",
+    columns = list(
+      qwebr_calc_col("id", LETTERS[1:10], type = "label", label = "Activity"),
+      qwebr_calc_col("dur", c(5, 8, 3, 4, 5, 7, 6, 8, 6, 5), label = "Duration (days)", min = 1, step = 1),
+      qwebr_calc_col("pred", c("", "A", "B", "A", "C", "C", "D,E", "F", "G", "H,I"),
+                     type = "text", label = "Predecessors")),
+    note = "Predecessors are comma-separated activity letters (leave blank for none). Each must come earlier in the alphabet than the activity itself."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: cpm-solve-06
 # The ten activities: id, duration, and comma-separated predecessors.
@@ -214,7 +235,7 @@ acts <- data.frame(
 
 # A small critical-path solver (base R only).
 cpm <- function(df) {
-  df$pred <- strsplit(df$pred, ",")
+  df$pred <- strsplit(gsub(" ", "", df$pred), ",")
   n <- nrow(df); id <- df$id
   ES <- EF <- LS <- LF <- setNames(rep(NA_real_, n), id)
 
@@ -240,10 +261,14 @@ cpm <- function(df) {
 }
 
 res <- cpm(acts)
-print(res, row.names = FALSE)
-cat(sprintf("\nProject duration: %d days\n", max(res$EF)))
-cat("Critical path:", paste(res$Activity[res$Float == 0], collapse = " - "), "\n")
+cat(sprintf("Project duration: %g days\n", max(res$EF)))
+cat("Critical path  ", paste(res$Activity[res$Float == 0], collapse = " - "), "\n", sep = "")
+for (i in seq_len(nrow(res)))
+  cat(sprintf("%s  start %g, finish %g, float %g%s\n", res$Activity[i], res$ES[i], res$EF[i],
+              res$Float[i], ifelse(res$Float[i] == 0, "  !!critical!!", "")))
 ```
+
+</details>
 
 ```{r cpm-knitr-06, include=FALSE}
 # Same solver, run in the page-build session so the float figure below and the
@@ -625,6 +650,27 @@ $$t_e = \frac{o + 4m + p}{6}$$
 
 ### Try it yourself: PERT durations
 
+```{r calc-pert-te-06, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "pert-te-06",
+  title = "PERT Expected Durations",
+  icon = "hourglass-half",
+  tables = list(qwebr_calc_table(
+    frame = "tasks",
+    columns = list(
+      qwebr_calc_col("id", c("A", "B", "C", "D", "E"), type = "label", label = "Activity"),
+      qwebr_calc_col("o", c(12, 7, 15, 9, 24), label = "Optimistic (o)", min = 0, step = 1),
+      qwebr_calc_col("m", c(15, 10, 19, 13, 26), label = "Most likely (m)", min = 0, step = 1),
+      qwebr_calc_col("p", c(17, 13, 23, 16, 30), label = "Pessimistic (p)", min = 0, step = 1)),
+    note = "Keep o ≤ m ≤ p for a sensible estimate."))
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
 ```{webr-r}
 #| label: pert-te-06
 tasks <- data.frame(
@@ -636,9 +682,12 @@ tasks <- data.frame(
 tasks$te <- round((tasks$o + 4 * tasks$m + tasks$p) / 6, 2)
 tasks$sd <- round((tasks$p - tasks$o) / 6, 2)   # activity standard deviation
 
-print(tasks, row.names = FALSE)
-cat(sprintf("\nSum of expected durations along this chain: %.2f days\n", sum(tasks$te)))
+cat(sprintf("Sum of expected durations: %.2f days\n", sum(tasks$te)))
+for (i in seq_len(nrow(tasks)))
+  cat(sprintf("%s  te %.2f days, sd %.2f\n", tasks$id[i], tasks$te[i], tasks$sd[i]))
 ```
+
+</details>
 
 <details>
 <summary>Why the weight of 4 on the most-likely value?</summary>
