@@ -122,7 +122,7 @@ ggplot(circles) +
            fontface = "bold", size = 4.5 * diagram_text_scale, color = "#1B4F72") +
   annotate("text", x = 0.95, y = 0.9, label = "ECONOMIC",
            fontface = "bold", size = 4.5 * diagram_text_scale, color = "#9C640C") +
-  annotate("text", x = 0, y = -1.55, label = "ECOLOGICAL",
+  annotate("text", x = 0, y = -1.3, label = "ECOLOGICAL",
            fontface = "bold", size = 4.5 * diagram_text_scale, color = "#186A3B") +
   annotate("text", x = 0, y = 0.55, label = "bearable",
            size = 3.2 * diagram_text_scale, fontface = "italic") +
@@ -137,7 +137,7 @@ ggplot(circles) +
   theme_void() +
   theme(
     legend.position = "none",
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold", hjust = 0.5)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold", hjust = 0.5)
   )
 ```
 
@@ -617,7 +617,7 @@ tol$kind <- ifelse(tol$tolerance > 0.2, "Some tolerance", "Near-zero tolerance")
 ggplot(tol, aes(x = tolerance, y = attribute, fill = kind)) +
   geom_col(width = 0.65) +
   geom_text(aes(label = scales::percent(tolerance, accuracy = 1)),
-            hjust = -0.15, size = 3.8 * diagram_text_scale) +
+            hjust = -0.15, size = 3.8 * chart_text_scale) +
   scale_x_continuous(labels = scales::percent, limits = c(0, 0.7),
                      expand = expansion(mult = c(0, 0.05))) +
   scale_fill_manual(values = c("Some tolerance" = "#27AE60",
@@ -628,9 +628,9 @@ ggplot(tol, aes(x = tolerance, y = attribute, fill = kind)) +
   theme_minimal() +
   theme(
     legend.position = "top",
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -800,7 +800,7 @@ with disposal as the last resort.
 ```{r fig-circular-economy-01, fig.cap="The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.", fig.align='center', fig.width=9, fig.height=7}
 stages <- data.frame(
   label = stringr::str_wrap(c("Design", "Make", "Distribute", "Use", "Maintain / Reuse",
-            "Refurbish / Remanufacture", "Recycle"), width = 12),
+            "Refurbish / Remanufacture", "Recycle"), width = 11),
   angle = seq(90, 90 - 360 + 360/7, length.out = 7) * pi / 180
 )
 stages$x <- cos(stages$angle)
@@ -817,17 +817,17 @@ ggplot() +
   geom_curve(data = seg, aes(x = x, y = y, xend = xend, yend = yend),
              curvature = -0.25, linewidth = 0.9, color = "#27AE60",
              arrow = arrow(length = unit(0.18, "cm"), type = "closed")) +
-  geom_point(data = stages, aes(x = x, y = y), size = 20, color = "#EAF6EC") +
-  geom_point(data = stages, aes(x = x, y = y), size = 20, shape = 1, color = "#27AE60") +
+  geom_point(data = stages, aes(x = x, y = y), size = 31, color = "#EAF6EC") +
+  geom_point(data = stages, aes(x = x, y = y), size = 31, shape = 1, color = "#27AE60") +
   geom_text(data = stages, aes(x = x, y = y, label = label),
-            size = 3 * diagram_text_scale, fontface = "bold",
+            size = 2.5 * diagram_text_scale, fontface = "bold",
             lineheight = 0.9, color = "grey15") +
   annotate("text", x = 0, y = 0, label = "keep materials\nin use",
            size = 3.2 * diagram_text_scale, fontface = "italic", color = "grey40") +
   coord_equal(xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4)) +
   labs(title = "Design out waste; circulate materials") +
   theme_void() +
-  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+  theme(plot.title = element_text(size = 14 * chart_text_scale,
                                   face = "bold", hjust = 0.5))
 ```
 

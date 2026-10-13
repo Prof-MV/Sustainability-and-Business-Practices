@@ -76,7 +76,7 @@ ggplot(tt, aes(x, 0)) +
   geom_label(aes(label = type), nudge_y = 0.55, size = 3.6 * diagram_text_scale,
              fontface = "bold", fill = c("#A9DFBF", "#A9DFBF", "#A9DFBF", "#F5B7B1"),
              label.size = 0) +
-  geom_text(aes(label = desc), size = 2.6 * diagram_text_scale, lineheight = 0.95,
+  geom_text(aes(label = desc), size = 2.6 * chart_text_scale, lineheight = 0.95,
             vjust = 1) +
   coord_cartesian(xlim = c(0.4, 4.6), ylim = c(-1.1, 1)) +
   theme_void()
@@ -409,7 +409,7 @@ ov$project <- factor(ov$project, levels = rev(ov$project))
 ggplot(ov, aes(multiple, project)) +
   geom_col(fill = "#C0392B", width = 0.6) +
   geom_text(aes(label = paste0(multiple, "x")), hjust = -0.2,
-            size = 3.8 * diagram_text_scale) +
+            size = 3.8 * chart_text_scale) +
   scale_x_continuous(trans = "log10", limits = c(1, 300),
                      breaks = c(1, 2, 5, 10, 30, 100, 300),
                      expand = expansion(mult = c(0, 0.05))) +
@@ -417,9 +417,9 @@ ggplot(ov, aes(multiple, project)) +
        x = "Overrun multiple", y = NULL) +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 13 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 13 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 

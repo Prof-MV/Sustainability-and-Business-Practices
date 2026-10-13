@@ -62,11 +62,14 @@ ggplot(loop, aes(x, y)) +
              fill = "#D6EAF8", label.size = 0, fontface = "bold") +
   annotate("segment", x = c(0.95, 3.15, 5.35), xend = c(1.55, 3.75, 5.95),
            y = 0, yend = 0, arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
-  annotate("curve", x = 6.6, y = -0.35, xend = 0, yend = -0.35,
-           curvature = 0.25, arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
-  annotate("text", x = 3.3, y = -0.62, label = "repeat every reporting period",
-           size = 2.8 * diagram_text_scale, fontface = "italic", color = "grey45") +
-  coord_cartesian(xlim = c(-0.9, 7.5), ylim = c(-0.9, 0.6)) +
+  annotate("segment", x = 6.6, xend = 6.6, y = -0.4, yend = -0.75, color = "grey40") +
+  annotate("segment", x = 6.6, xend = 0, y = -0.75, yend = -0.75, color = "grey40") +
+  annotate("segment", x = 0, xend = 0, y = -0.75, yend = -0.4,
+           arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
+  annotate("text", x = 3.3, y = -0.75, label = "repeat every reporting period",
+           size = 2.8 * diagram_text_scale, fontface = "italic", color = "grey45",
+           vjust = 1.5) +
+  coord_cartesian(xlim = c(-0.9, 7.5), ylim = c(-1.2, 0.6)) +
   theme_void()
 ```
 
@@ -119,13 +122,13 @@ ggplot() +
   geom_point(data = data.frame(m = c("PV", "EV", "AC"), y = c(217000, 186000, 210000)),
              aes(x = cutoff, y = y, color = m), size = 3, show.legend = FALSE) +
   annotate("text", x = cutoff + 0.12, y = 228000, hjust = 0,
-           label = "PV  $217 000", size = 3 * diagram_text_scale, color = "#2E86C1") +
+           label = "PV  $217 000", size = 3 * chart_text_scale, color = "#2E86C1") +
   annotate("text", x = cutoff + 0.12, y = 205000, hjust = 0,
-           label = "AC  $210 000", size = 3 * diagram_text_scale, color = "#C0392B") +
+           label = "AC  $210 000", size = 3 * chart_text_scale, color = "#C0392B") +
   annotate("text", x = cutoff + 0.12, y = 178000, hjust = 0,
-           label = "EV  $186 000", size = 3 * diagram_text_scale, color = "#27AE60") +
+           label = "EV  $186 000", size = 3 * chart_text_scale, color = "#27AE60") +
   annotate("text", x = cutoff - 0.25, y = 45000, hjust = 1,
-           label = "status date\n(week 8)", size = 3 * diagram_text_scale, lineheight = 0.9) +
+           label = "status date\n(week 8)", size = 3 * chart_text_scale, lineheight = 0.9) +
   scale_color_manual(values = c("PV (planned value)" = "#2E86C1",
                                 "EV (earned value)" = "#27AE60",
                                 "AC (actual cost)" = "#C0392B",
@@ -139,9 +142,9 @@ ggplot() +
   theme_minimal() +
   theme(
     legend.position = "top",
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 

@@ -96,16 +96,16 @@ lm_long$role <- factor(lm_long$role, levels = c("manager", "leader"),
 
 ggplot(lm_long, aes(role, aspect)) +
   geom_tile(aes(fill = role), color = "white", linewidth = 1.5) +
-  geom_text(aes(label = text), size = 3.1 * diagram_text_scale, lineheight = 0.9) +
+  geom_text(aes(label = text), size = 3.1 * chart_text_scale, lineheight = 0.9) +
   scale_fill_manual(values = c("MANAGER" = "#AED6F1", "LEADER" = "#A9DFBF"),
                     guide = "none") +
   labs(title = "Two hats the project manager wears", x = NULL, y = NULL) +
   theme_minimal() +
   theme(
     panel.grid = element_blank(),
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.text.x = element_text(size = 11 * diagram_text_scale, face = "bold"),
-    axis.text.y = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.text.x = element_text(size = 11 * chart_text_scale, face = "bold"),
+    axis.text.y = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -139,19 +139,19 @@ sl <- data.frame(
 )
 ggplot(sl, aes(x, y)) +
   geom_point(size = 42, shape = 21, fill = "#D6EAF8", color = "#2E86C1") +
-  geom_text(aes(label = label), size = 2.6 * diagram_text_scale, lineheight = 0.9) +
+  geom_text(aes(label = label), size = 2.6 * chart_text_scale, lineheight = 0.9) +
   annotate("segment", x = 0, xend = 1, y = 0, yend = 0,
            arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
   annotate("segment", x = 0, xend = 0, y = 0, yend = 1,
            arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
   annotate("text", x = 0.5, y = -0.08, label = "Directive behaviour  ->",
-           size = 3 * diagram_text_scale) +
+           size = 3 * chart_text_scale) +
   annotate("text", x = -0.06, y = 0.5, label = "Supportive behaviour  ->",
-           angle = 90, size = 3 * diagram_text_scale) +
+           angle = 90, size = 3 * chart_text_scale) +
   coord_equal(xlim = c(-0.12, 1.05), ylim = c(-0.12, 1.05)) +
   labs(title = "Match the style to team readiness") +
   theme_void() +
-  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+  theme(plot.title = element_text(size = 14 * chart_text_scale,
                                   face = "bold", hjust = 0.5))
 ```
 
@@ -313,19 +313,19 @@ df <- data.frame(x = stage_x, perf = pmin(pmax(perf, 0.1), 1))
 
 ggplot(df, aes(x, perf)) +
   geom_line(color = "#2E86C1", linewidth = 1.2) +
-  annotate("text", x = c(1, 2.4, 4.6, 7.2, 9.4), y = 1.03,
+  annotate("text", x = c(1, 2.4, 4.6, 7.2, 9.4), y = 1.1,
            label = c("Forming", "Storming", "Norming", "Performing", "Adjourning"),
-           fontface = "bold", size = 3.1 * diagram_text_scale) +
+           fontface = "bold", size = 3.1 * chart_text_scale) +
   annotate("segment", x = c(1.7, 3.5, 6, 8.6), xend = c(1.7, 3.5, 6, 8.6),
            y = 0.1, yend = 1, linetype = "dotted", color = "grey60") +
-  coord_cartesian(ylim = c(0.1, 1.1)) +
+  coord_cartesian(ylim = c(0.1, 1.16)) +
   labs(title = "Tuckman's stages of team development",
        x = "Time together", y = "Team performance") +
   theme_minimal() +
   theme(
     axis.text = element_blank(),
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale)
   )
 ```
 

@@ -161,24 +161,24 @@ ggplot(curve_df, aes(t, balance)) +
   geom_line(color = "#1B4F72", linewidth = 1.2) +
   geom_point(data = data.frame(t = payback_t, balance = 0),
              color = "#186A3B", size = 3.5) +
-  annotate("text", x = 0.08, y = -initial * 0.82, label = "-$450,000\n(tooling outlay, at SOP)",
-           hjust = 0, vjust = 1, size = 3.2 * diagram_text_scale, color = "#C0392B") +
+  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450,000\n(tooling outlay, at SOP)",
+           hjust = 0, vjust = 1, size = 3.2 * chart_text_scale, color = "#C0392B") +
   annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
-           hjust = 0, size = 3.2 * diagram_text_scale, color = "grey30", fontface = "bold") +
-  annotate("text", x = payback_t, y = 0,
+           hjust = 0, size = 3.2 * chart_text_scale, color = "grey30", fontface = "bold") +
+  annotate("text", x = payback_t + 0.15, y = 0,
            label = paste0("Payback: ", payback_t, " yrs"),
-           vjust = -1.2, hjust = -0.08, size = 3.2 * diagram_text_scale,
+           vjust = 1.8, hjust = 0, size = 3.2 * chart_text_scale,
            color = "#186A3B", fontface = "bold") +
   scale_x_continuous(breaks = seq(-1, horizon, 1)) +
   scale_y_continuous(labels = scales::dollar_format(big.mark = " "),
-                      expand = expansion(mult = c(0.14, 0.08))) +
+                      expand = expansion(mult = c(0.26, 0.08))) +
   labs(title = "Time vs. cumulative project cash position",
        x = "Time (years)", y = "Cumulative cash position") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -276,27 +276,28 @@ ggplot(curve_df, aes(t, balance)) +
   geom_line(color = "#1B4F72", linewidth = 1.2) +
   geom_point(data = data.frame(t = payback_pv_t, balance = 0),
              color = "#186A3B", size = 3.5) +
-  annotate("text", x = 0.08, y = -initial * 0.82, label = "-$450,000\n(tooling outlay, at SOP)",
-           hjust = 0, vjust = 1, size = 3.2 * diagram_text_scale, color = "#C0392B") +
+  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450,000\n(tooling outlay, at SOP)",
+           hjust = 0, vjust = 1, size = 3.2 * chart_text_scale, color = "#C0392B") +
   annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
-           hjust = 0, size = 3.2 * diagram_text_scale, color = "grey30", fontface = "bold") +
-  annotate("text", x = payback_pv_t, y = 0,
-           label = paste0("Discounted payback: ", round(payback_pv_t, 2), " yrs"),
-           vjust = -1.2, hjust = 1.05, size = 3.2 * diagram_text_scale,
+           hjust = 0, size = 3.2 * chart_text_scale, color = "grey30", fontface = "bold") +
+  annotate("text", x = payback_pv_t + 0.15, y = 0,
+           label = paste0("Discounted payback:
+", round(payback_pv_t, 2), " yrs"),
+           vjust = 1.3, hjust = 0, size = 3.2 * chart_text_scale,
            color = "#186A3B", fontface = "bold") +
   annotate("text", x = horizon - 0.1, y = -initial + annual_cf * (horizon - 0.1),
            label = "nominal (undiscounted)", hjust = 1, vjust = -0.8,
-           size = 3 * diagram_text_scale, color = "grey45", fontface = "italic") +
+           size = 3 * chart_text_scale, color = "grey45", fontface = "italic") +
   scale_x_continuous(breaks = seq(-1, horizon, 1)) +
   scale_y_continuous(labels = scales::dollar_format(big.mark = " "),
-                      expand = expansion(mult = c(0.14, 0.08))) +
+                      expand = expansion(mult = c(0.26, 0.08))) +
   labs(title = "Nominal vs. discounted (NPV) cumulative cash position",
        x = "Time (years)", y = "Cumulative cash position") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -489,24 +490,26 @@ ggplot(sh, aes(interest, power)) +
   annotate("rect", xmin = 0.5, xmax = 1, ymin = 0, ymax = 0.5, fill = "#5DADE2", alpha = 0.10) +
   annotate("rect", xmin = 0, xmax = 0.5, ymin = 0, ymax = 0.5, fill = "grey70", alpha = 0.12) +
   geom_point(color = "#1B4F72", size = 3) +
-  geom_text(aes(label = who), size = 2.9 * diagram_text_scale,
-            vjust = ifelse(sh$power > 0.85, 1.8, -0.8)) +
+  geom_text(aes(label = who), size = 2.9 * chart_text_scale,
+            vjust = ifelse(sh$power > 0.85, 1.8, -0.8),
+            hjust = c(0.5, 0.5, 0, 1, 0.5, 0.5, 1, 0.5, 0.5),
+            nudge_x = c(0, 0, 0.015, -0.015, 0, 0, -0.015, 0, 0)) +
   annotate("text", x = 0.75, y = 1.08, label = "MANAGE CLOSELY",
-           fontface = "bold", size = 3 * diagram_text_scale, color = "#186A3B") +
+           fontface = "bold", size = 3 * chart_text_scale, color = "#186A3B") +
   annotate("text", x = 0.25, y = 1.08, label = "KEEP SATISFIED",
-           fontface = "bold", size = 3 * diagram_text_scale, color = "#9C640C") +
+           fontface = "bold", size = 3 * chart_text_scale, color = "#9C640C") +
   annotate("text", x = 0.75, y = 0.03, label = "KEEP INFORMED",
-           fontface = "bold", size = 3 * diagram_text_scale, color = "#1B4F72") +
+           fontface = "bold", size = 3 * chart_text_scale, color = "#1B4F72") +
   annotate("text", x = 0.25, y = 0.03, label = "MONITOR",
-           fontface = "bold", size = 3 * diagram_text_scale, color = "grey30") +
+           fontface = "bold", size = 3 * chart_text_scale, color = "grey30") +
   scale_x_continuous(limits = c(0, 1), breaks = c(0.1, 0.9), labels = c("low", "high")) +
   scale_y_continuous(limits = c(0, 1.12), breaks = c(0.1, 0.9), labels = c("low", "high")) +
   labs(title = "Stakeholder power vs. interest", x = "Interest", y = "Power") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -726,7 +729,7 @@ org <- data.frame(
 ggplot(org, aes(type, authority, fill = authority)) +
   geom_col(width = 0.65) +
   geom_text(aes(label = scales::percent(authority, accuracy = 1)),
-            vjust = -0.4, size = 3.6 * diagram_text_scale) +
+            vjust = -0.4, size = 3.6 * chart_text_scale) +
   scale_fill_gradient(low = "#AED6F1", high = "#1B4F72", guide = "none") +
   scale_y_continuous(labels = scales::percent, limits = c(0, 1.05),
                      expand = expansion(mult = c(0, 0.02))) +
@@ -734,9 +737,9 @@ ggplot(org, aes(type, authority, fill = authority)) +
        x = NULL, y = "PM authority over resources") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 

@@ -388,24 +388,24 @@ ggplot(cone, aes(x = x)) +
   annotate("segment", x = 0.7, xend = 4.3, y = point_estimate, yend = point_estimate,
            linetype = "dashed", color = "grey30") +
   annotate("text", x = 4.3, y = point_estimate, label = "point estimate  $1.0M",
-           hjust = 1, vjust = -0.7, size = 3.3 * diagram_text_scale) +
+           hjust = 1, vjust = -1, size = 3.3 * chart_text_scale) +
   geom_point(aes(y = point_estimate * (1 + err)), size = 2.5, color = "#1B4F72") +
   geom_point(aes(y = point_estimate * (1 - err)), size = 2.5, color = "#1B4F72") +
   geom_text(aes(y = point_estimate * (1 + err),
                 label = paste0("+", scales::percent(err, accuracy = 1))),
-            vjust = -0.8, size = 3.2 * diagram_text_scale) +
+            vjust = -0.8, size = 3.2 * chart_text_scale) +
   geom_text(aes(y = point_estimate * (1 - err),
                 label = paste0("-", scales::percent(err, accuracy = 1))),
-            vjust = 1.6, size = 3.2 * diagram_text_scale) +
+            vjust = 1.6, size = 3.2 * chart_text_scale) +
   scale_x_continuous(breaks = 1:4, labels = levels(cone$stage)) +
   scale_y_continuous(labels = scales::dollar_format(suffix = "M", big.mark = " "),
                      expand = expansion(mult = c(0.06, 0.1))) +
   labs(title = "The cone of uncertainty", x = NULL, y = "Estimated project cost") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -555,7 +555,7 @@ ggplot(df, aes(x = task)) +
   annotate("text", x = n_tasks, y = df$padded_cum[n_tasks],
            label = paste0("+", round(100 * (df$padded_cum[n_tasks] /
                           df$honest_cum[n_tasks] - 1)), "% on the total"),
-           hjust = 1, vjust = -0.6, size = 3.4 * diagram_text_scale) +
+           hjust = 1, vjust = -0.6, size = 3.4 * chart_text_scale) +
   scale_color_manual(values = c("Honest estimate" = "#27AE60",
                                 "Every task padded 15%" = "#C0392B")) +
   scale_y_continuous(expand = expansion(mult = c(0.05, 0.12))) +
@@ -565,9 +565,9 @@ ggplot(df, aes(x = task)) +
   theme_minimal() +
   theme(
     legend.position = "top",
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
@@ -747,9 +747,10 @@ ggplot(phased, aes(x = month)) +
   geom_line(aes(y = cumulative / scale_factor, group = 1),
             color = "#C0392B", linewidth = 1.2) +
   geom_point(aes(y = cumulative / scale_factor), color = "#C0392B", size = 3) +
-  geom_text(aes(y = cumulative / scale_factor,
-                label = scales::dollar(cumulative, big.mark = " ")),
-            vjust = -1, size = 3.2 * diagram_text_scale, color = "#C0392B") +
+  geom_label(aes(y = cumulative / scale_factor,
+                 label = scales::dollar(cumulative, big.mark = " ")),
+             vjust = -0.5, size = 3.2 * chart_text_scale, color = "#C0392B",
+             fill = "white", label.size = 0) +
   scale_y_continuous(
     name = "Planned spend this month",
     labels = scales::dollar_format(big.mark = " "),
@@ -760,9 +761,9 @@ ggplot(phased, aes(x = month)) +
   labs(title = "Time-phased budget and cumulative cost baseline", x = NULL) +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 

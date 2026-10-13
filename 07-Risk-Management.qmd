@@ -127,15 +127,15 @@ ggplot(grid, aes(prob, impact)) +
   geom_point(data = risks, aes(prob, impact), inherit.aes = FALSE,
              size = 3, color = "#1B4F72") +
   geom_text(data = risks, aes(prob + label_nudge, impact, label = risk), inherit.aes = FALSE,
-            size = 2.7 * diagram_text_scale, vjust = -1, hjust = 0.5) +
+            size = 2.7 * chart_text_scale, vjust = -1, hjust = 0.5) +
   scale_x_continuous(breaks = 1:5, labels = c("Very low", "Low", "Medium", "High", "Very high")) +
   scale_y_continuous(breaks = 1:5, labels = c("Negligible", "Minor", "Moderate", "Major", "Severe")) +
   labs(title = "Probability x Impact", x = "Probability", y = "Impact") +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 9.5 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 9.5 * chart_text_scale)
   )
 ```
 

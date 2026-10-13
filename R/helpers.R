@@ -23,20 +23,28 @@ inject_jquery <- function() {
 #' base_size = 11) ends up visually tiny once the browser scales the image
 #' down to fit. Bump this ONE number to make all chart text larger or
 #' smaller across the whole book at once, instead of hand-editing every
-#' chunk. Every geom_text()/geom_label()/annotate("text", ...)/element_text()
-#' call in the book's .qmd files multiplies its size by this value.
+#' chunk. Axes, titles, legends, theme base sizes and the default geom_text()
+#' size multiply by this value; element_text() calls use it too.
 #' @export
-diagram_text_scale <- 1.4
+chart_text_scale <- 1.4
+
+#' Scale factor for text drawn inside boxes, circles and pills
+#'
+#' Labels inside fixed shapes (geom_text()/geom_label()/annotate("text", ...)
+#' in hand-built diagrams) cannot grow as freely as axis text without
+#' overflowing the shape, so they get their own, smaller knob.
+#' @export
+diagram_text_scale <- 1.1
 
 #' theme_minimal()/theme_void() wrappers with a larger default base_size
 #'
 #' Shadow ggplot2's versions so every existing bare theme_minimal()/
-#' theme_void() call in the book picks up diagram_text_scale automatically,
+#' theme_void() call in the book picks up chart_text_scale automatically,
 #' without needing base_size passed explicitly at each call site.
-theme_minimal <- function(base_size = 11 * diagram_text_scale, ...) {
+theme_minimal <- function(base_size = 11 * chart_text_scale, ...) {
   ggplot2::theme_minimal(base_size = base_size, ...)
 }
-theme_void <- function(base_size = 11 * diagram_text_scale, ...) {
+theme_void <- function(base_size = 11 * chart_text_scale, ...) {
   ggplot2::theme_void(base_size = base_size, ...)
 }
 
@@ -44,7 +52,7 @@ theme_void <- function(base_size = 11 * diagram_text_scale, ...) {
 # that don't pass their own explicit `size =` (ggplot2's own default is
 # 3.88). Layers that DO pass an explicit size (as `size = N * diagram_text_scale`)
 # are unaffected by this and controlled directly by their own literal.
-ggplot2::update_geom_defaults("text", list(size = 3.88 * diagram_text_scale))
+ggplot2::update_geom_defaults("text", list(size = 3.88 * chart_text_scale))
 
 #' Embed a YouTube video with conditional output
 #'

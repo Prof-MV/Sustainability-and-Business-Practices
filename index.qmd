@@ -79,8 +79,8 @@ ggplot(phases, aes(x = phase, y = -row)) +
   theme_void() +
   theme(
     legend.position = "none",
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold", hjust = 0.5),
-    axis.text.x = element_text(size = 10 * diagram_text_scale, face = "bold",
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(size = 10 * chart_text_scale, face = "bold",
                                margin = margin(t = 6))
   )
 ```

@@ -381,15 +381,15 @@ cs <- data.frame(
 cs$source <- factor(cs$source, levels = rev(cs$source))
 ggplot(cs, aes(intensity, source)) +
   geom_col(fill = "#5DADE2", width = 0.68) +
-  geom_text(aes(label = intensity), hjust = -0.4, size = 3.6 * diagram_text_scale) +
+  geom_text(aes(label = intensity), hjust = -0.4, size = 3.6 * chart_text_scale) +
   scale_x_continuous(limits = c(0, 8), expand = expansion(mult = c(0, 0.02))) +
   labs(title = "What project teams actually fight about",
        x = "Relative intensity (7 = highest)", y = NULL) +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 14 * diagram_text_scale, face = "bold"),
-    axis.title = element_text(size = 11 * diagram_text_scale),
-    axis.text = element_text(size = 10 * diagram_text_scale)
+    plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
+    axis.title = element_text(size = 11 * chart_text_scale),
+    axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 

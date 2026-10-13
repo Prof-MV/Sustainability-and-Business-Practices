@@ -97,17 +97,17 @@ ggplot() +
   geom_segment(data = edges, aes(x, y, xend = xend, yend = yend),
                color = "grey55", linewidth = 0.6) +
   geom_label(data = nodes, aes(x, y, label = label),
-             size = 2.5 * diagram_text_scale, lineheight = 0.9,
+             size = 2.5 * chart_text_scale, lineheight = 0.9,
              fill = c("#1B4F72", rep("#5DADE2", 4), rep("#D6EAF8", 7)),
              color = c("white", rep("white", 4), rep("black", 7)),
              fontface = "bold", label.size = 0) +
   annotate("text", x = w11 - 1.4, y = c(3, 2, 1),
            label = c("Level 1", "Level 2", "Level 3"),
-           fontface = "italic", size = 3 * diagram_text_scale, hjust = 1) +
+           fontface = "italic", size = 3 * chart_text_scale, hjust = 1) +
   coord_cartesian(xlim = c(w11 - 2.6, w42 + 1.4), ylim = c(0.5, 3.5)) +
   labs(title = "WBS: project -> deliverables -> work packages") +
   theme_void() +
-  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+  theme(plot.title = element_text(size = 14 * chart_text_scale,
                                   face = "bold", hjust = 0.5))
 ```
 
@@ -471,7 +471,7 @@ ggplot() +
   coord_equal(xlim = c(-2.2, 2.2), ylim = c(-2.1, 2.1)) +
   labs(title = "Everything downstream depends on the WBS") +
   theme_void() +
-  theme(plot.title = element_text(size = 14 * diagram_text_scale,
+  theme(plot.title = element_text(size = 14 * chart_text_scale,
                                   face = "bold", hjust = 0.5))
 ```
 
