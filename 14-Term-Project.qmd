@@ -23,23 +23,37 @@ You and your group will plan a project the way a real project team would, using 
 - Each group has a **discussion board** and a **locker** on FOL for exchanging files and keeping backups.
 - Once your group is formed, create a **company name and logo** that fit your project. Put them on every document you submit.
 
-## Roles and reports
+## Roles and evaluation surveys
 
 - Each group has **one Project Manager (PM)** at a time. **Each phase has a different PM.**
-- The PM submits the **group report** for the phase, plus a **Project Manager report**.
-- Every other member submits a **Team Member report** at the same time.
+- The PM submits the **group report** for the phase. Submit it digitally through the Phase submission folder on FOL.
+- Every phase also has an **evaluation survey** on FOL. There is a separate survey for each phase, and each phase has a **PM version** and a **Team Member version**. Fill out the version that matches your role **in that phase**.
 - The project is a team effort. **A member who does not contribute receives no marks for the group submission.**
-- Submit everything digitally through FOL.
+
+::: {.callout-important}
+**The survey is a grading gate.** Completing your survey for a phase is required for your grade on that phase's submission folder. **If you miss the survey, your grade for that phase's submission is 0.** This applies to each student individually. The survey due dates are set in FOL.
+:::
+
+### Why the self-evaluation matters
+
+Take the self-evaluation seriously. It is how you reflect on what you contributed, what worked, and what you would change, and it is the record of how your group ran the phase. The survey answers **do not change your grade**. Only the instructor assigns grades in this course, and no student's survey answers decide another student's grade.
+
+### If your team has a problem
+
+If a team member is not pulling their weight, the survey alone is not enough. The team must do **both** of the following:
+
+1. Report the issue in the **survey**.
+2. **Tell the instructor directly**, by email or in a face-to-face conversation.
+
+Raise problems early, while there is still time to fix them.
 
 | Template | File |
 |---|---|
-| Project Manager report | [Project-Manager-Report-Template.docx](project-files/Project-Manager-Report-Template.docx) |
-| Team Member report | [Team-Member-Report-Template.docx](project-files/Team-Member-Report-Template.docx) |
 | Cover page (every submission) | [Cover-Page.docx](project-files/Cover-Page.docx) |
 
-: Templates for every phase {tbl-colwidths="[40,60]"}
+: Template for every phase {tbl-colwidths="[40,60]"}
 
-### What every report needs
+### What every group report needs
 
 - A **cover sheet**, following the provided template.
 - Content that is easy to read and understand.
@@ -226,5 +240,5 @@ Your marks come from three things: the **accuracy** of your costs, the **identif
 3. Cover sheet on the group report.
 4. Group report completed from the phase templates.
 5. Diagrams and charts readable, with legends where required.
-6. Project Manager report, and a Team Member report from every other member.
+6. Your evaluation survey for the phase completed on FOL, in the version for your role (PM or Team Member). A missed survey means a grade of 0 for the phase.
 7. Everything uploaded to FOL **before the deadline**. Remember the 15 % per day late deduction.
