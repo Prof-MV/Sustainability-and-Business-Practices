@@ -48,3 +48,6 @@ extension in `_extensions/coatless/webr/` and only execute in a browser served o
 | 11 | Resource Management | Lecture 11 |
 | 12 | Project Control Systems | course map Lecture 12 |
 | 13 | Project Closeout and Termination | Lecture 12 (file) |
+| 14 | Term Project: Instructions and Templates | Project description (file) |
+
+`project-files/` holds the downloadable project description and report templates linked from chapter 14.

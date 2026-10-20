@@ -3,6 +3,7 @@ project:
   output-dir: docs
   resources:
     - js/
+    - project-files/
 
 execute:
   freeze: auto
@@ -39,6 +40,7 @@ book:
     - 11-Resource-Management.qmd
     - 12-Project-Control-Systems.qmd
     - 13-Project-Closeout-and-Termination.qmd
+    - 14-Term-Project.qmd
 
 bibliography: [references.bib, packages.bib]
 link-citations: true

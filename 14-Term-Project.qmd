@@ -1,0 +1,230 @@
+# Term Project: Instructions and Templates
+
+This chapter is the home of the MGMT-3105 term project. It holds the **project description**, the **instructions for each phase**, the **due dates**, and the **templates** you download and fill in. Check back here whenever you start a new phase.
+
+## Overview
+
+You and your group will plan a project the way a real project team would, using the tools from the earlier chapters. The project is planned, not built: you produce the planning documents a company would need before it commits to the work.
+
+| Phase | Focus | Due | Grade weight |
+|---|---|---|---:|
+| **A** | Project Scope, Project Charter, Work Breakdown Structure | **Monday, November 9** | 10 % |
+| **B** | Corrected Phase A material, AON diagram, Risks, Gantt chart | **Monday, November 23** | 10 % |
+| **C** | Costs analysis and costs chart | **Monday, December 7** | 6 % |
+
+::: {.callout-important}
+**Late submissions lose 15 % per day.** Plan to finish early.
+:::
+
+## Groups
+
+- Groups have **3 students**. Self-enrol in a group on FanshaweOnline (FOL). Self-enrolment is open until **Sunday, October 25**.
+- Anyone who has not enrolled by then is placed in a group at random.
+- Each group has a **discussion board** and a **locker** on FOL for exchanging files and keeping backups.
+- Once your group is formed, create a **company name and logo** that fit your project. Put them on every document you submit.
+
+## Roles and reports
+
+- Each group has **one Project Manager (PM)** at a time. **Each phase has a different PM.**
+- The PM submits the **group report** for the phase, plus a **Project Manager report**.
+- Every other member submits a **Team Member report** at the same time.
+- The project is a team effort. **A member who does not contribute receives no marks for the group submission.**
+- Submit everything digitally through FOL.
+
+| Template | File |
+|---|---|
+| Project Manager report | [Project-Manager-Report-Template.docx](project-files/Project-Manager-Report-Template.docx) |
+| Team Member report | [Team-Member-Report-Template.docx](project-files/Team-Member-Report-Template.docx) |
+| Cover page (every submission) | [Cover-Page.docx](project-files/Cover-Page.docx) |
+
+: Templates for every phase {tbl-colwidths="[40,60]"}
+
+### What every report needs
+
+- A **cover sheet**, following the provided template.
+- Content that is easy to read and understand.
+- Diagrams large enough to read their text. A large diagram may be split into parts if it stays easy to follow.
+
+## The project description {#sec-project-description}
+
+The shaded box below is the **background** for the project: the situation your company is in. Everything outside the box, in the phase sections that follow, is an **instruction** about what to hand in.
+
+::: {.callout-tip .case-study title="📁 PROJECT DESCRIPTION — Remote-Controlled Vehicle Replica"}
+
+Your company specializes in manufacturing remote-controlled vehicles for the toy industry. Because your products are lifelike replicas of real-world vehicles, you have been selected to supply a *Project Management Package* and to manage a project that will create **one new vehicle replica** for the coming holiday season.
+
+If selected, your company has the discretion to choose an **aircraft** (civilian or military), a **yacht**, or a **road vehicle** (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of **1/18, or 9--12 inches (24--30 cm)**. The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.
+
+You will purchase the motor and control systems from one of two Canadian suppliers. If your replica is accepted and signed off by the client, your company is awarded a contract to manufacture **100,000+ replicas** of the accepted prototype for the next holiday season.
+
+You need a firm design choice, materials list, resources, and assembly decision to show Senior Management. You are expected to start production immediately after approval of the Scope and Charter, so the replica can be delivered to your client.
+
+**The suppliers.** Two Canadian suppliers produce the motor and the control systems. **You must use one of them.**
+
+- **Metacom Control Systems (MCS)**, located in Surrey, British Columbia. Your company has worked with MCS in the past and has been very happy with their quality and delivery record. MCS has recently moved a large part of its production to a new plant in Ramos, Mexico, to cut costs.
+- **Paragon Technologies**, with head offices in Keflavik, Iceland, and a plant in Kingston, Ontario. You have not worked with Paragon before. They are relatively new to the industry and are promoting a new technology that might revolutionize it, but it is not used in many applications yet and is therefore unproven. Paragon's plant is only 4 hours from your plant in London. Paragon's employees are negotiating their first labour contract since the Kingston expansion.
+
+**The assembly line.** Your company needs to source new assembly tooling to make the toy. You have an existing manufacturing line that you could retrofit with the new tooling, but it uses older technology, and production and quality issues have been increasing. A new line would let you introduce new technology to increase production and quality, but your employees and millwright staff would face a learning curve.
+
+**The materials.** You can source steel and aluminum from local suppliers. Your carbon fibre comes from **Fibro Source**, a plant in Sherbrooke, Québec. You have used them in the past and have been somewhat satisfied with their quality and delivery on the last two projects you ran. However, they have recently been bought out by a large conglomerate from Metz, France, and are restructuring all their departments. You have heard that there have been many changes to the Canadian management team and that a modernization of the plant, including new process equipment, is underway.
+
+**Budget tips.** The ranges below are approximate and help you budget resource and material costs. In no case is it guaranteed that your calculations will stay within them.
+
+| Resources | Range |
+|---|---|
+| Project Manager | $60K -- $80K |
+| Team Members | $30K -- $45K |
+| Sundry (general administration, plant maintenance, utilities, janitorial services, plant insurance, property taxes, Christmas bonus, rent, health and benefits per employee, depreciation of machinery and equipment, and more) | $8.00 -- $15.00 per hour |
+
+| Materials and services | Range |
+|---|---|
+| Chassis / casting | $40K -- $75K |
+| Fasteners | $5K -- $15K |
+| Motor / controller | $100K -- $175K |
+| Carbon fibre | $120K -- $200K |
+| Aluminum | $50K -- $115K |
+| Welding components | $15K -- $45K |
+| Circuit boards and peripherals | $20K -- $50K |
+| Government approval (CSA, CWS, CE, MTO) | $2K -- $10K |
+| Testing | $25K -- $100K |
+| Tooling | $100K -- $180K |
+| Safety equipment | $35K -- $75K |
+| Packaging / shipping | $5K -- $25K |
+
+:::
+
+### What you decide
+
+| Decision | Options |
+|---|---|
+| Vehicle | Aircraft (civilian or military), yacht, or road vehicle (sport, ATV, or RV type) |
+| Body material | Steel, aluminum, or carbon fibre |
+| Inner frame material | Aluminum or carbon fibre |
+| Motor and control supplier | Metacom Control Systems or Paragon Technologies. You **must** use one. |
+| Assembly line | Retrofit the existing line, or build a new line |
+
+::: {.callout-tip}
+The supplier and assembly-line choices are where your **risks** come from. Each one has an upside and a downside. Say why you chose what you chose, and carry those risks into Phase B.
+:::
+
+## Phase A: Scope, Charter, and WBS {#sec-phase-a}
+
+**Due Monday, November 9.** Concepts: [Chapter 3](03-Scope-and-Organizational-Structures.qmd) (scope and charter) and [Chapter 5](05-Work-Breakdown-Structures.qmd) (WBS).
+
+| Template | File |
+|---|---|
+| Project Scope | [Project-Scope-Template.docx](project-files/Project-Scope-Template.docx) |
+| Project Charter | [Project-Charter-Template.docx](project-files/Project-Charter-Template.docx) |
+| WBS (Excel) | [WBS-Template.xlsx](project-files/WBS-Template.xlsx) |
+| WBS Dictionary | [WBS-Dictionary-Template.docx](project-files/WBS-Dictionary-Template.docx) |
+
+: Phase A templates {tbl-colwidths="[30,70]"}
+
+### Project Scope
+
+Complete every area with enough detail for your project, in the format used in lecture. The document carries your team name and logo.
+
+- **Scope description:** explain every component needed to achieve the project description.
+- **Acceptance criteria:** state the criteria that decide whether the project succeeded.
+- **Validation / testing plan and exclusions:** explain how the project is tested and what is needed to pass. Outcomes must be clear and measurable, and the testing methods outlined.
+- **Deliverables:** define every deliverable, and state clearly which associated items are **not** deliverables.
+- **Project coordination:** explain how the project is run. Cover when and where you meet, who creates and keeps documents, how and where information is shared and stored, and how each member's input is measured and tracked.
+
+### Project Charter
+
+Complete every area with enough detail, in the format used in lecture. The document carries your team name and logo.
+
+- **Project description:** describe the project accurately. Explain why it matters to your company and what successful completion means for it.
+- **Constraints:** cover at least time, money, and manpower. Show some thought about other constraints a real project would face.
+- **Risks:** show you understand the high-level risks that could hurt the project's success.
+- **Project deliverables:** define every deliverable, including items such as instruction manuals, software, and hardware where they apply.
+- **Project milestones:** use actual dates that fall within the assigned timeframe.
+- **Project budget:** a realistic guess. Use Canadian formatting: a dollar sign first, then commas for thousands, for example `$865,000` or `$1,112,700`.
+
+### Work Breakdown Structure
+
+- **Format:** use the lecture format, with **three levels**. The top level may be the project phase. The bottom level is your **work packages**.
+- **Numbering:** number the WBS items properly.
+- **Completeness:** obey the **100 % rule**. Work packages are the right size and mutually exclusive.
+- **Work packages:** at least **20**, unless your instructor approves otherwise.
+- **Dictionary:** include a WBS Dictionary entry for **one work package per team member**, each assigned to a different member.
+
+## Phase B: Schedule and risk {#sec-phase-b}
+
+**Due Monday, November 23.** Concepts: [Chapter 6](06-Network-Diagrams-and-AON.qmd) (AON), [Chapter 7](07-Risk-Management.qmd) (risk), and [Chapter 8](08-Project-Scheduling.qmd) (scheduling).
+
+| Template | File |
+|---|---|
+| AON / critical path diagram (Excel) | [AON-Critical-Path-Template.xlsx](project-files/AON-Critical-Path-Template.xlsx) |
+| Risk brainstorming worksheet | [Risk-Brainstorming-Worksheet.docx](project-files/Risk-Brainstorming-Worksheet.docx) |
+| Gantt chart (Excel) | [Gantt-Chart-Template.xlsx](project-files/Gantt-Chart-Template.xlsx) |
+
+: Phase B templates {tbl-colwidths="[40,60]"}
+
+### Submission
+
+- Upload a **single PDF** containing the entire group submission, **along with the files in their original format** (for example the Excel files).
+- The report **starts with** the Project Charter, Scope Statement, and WBS from Phase A, **corrected using the Phase A feedback**.
+
+### AON diagram
+
+- **Duration table:** a table of activities with durations, predecessors, and successors. Durations should be reasonable and include units (days). The table matches your WBS, and every task has a code.
+- **Diagram:** a complete AON diagram. Some hammocking is allowed. Include a **legend** showing which box is ES, LS, and so on. A reasonable number of activities should run in parallel.
+- **Calculations:** complete and correct **forward and backward passes**, and the **critical path** identified.
+
+### Risks
+
+- **Identification:** at least **eight risks** (or the number your tutorial instructor sets). Classify each as covered in lecture.
+- **Format:** each risk has a code, an **impact** (low, medium, high), a **probability** (low, medium, high), and an exposure level of **green, yellow, or red**.
+- **Mitigation:** a mitigation strategy for every **yellow and red** risk, categorized as one of the types from lecture.
+- **Risk matrix:** a properly labelled matrix with each risk's code in the correct cell. Not every cell needs a risk. Colour the cells to match their exposure level.
+
+### Gantt chart
+
+- **Chart:** a simple Gantt chart in Excel. Activities match your WBS and AON. Leave every activity at **0 % complete** for Phase B.
+- **Format:** the unit of time is days. Dates can be real dates or start at "Week 1". Show relationships with arrows. Corner-to-corner tasks can imply Finish-to-Start without an arrow. All relationships can be Finish-to-Start, and they must match your AON.
+- **Milestones:** mark the end of the activities that match your charter milestones with a diamond. You may also mark the planned milestone dates with a different symbol.
+- **Comparison paragraph:** compare the milestones in your Charter with the milestone dates in your Gantt chart. They do not need to be the same.
+
+## Phase C: Costs {#sec-phase-c}
+
+**Due Monday, December 7.** Concepts: [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd) (cost estimation and budgeting) and [Chapter 11](11-Resource-Management.qmd) (resources).
+
+| Template | File |
+|---|---|
+| Costs chart (Excel) | [Costs-Chart-Template.xlsx](project-files/Costs-Chart-Template.xlsx) |
+| Example costs chart | [Costs-Chart-Example.pdf](project-files/Costs-Chart-Example.pdf) |
+
+: Phase C templates {tbl-colwidths="[40,60]"}
+
+### Costs analysis
+
+- Create a chart that **categorizes the costs** of your project.
+- Identify the category (or categories) each cost belongs to. **A cost can be allocated to more than one category.**
+- Use the lecture and your class notes for the category definitions.
+- The example file shows a labour calculation and costs chart, and a materials chart with a contingency reserve. It is only there to help with your preliminary calculations. It is not tied to your project.
+
+Your marks come from three things: the **accuracy** of your costs, the **identification** (the logical arrangement) of your costs, and your **overall calculations**.
+
+### Rates to use
+
+| Item | Rate |
+|---|---|
+| Project Manager | $73.00 per hour regular time. $109.50 per hour overtime (after 44 hours per week) |
+| Team Member | $39.50 per hour regular time. $59.25 per hour overtime (after 40 hours per week) |
+| Manufacturing cost: factory utilities, space leasing, etc. | $4.65 per hour |
+| Manufacturing cost: upkeep and maintenance, snowplowing, repairs, etc. | $2.15 per hour |
+| Benefits cost: health insurance, uniforms, retirement, etc. | $3.25 per hour |
+| Mandatory breaks | $0.61 per hour worked, per employee |
+
+: Phase C cost allocations {tbl-colwidths="[45,55]"}
+
+## Submission checklist
+
+1. Group enrolled on FOL, company name and logo chosen.
+2. Correct Project Manager for the phase. No repeats.
+3. Cover sheet on the group report.
+4. Group report completed from the phase templates.
+5. Diagrams and charts readable, with legends where required.
+6. Project Manager report, and a Team Member report from every other member.
+7. Everything uploaded to FOL **before the deadline**. Remember the 15 % per day late deduction.
