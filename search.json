@@ -1818,5 +1818,95 @@
     "crumbs": [
       "<span class='chapter-number'>13</span>  <span class='chapter-title'>Project Closeout and Termination</span>"
     ]
+  },
+  {
+    "objectID": "14-Term-Project.html",
+    "href": "14-Term-Project.html",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "",
+    "text": "14.1 Overview\nThis chapter is the home of the MGMT-3105 term project. It holds the project description, the instructions for each phase, the due dates, and the templates you download and fill in. Check back here whenever you start a new phase.\nYou and your group will plan a project the way a real project team would, using the tools from the earlier chapters. The project is planned, not built: you produce the planning documents a company would need before it commits to the work.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#overview",
+    "href": "14-Term-Project.html#overview",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "",
+    "text": "Phase\nFocus\nDue\nGrade weight\n\n\n\n\nA\nProject Scope, Project Charter, Work Breakdown Structure\nMonday, November 9\n10 %\n\n\nB\nCorrected Phase A material, AON diagram, Risks, Gantt chart\nMonday, November 23\n10 %\n\n\nC\nCosts analysis and costs chart\nMonday, December 7\n6 %\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nLate submissions lose 15 % per day. Plan to finish early.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#groups",
+    "href": "14-Term-Project.html#groups",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.2 Groups",
+    "text": "14.2 Groups\n\nGroups have 3 students. Self-enrol in a group on FanshaweOnline (FOL). Self-enrolment is open until Sunday, October 25.\nAnyone who has not enrolled by then is placed in a group at random.\nEach group has a discussion board and a locker on FOL for exchanging files and keeping backups.\nOnce your group is formed, create a company name and logo that fit your project. Put them on every document you submit.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#roles-and-reports",
+    "href": "14-Term-Project.html#roles-and-reports",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.3 Roles and reports",
+    "text": "14.3 Roles and reports\n\nEach group has one Project Manager (PM) at a time. Each phase has a different PM.\nThe PM submits the group report for the phase, plus a Project Manager report.\nEvery other member submits a Team Member report at the same time.\nThe project is a team effort. A member who does not contribute receives no marks for the group submission.\nSubmit everything digitally through FOL.\n\n\nTemplates for every phase\n\n\n\n\n\n\nTemplate\nFile\n\n\n\n\nProject Manager report\nProject-Manager-Report-Template.docx\n\n\nTeam Member report\nTeam-Member-Report-Template.docx\n\n\nCover page (every submission)\nCover-Page.docx\n\n\n\n\n14.3.1 What every report needs\n\nA cover sheet, following the provided template.\nContent that is easy to read and understand.\nDiagrams large enough to read their text. A large diagram may be split into parts if it stays easy to follow.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#sec-project-description",
+    "href": "14-Term-Project.html#sec-project-description",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.4 The project description",
+    "text": "14.4 The project description\nThe shaded box below is the background for the project: the situation your company is in. Everything outside the box, in the phase sections that follow, is an instruction about what to hand in.\n\n\n\n\n\n\nTip📁 PROJECT DESCRIPTION — Remote-Controlled Vehicle Replica\n\n\n\nYour company specializes in manufacturing remote-controlled vehicles for the toy industry. Because your products are lifelike replicas of real-world vehicles, you have been selected to supply a Project Management Package and to manage a project that will create one new vehicle replica for the coming holiday season.\nIf selected, your company has the discretion to choose an aircraft (civilian or military), a yacht, or a road vehicle (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of 1/18, or 9–12 inches (24–30 cm). The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.\nYou will purchase the motor and control systems from one of two Canadian suppliers. If your replica is accepted and signed off by the client, your company is awarded a contract to manufacture 100,000+ replicas of the accepted prototype for the next holiday season.\nYou need a firm design choice, materials list, resources, and assembly decision to show Senior Management. You are expected to start production immediately after approval of the Scope and Charter, so the replica can be delivered to your client.\nThe suppliers. Two Canadian suppliers produce the motor and the control systems. You must use one of them.\n\nMetacom Control Systems (MCS), located in Surrey, British Columbia. Your company has worked with MCS in the past and has been very happy with their quality and delivery record. MCS has recently moved a large part of its production to a new plant in Ramos, Mexico, to cut costs.\nParagon Technologies, with head offices in Keflavik, Iceland, and a plant in Kingston, Ontario. You have not worked with Paragon before. They are relatively new to the industry and are promoting a new technology that might revolutionize it, but it is not used in many applications yet and is therefore unproven. Paragon’s plant is only 4 hours from your plant in London. Paragon’s employees are negotiating their first labour contract since the Kingston expansion.\n\nThe assembly line. Your company needs to source new assembly tooling to make the toy. You have an existing manufacturing line that you could retrofit with the new tooling, but it uses older technology, and production and quality issues have been increasing. A new line would let you introduce new technology to increase production and quality, but your employees and millwright staff would face a learning curve.\nThe materials. You can source steel and aluminum from local suppliers. Your carbon fibre comes from Fibro Source, a plant in Sherbrooke, Québec. You have used them in the past and have been somewhat satisfied with their quality and delivery on the last two projects you ran. However, they have recently been bought out by a large conglomerate from Metz, France, and are restructuring all their departments. You have heard that there have been many changes to the Canadian management team and that a modernization of the plant, including new process equipment, is underway.\nBudget tips. The ranges below are approximate and help you budget resource and material costs. In no case is it guaranteed that your calculations will stay within them.\n\n\n\n\n\n\n\nResources\nRange\n\n\n\n\nProject Manager\n$60K – $80K\n\n\nTeam Members\n$30K – $45K\n\n\nSundry (general administration, plant maintenance, utilities, janitorial services, plant insurance, property taxes, Christmas bonus, rent, health and benefits per employee, depreciation of machinery and equipment, and more)\n$8.00 – $15.00 per hour\n\n\n\n\n\n\nMaterials and services\nRange\n\n\n\n\nChassis / casting\n$40K – $75K\n\n\nFasteners\n$5K – $15K\n\n\nMotor / controller\n$100K – $175K\n\n\nCarbon fibre\n$120K – $200K\n\n\nAluminum\n$50K – $115K\n\n\nWelding components\n$15K – $45K\n\n\nCircuit boards and peripherals\n$20K – $50K\n\n\nGovernment approval (CSA, CWS, CE, MTO)\n$2K – $10K\n\n\nTesting\n$25K – $100K\n\n\nTooling\n$100K – $180K\n\n\nSafety equipment\n$35K – $75K\n\n\nPackaging / shipping\n$5K – $25K\n\n\n\n\n\n\n14.4.1 What you decide\n\n\n\n\n\n\n\nDecision\nOptions\n\n\n\n\nVehicle\nAircraft (civilian or military), yacht, or road vehicle (sport, ATV, or RV type)\n\n\nBody material\nSteel, aluminum, or carbon fibre\n\n\nInner frame material\nAluminum or carbon fibre\n\n\nMotor and control supplier\nMetacom Control Systems or Paragon Technologies. You must use one.\n\n\nAssembly line\nRetrofit the existing line, or build a new line\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe supplier and assembly-line choices are where your risks come from. Each one has an upside and a downside. Say why you chose what you chose, and carry those risks into Phase B.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#sec-phase-a",
+    "href": "14-Term-Project.html#sec-phase-a",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.5 Phase A: Scope, Charter, and WBS",
+    "text": "14.5 Phase A: Scope, Charter, and WBS\nDue Monday, November 9. Concepts: Chapter 3 (scope and charter) and Chapter 5 (WBS).\n\nPhase A templates\n\n\n\n\n\n\nTemplate\nFile\n\n\n\n\nProject Scope\nProject-Scope-Template.docx\n\n\nProject Charter\nProject-Charter-Template.docx\n\n\nWBS (Excel)\nWBS-Template.xlsx\n\n\nWBS Dictionary\nWBS-Dictionary-Template.docx\n\n\n\n\n14.5.1 Project Scope\nComplete every area with enough detail for your project, in the format used in lecture. The document carries your team name and logo.\n\nScope description: explain every component needed to achieve the project description.\nAcceptance criteria: state the criteria that decide whether the project succeeded.\nValidation / testing plan and exclusions: explain how the project is tested and what is needed to pass. Outcomes must be clear and measurable, and the testing methods outlined.\nDeliverables: define every deliverable, and state clearly which associated items are not deliverables.\nProject coordination: explain how the project is run. Cover when and where you meet, who creates and keeps documents, how and where information is shared and stored, and how each member’s input is measured and tracked.\n\n\n\n14.5.2 Project Charter\nComplete every area with enough detail, in the format used in lecture. The document carries your team name and logo.\n\nProject description: describe the project accurately. Explain why it matters to your company and what successful completion means for it.\nConstraints: cover at least time, money, and manpower. Show some thought about other constraints a real project would face.\nRisks: show you understand the high-level risks that could hurt the project’s success.\nProject deliverables: define every deliverable, including items such as instruction manuals, software, and hardware where they apply.\nProject milestones: use actual dates that fall within the assigned timeframe.\nProject budget: a realistic guess. Use Canadian formatting: a dollar sign first, then commas for thousands, for example $865,000 or $1,112,700.\n\n\n\n14.5.3 Work Breakdown Structure\n\nFormat: use the lecture format, with three levels. The top level may be the project phase. The bottom level is your work packages.\nNumbering: number the WBS items properly.\nCompleteness: obey the 100 % rule. Work packages are the right size and mutually exclusive.\nWork packages: at least 20, unless your instructor approves otherwise.\nDictionary: include a WBS Dictionary entry for one work package per team member, each assigned to a different member.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#sec-phase-b",
+    "href": "14-Term-Project.html#sec-phase-b",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.6 Phase B: Schedule and risk",
+    "text": "14.6 Phase B: Schedule and risk\nDue Monday, November 23. Concepts: Chapter 6 (AON), Chapter 7 (risk), and Chapter 8 (scheduling).\n\nPhase B templates\n\n\n\n\n\n\nTemplate\nFile\n\n\n\n\nAON / critical path diagram (Excel)\nAON-Critical-Path-Template.xlsx\n\n\nRisk brainstorming worksheet\nRisk-Brainstorming-Worksheet.docx\n\n\nGantt chart (Excel)\nGantt-Chart-Template.xlsx\n\n\n\n\n14.6.1 Submission\n\nUpload a single PDF containing the entire group submission, along with the files in their original format (for example the Excel files).\nThe report starts with the Project Charter, Scope Statement, and WBS from Phase A, corrected using the Phase A feedback.\n\n\n\n14.6.2 AON diagram\n\nDuration table: a table of activities with durations, predecessors, and successors. Durations should be reasonable and include units (days). The table matches your WBS, and every task has a code.\nDiagram: a complete AON diagram. Some hammocking is allowed. Include a legend showing which box is ES, LS, and so on. A reasonable number of activities should run in parallel.\nCalculations: complete and correct forward and backward passes, and the critical path identified.\n\n\n\n14.6.3 Risks\n\nIdentification: at least eight risks (or the number your tutorial instructor sets). Classify each as covered in lecture.\nFormat: each risk has a code, an impact (low, medium, high), a probability (low, medium, high), and an exposure level of green, yellow, or red.\nMitigation: a mitigation strategy for every yellow and red risk, categorized as one of the types from lecture.\nRisk matrix: a properly labelled matrix with each risk’s code in the correct cell. Not every cell needs a risk. Colour the cells to match their exposure level.\n\n\n\n14.6.4 Gantt chart\n\nChart: a simple Gantt chart in Excel. Activities match your WBS and AON. Leave every activity at 0 % complete for Phase B.\nFormat: the unit of time is days. Dates can be real dates or start at “Week 1”. Show relationships with arrows. Corner-to-corner tasks can imply Finish-to-Start without an arrow. All relationships can be Finish-to-Start, and they must match your AON.\nMilestones: mark the end of the activities that match your charter milestones with a diamond. You may also mark the planned milestone dates with a different symbol.\nComparison paragraph: compare the milestones in your Charter with the milestone dates in your Gantt chart. They do not need to be the same.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#sec-phase-c",
+    "href": "14-Term-Project.html#sec-phase-c",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.7 Phase C: Costs",
+    "text": "14.7 Phase C: Costs\nDue Monday, December 7. Concepts: Chapter 9 (cost estimation and budgeting) and Chapter 11 (resources).\n\nPhase C templates\n\n\n\n\n\n\nTemplate\nFile\n\n\n\n\nCosts chart (Excel)\nCosts-Chart-Template.xlsx\n\n\nExample costs chart\nCosts-Chart-Example.pdf\n\n\n\n\n14.7.1 Costs analysis\n\nCreate a chart that categorizes the costs of your project.\nIdentify the category (or categories) each cost belongs to. A cost can be allocated to more than one category.\nUse the lecture and your class notes for the category definitions.\nThe example file shows a labour calculation and costs chart, and a materials chart with a contingency reserve. It is only there to help with your preliminary calculations. It is not tied to your project.\n\nYour marks come from three things: the accuracy of your costs, the identification (the logical arrangement) of your costs, and your overall calculations.\n\n\n14.7.2 Rates to use\n\nPhase C cost allocations\n\n\n\n\n\n\nItem\nRate\n\n\n\n\nProject Manager\n$73.00 per hour regular time. $109.50 per hour overtime (after 44 hours per week)\n\n\nTeam Member\n$39.50 per hour regular time. $59.25 per hour overtime (after 40 hours per week)\n\n\nManufacturing cost: factory utilities, space leasing, etc.\n$4.65 per hour\n\n\nManufacturing cost: upkeep and maintenance, snowplowing, repairs, etc.\n$2.15 per hour\n\n\nBenefits cost: health insurance, uniforms, retirement, etc.\n$3.25 per hour\n\n\nMandatory breaks\n$0.61 per hour worked, per employee",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
+  },
+  {
+    "objectID": "14-Term-Project.html#submission-checklist",
+    "href": "14-Term-Project.html#submission-checklist",
+    "title": "14  Term Project: Instructions and Templates",
+    "section": "14.8 Submission checklist",
+    "text": "14.8 Submission checklist\n\nGroup enrolled on FOL, company name and logo chosen.\nCorrect Project Manager for the phase. No repeats.\nCover sheet on the group report.\nGroup report completed from the phase templates.\nDiagrams and charts readable, with legends where required.\nProject Manager report, and a Team Member report from every other member.\nEverything uploaded to FOL before the deadline. Remember the 15 % per day late deduction.",
+    "crumbs": [
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Term Project: Instructions and Templates</span>"
+    ]
   }
 ]
