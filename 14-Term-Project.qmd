@@ -6,19 +6,19 @@ This chapter is the home of the MGMT-3105 term project. It holds the **project d
 
 You and your group will plan a project the way a real project team would, using the tools from the earlier chapters. The project is planned, not built: you produce the planning documents a company would need before it commits to the work.
 
-| Phase | Focus | Due | Grade weight |
-|---|---|---|---:|
-| **A** | Project Scope, Project Charter, Work Breakdown Structure | **Monday, November 9** | 10 % |
-| **B** | Corrected Phase A material, AON diagram, Risks, Gantt chart | **Monday, November 23** | 10 % |
-| **C** | Costs analysis and costs chart | **Monday, December 7** | 6 % |
+| Phase | Focus | Grade weight |
+|---|---|---:|
+| **A** | Project Scope, Project Charter, Work Breakdown Structure | 10 % |
+| **B** | Corrected Phase A material, AON diagram, Risks, Gantt chart | 10 % |
+| **C** | Costs analysis and costs chart | 6 % |
 
 ::: {.callout-important}
-**Late submissions lose 15 % per day.** Plan to finish early.
+**Deadlines are set by the FOL submission folders** for each phase. **Late submissions lose 15 % per day.** Plan to finish early.
 :::
 
 ## Groups
 
-- Groups have **3 students**. Self-enrol in a group on FanshaweOnline (FOL). Self-enrolment is open until **Sunday, October 25**.
+- Groups have **3 students**. Self-enrol in a group on FanshaweOnline (FOL). Self-enrolment closes on the date shown on the FOL group sign-up page.
 - Anyone who has not enrolled by then is placed in a group at random.
 - Each group has a **discussion board** and a **locker** on FOL for exchanging files and keeping backups.
 - Once your group is formed, create a **company name and logo** that fit your project. Put them on every document you submit.
@@ -109,7 +109,7 @@ The supplier and assembly-line choices are where your **risks** come from. Each 
 
 ## Phase A: Scope, Charter, and WBS {#sec-phase-a}
 
-**Due Monday, November 9.** Concepts: [Chapter 3](03-Scope-and-Organizational-Structures.qmd) (scope and charter) and [Chapter 5](05-Work-Breakdown-Structures.qmd) (WBS).
+**Due:** see the Phase A submission folder on FOL. Concepts: [Chapter 3](03-Scope-and-Organizational-Structures.qmd) (scope and charter) and [Chapter 5](05-Work-Breakdown-Structures.qmd) (WBS).
 
 | Template | File |
 |---|---|
@@ -151,7 +151,7 @@ Complete every area with enough detail, in the format used in lecture. The docum
 
 ## Phase B: Schedule and risk {#sec-phase-b}
 
-**Due Monday, November 23.** Concepts: [Chapter 6](06-Network-Diagrams-and-AON.qmd) (AON), [Chapter 7](07-Risk-Management.qmd) (risk), and [Chapter 8](08-Project-Scheduling.qmd) (scheduling).
+**Due:** see the Phase B submission folder on FOL. Concepts: [Chapter 6](06-Network-Diagrams-and-AON.qmd) (AON), [Chapter 7](07-Risk-Management.qmd) (risk), and [Chapter 8](08-Project-Scheduling.qmd) (scheduling).
 
 | Template | File |
 |---|---|
@@ -188,7 +188,7 @@ Complete every area with enough detail, in the format used in lecture. The docum
 
 ## Phase C: Costs {#sec-phase-c}
 
-**Due Monday, December 7.** Concepts: [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd) (cost estimation and budgeting) and [Chapter 11](11-Resource-Management.qmd) (resources).
+**Due:** see the Phase C submission folder on FOL. Concepts: [Chapter 9](09-Cost-Estimation-and-Budgeting.qmd) (cost estimation and budgeting) and [Chapter 11](11-Resource-Management.qmd) (resources).
 
 | Template | File |
 |---|---|
