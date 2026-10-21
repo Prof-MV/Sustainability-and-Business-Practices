@@ -59,6 +59,20 @@ Raise problems early, while there is still time to fix them.
 - Content that is easy to read and understand.
 - Diagrams large enough to read their text. A large diagram may be split into parts if it stays easy to follow.
 
+### How to upload
+
+- Upload the **original files** (`.docx`, `.xlsx`, `.mpp`) **and** a **`.pdf` printout of every document**.
+- Upload **individual files**. Do **not** upload `.zip` files.
+
+### Where the marks come from
+
+There is no single "correct answer" to guess. Only a finished project would show whether your choices were right. Your marks come from:
+
+- **Correct calculations.**
+- **Staying within the limits provided** in the project description and instructions.
+- **Carrying information forward** from one section to the next (scope to charter, charter to WBS, WBS to AON and Gantt, and so on), so the package reads as one **congruent set of documents**.
+- **Having all the required information included.**
+
 ## The project description {#sec-project-description}
 
 The shaded box below is the **background** for the project: the situation your company is in. Everything outside the box, in the phase sections that follow, is an **instruction** about what to hand in.
@@ -177,7 +191,7 @@ Complete every area with enough detail, in the format used in lecture. The docum
 
 ### Submission
 
-- Upload a **single PDF** containing the entire group submission, **along with the files in their original format** (for example the Excel files).
+- Upload the original files and a PDF printout of every document, as individual files (see *How to upload* above).
 - The report **starts with** the Project Charter, Scope Statement, and WBS from Phase A, **corrected using the Phase A feedback**.
 
 ### AON diagram
@@ -241,4 +255,5 @@ Your marks come from three things: the **accuracy** of your costs, the **identif
 4. Group report completed from the phase templates.
 5. Diagrams and charts readable, with legends where required.
 6. Your evaluation survey for the phase completed on FOL, in the version for your role (PM or Team Member). A missed survey means a grade of 0 for the phase.
-7. Everything uploaded to FOL **before the deadline**. Remember the 15 % per day late deduction.
+7. Original files (`.docx`, `.xlsx`, `.mpp`) **and** a `.pdf` printout of every document uploaded as **individual files, no `.zip`**.
+8. Everything uploaded to FOL **before the deadline**. Remember the 15 % per day late deduction.
