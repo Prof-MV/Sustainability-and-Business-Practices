@@ -113,6 +113,18 @@ A **lead** lets a successor start early (overlap); a **lag** forces a wait
 
 ### Try it yourself: which relationship is it?
 
+**What to do.** Drag (or select) each statement into the precedence type it
+describes. Use the table above as your key. **What it means.** The trick is to
+ask two questions about each statement: *which event of the first activity
+matters, its start or its finish?* and *which event of the second activity does
+it control?* The two answers give the pair: finish→start is FS, finish→finish is
+FF, start→start is SS and start→finish is SF. Expect most real dependencies to
+be FS, with SS and FF used for overlaps (leads and lags). SF is rare, so be
+suspicious if you put many statements in that bin. **How it links.** Getting the
+relationship right decides how the activities are placed on the Gantt chart
+above, and later on whether the critical path in the PERT and crashing exercises
+is the one you think it is.
+
 ```{r tryit-relations-08, echo=FALSE, results='asis'}
 rel_bins <- c("Finish-to-Start (FS)", "Finish-to-Finish (FF)", "Start-to-Start (SS)", "Start-to-Finish (SF)")
 tryit_sort(
@@ -153,6 +165,25 @@ tryit_sort(
 
 ## Probabilistic scheduling with PERT
 
+::: {.callout-note}
+**How the exercises in this chapter fit together.** The next four hands-on
+items form one chain, so work through them in order:
+
+1. **Worked Example 1** turns the three-point estimates of one critical path
+   into a project mean (83 days) and standard deviation (about 2.4 days).
+2. **Probability-of-On-Time Calculator** takes that mean and standard deviation
+   and answers: *how likely is a given finish day, and which day should I
+   promise?*
+3. **Try it yourself: how likely is the target date?** is the same calculation
+   done by hand on your own team's data set, with answers checked.
+4. **Schedule Simulation** tests the formula: it simulates the same critical
+   path 2 000 times and compares the result with the normal-curve answer.
+
+Later, **crashing** takes over: once you know the date is at risk, the crash
+calculator and exercise show the cheapest way to buy days back. The same
+critical-path logic is used throughout.
+:::
+
 A single duration hides uncertainty. Using three-point estimates
 (Chapter 6), for each activity:
 
@@ -166,7 +197,20 @@ $$\mu_{\text{project}} = \sum t_e, \qquad \sigma^2_{\text{project}} = \sum \sigm
 
 The critical path is A--B--C--D--E with these three-point estimates:
 
-Live cell --- change any activity's optimistic, most-likely, or pessimistic estimate.
+**What to try.** Change any activity's optimistic, most-likely or pessimistic
+value in the table and watch the results update.
+
+- Make one activity's pessimistic value much larger (say E: 30 → 45). Notice
+  that the mean rises a little but the standard deviation rises a lot: a long
+  tail hurts the spread more than the average.
+- Move an activity's most-likely value toward its optimistic one. The mean drops
+  but the spread barely changes, because $\sigma$ depends only on $p - o$.
+
+**What it means.** $t_e$ is the weighted-average duration of each activity;
+adding them along the critical path gives the project mean $\mu$ (83.0 days
+here). Variances add, but standard deviations do not, so $\sigma$ is the square
+root of the summed variances. **Link.** These two numbers, $\mu$ and $\sigma$,
+are the inputs to the next calculator.
 
 ```{r calc-pert-project-08, echo=FALSE, results='asis'}
 qwebr_calc_card(
@@ -217,6 +261,27 @@ for (i in seq_len(nrow(cp)))
 
 Standardize the target: $z = \dfrac{\text{target} - \mu}{\sigma}$, then read the
 normal cumulative probability.
+
+**What to try.** The calculator starts with the result of Worked Example 1
+($\mu$ = 83 days, $\sigma$ = 2.42 days).
+
+1. Drag the **target finish day** slider from 80 up to 90. The shaded area under
+   the curve is the probability of finishing by that day. Find the day where it
+   first passes 90 %.
+2. Set the target to 83, the mean. The probability is 50 %: promising the mean is
+   a coin flip.
+3. Raise the **confidence** you want to 95 % or 99 %. The "day for X %
+   confidence" moves right, and each extra point of confidence costs more days
+   than the previous one.
+4. Increase $\sigma$ (more uncertainty) and see how the same target day becomes
+   less safe.
+
+**What it means.** The $z$-score counts how many standard deviations the target
+lies above the mean; the probability is the area of the curve to its left. The
+green dashed line is the day you should *promise* to reach your chosen
+confidence, and the red dashed line is the day you are *asking about*. A
+message that flags the goal as missed means your target is earlier than the day
+you can defend.
 
 ```{r calc-prob-on-time-08, echo=FALSE, results='asis'}
 qwebr_calc_card(
@@ -285,9 +350,32 @@ project level, not hidden padding in every task.
 
 ### Try it yourself: how likely is the target date?
 
-Take the three-point estimates for the activities on the critical path and
-work through to the probability of finishing by the target. Each team picks
-its own **data set** (and its own target day).
+This exercise is the calculator above done by hand. Take the three-point
+estimates for the activities on the critical path and work through to the
+probability of finishing by the target. Each team picks its own **data set**
+(and its own target day).
+
+**The data you are given.** A table for the five critical-path activities A--E
+with the optimistic ($o$), most-likely ($m$) and pessimistic ($p$) durations in
+days, plus a **target finish day**. Nothing else is needed: the activities are
+assumed to be in series on the critical path, as in Worked Example 1. The table
+and target differ per data set, so make sure you use your team's set (the
+selector above the table) and its own target day.
+
+**What to do.**
+
+1. Fill in the blank columns of the table: $t_e$ and variance for each activity.
+2. Add up the columns to get the project mean and, from the summed variance, the
+   standard deviation.
+3. Compute $z$ for the target day, then the probability.
+4. Finally find the day to promise for 90 % confidence.
+
+Check each answer with the button; the hints give the formulas. **What it
+means.** The final answer is a decision, not just a number: if the probability
+is below your threshold (say 85--90 %), either the target must move later or the
+schedule needs buffer or crashing. **Link.** Use the calculator above to check
+your result for your own $\mu$ and $\sigma$ (enter them and the target), and
+use the next section to see what you can do if the probability is too low.
 
 ```{r tryit-pert-prob-08, echo=FALSE, results='asis'}
 pp_sets <- list(
@@ -343,6 +431,25 @@ The formula above assumes the project total is normally distributed. Check it
 by brute force: each run draws every activity's duration from a PERT
 (beta-shaped) distribution and adds them up. Press **Run again** for a new set
 of 2 000 runs; in class, each team enters its own run number.
+
+**What to try.**
+
+1. Look at the histogram: it is the spread of 2 000 possible project finish
+   days, built from the *same* critical path A--E as Worked Example 1. The red
+   line is your target.
+2. Press **Run again** (or change the run number) a few times. The percentages
+   move slightly from run to run: that is sampling noise, not a different
+   answer.
+3. Move the target day until at least 90 % of the runs finish on time, and
+   compare it with the "90 % day" from the calculator (about day 86). The
+   simulation and the formula should agree to within a day.
+4. Set the target to the mean (83): about half of the runs finish late.
+
+**What it means.** The output compares *"% of runs on time"* (simulation) with
+the *normal-curve formula*. They agree because adding several independent
+activities makes the total close to normal. The simulation is the proof that
+the shortcut formula is trustworthy, and it also gives an honest picture of the
+range: the "middle 90 %" line tells you how wide the real uncertainty is.
 
 ```{r calc-schedule-sim-08, echo=FALSE, results='asis'}
 qwebr_calc_card(
@@ -464,6 +571,24 @@ To shorten the project, crash **critical-path** activities in **cheapest-slope-
 first** order, one time unit at a time, until you hit the target or run out of
 crashable critical tasks.
 
+**What to try.** The calculator uses the three critical activities A, F and H
+of the RC-vehicle schedule (the dark bars in the Gantt chart).
+
+1. Set the slider to 1--4 days: only the cheapest activity (H, about \$1 013 per
+   day) is crashed, and the bar chart marks it in blue.
+2. Increase to 5 days: H is exhausted after 4 days, so one day is taken from the
+   next-cheapest activity (A, \$1 025 per day).
+3. Increase to 7, then 8 days: F (\$5 000 per day) is used last, and at 8 days
+   the calculator warns that only 7 days can be crashed at all, because every
+   activity has a limit.
+
+**What it means.** The cost of each extra day jumps as cheaper options run out,
+which is the time-cost curve in the figure above. The cheapest-first rule gives
+the minimum cost for the days you need; any other order costs more. The tool
+assumes each activity stays critical. In a real project you re-check the
+network after each cut, as the next exercise reminds you. **Link.** If the
+probability exercise says your date is too risky, this is how you buy days back.
+
 ```{r calc-crash-sequence-08, echo=FALSE, results='asis'}
 qwebr_calc_card(
   label = "crash-sequence-08",
@@ -537,6 +662,23 @@ for (s in steps) cat(s, "\n", sep = "")
 All four activities are on the critical path. Work out each slope and each
 activity's maximum crash, then the least cost of the cut asked for. Each team
 picks its own **data set**.
+
+**What to do.**
+
+1. For each activity fill in the **slope** (extra cost per week saved) and the
+   **maximum crash** (normal minus crash time).
+2. Rank the activities from the cheapest to the most expensive slope.
+3. Crash in that order, up to each activity's maximum, until the required cut is
+   reached, and add up the cost. Enter the total in the last box.
+
+**What it means.** This is the calculator above done by hand: the slope tells you
+the price of one week, the maximum crash tells you how much of that cheap week
+supply exists. A cheap activity with only 1 week available cannot carry a
+5-week cut alone, so expensive ones come into play. **Link.** The worked
+solution shows the same procedure; use the calculator to test your table by
+entering your slopes and cut in its code. In the project, a cut like this
+is the cost side of the time-versus-probability decisions made in the PERT
+exercises.
 
 ```{r tryit-crash-08, echo=FALSE, results='asis'}
 cr_sets <- list(
