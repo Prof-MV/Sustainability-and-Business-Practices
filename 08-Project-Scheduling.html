@@ -83,7 +83,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6e84ce00354d0982096031bcf17844bd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -2267,6 +2267,7 @@ Figure&nbsp;8.1: A Gantt chart for the RC-vehicle sub-project. Bars are activiti
 <p>A <strong>lead</strong> lets a successor start early (overlap); a <strong>lag</strong> forces a wait (e.g.&nbsp;“wait 2 days for the paint to cure” is FS + 2-day lag).</p>
 <section id="try-it-yourself-which-relationship-is-it" class="level3" data-number="8.4.1">
 <h3 data-number="8.4.1" class="anchored" data-anchor-id="try-it-yourself-which-relationship-is-it"><span class="header-section-number">8.4.1</span> Try it yourself: which relationship is it?</h3>
+<p><strong>What to do.</strong> Drag (or select) each statement into the precedence type it describes. Use the table above as your key. <strong>What it means.</strong> The trick is to ask two questions about each statement: <em>which event of the first activity matters, its start or its finish?</em> and <em>which event of the second activity does it control?</em> The two answers give the pair: finish→start is FS, finish→finish is FF, start→start is SS and start→finish is SF. Expect most real dependencies to be FS, with SS and FF used for overlaps (leads and lags). SF is rare, so be suspicious if you put many statements in that bin. <strong>How it links.</strong> Getting the relationship right decides how the activities are placed on the Gantt chart above, and later on whether the critical path in the PERT and crashing exercises is the one you think it is.</p>
 <script src="js/tryit.js"></script>
 <div class="tryit" id="tryit-precedence-types" data-tryit="sort">
 <script type="application/json">{"title":"Which precedence relationship does each statement describe?","intro":"Pick the relationship each statement describes.","bins":["Finish-to-Start (FS)","Finish-to-Finish (FF)","Start-to-Start (SS)","Start-to-Finish (SF)"],"cards":[{"text":"The concrete must cure before the wall is painted.","bin":0,"why":"The predecessor finishes, then the successor starts: FS, the usual case."},{"text":"Editing cannot finish until the writing has finished.","bin":1,"why":"B cannot finish until A finishes: FF."},{"text":"Trimming the edges starts when the mowing starts.","bin":2,"why":"B starts when A starts: SS."},{"text":"The old system is switched off only once the new system has started up.","bin":3,"why":"A starting triggers B finishing: the rare SF."},{"text":"Final testing cannot be completed until the last build is completed.","bin":1,"why":"The two finishes are tied together: FF."},{"text":"Cleaning of each room can begin once painting in that room has begun.","bin":2,"why":"The two starts are tied together: SS."},{"text":"Assembly begins only after the long-lead part has arrived.","bin":0,"why":"FS: wait for the part, then start."},{"text":"The outgoing shift stops only when the incoming shift has started.","bin":3,"why":"The successor's start releases the predecessor's finish: SF."}]}</script>
@@ -2275,6 +2276,26 @@ Figure&nbsp;8.1: A Gantt chart for the RC-vehicle sub-project. Bars are activiti
 </section>
 <section id="probabilistic-scheduling-with-pert" class="level2" data-number="8.5">
 <h2 data-number="8.5" class="anchored" data-anchor-id="probabilistic-scheduling-with-pert"><span class="header-section-number">8.5</span> Probabilistic scheduling with PERT</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>How the exercises in this chapter fit together.</strong> The next four hands-on items form one chain, so work through them in order:</p>
+<ol type="1">
+<li><strong>Worked Example 1</strong> turns the three-point estimates of one critical path into a project mean (83 days) and standard deviation (about 2.4 days).</li>
+<li><strong>Probability-of-On-Time Calculator</strong> takes that mean and standard deviation and answers: <em>how likely is a given finish day, and which day should I promise?</em></li>
+<li><strong>Try it yourself: how likely is the target date?</strong> is the same calculation done by hand on your own team’s data set, with answers checked.</li>
+<li><strong>Schedule Simulation</strong> tests the formula: it simulates the same critical path 2 000 times and compares the result with the normal-curve answer.</li>
+</ol>
+<p>Later, <strong>crashing</strong> takes over: once you know the date is at risk, the crash calculator and exercise show the cheapest way to buy days back. The same critical-path logic is used throughout.</p>
+</div>
+</div>
 <p>A single duration hides uncertainty. Using three-point estimates (Chapter 6), for each activity:</p>
 <p><span class="math display">\[t_e = \frac{o + 4m + p}{6}, \qquad \sigma = \frac{p - o}{6}, \qquad \sigma^2 = \left(\frac{p - o}{6}\right)^2\]</span></p>
 <p>For the <strong>project</strong>, sum along the <strong>critical path</strong>:</p>
@@ -2282,7 +2303,12 @@ Figure&nbsp;8.1: A Gantt chart for the RC-vehicle sub-project. Bars are activiti
 <section id="worked-example-1-project-duration-and-its-spread" class="level3" data-number="8.5.1">
 <h3 data-number="8.5.1" class="anchored" data-anchor-id="worked-example-1-project-duration-and-its-spread"><span class="header-section-number">8.5.1</span> Worked Example 1: project duration and its spread</h3>
 <p>The critical path is A–B–C–D–E with these three-point estimates:</p>
-<p>Live cell — change any activity’s optimistic, most-likely, or pessimistic estimate.</p>
+<p><strong>What to try.</strong> Change any activity’s optimistic, most-likely or pessimistic value in the table and watch the results update.</p>
+<ul>
+<li>Make one activity’s pessimistic value much larger (say E: 30 → 45). Notice that the mean rises a little but the standard deviation rises a lot: a long tail hurts the spread more than the average.</li>
+<li>Move an activity’s most-likely value toward its optimistic one. The mean drops but the spread barely changes, because <span class="math inline">\(\sigma\)</span> depends only on <span class="math inline">\(p - o\)</span>.</li>
+</ul>
+<p><strong>What it means.</strong> <span class="math inline">\(t_e\)</span> is the weighted-average duration of each activity; adding them along the critical path gives the project mean <span class="math inline">\(\mu\)</span> (83.0 days here). Variances add, but standard deviations do not, so <span class="math inline">\(\sigma\)</span> is the square root of the summed variances. <strong>Link.</strong> These two numbers, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, are the inputs to the next calculator.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card" data-qwebr-label="pert-project-08" data-fig-width="1200" data-fig-height="700">
@@ -2309,6 +2335,14 @@ Show the live R code behind this card
 <section id="try-it-yourself-probability-of-hitting-a-target-date" class="level3" data-number="8.5.2">
 <h3 data-number="8.5.2" class="anchored" data-anchor-id="try-it-yourself-probability-of-hitting-a-target-date"><span class="header-section-number">8.5.2</span> Try it yourself: probability of hitting a target date</h3>
 <p>Standardize the target: <span class="math inline">\(z = \dfrac{\text{target} - \mu}{\sigma}\)</span>, then read the normal cumulative probability.</p>
+<p><strong>What to try.</strong> The calculator starts with the result of Worked Example 1 (<span class="math inline">\(\mu\)</span> = 83 days, <span class="math inline">\(\sigma\)</span> = 2.42 days).</p>
+<ol type="1">
+<li>Drag the <strong>target finish day</strong> slider from 80 up to 90. The shaded area under the curve is the probability of finishing by that day. Find the day where it first passes 90 %.</li>
+<li>Set the target to 83, the mean. The probability is 50 %: promising the mean is a coin flip.</li>
+<li>Raise the <strong>confidence</strong> you want to 95 % or 99 %. The “day for X % confidence” moves right, and each extra point of confidence costs more days than the previous one.</li>
+<li>Increase <span class="math inline">\(\sigma\)</span> (more uncertainty) and see how the same target day becomes less safe.</li>
+</ol>
+<p><strong>What it means.</strong> The <span class="math inline">\(z\)</span>-score counts how many standard deviations the target lies above the mean; the probability is the area of the curve to its left. The green dashed line is the day you should <em>promise</em> to reach your chosen confidence, and the red dashed line is the day you are <em>asking about</em>. A message that flags the goal as missed means your target is earlier than the day you can defend.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card" data-qwebr-label="prob-on-time-08" data-fig-width="1200" data-fig-height="700">
@@ -2366,7 +2400,16 @@ Why quote “day 86 at 90 % confidence” instead of “day 83”?
 </section>
 <section id="try-it-yourself-how-likely-is-the-target-date" class="level3" data-number="8.5.3">
 <h3 data-number="8.5.3" class="anchored" data-anchor-id="try-it-yourself-how-likely-is-the-target-date"><span class="header-section-number">8.5.3</span> Try it yourself: how likely is the target date?</h3>
-<p>Take the three-point estimates for the activities on the critical path and work through to the probability of finishing by the target. Each team picks its own <strong>data set</strong> (and its own target day).</p>
+<p>This exercise is the calculator above done by hand. Take the three-point estimates for the activities on the critical path and work through to the probability of finishing by the target. Each team picks its own <strong>data set</strong> (and its own target day).</p>
+<p><strong>The data you are given.</strong> A table for the five critical-path activities A–E with the optimistic (<span class="math inline">\(o\)</span>), most-likely (<span class="math inline">\(m\)</span>) and pessimistic (<span class="math inline">\(p\)</span>) durations in days, plus a <strong>target finish day</strong>. Nothing else is needed: the activities are assumed to be in series on the critical path, as in Worked Example 1. The table and target differ per data set, so make sure you use your team’s set (the selector above the table) and its own target day.</p>
+<p><strong>What to do.</strong></p>
+<ol type="1">
+<li>Fill in the blank columns of the table: <span class="math inline">\(t_e\)</span> and variance for each activity.</li>
+<li>Add up the columns to get the project mean and, from the summed variance, the standard deviation.</li>
+<li>Compute <span class="math inline">\(z\)</span> for the target day, then the probability.</li>
+<li>Finally find the day to promise for 90 % confidence.</li>
+</ol>
+<p>Check each answer with the button; the hints give the formulas. <strong>What it means.</strong> The final answer is a decision, not just a number: if the probability is below your threshold (say 85–90 %), either the target must move later or the schedule needs buffer or crashing. <strong>Link.</strong> Use the calculator above to check your result for your own <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> (enter them and the target), and use the next section to see what you can do if the probability is too low.</p>
 <script src="js/tryit.js"></script>
 <div class="tryit" id="tryit-pert-probability" data-tryit="grid">
 <script type="application/json">{"title":"Probability of finishing on time","intro":"Variance is the square of the standard deviation. Two decimal places.","columns":[{"label":"Activity","blank":false,"tol":null,"choices":null,"hint":null},{"label":"o","blank":false,"tol":null,"choices":null,"hint":null},{"label":"m","blank":false,"tol":null,"choices":null,"hint":null},{"label":"p","blank":false,"tol":null,"choices":null,"hint":null},{"label":"t_e","blank":true,"tol":0.01,"choices":null,"hint":"(o + 4m + p) / 6."},{"label":"Variance","blank":true,"tol":0.01,"choices":null,"hint":"((p - o) / 6) squared."}],"rows":[["A","4","6","10",6.33333333333333,1],["B","8","10","16",10.6666666666667,1.77777777777778],["C","5","7","9",7,0.444444444444444],["D","6","9","18",10,4],["E","3","4","5",4,0.111111111111111]],"answers":[{"label":"Project mean duration","answer":38,"tol":0.05,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"Project standard deviation","answer":2.70801280154532,"tol":0.02,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"z for a target of day 41","answer":1.10782341881399,"tol":0.02,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":2},{"label":"Probability of finishing by day 41","answer":86.603095798291,"tol":0.6,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Day to promise for 90 % confidence","answer":41.4704580453352,"tol":0.1,"tolPct":null,"prefix":"","suffix":"day","hint":null,"digits":1}],"variants":[{"rows":[["A","4","6","10",6.33333333333333,1],["B","8","10","16",10.6666666666667,1.77777777777778],["C","5","7","9",7,0.444444444444444],["D","6","9","18",10,4],["E","3","4","5",4,0.111111111111111]],"answers":[{"label":"Project mean duration","answer":38,"tol":0.05,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"Project standard deviation","answer":2.70801280154532,"tol":0.02,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"z for a target of day 41","answer":1.10782341881399,"tol":0.02,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":2},{"label":"Probability of finishing by day 41","answer":86.603095798291,"tol":0.6,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Day to promise for 90 % confidence","answer":41.4704580453352,"tol":0.1,"tolPct":null,"prefix":"","suffix":"day","hint":null,"digits":1}]},{"rows":[["A","5","8","17",9,4],["B","10","12","14",12,0.444444444444444],["C","4","6","14",7,2.77777777777778],["D","7","10","13",10,1],["E","2","3","10",4,1.77777777777778]],"answers":[{"label":"Project mean duration","answer":42,"tol":0.05,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"Project standard deviation","answer":3.16227766016838,"tol":0.02,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"z for a target of day 45","answer":0.948683298050514,"tol":0.02,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":2},{"label":"Probability of finishing by day 45","answer":82.8609144426044,"tol":0.6,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Day to promise for 90 % confidence","answer":46.0526218860755,"tol":0.1,"tolPct":null,"prefix":"","suffix":"day","hint":null,"digits":1}]},{"rows":[["A","3","5","13",6,2.77777777777778],["B","6","9","12",9,1],["C","8","10","12",10,0.444444444444444],["D","4","6","8",6,0.444444444444444],["E","5","8","17",9,4]],"answers":[{"label":"Project mean duration","answer":40,"tol":0.05,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"Project standard deviation","answer":2.94392028877595,"tol":0.02,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"z for a target of day 43","answer":1.01904933073014,"tol":0.02,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":2},{"label":"Probability of finishing by day 43","answer":84.5910226266473,"tol":0.6,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Day to promise for 90 % confidence","answer":43.7727856549193,"tol":0.1,"tolPct":null,"prefix":"","suffix":"day","hint":null,"digits":1}]},{"rows":[["A","10","14","18",14,1.77777777777778],["B","2","5","14",6,4],["C","6","8","10",8,0.444444444444444],["D","12","15","24",16,4],["E","4","5","6",5,0.111111111111111]],"answers":[{"label":"Project mean duration","answer":49,"tol":0.05,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"Project standard deviation","answer":3.21455025366432,"tol":0.02,"tolPct":null,"prefix":"","suffix":"days","hint":null,"digits":2},{"label":"z for a target of day 52","answer":0.933256525257383,"tol":0.02,"tolPct":null,"prefix":"","suffix":"","hint":null,"digits":2},{"label":"Probability of finishing by day 52","answer":82.4656231976008,"tol":0.6,"tolPct":null,"prefix":"","suffix":"%","hint":null,"digits":1},{"label":"Day to promise for 90 % confidence","answer":53.1196119101053,"tol":0.1,"tolPct":null,"prefix":"","suffix":"day","hint":null,"digits":1}]}]}</script>
@@ -2381,6 +2424,14 @@ Show the worked solution
 <section id="try-it-yourself-simulate-the-schedule" class="level3" data-number="8.5.4">
 <h3 data-number="8.5.4" class="anchored" data-anchor-id="try-it-yourself-simulate-the-schedule"><span class="header-section-number">8.5.4</span> Try it yourself: simulate the schedule</h3>
 <p>The formula above assumes the project total is normally distributed. Check it by brute force: each run draws every activity’s duration from a PERT (beta-shaped) distribution and adds them up. Press <strong>Run again</strong> for a new set of 2 000 runs; in class, each team enters its own run number.</p>
+<p><strong>What to try.</strong></p>
+<ol type="1">
+<li>Look at the histogram: it is the spread of 2 000 possible project finish days, built from the <em>same</em> critical path A–E as Worked Example 1. The red line is your target.</li>
+<li>Press <strong>Run again</strong> (or change the run number) a few times. The percentages move slightly from run to run: that is sampling noise, not a different answer.</li>
+<li>Move the target day until at least 90 % of the runs finish on time, and compare it with the “90 % day” from the calculator (about day 86). The simulation and the formula should agree to within a day.</li>
+<li>Set the target to the mean (83): about half of the runs finish late.</li>
+</ol>
+<p><strong>What it means.</strong> The output compares <em>“% of runs on time”</em> (simulation) with the <em>normal-curve formula</em>. They agree because adding several independent activities makes the total close to normal. The simulation is the proof that the shortcut formula is trustworthy, and it also gives an honest picture of the range: the “middle 90 %” line tells you how wide the real uncertainty is.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card" data-qwebr-label="schedule-sim-08" data-fig-width="1200" data-fig-height="700">
@@ -2455,6 +2506,13 @@ Figure&nbsp;8.2: Time-cost trade-off for one activity. Between the normal and cr
 <section id="try-it-yourself-least-cost-crashing" class="level3" data-number="8.6.1">
 <h3 data-number="8.6.1" class="anchored" data-anchor-id="try-it-yourself-least-cost-crashing"><span class="header-section-number">8.6.1</span> Try it yourself: least-cost crashing</h3>
 <p>To shorten the project, crash <strong>critical-path</strong> activities in <strong>cheapest-slope- first</strong> order, one time unit at a time, until you hit the target or run out of crashable critical tasks.</p>
+<p><strong>What to try.</strong> The calculator uses the three critical activities A, F and H of the RC-vehicle schedule (the dark bars in the Gantt chart).</p>
+<ol type="1">
+<li>Set the slider to 1–4 days: only the cheapest activity (H, about $1 013 per day) is crashed, and the bar chart marks it in blue.</li>
+<li>Increase to 5 days: H is exhausted after 4 days, so one day is taken from the next-cheapest activity (A, $1 025 per day).</li>
+<li>Increase to 7, then 8 days: F ($5 000 per day) is used last, and at 8 days the calculator warns that only 7 days can be crashed at all, because every activity has a limit.</li>
+</ol>
+<p><strong>What it means.</strong> The cost of each extra day jumps as cheaper options run out, which is the time-cost curve in the figure above. The cheapest-first rule gives the minimum cost for the days you need; any other order costs more. The tool assumes each activity stays critical. In a real project you re-check the network after each cut, as the next exercise reminds you. <strong>Link.</strong> If the probability exercise says your date is too risky, this is how you buy days back.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card" data-qwebr-label="crash-sequence-08" data-fig-width="1200" data-fig-height="700">
@@ -2483,6 +2541,13 @@ Show the live R code behind this calculator
 <section id="try-it-yourself-crash-slopes-and-the-cheapest-cut" class="level3" data-number="8.6.2">
 <h3 data-number="8.6.2" class="anchored" data-anchor-id="try-it-yourself-crash-slopes-and-the-cheapest-cut"><span class="header-section-number">8.6.2</span> Try it yourself: crash slopes and the cheapest cut</h3>
 <p>All four activities are on the critical path. Work out each slope and each activity’s maximum crash, then the least cost of the cut asked for. Each team picks its own <strong>data set</strong>.</p>
+<p><strong>What to do.</strong></p>
+<ol type="1">
+<li>For each activity fill in the <strong>slope</strong> (extra cost per week saved) and the <strong>maximum crash</strong> (normal minus crash time).</li>
+<li>Rank the activities from the cheapest to the most expensive slope.</li>
+<li>Crash in that order, up to each activity’s maximum, until the required cut is reached, and add up the cost. Enter the total in the last box.</li>
+</ol>
+<p><strong>What it means.</strong> This is the calculator above done by hand: the slope tells you the price of one week, the maximum crash tells you how much of that cheap week supply exists. A cheap activity with only 1 week available cannot carry a 5-week cut alone, so expensive ones come into play. <strong>Link.</strong> The worked solution shows the same procedure; use the calculator to test your table by entering your slopes and cut in its code. In the project, a cut like this is the cost side of the time-versus-probability decisions made in the PERT exercises.</p>
 <script src="js/tryit.js"></script>
 <div class="tryit" id="tryit-crash-slopes" data-tryit="grid">
 <script type="application/json">{"title":"Crash cost slopes","intro":"Crash the cheapest slope first, up to each activity's maximum.","columns":[{"label":"Activity","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Normal (wk)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Crash (wk)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Normal cost ($)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Crash cost ($)","blank":false,"tol":null,"choices":null,"hint":null},{"label":"Slope ($/wk)","blank":true,"tol":0.5,"choices":null,"hint":"(crash cost - normal cost) / (normal time - crash time)."},{"label":"Max crash (wk)","blank":true,"tol":0.5,"choices":null,"hint":"Normal time minus crash time."}],"rows":[["A","10","7","20000","29000",3000,3],["B","8","6","15000","19000",2000,2],["C","6","5","9000","12500",3500,1],["D","9","6","18000","23400",1800,3]],"answers":[{"label":"Least cost to cut 5 weeks","answer":9400,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}],"variants":[{"rows":[["A","10","7","20000","29000",3000,3],["B","8","6","15000","19000",2000,2],["C","6","5","9000","12500",3500,1],["D","9","6","18000","23400",1800,3]],"answers":[{"label":"Least cost to cut 5 weeks","answer":9400,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["A","12","9","22000","28000",2000,3],["B","7","5","14000","19000",2500,2],["C","10","8","16000","22000",3000,2],["D","5","4","8000","9800",1800,1]],"answers":[{"label":"Least cost to cut 4 weeks","answer":7800,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["A","9","6","12000","17400",1800,3],["B","7","4","10000","17500",2500,3],["C","5","3","7000","10200",1600,2],["D","8","7","11000","13300",2300,1]],"answers":[{"label":"Least cost to cut 6 weeks","answer":10900,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]},{"rows":[["A","6","4","9000","13400",2200,2],["B","11","8","20000","26900",2300,3],["C","8","7","12000","14100",2100,1],["D","10","6","15000","25000",2500,4]],"answers":[{"label":"Least cost to cut 5 weeks","answer":11100,"tol":1,"tolPct":null,"prefix":"$","suffix":"","hint":null,"digits":0}]}]}</script>
