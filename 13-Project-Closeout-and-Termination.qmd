@@ -75,7 +75,7 @@ tt <- data.frame(
 ggplot(tt, aes(x, 0)) +
   geom_label(aes(label = type), nudge_y = 0.55, size = 3.6 * diagram_text_scale,
              fontface = "bold", fill = c("#A9DFBF", "#A9DFBF", "#A9DFBF", "#F5B7B1"),
-             label.size = 0) +
+             linewidth = 0) +
   geom_text(aes(label = desc), size = 2.6 * chart_text_scale, lineheight = 0.95,
             vjust = 1) +
   coord_cartesian(xlim = c(0.4, 4.6), ylim = c(-1.1, 1)) +

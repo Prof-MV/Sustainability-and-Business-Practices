@@ -59,7 +59,7 @@ loop <- data.frame(
 )
 ggplot(loop, aes(x, y)) +
   geom_label(aes(label = label), size = 3 * diagram_text_scale, lineheight = 0.9,
-             fill = "#D6EAF8", label.size = 0, fontface = "bold") +
+             fill = "#D6EAF8", linewidth = 0, fontface = "bold") +
   annotate("segment", x = c(0.95, 3.15, 5.35), xend = c(1.55, 3.75, 5.95),
            y = 0, yend = 0, arrow = arrow(length = unit(0.18, "cm")), color = "grey40") +
   annotate("segment", x = 6.6, xend = 6.6, y = -0.4, yend = -0.75, color = "grey40") +

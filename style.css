@@ -1052,6 +1052,22 @@ details.tryit-solution.tryit-locked > summary::after {
   background-color: #eef1f4;
 }
 
+.qwebr-calc-reset {
+  margin-left: auto;
+  padding: 0.25em 0.8em;
+  border: 1px solid #2c3e50;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #2c3e50;
+  font-size: 0.8em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.qwebr-calc-reset:hover {
+  background-color: #eef1f4;
+}
+
 /* Team data sets and the critical-path tick box in diagram exercises */
 .tryit-team {
   margin: 0.25em 0 0.75em;

@@ -833,7 +833,7 @@ ggplot(phased, aes(x = month)) +
   geom_label(aes(y = cumulative / scale_factor,
                  label = scales::dollar(cumulative, big.mark = " ")),
              vjust = -0.5, size = 3.2 * chart_text_scale, color = "#C0392B",
-             fill = "white", label.size = 0) +
+             fill = "white", linewidth = 0) +
   scale_y_continuous(
     name = "Planned spend this month",
     labels = scales::dollar_format(big.mark = " "),
@@ -974,8 +974,14 @@ budget above the red ceiling line.
 2. Change the team size, the salaries or the project length. Labour is prorated
    by months/12, so a shorter project saves labour cost.
 3. Raise the ceiling until the message changes to *headroom*.
-4. Edit the code to change the material picks; the materials (\$627 000) are the
-   largest block and are fixed in the code.
+
+**A word of caution.** These three levers are easy to move on screen and hard
+to achieve in a real project. Cutting the contingency only hides the risk; it
+does not remove it. A shorter project or a smaller team means the same work in
+less time, with the schedule consequences from Chapter 8. And the ceiling is
+Senior Management's decision, not yours: raising it is a negotiation, not a
+slider. The materials (\$627 000) are the largest block and cannot be changed
+in the card; they are set in the code below.
 
 **What it means.** This is a bottom-up budget: labour plus materials is the
 subtotal and contingency is added on top, as the ABC warning says. The ceiling
@@ -1005,6 +1011,8 @@ qwebr_calc_card(
 <summary>Show the live R code behind this calculator</summary>
 
 The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press **Run Code** to experiment further.
+
+**Try this in the code.** Change the material picks in the `materials` list (each inside its range from the project brief, for example carbon fibre instead of aluminium) and press **Run Code**. The materials are the largest block of the budget, so this is where the biggest savings or overruns come from.
 
 ```{webr-r}
 #| label: rc-project-budget-09
