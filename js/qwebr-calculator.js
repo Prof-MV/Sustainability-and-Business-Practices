@@ -486,6 +486,25 @@
       });
     }
 
+    // "Reset" puts every input back to the value the page loaded with. Cards
+    // with an editable table are left alone: their tables redraw from the code.
+    const header = card.querySelector(".qwebr-calc-header");
+    if (header && inputs.length && !tableGetters.length) {
+      const reset = document.createElement("button");
+      reset.type = "button";
+      reset.className = "qwebr-calc-reset";
+      reset.textContent = "Reset to defaults";
+      reset.addEventListener("click", function () {
+        inputs.forEach((input) => {
+          input.value = input.defaultValue;
+          const readout = card.querySelector(`[data-readout-for="${input.id}"]`);
+          if (readout) readout.textContent = Number(input.value).toLocaleString();
+        });
+        run();
+      });
+      header.appendChild(reset);
+    }
+
     whenReady(run);
   }
 

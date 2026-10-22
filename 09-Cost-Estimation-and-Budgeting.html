@@ -3029,10 +3029,6 @@ Warning
 <h2 data-number="9.9" class="anchored" data-anchor-id="the-time-phased-budget-and-the-s-curve"><span class="header-section-number">9.9</span> The time-phased budget and the S-curve</h2>
 <p>A <strong>time-phased budget</strong> spreads each activity’s cost across the calendar periods when it will actually be spent. Summing down the columns gives <strong>monthly planned spend</strong>; the running total is the <strong>cumulative cost baseline</strong> — the S-curve you will track the project against in <a href="./12-Project-Control-Systems.html">Chapter 12</a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The `label.size` argument of `geom_label()` is deprecated as of ggplot2 3.5.0.
-ℹ Please use the `linewidth` argument instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div id="fig-s-curve-09" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -3131,8 +3127,8 @@ Table&nbsp;9.5: Contingency reserve vs. management reserve.
 <li>Lower the <strong>contingency</strong> to 10 % and then 0 %. At 0 % the budget just fits under the ceiling, which shows how much of the problem is the reserve.</li>
 <li>Change the team size, the salaries or the project length. Labour is prorated by months/12, so a shorter project saves labour cost.</li>
 <li>Raise the ceiling until the message changes to <em>headroom</em>.</li>
-<li>Edit the code to change the material picks; the materials ($627 000) are the largest block and are fixed in the code.</li>
 </ol>
+<p><strong>A word of caution.</strong> These three levers are easy to move on screen and hard to achieve in a real project. Cutting the contingency only hides the risk; it does not remove it. A shorter project or a smaller team means the same work in less time, with the schedule consequences from Chapter 8. And the ceiling is Senior Management’s decision, not yours: raising it is a negotiation, not a slider. The materials ($627 000) are the largest block and cannot be changed in the card; they are set in the code below.</p>
 <p><strong>What it means.</strong> This is a bottom-up budget: labour plus materials is the subtotal and contingency is added on top, as the ABC warning says. The ceiling is the top-down number; the gap between the two is the feasibility conversation to have before the Charter is signed. <strong>Link.</strong> It combines the pieces from this chapter (work-package cost, ranges from the brief, contingency) and is the numbers behind the Week 9 case study.</p>
 <script src="js/qwebr-calculator.js"></script>
 
@@ -3204,6 +3200,7 @@ Table&nbsp;9.5: Contingency reserve vs. management reserve.
 Show the live R code behind this calculator
 </summary>
 <p>The card above re-runs this exact webR code every time you change an input, substituting your values for the variables at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
+<p><strong>Try this in the code.</strong> Change the material picks in the <code>materials</code> list (each inside its range from the project brief, for example carbon fibre instead of aluminium) and press <strong>Run Code</strong>. The materials are the largest block of the budget, so this is where the biggest savings or overruns come from.</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </details>
@@ -3258,22 +3255,22 @@ Problem 1: Fully-burdened labour and an indirect-rate swing
 Solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>techs <span class="ot">&lt;-</span> <span class="dv">2</span>; weeks <span class="ot">&lt;-</span> <span class="dv">3</span>; hrs_week <span class="ot">&lt;-</span> <span class="fl">37.5</span>; rate <span class="ot">&lt;-</span> <span class="dv">34</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>consumables <span class="ot">&lt;-</span> <span class="dv">6200</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>direct_labour <span class="ot">&lt;-</span> techs <span class="sc">*</span> weeks <span class="sc">*</span> hrs_week <span class="sc">*</span> rate</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>direct_cost   <span class="ot">&lt;-</span> direct_labour <span class="sc">+</span> consumables</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ir <span class="cf">in</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.45</span>)) {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> direct_cost <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> ir)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Indirect %2.0f%%:  direct $%s  +  indirect $%s  =  $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>              ir <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(direct_cost, <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> ir), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(total), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Swing from the indirect-rate assumption alone: $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> (<span class="fl">0.45</span> <span class="sc">-</span> <span class="fl">0.25</span>)), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>techs <span class="ot">&lt;-</span> <span class="dv">2</span>; weeks <span class="ot">&lt;-</span> <span class="dv">3</span>; hrs_week <span class="ot">&lt;-</span> <span class="fl">37.5</span>; rate <span class="ot">&lt;-</span> <span class="dv">34</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>consumables <span class="ot">&lt;-</span> <span class="dv">6200</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>direct_labour <span class="ot">&lt;-</span> techs <span class="sc">*</span> weeks <span class="sc">*</span> hrs_week <span class="sc">*</span> rate</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>direct_cost   <span class="ot">&lt;-</span> direct_labour <span class="sc">+</span> consumables</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ir <span class="cf">in</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.45</span>)) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> direct_cost <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> ir)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Indirect %2.0f%%:  direct $%s  +  indirect $%s  =  $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              ir <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(direct_cost, <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> ir), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(total), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Swing from the indirect-rate assumption alone: $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> (<span class="fl">0.45</span> <span class="sc">-</span> <span class="fl">0.25</span>)), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indirect 25%:  direct $13 850  +  indirect $3 462  =  $17 312
 Indirect 45%:  direct $13 850  +  indirect $6 232  =  $20 082
@@ -3321,23 +3318,23 @@ Problem 3: Variance analysis on the ABC budget
 Solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>planned <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Survey =</span> <span class="dv">4000</span>, <span class="at">Design =</span> <span class="dv">8000</span>, <span class="st">`</span><span class="at">Clear site</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">4000</span>,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">Foundation =</span> <span class="dv">7500</span>, <span class="at">Framing =</span> <span class="dv">10000</span>, <span class="st">`</span><span class="at">Plumb &amp; wire</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">5000</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>actual  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4250</span>, <span class="dv">8000</span>, <span class="dv">3500</span>, <span class="dv">8500</span>, <span class="dv">11250</span>, <span class="dv">5150</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> planned <span class="sc">-</span> actual            <span class="co"># + = under budget</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Activity =</span> <span class="fu">names</span>(planned),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Planned =</span> <span class="fu">as.integer</span>(planned),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Actual =</span> <span class="fu">as.integer</span>(actual),</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Variance =</span> <span class="fu">as.integer</span>(variance),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Pct =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> variance <span class="sc">/</span> planned, <span class="dv">1</span>))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tab, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">TOTAL planned $%s  actual $%s  variance $%s (%.1f%%)</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(planned), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(actual),  <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(variance), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sum</span>(variance) <span class="sc">/</span> <span class="fu">sum</span>(planned)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>planned <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Survey =</span> <span class="dv">4000</span>, <span class="at">Design =</span> <span class="dv">8000</span>, <span class="st">`</span><span class="at">Clear site</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">4000</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">Foundation =</span> <span class="dv">7500</span>, <span class="at">Framing =</span> <span class="dv">10000</span>, <span class="st">`</span><span class="at">Plumb &amp; wire</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">5000</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>actual  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4250</span>, <span class="dv">8000</span>, <span class="dv">3500</span>, <span class="dv">8500</span>, <span class="dv">11250</span>, <span class="dv">5150</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> planned <span class="sc">-</span> actual            <span class="co"># + = under budget</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Activity =</span> <span class="fu">names</span>(planned),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Planned =</span> <span class="fu">as.integer</span>(planned),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Actual =</span> <span class="fu">as.integer</span>(actual),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Variance =</span> <span class="fu">as.integer</span>(variance),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Pct =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> variance <span class="sc">/</span> planned, <span class="dv">1</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tab, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">TOTAL planned $%s  actual $%s  variance $%s (%.1f%%)</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(planned), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(actual),  <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(variance), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sum</span>(variance) <span class="sc">/</span> <span class="fu">sum</span>(planned)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Activity Planned Actual Variance   Pct
        Survey    4000   4250     -250  -6.2

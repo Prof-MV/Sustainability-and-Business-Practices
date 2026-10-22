@@ -2191,10 +2191,6 @@ Before we begin: the project has spent 60 % of its money — is it 60 % done?
 <p>You have planned the RC-vehicle project — scope, WBS, schedule, budget. It is now <strong>week 8</strong>. The sponsor asks the only question that matters at this stage: <strong>are we on track, and if not, how far off, and what will it cost to finish?</strong></p>
 <p>Answering that needs a <strong>control system</strong>: a closed loop that <strong>measures</strong> progress, <strong>compares</strong> it to the baseline, <strong>analyzes</strong> the variance, and drives a corrective <strong>action</strong> — then measures again.</p>
 <div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The `label.size` argument of `geom_label()` is deprecated as of ggplot2 3.5.0.
-ℹ Please use the `linewidth` argument instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div id="fig-control-loop-12" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2593,15 +2589,15 @@ Problem 1: Full EVM snapshot
 Solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>BAC <span class="ot">&lt;-</span> <span class="dv">400000</span>; PV <span class="ot">&lt;-</span> <span class="dv">180000</span>; EV <span class="ot">&lt;-</span> <span class="dv">150000</span>; AC <span class="ot">&lt;-</span> <span class="dv">165000</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>SV <span class="ot">&lt;-</span> EV <span class="sc">-</span> PV; CV <span class="ot">&lt;-</span> EV <span class="sc">-</span> AC; SPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> PV; CPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> AC</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>EAC <span class="ot">&lt;-</span> BAC <span class="sc">/</span> CPI; ETC <span class="ot">&lt;-</span> EAC <span class="sc">-</span> AC; VAC <span class="ot">&lt;-</span> BAC <span class="sc">-</span> EAC</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>TCPI <span class="ot">&lt;-</span> (BAC <span class="sc">-</span> EV) <span class="sc">/</span> (BAC <span class="sc">-</span> AC)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"SV=$%s  CV=$%s  SPI=%.3f  CPI=%.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(SV, <span class="at">big.mark=</span><span class="st">" "</span>), <span class="fu">format</span>(CV, <span class="at">big.mark=</span><span class="st">" "</span>), SPI, CPI))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"EAC=$%s  ETC=$%s  VAC=$%s  TCPI=%.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(EAC), <span class="at">big.mark=</span><span class="st">" "</span>), <span class="fu">format</span>(<span class="fu">round</span>(ETC), <span class="at">big.mark=</span><span class="st">" "</span>),</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(VAC), <span class="at">big.mark=</span><span class="st">" "</span>), TCPI))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>BAC <span class="ot">&lt;-</span> <span class="dv">400000</span>; PV <span class="ot">&lt;-</span> <span class="dv">180000</span>; EV <span class="ot">&lt;-</span> <span class="dv">150000</span>; AC <span class="ot">&lt;-</span> <span class="dv">165000</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>SV <span class="ot">&lt;-</span> EV <span class="sc">-</span> PV; CV <span class="ot">&lt;-</span> EV <span class="sc">-</span> AC; SPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> PV; CPI <span class="ot">&lt;-</span> EV <span class="sc">/</span> AC</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>EAC <span class="ot">&lt;-</span> BAC <span class="sc">/</span> CPI; ETC <span class="ot">&lt;-</span> EAC <span class="sc">-</span> AC; VAC <span class="ot">&lt;-</span> BAC <span class="sc">-</span> EAC</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>TCPI <span class="ot">&lt;-</span> (BAC <span class="sc">-</span> EV) <span class="sc">/</span> (BAC <span class="sc">-</span> AC)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"SV=$%s  CV=$%s  SPI=%.3f  CPI=%.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(SV, <span class="at">big.mark=</span><span class="st">" "</span>), <span class="fu">format</span>(CV, <span class="at">big.mark=</span><span class="st">" "</span>), SPI, CPI))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"EAC=$%s  ETC=$%s  VAC=$%s  TCPI=%.3f</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(EAC), <span class="at">big.mark=</span><span class="st">" "</span>), <span class="fu">format</span>(<span class="fu">round</span>(ETC), <span class="at">big.mark=</span><span class="st">" "</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(VAC), <span class="at">big.mark=</span><span class="st">" "</span>), TCPI))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SV=$-30 000  CV=$-15 000  SPI=0.833  CPI=0.909
 EAC=$440 000  ETC=$275 000  VAC=$-40 000  TCPI=1.064</code></pre>
