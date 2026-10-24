@@ -163,6 +163,161 @@ tryit_sort(
   question = "<p>For each statement, choose the precedence relationship between the two activities.</p>")
 ```
 
+## Scheduling software: Microsoft Project and ProjectLibre
+
+Nobody builds a real schedule by hand. Two tools cover most course and industry
+needs: **Microsoft Project** (the industry standard; Windows desktop, paid, free
+to students at many colleges) and **ProjectLibre** (free, open-source, runs on
+Windows, Mac and Linux, and can open Microsoft Project files). They look and
+behave alike, so the skills carry over. Use whichever you can install.
+
+### How the software thinks
+
+Every screen is split in two: a **task table** on the left (one row per
+activity) and a **Gantt chart** on the right (one bar per row). You type into
+the table and the chart redraws. You do **not** type start and finish dates.
+You enter only four things and the software does the forward pass from
+[Chapter 6](06-Network-Diagrams-and-AON.qmd) for you:
+
+1. **Task name** (the activity).
+2. **Duration** (working days, e.g. `5d`; a duration of `0` makes a milestone).
+3. **Predecessors** (the row numbers it depends on, e.g. `3FS`, `4SS+2d`; the
+   type and the lead/lag from the precedence table above are typed right there).
+4. **Calendar** (which days are working days; set once for the whole project).
+
+From these it computes **Start**, **Finish**, **float** and the **critical
+path**, and shifts everything automatically when you change a duration. Two
+habits matter. First, **link tasks with predecessors, never by typing dates**:
+a typed date freezes the task and the schedule stops updating (in Microsoft
+Project this is the difference between a *manually scheduled* and an *auto
+scheduled* task). Second, **save a baseline** once the plan is approved, so
+you can compare progress against the original plan later (Chapter 12).
+
+### The 15 buttons and actions that matter
+
+Menu names shift slightly between versions, but each of these exists in both
+programs.
+
+| # | Action | Microsoft Project | ProjectLibre | What it is for |
+|---|---|---|---|---|
+| 1 | **Set the project start date and calendar** | Project tab → *Project Information* | Project menu → *Project Information* | Everything is computed from this start date and calendar; do it first. |
+| 2 | **Change working time** | Project tab → *Change Working Time* | Project → *Project Information* / *Calendars* | Define weekends, shifts and holidays so durations land on real dates. |
+| 3 | **Add a task** | Type in a *Task Name* cell | Type in a *Name* cell | One row per activity from your WBS. |
+| 4 | **Enter duration** | Type in *Duration* (`5d`, `2w`) | Type in *Duration* | The only time input the software needs. |
+| 5 | **Milestone** | Task tab → *Milestone*, or duration `0` | Duration `0` | A zero-length marker (diamond) for a decision or hand-over. |
+| 6 | **Indent / Outdent** | Task tab → arrow buttons | Arrow buttons in the toolbar | Turns rows into a hierarchy: indented rows become the children of the row above, which becomes a **summary task** (your WBS levels). |
+| 7 | **Link tasks** | Select rows, Task tab → *Link* (chain icon) | Select rows, *Link Tasks* (chain icon) | Creates FS dependencies in one click. Faster than typing predecessors. |
+| 8 | **Unlink tasks** | Task tab → *Unlink* (broken chain) | *Unlink Tasks* | Removes the dependencies on the selected rows. |
+| 9 | **Predecessors column** | Type `3`, `3SS`, `3FS+2d` | Same syntax | Set the type (FS, SS, FF, SF) and add a lead (negative) or lag (positive). |
+| 10 | **Task information** | Double-click a row | Double-click a row | One dialog for a task's duration, predecessors, constraints, notes and resources. |
+| 11 | **Show the critical path** | Format tab → tick *Critical Tasks* | Critical tasks draw in red on the Gantt | Verifies the path you found by hand in Chapter 6. |
+| 12 | **Network diagram view** | View tab → *Network Diagram* | View → *Network Diagram* | Shows the AON boxes: the same network you drew, generated from your table. |
+| 13 | **Zoom the timescale** | View tab → *Zoom* / *Timescale* | Zoom buttons or View menu | Switch between days, weeks and months so the chart fits the screen or the page. |
+| 14 | **Resource sheet and assign** | View → *Resource Sheet*; Task tab → *Assign Resources* | View → *Resources*; *Assign Resources* | Define people/equipment with a rate, then attach them to tasks (the basis of Chapter 9's budget and Chapter 11). |
+| 15 | **Save a baseline** | Project tab → *Set Baseline* | Tools → *Save Baseline* | Freezes the planned dates and costs so later slips can be measured. |
+
+Not on the list but worth knowing: **Save** (Microsoft Project uses `.mpp`,
+ProjectLibre uses `.pod`; both can export to `.xml`, and ProjectLibre opens
+`.mpp`), and **Print / Export to PDF** with the timescale zoomed so the whole
+project fits on one page.
+
+### Your first schedule in ten minutes
+
+Open a blank project, set a Monday start date (button 1), and enter this
+six-activity network (it is the RC-vehicle example, trimmed down):
+
+| Row | Task | Duration | Predecessor |
+|---|---|---|---|
+| 1 | Design | 5d | none |
+| 2 | Frame build | 8d | 1 |
+| 3 | Motor procurement | 12d | 1 |
+| 4 | Wiring | 5d | 2, 3 |
+| 5 | Assembly | 10d | 4 |
+| 6 | Test | 8d | 5 |
+
+**Check your result.** The project should be **40 working days** long (it ends
+on a Friday, eight weeks after the start), and the critical path is
+1 → 3 → 4 → 5 → 6. The frame build (row 2) is *not* critical: it has
+**4 days of float**, because it finishes on day 13 while the motor does not
+arrive until day 17. If your software agrees, you have reproduced the forward
+and backward pass without doing the arithmetic yourself.
+
+**Then experiment.** Change row 3 to `15d` and watch the finish move to day 43.
+Change it to `8d`: the motor and the frame now both finish on day 13, both
+paths are critical, and the project is **36 days**. Change it again to `6d`:
+the project is still 36 days, because the frame is now the longer path and the
+motor has gained 2 days of float. This is exactly the crashing logic coming up
+in this chapter: shortening a critical task helps only until another path
+becomes critical, and after that it buys nothing.
+
+### Try it yourself: check the software against the hand calculation
+
+**What to do.** Work the network below by hand (forward pass, backward pass),
+type your answers, and then enter the same network in Microsoft Project or
+ProjectLibre to confirm them. **What it means.** Software and hand calculation
+must agree; when they do not, the usual cause is a missing or wrong
+predecessor, not a software fault. **How it links.** The last answer previews
+the crashing section: lengthening a critical task moves the finish one-for-one.
+
+```{r tryit-software-08, echo=FALSE, results='asis'}
+sw <- list(A = 4, B = 7, C = 10, D = 3, E = 7)   # B and C follow A; D follows B and C; E follows D
+sw$dur   <- with(sw, A + max(B, C) + D + E)
+sw$float <- with(sw, C - B)                       # B finishes earlier than C, so it can slip by the difference
+sw$dur2  <- with(sw, A + max(B, C + 2) + D + E)   # C lengthened by 2 days
+
+tryit_number(
+  id = "software-check",
+  title = "Check the software: duration and float",
+  answers = list(
+    tryit_answer("Project duration (days)", sw$dur, tol = 0, digits = 0,
+                 hint = "Longest path: A, then the longer of B and C, then D, then E."),
+    tryit_answer("Float of B (days)", sw$float, tol = 0, digits = 0,
+                 hint = "B and C both feed D. How much later could B finish without delaying D?"),
+    tryit_answer("Duration if C takes 2 days longer (days)", sw$dur2, tol = 0, digits = 0,
+                 hint = "C is critical, so the finish moves by the full 2 days.")),
+  question = "<p>Activities: A 4 days (no predecessor); B 7 days (after A); C 10 days (after A); D 3 days (after B and C); E 7 days (after D). Find the project duration, the float of B, and the new project duration if C takes 2 days longer.</p>"
+)
+
+tw <- list(A = 5, B = 6, C = 9, D = 4, E = 8)    # graded twin: same shape, different numbers
+tw$dur   <- with(tw, A + max(B, C) + D + E)
+tw$float <- with(tw, C - B)
+tw$dur2  <- with(tw, A + max(B, C + 3) + D + E)
+tryit_number(
+  id = "software-check-twin", title = "Check the software (graded)", show = FALSE,
+  answers = list(
+    tryit_answer("Project duration (days)", tw$dur, tol = 0, digits = 0),
+    tryit_answer("Float of B (days)", tw$float, tol = 0, digits = 0),
+    tryit_answer("Duration if C takes 3 days longer (days)", tw$dur2, tol = 0, digits = 0)),
+  question = "<p>Activities: A 5 days (no predecessor); B 6 days (after A); C 9 days (after A); D 4 days (after B and C); E 8 days (after D). Find the project duration, the float of B, and the new project duration if C takes 3 days longer.</p>"
+)
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+```{r tryit-software-08-sol, echo=FALSE, results='asis'}
+cat(sprintf("Path A-B-D-E = %d days; path A-C-D-E = %d days. The longer, A-C-D-E, sets the project at **%d days**. B finishes on day %d but D cannot start before day %d, so B has **%d days** of float. With C at %d days the project is **%d days**.\n",
+            sw$A + sw$B + sw$D + sw$E, sw$A + sw$C + sw$D + sw$E, sw$dur,
+            sw$A + sw$B, sw$A + sw$C, sw$float, sw$C + 2, sw$dur2))
+```
+
+</details>
+
+### Learn it from video
+
+Start with the quick walkthroughs; each one builds a small plan from scratch
+using the buttons above. Longer courses are listed under Further Resources.
+
+```{r video-msproject-08, echo=FALSE, results='asis'}
+embed_youtube("o-_KX0yRsyg", "Master Microsoft Project in 20 Minutes (Alvin the PM)")
+embed_youtube("gsh4Cj1KAGY", "Learn Microsoft Project: Beginner to Master in 20 Minutes (David McLachlan)")
+```
+
+```{r video-projectlibre-08, echo=FALSE, results='asis'}
+embed_youtube("9xwR4JCBaIU", "ProjectLibre: How to introduction demo (official ProjectLibre channel)")
+embed_youtube("vQOTTQ1Ue1k", "Building a Gantt chart with ProjectLibre (Sean Whitaker)")
+```
+
 ## Probabilistic scheduling with PERT
 
 ::: {.callout-note}
@@ -870,4 +1025,12 @@ crash the rest, and hold a contingency for the rework risk you accepted.
 ```{r video-resources-08, echo=FALSE, results='asis'}
 embed_youtube("6B7Qtc3rrQ4", "PERT / Three-Point Estimation Technique")
 embed_youtube("4oDLMs11Exs", "Forward and Backward Pass -> Project Duration and Critical Path")
+```
+
+Longer software courses, if you want to go deeper than the quick-start videos
+above:
+
+```{r video-software-deep-08, echo=FALSE, results='asis'}
+embed_youtube("BYR_S6ktoFc", "Microsoft Project Tutorial for Beginners (Simon Sez IT, 2 hours)")
+embed_youtube("BeUaj-5SXd4", "ProjectLibre tutorial for beginners (Valentin Kovshik, 40 minutes)")
 ```
