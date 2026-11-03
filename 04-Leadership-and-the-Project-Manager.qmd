@@ -209,6 +209,7 @@ qwebr_calc_card(
   label = "situational-quadrant-04",
   title = "Situational Leadership Calculator",
   icon = "people-arrows",
+  mode = "demo",
   inputs = list(
     qwebr_calc_input("competence", "Competence on this task (0-1)", value = 0.3, min = 0, max = 1, step = 0.1, type = "slider"),
     qwebr_calc_input("commitment", "Commitment / confidence (0-1)", value = 0.8, min = 0, max = 1, step = 0.1, type = "slider")
@@ -267,12 +268,15 @@ qwebr_calc_card(
   label = "leadership-score-04",
   title = "Leadership Style Self-Assessment",
   icon = "compass",
+  mode = "task",
   tables = list(qwebr_calc_table(
     columns = list(
       qwebr_calc_col("item", paste("Item", 1:18), type = "label", label = "Statement"),
       qwebr_calc_col("responses", c(2, 4, 3, 2, 5, 4, 2, 4, 4, 2, 4, 4, 2, 5, 2, 2, 4, 3),
                      var = "responses", label = "Your answer (1-5)", min = 1, max = 5, step = 1)),
-    note = "1 = strongly disagree, 5 = strongly agree."))
+    note = "1 = strongly disagree, 5 = strongly agree.")),
+  goal = "Re-answer as a strongly Command & Control leader would. Which items drive the Command & Control score, and what does that tell you about the other two styles?",
+  goal_test = "names(which.max(scores)) == \"Command & Control\""
 )
 ```
 
@@ -388,6 +392,7 @@ qwebr_calc_card(
   label = "herzberg-example-04",
   title = "Hygiene Factor or Motivator?",
   icon = "face-smile",
+  mode = "demo",
   tables = list(qwebr_calc_table(
     frame = "complaints", add_rows = TRUE,
     columns = list(
@@ -473,6 +478,7 @@ qwebr_calc_card(
   label = "expectancy-04",
   title = "Expectancy Theory: Motivation = E x I x V",
   icon = "bullseye",
+  mode = "demo",
   tables = list(qwebr_calc_table(
     frame = "team_member",
     columns = list(

@@ -122,16 +122,17 @@ the cost of the risk it carries) puts your **reservation price at \$168 000** --
 you would not pay MCS more than that. MCS's floor, given their costs and other
 customers, is **\$150 000**.
 
-Live cell --- move either side's reservation price and see whether a deal still exists.
+Teaching demo --- drag either side's reservation price and watch the zone of possible agreement open, shrink and disappear.
 
 ```{r calc-zopa-example-10, echo=FALSE, results='asis'}
 qwebr_calc_card(
   label = "zopa-example-10",
   title = "ZOPA Calculator",
   icon = "handshake",
+  mode = "demo",
   inputs = list(
-    qwebr_calc_input("buyer_reservation", "Buyer's reservation price (most they'll pay)", value = 168000, min = 50000, max = 400000, step = 1000, prefix = "$"),
-    qwebr_calc_input("seller_reservation", "Seller's reservation price (least they'll accept)", value = 150000, min = 50000, max = 400000, step = 1000, prefix = "$")
+    qwebr_calc_input("buyer_reservation", "Buyer's reservation price (most they'll pay)", value = 168000, min = 100000, max = 220000, step = 1000, type = "slider", prefix = "$"),
+    qwebr_calc_input("seller_reservation", "Seller's reservation price (least they'll accept)", value = 150000, min = 100000, max = 220000, step = 1000, type = "slider", prefix = "$")
   )
 )
 ```
@@ -152,17 +153,18 @@ money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), b
 
 lo  <- min(buyer_reservation, seller_reservation)
 hi  <- max(buyer_reservation, seller_reservation)
-pad <- max(hi - lo, 20000) * 0.5
-ticks <- pretty(c(lo - pad, hi + pad), n = 5)
+x_min <- 100000   # fixed axis (matches the slider range) so the box edges visibly move
+x_max <- 220000
+ticks <- seq(x_min, x_max, by = 20000)
 par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
-plot(NA, xlim = c(lo - pad, hi + pad), ylim = c(0, 1), xaxt = "n", yaxt = "n",
+plot(NA, xlim = c(x_min, x_max), ylim = c(0, 1), xaxt = "n", yaxt = "n",
      xlab = "Price ($)", ylab = "", main = "Zone of possible agreement")
 rect(lo, 0.3, hi, 0.7, col = if (zopa) "#a9dfbf" else "#f5b7b1", border = NA)
 axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
 points(seller_reservation, 0.5, pch = 19, cex = 3, col = "#2980b9")
 points(buyer_reservation, 0.5, pch = 19, cex = 3, col = "#e67e22")
-text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2)
-text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2)
+text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2, xpd = NA)
+text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2, xpd = NA)
 
 if (zopa) {
   cat(sprintf("ZOPA exists: %s to %s\n", money(seller_reservation), money(buyer_reservation)))
@@ -182,6 +184,9 @@ qwebr_calc_card(
   label = "zopa-calc-10",
   title = "Reservation Points from a BATNA",
   icon = "scale-balanced",
+  mode = "task",
+  goal = "Improve the buyer's BATNA so the likely settlement (the midpoint) falls below $150 000 while a ZOPA still exists. Which input do you move, and how far?",
+  goal_test = "zopa && (buyer_reservation + seller_reservation) / 2 < 150000",
   inputs = list(
     qwebr_calc_input("paragon_price", "BATNA: Paragon's price", value = 150000, min = 50000, max = 400000, step = 1000, prefix = "$"),
     qwebr_calc_input("paragon_risk", "Extra risk cost of using Paragon", value = 25000, min = 0, max = 150000, step = 1000, prefix = "$"),
@@ -223,8 +228,8 @@ rect(lo, 0.3, hi, 0.7, col = if (zopa) "#a9dfbf" else "#f5b7b1", border = NA)
 axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
 points(seller_reservation, 0.5, pch = 19, cex = 3, col = "#2980b9")
 points(buyer_reservation, 0.5, pch = 19, cex = 3, col = "#e67e22")
-text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2)
-text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2)
+text(seller_reservation, 0.85, "Seller floor", col = "#2980b9", cex = 1.2, xpd = NA)
+text(buyer_reservation, 0.15, "Buyer ceiling", col = "#e67e22", cex = 1.2, xpd = NA)
 
 if (zopa) {
   cat(sprintf("ZOPA width: %s: a deal is possible\n", money(buyer_reservation - seller_reservation)))
@@ -462,6 +467,7 @@ qwebr_calc_card(
   label = "supplier-scoring-10",
   title = "Weighted Supplier Scoring",
   icon = "scale-balanced",
+  mode = "task",
   tables = list(qwebr_calc_table(
     columns = list(
       qwebr_calc_col("criteria", c("Quality record", "Delivery reliability", "Price",
@@ -470,7 +476,9 @@ qwebr_calc_card(
       qwebr_calc_col("weight", c(0.30, 0.25, 0.15, 0.15, 0.15), var = "weight", label = "Weight", min = 0, max = 1, step = 0.05),
       qwebr_calc_col("mcs", c(5, 4, 3, 3, 2), var = "mcs", label = "MCS (1-5)", min = 1, max = 5, step = 1),
       qwebr_calc_col("paragon", c(3, 3, 4, 5, 3), var = "paragon", label = "Paragon (1-5)", min = 1, max = 5, step = 1)),
-    note = "Weights should sum to 1. Score each supplier 1 (poor) to 5 (excellent)."))
+    note = "Weights should sum to 1. Score each supplier 1 (poor) to 5 (excellent).")),
+  goal = "Change only the weights (they must still sum to 1) so that Paragon is recommended. Which criteria did you have to emphasise, and would you defend those weights to the sponsor?",
+  goal_test = "paragon_total > mcs_total && abs(sum(weight) - 1) < 1e-9 && all(mcs == c(5, 4, 3, 3, 2)) && all(paragon == c(3, 3, 4, 5, 3))"
 )
 ```
 

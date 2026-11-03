@@ -468,7 +468,7 @@
       input.addEventListener("input", function () {
         if (input.type === "range") {
           const readout = card.querySelector(`[data-readout-for="${input.id}"]`);
-          if (readout) readout.textContent = Number(input.value).toLocaleString();
+          if (readout) readout.textContent = (readout.dataset.prefix || "") + Number(input.value).toLocaleString() + (readout.dataset.suffix || "");
         }
         run();
       });
@@ -498,7 +498,7 @@
         inputs.forEach((input) => {
           input.value = input.defaultValue;
           const readout = card.querySelector(`[data-readout-for="${input.id}"]`);
-          if (readout) readout.textContent = Number(input.value).toLocaleString();
+          if (readout) readout.textContent = (readout.dataset.prefix || "") + Number(input.value).toLocaleString() + (readout.dataset.suffix || "");
         });
         run();
       });

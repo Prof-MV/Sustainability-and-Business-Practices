@@ -188,9 +188,10 @@ qwebr_calc_card(
   label = "emv-example-07",
   title = "Expected Monetary Value Calculator",
   icon = "dice",
+  mode = "demo",
   inputs = list(
     qwebr_calc_input("p_occurs", "Probability the risk occurs", value = 0.4, min = 0, max = 1, step = 0.05, type = "slider"),
-    qwebr_calc_input("impact", "Impact if it occurs", value = 120000, min = 0, max = 1000000, step = 5000, prefix = "$")
+    qwebr_calc_input("impact", "Impact if it occurs", value = 120000, min = 0, max = 500000, step = 5000, type = "slider", prefix = "$")
   )
 )
 ```
@@ -211,7 +212,7 @@ money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), b
 
 probs <- seq(0, 1, length.out = 100)
 par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
-plot(probs * 100, probs * impact / 1000, type = "l", lwd = 4, col = "#2c3e50", xlab = "Probability of occurring (%)", ylab = "EMV ($ thousand)",
+plot(probs * 100, probs * impact / 1000, type = "l", lwd = 4, ylim = c(0, 500), col = "#2c3e50", xlab = "Probability of occurring (%)", ylab = "EMV ($ thousand)",
      main = "EMV grows with probability")
 abline(v = p_occurs * 100, lty = 2, col = "#bdc3c7")
 points(p_occurs * 100, emv / 1000, pch = 19, cex = 2.2, col = "#e74c3c")
@@ -234,6 +235,7 @@ qwebr_calc_card(
   label = "decision-tree-07",
   title = "Decision-Tree EMV Calculator",
   icon = "code-branch",
+  mode = "task",
   inputs = list(
     qwebr_calc_input("lb", "Quantity needed", value = 750, min = 100, max = 3000, step = 50, suffix = "lb"),
     qwebr_calc_input("storage", "Storage cost if bought now", value = 100, min = 0, max = 1000, step = 10, prefix = "$"),
@@ -241,7 +243,9 @@ qwebr_calc_card(
     qwebr_calc_input("p_high", "Chance price stays high", value = 0.9, min = 0, max = 1, step = 0.05, type = "slider"),
     qwebr_calc_input("price_high", "Later price if it stays high", value = 5.58, min = 1, max = 10, step = 0.01, prefix = "$", suffix = "/ lb"),
     qwebr_calc_input("price_low", "Later price if it drops", value = 4.5, min = 1, max = 10, step = 0.01, prefix = "$", suffix = "/ lb")
-  )
+  ),
+  goal = "Make buying now the cheaper choice without changing the quantity or today's price. Which inputs could you move, and is that realistic?",
+  goal_test = "buy_now < buy_later && lb == 750 && price_now == 5.58"
 )
 ```
 
@@ -412,13 +416,16 @@ qwebr_calc_card(
   label = "mitigation-value-07",
   title = "Does the Mitigation Pay for Itself?",
   icon = "shield-halved",
+  mode = "task",
   inputs = list(
     qwebr_calc_input("p_fail_no_action", "Failure chance, do nothing", value = 0.35, min = 0, max = 1, step = 0.05),
     qwebr_calc_input("impact_if_fail", "Impact if it fails", value = 260000, min = 0, max = 1000000, step = 10000, prefix = "$"),
     qwebr_calc_input("mitigation_cost", "Mitigation cost", value = 22000, min = 0, max = 200000, step = 1000, prefix = "$"),
     qwebr_calc_input("p_fail_with_action", "Failure chance, with mitigation", value = 0.1, min = 0, max = 1, step = 0.05, type = "slider"),
     qwebr_calc_input("impact_with_action", "Impact if it still fails", value = 90000, min = 0, max = 1000000, step = 10000, prefix = "$")
-  )
+  ),
+  goal = "Find the most you could pay for the mitigation before it stops paying for itself: set the cost so the expected saving falls to between $0 and $2 000, leaving the risk numbers alone.",
+  goal_test = "saving >= 0 && saving <= 2000 && p_fail_no_action == 0.35 && impact_if_fail == 260000"
 )
 ```
 
@@ -603,16 +610,17 @@ qwebr_calc_card(
   label = "rpn-fmea-07",
   title = "FMEA Risk Priority Number Calculator",
   icon = "triangle-exclamation",
+  mode = "demo",
   inputs = list(
-    qwebr_calc_input("S1", "Controller signal drop: Severity (S)", value = 8, min = 1, max = 10, step = 1),
-    qwebr_calc_input("O1", "Controller signal drop: Occurrence (O)", value = 6, min = 1, max = 10, step = 1),
-    qwebr_calc_input("D1", "Controller signal drop: Detection (D)", value = 5, min = 1, max = 10, step = 1),
-    qwebr_calc_input("S2", "Panel delamination: Severity (S)", value = 9, min = 1, max = 10, step = 1),
-    qwebr_calc_input("O2", "Panel delamination: Occurrence (O)", value = 3, min = 1, max = 10, step = 1),
-    qwebr_calc_input("D2", "Panel delamination: Detection (D)", value = 6, min = 1, max = 10, step = 1),
-    qwebr_calc_input("S3", "Paint overspray: Severity (S)", value = 2, min = 1, max = 10, step = 1),
-    qwebr_calc_input("O3", "Paint overspray: Occurrence (O)", value = 5, min = 1, max = 10, step = 1),
-    qwebr_calc_input("D3", "Paint overspray: Detection (D)", value = 3, min = 1, max = 10, step = 1)
+    qwebr_calc_input("S1", "Controller signal drop: Severity (S)", value = 8, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("O1", "Controller signal drop: Occurrence (O)", value = 6, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("D1", "Controller signal drop: Detection (D)", value = 5, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("S2", "Panel delamination: Severity (S)", value = 9, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("O2", "Panel delamination: Occurrence (O)", value = 3, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("D2", "Panel delamination: Detection (D)", value = 6, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("S3", "Paint overspray: Severity (S)", value = 2, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("O3", "Paint overspray: Occurrence (O)", value = 5, min = 1, max = 10, step = 1, type = "slider"),
+    qwebr_calc_input("D3", "Paint overspray: Detection (D)", value = 3, min = 1, max = 10, step = 1, type = "slider")
   )
 )
 ```

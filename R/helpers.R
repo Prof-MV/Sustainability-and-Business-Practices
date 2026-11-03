@@ -226,6 +226,10 @@ qwebr_calc_table <- function(columns, frame = NULL, add_rows = FALSE, note = NUL
 #'   variables that is TRUE once the goal is reached, e.g.
 #'   `"cost_per_part < 4"`. It is evaluated after the cell on every run. It
 #'   must be FALSE at the default inputs, or there is nothing to solve.
+#' @param mode `"demo"` marks the card as a teaching tool the instructor
+#'   drives on the projector (blue, "Teaching demo" badge; use sliders);
+#'   `"task"` marks it as work for students on their own devices (orange,
+#'   "Class task" badge; give it a `goal`). Leave NULL for an unmarked card.
 #' @param rerun For a cell that simulates with random numbers: the name of
 #'   the cell's seed variable (e.g. `"seed"`). The card gets a "Run again"
 #'   button that moves that input on by one, so the student sees how much the
@@ -234,8 +238,15 @@ qwebr_calc_table <- function(columns, frame = NULL, add_rows = FALSE, note = NUL
 #'   enter their team number as the run number to get different data.
 qwebr_calc_card <- function(label, title, icon = "gears", inputs = list(), tables = list(),
                              fig_width = 1200, fig_height = 700,
-                             goal = NULL, goal_test = NULL, rerun = NULL) {
+                             goal = NULL, goal_test = NULL, rerun = NULL, mode = NULL) {
   if (!knitr::is_html_output(excludes = "epub")) return(invisible(NULL))
+
+  stopifnot(is.null(mode) || mode %in% c("demo", "task"))
+  mode_badge <- switch(if (is.null(mode)) "" else mode,
+    demo = '\n    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>',
+    task = '\n    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>',
+    "")
+  mode_class <- if (is.null(mode)) "" else paste0(" qwebr-calc-", mode)
 
   sanitize <- function(x) gsub("[^a-zA-Z0-9]+", "-", x)
   card_id <- paste0("qcalc-", sanitize(label))
@@ -257,11 +268,11 @@ qwebr_calc_card <- function(label, title, icon = "gears", inputs = list(), table
       readout_id <- paste0(input_id, "-readout")
       sprintf('
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="%s">%s <span class="qwebr-calc-slider-readout" data-readout-for="%s" id="%s">%s</span></label>
+      <label for="%s">%s <span class="qwebr-calc-slider-readout" data-readout-for="%s" data-prefix="%s" data-suffix="%s" id="%s">%s%s%s</span></label>
       <input type="range" class="qwebr-calc-slider" %s>
     </div>',
-        input_id, inp$label, input_id, readout_id,
-        format(inp$value, big.mark = " ", scientific = FALSE), attrs)
+        input_id, inp$label, input_id, inp$prefix, inp$suffix, readout_id,
+        inp$prefix, format(inp$value, big.mark = " ", scientific = FALSE), inp$suffix, attrs)
     } else {
       sprintf('
     <div class="qwebr-calc-row">
@@ -308,10 +319,10 @@ qwebr_calc_card <- function(label, title, icon = "gears", inputs = list(), table
 ```{=html}
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="%s" data-fig-width="%d" data-fig-height="%d">
+<div class="qwebr-calc-card%s" data-qwebr-label="%s" data-fig-width="%d" data-fig-height="%d">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-%s qwebr-calc-icon"></i>
-    <h4>%s</h4>
+    <h4>%s</h4>%s
   </div>
   <div class="qwebr-calc-inputs">%s%s%s
   </div>
@@ -319,7 +330,7 @@ qwebr_calc_card <- function(label, title, icon = "gears", inputs = list(), table
   <div class="qwebr-calc-graph"></div>
 </div>
 ```
-', label, fig_width, fig_height, icon, title, input_rows, table_rows, rerun_row, goal_row))
+', mode_class, label, fig_width, fig_height, icon, title, mode_badge, input_rows, table_rows, rerun_row, goal_row))
 }
 
 # "Try it yourself" exercises (tryit_number(), tryit_grid(), tryit_sort()).

@@ -19,12 +19,13 @@ knitr:
 book:
   title: "Sustainability and Business Practices"
   subtitle: "An Introduction to Project Management (MGMT-3105)"
-  author: "Martin Volkening"
+  author: "Martin Volkening and Anthropic's Claude Models"
   date: today
   description: "Lecture notes accompanying MGMT-3105 - Sustainability and Business Practices."
   site-url: https://prof-mv.github.io/Sustainability-and-Business-Practices/
   repo-url: https://github.com/Prof-MV/Sustainability-and-Business-Practices
   repo-actions: [edit, issue]
+  cover-image: images/Fanshawe.png
   chapters:
     - index.qmd
     - 01-Sustainability.qmd
