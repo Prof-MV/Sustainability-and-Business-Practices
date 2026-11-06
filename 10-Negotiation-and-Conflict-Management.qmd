@@ -304,6 +304,60 @@ ZOPA at these terms; the buyer must improve their BATNA or change the package.
 
 </details>
 
+### Real-world example: Canada walks away, and what happens next
+
+The model says that when there is no ZOPA you "walk away". Real negotiations
+show that walking away is a *move*, not an ending. In August 2026 Canada and the
+U.S. looked close to a trade deal. On August 22, Prime Minister Mark Carney
+recalled Canada's negotiators, saying the U.S. "asked too much and offered too
+little" [@ghosh2026canada]. The U.S. disputed that account and threatened to
+raise tariffs on Canadian cars, trucks and parts to 50% from January 2027.
+
+**Why was it a walk-away point?** The offer did not clear Canada's reservation
+point. Tariffs on medium- and heavy-duty trucks and the Canadian-content rules
+were the breaking points, and the deal would also have limited Canada's future
+trade agreements with other countries and touched French-language and cultural
+policy. Canada judged that the deal was worth less than its no-deal alternative
+(its BATNA).
+
+**The walk-away is costly.** About 72% of Canadian merchandise exports went to
+the U.S. in 2025, so Canada's BATNA is weak. The side that looks unable to leave
+tends to get pushed toward its reservation point. Walking away did not
+strengthen Canada's BATNA right away. What it changed was the U.S. belief that
+Canada could never say no: it showed that Canada's reservation point was real.
+Diversification (new trade agreements, pipeline and LNG export routes) makes
+future walk-aways more credible.
+
+**What happened after.** The tariffs stayed in place, and Canada's counter-tariffs
+were scheduled for September 8. By early November the talks had resumed. On
+November 3, after a call with Trump, Carney said Washington had dropped demands
+that crossed Canada's "red lines", including language and culture and Canada's
+right to negotiate trade deals with other countries. He added: "We've made
+progress but we haven't finished" [@yahoo2026carney]. Autos remain the key
+sticking point.
+
+<details>
+<summary>What does this teach about walking away?</summary>
+
+1. **A walk-away needs a prepared reservation point.** Canada named its
+   red lines, so it knew when to leave.
+2. **Leaving can move the other side.** The other party dropped the demands that
+   crossed those lines, which is the same effect as improving your BATNA in the
+   calculator above, but it came from credibility.
+3. **Keep a route back.** Returning to the table does not destroy credibility
+   unless you accept essentially the same terms.
+4. **The no-deal period has costs.** Tariffs, uncertain investment and job risk
+   continue while talks are suspended, so plan how to limit them.
+5. **Check how long a deal lasts.** A deal that can be changed unilaterally is
+   worth less than its headline terms. Weigh the *durability* of the agreement,
+   not only the price.
+
+*Discuss:* Meridian's motor supplier is the only qualified one and you have six
+weeks to launch. Would a walk-away be credible? What would you do *before* the
+meeting to make it credible?
+
+</details>
+
 ## Language and tells
 
 A few sample moves: *"My colleagues and I cannot settle for that"* (establish
