@@ -219,10 +219,11 @@ money <- function(x) paste0(ifelse(x < 0, "-", ""), "$", format(round(abs(x)), b
 
 lo  <- min(buyer_reservation, seller_reservation)
 hi  <- max(buyer_reservation, seller_reservation)
-xmax <- 600000   # fixed scale: covers the largest reservation price the inputs allow
-ticks <- seq(0, xmax, by = 100000)
+x_min <- min(120000, floor(lo / 10000) * 10000 - 10000)   # fixed tight band; widens only if a value falls outside it
+x_max <- max(200000, ceiling(hi / 10000) * 10000 + 10000)
+ticks <- seq(x_min, x_max, by = 10000)
 par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
-plot(NA, xlim = c(0, xmax), ylim = c(0, 1), xaxt = "n", yaxt = "n",
+plot(NA, xlim = c(x_min, x_max), ylim = c(0, 1), xaxt = "n", yaxt = "n",
      xlab = "Price ($)", ylab = "", main = "Zone of possible agreement")
 rect(lo, 0.3, hi, 0.7, col = if (zopa) "#a9dfbf" else "#f5b7b1", border = NA)
 axis(1, at = ticks, labels = format(ticks, big.mark = " ", scientific = FALSE, trim = TRUE))
