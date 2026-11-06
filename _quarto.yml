@@ -25,7 +25,7 @@ book:
   site-url: https://prof-mv.github.io/Sustainability-and-Business-Practices/
   repo-url: https://github.com/Prof-MV/Sustainability-and-Business-Practices
   repo-actions: [edit, issue]
-  cover-image: images/Fanshawe.png
+  cover-image: images/cover.png
   chapters:
     - index.qmd
     - 01-Sustainability.qmd
