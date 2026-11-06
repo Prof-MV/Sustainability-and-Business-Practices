@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -76,14 +76,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./06-Network-Diagrams-and-AON.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4c5e755a3bfe43f3706dcc37cc2065fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -414,7 +415,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nprobs <- seq(0, 1, length.out = 100)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(probs * 100, probs * impact / 1000, type = \"l\", lwd = 4, col = \"#2c3e50\", xlab = \"Probability of occurring (%)\", ylab = \"EMV ($ thousand)\",\n     main = \"EMV grows with probability\")\nabline(v = p_occurs * 100, lty = 2, col = \"#bdc3c7\")\npoints(p_occurs * 100, emv / 1000, pch = 19, cex = 2.2, col = \"#e74c3c\")\n\ncat(sprintf(\"EMV of this risk: %s\\n\", money(emv)))\ncat(sprintf(\"Calculation  %.2f x %s\\n\", p_occurs, money(impact)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\nprice_now <- 5.58\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- price_now * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high     <- 0.90\nprice_high <- 5.58\nprice_low  <- 4.50\np_low      <- 1 - p_high\nfmt2 <- function(x) formatC(x, format = \"f\", digits = 2, big.mark = \" \")\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nemvs <- c(\"Buy now\" = buy_now, \"Buy later\" = buy_later)\nbp <- barplot(emvs, col = c(\"#2980b9\", \"#e67e22\"), ylim = c(0, max(emvs) * 1.15),\n              ylab = \"Expected cost ($)\", main = \"EMV of each branch\")\ntext(bp, emvs, labels = paste0(\"$\", format(round(emvs), big.mark = \" \")), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Choose: %s (saves $%s on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"), fmt2(abs(buy_now - buy_later))))\ncat(sprintf(\"EMV, buy now  $%s\\n\", fmt2(buy_now)))\ncat(sprintf(\"EMV, buy later  $%s\\n\", fmt2(buy_later)))\ncat(sprintf(\"Price if high (%.0f%%)  $%s\\n\", 100 * p_high, fmt2(price_high * lb)))\ncat(sprintf(\"Price if low (%.0f%%)  $%s\\n\", 100 * p_low, fmt2(price_low * lb)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\nsaving     <- emv_before - emv_after\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nstack <- cbind(\"Do nothing\" = c(0, emv_before),\n               \"Pre-qualify backup\" = c(mitigation_cost, emv_after - mitigation_cost))\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack / 1000, col = c(\"#7f8c8d\", \"#e67e22\"), ylab = \"Expected cost ($ thousand)\",\n        main = \"Expected cost: spent now (grey) + loss (orange)\")\n\nif (saving >= 0) {\n  cat(sprintf(\"Mitigation pays: expected saving %s\\n\", money(saving)))\n} else {\n  cat(sprintf(\"!!Mitigation does not pay: expected loss of %s!!\\n\", money(-saving)))\n}\ncat(sprintf(\"EMV, do nothing  %s\\n\", money(emv_before)))\ncat(sprintf(\"EMV, pre-qualify backup  %s (incl. %s spent now)\\n\", money(emv_after), money(mitigation_cost)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Three failure modes from the RC-vehicle build\n\n# 1. Motor controller drops signal (unproven Paragon supplier)\nS1 <- 8\nO1 <- 6\nD1 <- 5\nRPN1 <- S1 * O1 * D1\n\n# 2. Carbon-fibre panel delaminates\nS2 <- 9\nO2 <- 3\nD2 <- 6\nRPN2 <- S2 * O2 * D2\n\n# 3. Minor paint overspray on trim\nS3 <- 2\nO3 <- 5\nD3 <- 3\nRPN3 <- S3 * O3 * D3\n\nmodes <- c(\"Controller signal drop\", \"Panel delamination\", \"Paint overspray\")\nshort <- c(\"Controller\", \"Panel\", \"Overspray\")\nsev   <- c(S1, S2, S3)\nrpns  <- c(RPN1, RPN2, RPN3)\nord   <- order(rpns, decreasing = TRUE)\n\n# RPN is a sort, not a verdict: flag any Severity >= 8 for action regardless of rank.\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(rpns[ord], names.arg = short[ord], col = ifelse(sev[ord] >= 8, \"#e74c3c\", \"#2980b9\"),\n        ylab = \"RPN (S x O x D)\", main = \"Priority order by RPN\")\n\ncat(sprintf(\"Top priority: %s (RPN = %d)\\n\", modes[ord[1]], rpns[ord[1]]))\nfor (i in ord) {\n  flag <- if (sev[i] >= 8) \" - !!S >= 8: flag for action!!\" else \"\"\n  cat(sprintf(\"%s  RPN %d (S=%d, O=%d, D=%d)%s\\n\", modes[i], rpns[i], sev[i],\n              c(O1, O2, O3)[i], c(D1, D2, D3)[i], flag))\n}","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rpn-fmea-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"p_occurs <- 0.40\nimpact   <- 120000\n\nemv <- p_occurs * impact + (1 - p_occurs) * 0\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nprobs <- seq(0, 1, length.out = 100)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(probs * 100, probs * impact / 1000, type = \"l\", lwd = 4, ylim = c(0, 500), col = \"#2c3e50\", xlab = \"Probability of occurring (%)\", ylab = \"EMV ($ thousand)\",\n     main = \"EMV grows with probability\")\nabline(v = p_occurs * 100, lty = 2, col = \"#bdc3c7\")\npoints(p_occurs * 100, emv / 1000, pch = 19, cex = 2.2, col = \"#e74c3c\")\n\ncat(sprintf(\"EMV of this risk: %s\\n\", money(emv)))\ncat(sprintf(\"Calculation  %.2f x %s\\n\", p_occurs, money(impact)))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"emv-example-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"lb <- 750\nstorage <- 100\nprice_now <- 5.58\n\n# Branch: buy now (price locked, pay storage)\nbuy_now <- price_now * lb + storage\n\n# Branch: buy later (two chance outcomes)\np_high     <- 0.90\nprice_high <- 5.58\nprice_low  <- 4.50\np_low      <- 1 - p_high\nfmt2 <- function(x) formatC(x, format = \"f\", digits = 2, big.mark = \" \")\nbuy_later <- p_high * (price_high * lb) + p_low * (price_low * lb)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nemvs <- c(\"Buy now\" = buy_now, \"Buy later\" = buy_later)\nbp <- barplot(emvs, col = c(\"#2980b9\", \"#e67e22\"), ylim = c(0, max(emvs) * 1.15),\n              ylab = \"Expected cost ($)\", main = \"EMV of each branch\")\ntext(bp, emvs, labels = paste0(\"$\", format(round(emvs), big.mark = \" \")), pos = 3, cex = 1.3)\n\ncat(sprintf(\"Choose: %s (saves $%s on average)\\n\",\n            ifelse(buy_later < buy_now, \"BUY LATER\", \"BUY NOW\"), fmt2(abs(buy_now - buy_later))))\ncat(sprintf(\"EMV, buy now  $%s\\n\", fmt2(buy_now)))\ncat(sprintf(\"EMV, buy later  $%s\\n\", fmt2(buy_later)))\ncat(sprintf(\"Price if high (%.0f%%)  $%s\\n\", 100 * p_high, fmt2(price_high * lb)))\ncat(sprintf(\"Price if low (%.0f%%)  $%s\\n\", 100 * p_low, fmt2(price_low * lb)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"decision-tree-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Risk: unproven supplier fails to deliver on time.\np_fail_no_action <- 0.35\nimpact_if_fail   <- 260000       # expedite alternative source + line downtime\n\n# Mitigation: pre-qualify a backup supplier now.\nmitigation_cost  <- 22000\np_fail_with_action <- 0.10       # backup ready -> failure much less damaging\nimpact_with_action <- 90000      # switch to backup, smaller hit\n\nemv_before <- p_fail_no_action * impact_if_fail\nemv_after  <- mitigation_cost + p_fail_with_action * impact_with_action\nsaving     <- emv_before - emv_after\n\nmoney <- function(x) paste0(ifelse(x < 0, \"-\", \"\"), \"$\", format(round(abs(x)), big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nstack <- cbind(\"Do nothing\" = c(0, emv_before),\n               \"Pre-qualify backup\" = c(mitigation_cost, emv_after - mitigation_cost))\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack / 1000, col = c(\"#7f8c8d\", \"#e67e22\"), ylab = \"Expected cost ($ thousand)\",\n        main = \"Expected cost: spent now (grey) + loss (orange)\")\n\nif (saving >= 0) {\n  cat(sprintf(\"Mitigation pays: expected saving %s\\n\", money(saving)))\n} else {\n  cat(sprintf(\"!!Mitigation does not pay: expected loss of %s!!\\n\", money(-saving)))\n}\ncat(sprintf(\"EMV, do nothing  %s\\n\", money(emv_before)))\ncat(sprintf(\"EMV, pre-qualify backup  %s (incl. %s spent now)\\n\", money(emv_after), money(mitigation_cost)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"mitigation-value-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Three failure modes from the RC-vehicle build\n\n# 1. Motor controller drops signal (unproven Paragon supplier)\nS1 <- 8\nO1 <- 6\nD1 <- 5\nRPN1 <- S1 * O1 * D1\n\n# 2. Carbon-fibre panel delaminates\nS2 <- 9\nO2 <- 3\nD2 <- 6\nRPN2 <- S2 * O2 * D2\n\n# 3. Minor paint overspray on trim\nS3 <- 2\nO3 <- 5\nD3 <- 3\nRPN3 <- S3 * O3 * D3\n\nmodes <- c(\"Controller signal drop\", \"Panel delamination\", \"Paint overspray\")\nshort <- c(\"Controller\", \"Panel\", \"Overspray\")\nsev   <- c(S1, S2, S3)\nrpns  <- c(RPN1, RPN2, RPN3)\nord   <- order(rpns, decreasing = TRUE)\n\n# RPN is a sort, not a verdict: flag any Severity >= 8 for action regardless of rank.\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(rpns[ord], names.arg = short[ord], col = ifelse(sev[ord] >= 8, \"#e74c3c\", \"#2980b9\"),\n        ylab = \"RPN (S x O x D)\", main = \"Priority order by RPN\")\n\ncat(sprintf(\"Top priority: %s (RPN = %d)\\n\", modes[ord[1]], rpns[ord[1]]))\nfor (i in ord) {\n  flag <- if (sev[i] >= 8) \" - !!S >= 8: flag for action!!\" else \"\"\n  cat(sprintf(\"%s  RPN %d (S=%d, O=%d, D=%d)%s\\n\", modes[i], rpns[i], sev[i],\n              c(O1, O2, O3)[i], c(D1, D2, D3)[i], flag))\n}","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"rpn-fmea-07","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1701,17 +1702,17 @@ window.Quarto = {
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-Risk-Management.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Risk Management</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-Risk-Management.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Risk Management</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -1722,7 +1723,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Sustainability and Business Practices</a> 
@@ -1834,7 +1835,7 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
@@ -1875,7 +1876,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/07-Risk-Management.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
 <script type="module" id="qwebr-monaco-editor-init">
 
@@ -2282,23 +2283,21 @@ Figure&nbsp;7.1: Probability-impact matrix for the RC-vehicle project. Red-zone 
 <p>Live cell — change the probability or the impact of the risk.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="emv-example-07" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="emv-example-07" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-dice qwebr-calc-icon"></i>
     <h4 class="anchored">Expected Monetary Value Calculator</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-emv-example-07-p-occurs">Probability the risk occurs <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-emv-example-07-p-occurs" id="qcalc-emv-example-07-p-occurs-readout">0.4</span></label>
+      <label for="qcalc-emv-example-07-p-occurs">Probability the risk occurs <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-emv-example-07-p-occurs" data-prefix="" data-suffix="" id="qcalc-emv-example-07-p-occurs-readout">0.4</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-emv-example-07-p-occurs" data-var="p_occurs" value="0.4" min="0" max="1" step="0.05">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-emv-example-07-impact">Impact if it occurs</label>
-      <div class="qwebr-calc-field">
-        <span class="qwebr-calc-prefix">$</span>
-        <input type="number" id="qcalc-emv-example-07-impact" data-var="impact" value="120000" min="0" max="1000000" step="5000">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-emv-example-07-impact">Impact if it occurs <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-emv-example-07-impact" data-prefix="$" data-suffix="" id="qcalc-emv-example-07-impact-readout">$120 000</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-emv-example-07-impact" data-var="impact" value="120000" min="0" max="500000" step="5000">
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
@@ -2318,10 +2317,11 @@ Show the live R code behind this calculator
 <p>You need <strong>750 lb of copper</strong> for the RC-vehicle wiring harness tooling. Buy it <strong>now</strong> and pay <strong>$100</strong> storage, or buy it <strong>later</strong> at the summer price — which is <strong>$5.58/lb with 90 % probability</strong>, or <strong>$4.50/lb with 10 % probability</strong>.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="decision-tree-07" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="decision-tree-07" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-code-branch qwebr-calc-icon"></i>
     <h4 class="anchored">Decision-Tree EMV Calculator</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row">
@@ -2350,7 +2350,7 @@ Show the live R code behind this calculator
     </div>
 
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-decision-tree-07-p-high">Chance price stays high <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-decision-tree-07-p-high" id="qcalc-decision-tree-07-p-high-readout">0.9</span></label>
+      <label for="qcalc-decision-tree-07-p-high">Chance price stays high <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-decision-tree-07-p-high" data-prefix="" data-suffix="" id="qcalc-decision-tree-07-p-high-readout">0.9</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-decision-tree-07-p-high" data-var="p_high" value="0.9" min="0" max="1" step="0.05">
     </div>
 
@@ -2373,6 +2373,10 @@ Show the live R code behind this calculator
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="buy_now < buy_later &amp;&amp; lb == 750 &amp;&amp; price_now == 5.58">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Make buying now the cheaper choice without changing the quantity or today's price. Which inputs could you move, and is that realistic?</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2474,10 +2478,11 @@ Show the worked solution
 <h3 data-number="7.8.1" class="anchored" data-anchor-id="try-it-yourself-does-the-mitigation-pay-for-itself"><span class="header-section-number">7.8.1</span> Try it yourself: does the mitigation pay for itself?</h3>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="mitigation-value-07" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="mitigation-value-07" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-shield-halved qwebr-calc-icon"></i>
     <h4 class="anchored">Does the Mitigation Pay for Itself?</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row">
@@ -2504,7 +2509,7 @@ Show the worked solution
     </div>
 
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-mitigation-value-07-p-fail-with-action">Failure chance, with mitigation <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-mitigation-value-07-p-fail-with-action" id="qcalc-mitigation-value-07-p-fail-with-action-readout">0.1</span></label>
+      <label for="qcalc-mitigation-value-07-p-fail-with-action">Failure chance, with mitigation <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-mitigation-value-07-p-fail-with-action" data-prefix="" data-suffix="" id="qcalc-mitigation-value-07-p-fail-with-action-readout">0.1</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-mitigation-value-07-p-fail-with-action" data-var="p_fail_with_action" value="0.1" min="0" max="1" step="0.05">
     </div>
 
@@ -2517,6 +2522,10 @@ Show the worked solution
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="saving >= 0 &amp;&amp; saving <= 2000 &amp;&amp; p_fail_no_action == 0.35 &amp;&amp; impact_if_fail == 260000">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Find the most you could pay for the mitigation before it stops paying for itself: set the cost so the expected saving falls to between $0 and $2 000, leaving the risk numbers alone.</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2776,73 +2785,56 @@ Show the live R code behind this calculator
 <p>Live cell — change S, O, or D for any failure mode and watch the ranking move.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="rpn-fmea-07" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="rpn-fmea-07" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-triangle-exclamation qwebr-calc-icon"></i>
     <h4 class="anchored">FMEA Risk Priority Number Calculator</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
   </div>
   <div class="qwebr-calc-inputs">
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-S1">Controller signal drop: Severity (S)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-S1" data-var="S1" value="8" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-S1">Controller signal drop: Severity (S) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-S1" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-S1-readout">8</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-S1" data-var="S1" value="8" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-O1">Controller signal drop: Occurrence (O)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-O1" data-var="O1" value="6" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-O1">Controller signal drop: Occurrence (O) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-O1" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-O1-readout">6</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-O1" data-var="O1" value="6" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-D1">Controller signal drop: Detection (D)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-D1" data-var="D1" value="5" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-D1">Controller signal drop: Detection (D) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-D1" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-D1-readout">5</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-D1" data-var="D1" value="5" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-S2">Panel delamination: Severity (S)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-S2" data-var="S2" value="9" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-S2">Panel delamination: Severity (S) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-S2" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-S2-readout">9</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-S2" data-var="S2" value="9" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-O2">Panel delamination: Occurrence (O)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-O2" data-var="O2" value="3" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-O2">Panel delamination: Occurrence (O) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-O2" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-O2-readout">3</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-O2" data-var="O2" value="3" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-D2">Panel delamination: Detection (D)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-D2" data-var="D2" value="6" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-D2">Panel delamination: Detection (D) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-D2" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-D2-readout">6</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-D2" data-var="D2" value="6" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-S3">Paint overspray: Severity (S)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-S3" data-var="S3" value="2" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-S3">Paint overspray: Severity (S) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-S3" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-S3-readout">2</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-S3" data-var="S3" value="2" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-O3">Paint overspray: Occurrence (O)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-O3" data-var="O3" value="5" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-O3">Paint overspray: Occurrence (O) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-O3" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-O3-readout">5</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-O3" data-var="O3" value="5" min="1" max="10" step="1">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-rpn-fmea-07-D3">Paint overspray: Detection (D)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-rpn-fmea-07-D3" data-var="D3" value="3" min="1" max="10" step="1">
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-rpn-fmea-07-D3">Paint overspray: Detection (D) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-rpn-fmea-07-D3" data-prefix="" data-suffix="" id="qcalc-rpn-fmea-07-D3-readout">3</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-rpn-fmea-07-D3" data-var="D3" value="3" min="1" max="10" step="1">
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
@@ -2892,7 +2884,7 @@ Show the worked solution
 </section>
 <section id="case-study-meridian-rc-week-7" class="level2" data-number="7.11">
 <h2 data-number="7.11" class="anchored" data-anchor-id="case-study-meridian-rc-week-7"><span class="header-section-number">7.11</span> Case Study: Meridian R/C — Week 7</h2>
-<div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 7: The Motor-Supplier Risk Register">
+<div class="case-study callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -3151,7 +3143,8 @@ Discussion points
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -3160,8 +3153,69 @@ Discussion points
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -3175,6 +3229,7 @@ Discussion points
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -3337,44 +3392,54 @@ Discussion points
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -3473,7 +3538,10 @@ Discussion points
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="./06-Network-Diagrams-and-AON.html" class="pagination-link" aria-label="Network Diagrams and Activity-on-Node (AON)">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Network Diagrams and Activity-on-Node (AON)</span></span>

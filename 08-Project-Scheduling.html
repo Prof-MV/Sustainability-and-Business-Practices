@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -76,14 +76,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./07-Risk-Management.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4c5e755a3bfe43f3706dcc37cc2065fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -412,7 +413,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"cp <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ncp$te  <- (cp$o + 4 * cp$m + cp$p) / 6\ncp$var <- ((cp$p - cp$o) / 6)^2\n\nmu    <- sum(cp$te)\nsigma <- sqrt(sum(cp$var))\n\ncat(sprintf(\"Project mean duration: %.1f days\\n\", mu))\ncat(sprintf(\"Project variance  %.2f\\n\", sum(cp$var)))\ncat(sprintf(\"Project std deviation  %.2f days\\n\", sigma))\ncat(sprintf(\"Rough 95%% range  %.0f to %.0f days\\n\", mu - 2 * sigma, mu + 2 * sigma))\nfor (i in seq_len(nrow(cp)))\n  cat(sprintf(\"%s  te %.2f days, variance %.2f\\n\", cp$id[i], cp$te[i], cp$var[i]))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-project-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mu    <- 83.0     # from the worked example\nsigma <- 2.42\nconfidence_pct <- 90    # confidence you want in the target\ntarget_day     <- 86    # the day you are promising\n\nz    <- (target_day - mu) / sigma\nprob <- pnorm(z)\nconf_day <- mu + qnorm(confidence_pct / 100) * sigma\n\nx <- seq(mu - 4 * sigma, mu + 4 * sigma, length.out = 200)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(x, dnorm(x, mu, sigma), type = \"n\", xlab = \"Project finish (day)\", ylab = \"Density\",\n     main = \"Probability of finishing on time\")\nshade <- x <= target_day\nif (any(shade)) polygon(c(x[shade][1], x[shade], target_day), c(0, dnorm(x[shade], mu, sigma), 0),\n                        col = \"#aed6f1\", border = NA)\nlines(x, dnorm(x, mu, sigma), lwd = 4, col = \"#2c3e50\")\nabline(v = target_day, lty = 2, lwd = 2, col = \"#e74c3c\")\nabline(v = conf_day, lty = 3, lwd = 2, col = \"#16a085\")\n\nif (100 * prob >= confidence_pct) {\n  cat(sprintf(\"P(finish by day %g) = %.1f%%: meets the %g%% goal\\n\", target_day, 100 * prob, confidence_pct))\n} else {\n  cat(sprintf(\"!!P(finish by day %g) = %.1f%%: below the %g%% goal!!\\n\", target_day, 100 * prob, confidence_pct))\n}\ncat(sprintf(\"z-score  %+.2f\\n\", z))\ncat(sprintf(\"Day for %g%% confidence  day %.1f (mu + %.2f x sigma)\\n\",\n            confidence_pct, conf_day, qnorm(confidence_pct / 100)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"prob-on-time-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"seed       <- 1\ntarget_day <- 80\n\n# The chapter's critical path A to E (days): optimistic, most likely, pessimistic.\no <- c(12, 7, 15, 9, 24)\nm <- c(15, 10, 19, 13, 26)\np <- c(17, 13, 23, 16, 30)\nruns <- 2000\n\nset.seed(seed)\n# PERT-beta: mean (o + 4m + p) / 6, spread set by the same three numbers.\na <- 1 + 4 * (m - o) / (p - o)\nb <- 1 + 4 * (p - m) / (p - o)\ntotal <- numeric(runs)\nfor (i in seq_along(o)) total <- total + o[i] + (p[i] - o[i]) * rbeta(runs, a[i], b[i])\n\npct_on_time <- 100 * mean(total <= target_day)\nmu    <- sum((o + 4 * m + p) / 6)\nsigma <- sqrt(sum(((p - o) / 6)^2))\nformula_pct <- 100 * pnorm((target_day - mu) / sigma)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nhist(total, breaks = 30, col = \"#aed6f1\", border = \"white\",\n     xlab = \"Project finish (day)\", ylab = \"Runs\", main = \"Simulated project durations\")\nabline(v = target_day, lty = 2, lwd = 3, col = \"#e74c3c\")\n\nif (pct_on_time >= 90) {\n  cat(sprintf(\"%.1f%% of runs finish by day %g: meets a 90%% promise\\n\", pct_on_time, target_day))\n} else {\n  cat(sprintf(\"%.1f%% of runs finish by day %g: !!below a 90%% promise!!\\n\", pct_on_time, target_day))\n}\ncat(sprintf(\"Normal-curve formula  %.1f%%\\n\", formula_pct))\ncat(sprintf(\"Mean simulated finish  day %.1f\\n\", mean(total)))\ncat(sprintf(\"Middle 90%% of runs  day %.1f to %.1f\\n\", quantile(total, 0.05), quantile(total, 0.95)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"schedule-sim-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"target_reduction <- 4          # days to remove from the project\n\n# Critical-path activities: normal/crash time and cost.\nact <- data.frame(\n  id         = c(\"A\", \"F\", \"H\"),\n  normal_t   = c(9, 6, 8),\n  crash_t    = c(7, 5, 4),\n  normal_c   = c(5500, 4000, 3500),\n  crash_c    = c(7550, 9000, 7550)\n)\nact$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)\nact$max_crash <- act$normal_t - act$crash_t\n\norder_by_cost <- act[order(act$slope), ]\norder_by_cost$days_used <- 0\n\nremaining <- target_reduction\ntotal_cost <- 0\nsteps <- character(0)\nfor (i in seq_len(nrow(order_by_cost))) {\n  take <- min(remaining, order_by_cost$max_crash[i])\n  if (take <= 0) break\n  cost <- take * order_by_cost$slope[i]\n  total_cost <- total_cost + cost\n  remaining <- remaining - take\n  order_by_cost$days_used[i] <- take\n  steps <- c(steps, sprintf(\"Crash %s by %g day(s) at $%s/day  $%s\",\n                            order_by_cost$id[i], take, format(round(order_by_cost$slope[i]), big.mark = \" \"),\n                            format(round(cost), big.mark = \" \")))\n}\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(order_by_cost$slope, names.arg = order_by_cost$id, col = ifelse(order_by_cost$days_used > 0, \"#2980b9\", \"#bdc3c7\"),\n              ylim = c(0, max(order_by_cost$slope) * 1.2),\n              xlab = \"Activity (cheapest first)\", ylab = \"Crash cost ($ per day)\",\n              main = \"Crash cost per day (blue = crashed)\")\ntext(bp, order_by_cost$slope, labels = ifelse(order_by_cost$days_used > 0, paste(order_by_cost$days_used, \"d\"), \"\"),\n     pos = 3, cex = 1.3)\n\nif (remaining > 0) {\n  cat(sprintf(\"!!Only %g of %g days can be crashed: $%s!!\\n\", target_reduction - remaining,\n              target_reduction, format(round(total_cost), big.mark = \" \")))\n} else {\n  cat(sprintf(\"Cheapest way to cut %g days: $%s\\n\", target_reduction, format(round(total_cost), big.mark = \" \")))\n}\nfor (s in steps) cat(s, \"\\n\", sep = \"\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"crash-sequence-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"cp <- data.frame(\n  id = c(\"A\", \"B\", \"C\", \"D\", \"E\"),\n  o  = c(12, 7, 15, 9, 24),\n  m  = c(15, 10, 19, 13, 26),\n  p  = c(17, 13, 23, 16, 30)\n)\ncp$te  <- (cp$o + 4 * cp$m + cp$p) / 6\ncp$var <- ((cp$p - cp$o) / 6)^2\n\nmu    <- sum(cp$te)\nsigma <- sqrt(sum(cp$var))\n\ncat(sprintf(\"Project mean duration: %.1f days\\n\", mu))\ncat(sprintf(\"Project variance  %.2f\\n\", sum(cp$var)))\ncat(sprintf(\"Project std deviation  %.2f days\\n\", sigma))\ncat(sprintf(\"Rough 95%% range  %.0f to %.0f days\\n\", mu - 2 * sigma, mu + 2 * sigma))\nfor (i in seq_len(nrow(cp)))\n  cat(sprintf(\"%s  te %.2f days, variance %.2f\\n\", cp$id[i], cp$te[i], cp$var[i]))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"pert-project-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"mu    <- 83.0     # from the worked example\nsigma <- 2.42\nconfidence_pct <- 90    # confidence you want in the target\ntarget_day     <- 86    # the day you are promising\n\nz    <- (target_day - mu) / sigma\nprob <- pnorm(z)\nconf_day <- mu + qnorm(confidence_pct / 100) * sigma\n\nx <- seq(60, 120, length.out = 400)   # fixed axis so the curve visibly moves and widens\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nplot(x, dnorm(x, mu, sigma), type = \"n\", ylim = c(0, 0.4), xlab = \"Project finish (day)\", ylab = \"Density\",\n     main = \"Probability of finishing on time\")\nshade <- x <= target_day\nif (any(shade)) polygon(c(x[shade][1], x[shade], target_day), c(0, dnorm(x[shade], mu, sigma), 0),\n                        col = \"#aed6f1\", border = NA)\nlines(x, dnorm(x, mu, sigma), lwd = 4, col = \"#2c3e50\")\nabline(v = target_day, lty = 2, lwd = 2, col = \"#e74c3c\")\nabline(v = conf_day, lty = 3, lwd = 2, col = \"#16a085\")\n\nif (100 * prob >= confidence_pct) {\n  cat(sprintf(\"P(finish by day %g) = %.1f%%: meets the %g%% goal\\n\", target_day, 100 * prob, confidence_pct))\n} else {\n  cat(sprintf(\"!!P(finish by day %g) = %.1f%%: below the %g%% goal!!\\n\", target_day, 100 * prob, confidence_pct))\n}\ncat(sprintf(\"z-score  %+.2f\\n\", z))\ncat(sprintf(\"Day for %g%% confidence  day %.1f (mu + %.2f x sigma)\\n\",\n            confidence_pct, conf_day, qnorm(confidence_pct / 100)))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"prob-on-time-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"seed       <- 1\ntarget_day <- 80\n\n# The chapter's critical path A to E (days): optimistic, most likely, pessimistic.\no <- c(12, 7, 15, 9, 24)\nm <- c(15, 10, 19, 13, 26)\np <- c(17, 13, 23, 16, 30)\nruns <- 2000\n\nset.seed(seed)\n# PERT-beta: mean (o + 4m + p) / 6, spread set by the same three numbers.\na <- 1 + 4 * (m - o) / (p - o)\nb <- 1 + 4 * (p - m) / (p - o)\ntotal <- numeric(runs)\nfor (i in seq_along(o)) total <- total + o[i] + (p[i] - o[i]) * rbeta(runs, a[i], b[i])\n\npct_on_time <- 100 * mean(total <= target_day)\nmu    <- sum((o + 4 * m + p) / 6)\nsigma <- sqrt(sum(((p - o) / 6)^2))\nformula_pct <- 100 * pnorm((target_day - mu) / sigma)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nhist(total, breaks = 30, col = \"#aed6f1\", border = \"white\",\n     xlab = \"Project finish (day)\", ylab = \"Runs\", main = \"Simulated project durations\")\nabline(v = target_day, lty = 2, lwd = 3, col = \"#e74c3c\")\n\nif (pct_on_time >= 90) {\n  cat(sprintf(\"%.1f%% of runs finish by day %g: meets a 90%% promise\\n\", pct_on_time, target_day))\n} else {\n  cat(sprintf(\"%.1f%% of runs finish by day %g: !!below a 90%% promise!!\\n\", pct_on_time, target_day))\n}\ncat(sprintf(\"Normal-curve formula  %.1f%%\\n\", formula_pct))\ncat(sprintf(\"Mean simulated finish  day %.1f\\n\", mean(total)))\ncat(sprintf(\"Middle 90%% of runs  day %.1f to %.1f\\n\", quantile(total, 0.05), quantile(total, 0.95)))","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"schedule-sim-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"target_reduction <- 4          # days to remove from the project\n\n# Critical-path activities: normal/crash time and cost.\nact <- data.frame(\n  id         = c(\"A\", \"F\", \"H\"),\n  normal_t   = c(9, 6, 8),\n  crash_t    = c(7, 5, 4),\n  normal_c   = c(5500, 4000, 3500),\n  crash_c    = c(7550, 9000, 7550)\n)\nact$slope     <- (act$crash_c - act$normal_c) / (act$normal_t - act$crash_t)\nact$max_crash <- act$normal_t - act$crash_t\n\norder_by_cost <- act[order(act$slope), ]\norder_by_cost$days_used <- 0\n\nremaining <- target_reduction\ntotal_cost <- 0\nsteps <- character(0)\nfor (i in seq_len(nrow(order_by_cost))) {\n  take <- min(remaining, order_by_cost$max_crash[i])\n  if (take <= 0) break\n  cost <- take * order_by_cost$slope[i]\n  total_cost <- total_cost + cost\n  remaining <- remaining - take\n  order_by_cost$days_used[i] <- take\n  steps <- c(steps, sprintf(\"Crash %s by %g day(s) at $%s/day  $%s\",\n                            order_by_cost$id[i], take, format(round(order_by_cost$slope[i]), big.mark = \" \"),\n                            format(round(cost), big.mark = \" \")))\n}\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(order_by_cost$slope, names.arg = order_by_cost$id, col = ifelse(order_by_cost$days_used > 0, \"#2980b9\", \"#bdc3c7\"),\n              ylim = c(0, max(order_by_cost$slope) * 1.2),\n              xlab = \"Activity (cheapest first)\", ylab = \"Crash cost ($ per day)\",\n              main = \"Crash cost per day (blue = crashed)\")\ntext(bp, order_by_cost$slope, labels = ifelse(order_by_cost$days_used > 0, paste(order_by_cost$days_used, \"d\"), \"\"),\n     pos = 3, cex = 1.3)\n\nif (remaining > 0) {\n  cat(sprintf(\"!!Only %g of %g days can be crashed: $%s!!\\n\", target_reduction - remaining,\n              target_reduction, format(round(total_cost), big.mark = \" \")))\n} else {\n  cat(sprintf(\"Cheapest way to cut %g days: $%s\\n\", target_reduction, format(round(total_cost), big.mark = \" \")))\n}\nfor (s in steps) cat(s, \"\\n\", sep = \"\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"crash-sequence-08","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1699,17 +1700,17 @@ window.Quarto = {
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-Project-Scheduling.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Project Scheduling</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-Project-Scheduling.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Project Scheduling</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -1720,7 +1721,7 @@ window.Quarto = {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Sustainability and Business Practices</a> 
@@ -1832,7 +1833,7 @@ window.Quarto = {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
@@ -1872,7 +1873,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/08-Project-Scheduling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
 <script type="module" id="qwebr-monaco-editor-init">
 
@@ -2548,10 +2549,11 @@ Note
 <p><strong>What it means.</strong> <span class="math inline">\(t_e\)</span> is the weighted-average duration of each activity; adding them along the critical path gives the project mean <span class="math inline">\(\mu\)</span> (83.0 days here). Variances add, but standard deviations do not, so <span class="math inline">\(\sigma\)</span> is the square root of the summed variances. <strong>Link.</strong> These two numbers, <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, are the inputs to the next calculator.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="pert-project-08" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="pert-project-08" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-chart-line qwebr-calc-icon"></i>
     <h4 class="anchored">Project Duration and Its Spread</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;cp&quot;,&quot;addRows&quot;:false,&quot;columns&quot;:[{&quot;name&quot;:&quot;id&quot;,&quot;label&quot;:&quot;Activity&quot;,&quot;values&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;o&quot;,&quot;label&quot;:&quot;Optimistic (o)&quot;,&quot;values&quot;:[12,7,15,9,24],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1},{&quot;name&quot;:&quot;m&quot;,&quot;label&quot;:&quot;Most likely (m)&quot;,&quot;values&quot;:[15,10,19,13,26],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1},{&quot;name&quot;:&quot;p&quot;,&quot;label&quot;:&quot;Pessimistic (p)&quot;,&quot;values&quot;:[17,13,23,16,30],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1}]}"></div>
@@ -2582,38 +2584,30 @@ Show the live R code behind this card
 <p><strong>What it means.</strong> The <span class="math inline">\(z\)</span>-score counts how many standard deviations the target lies above the mean; the probability is the area of the curve to its left. The green dashed line is the day you should <em>promise</em> to reach your chosen confidence, and the red dashed line is the day you are <em>asking about</em>. A message that flags the goal as missed means your target is earlier than the day you can defend.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="prob-on-time-08" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="prob-on-time-08" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-bell-concierge qwebr-calc-icon"></i>
     <h4 class="anchored">Probability-of-On-Time Calculator</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
   </div>
   <div class="qwebr-calc-inputs">
-    <div class="qwebr-calc-row">
-      <label for="qcalc-prob-on-time-08-mu">Project mean duration</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-prob-on-time-08-mu" data-var="mu" value="83" min="40" max="200" step="0.5">
-        <span class="qwebr-calc-suffix">days</span>
-      </div>
-    </div>
-
-    <div class="qwebr-calc-row">
-      <label for="qcalc-prob-on-time-08-sigma">Project standard deviation</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-prob-on-time-08-sigma" data-var="sigma" value="2.42" min="0.5" max="15" step="0.01">
-        <span class="qwebr-calc-suffix">days</span>
-      </div>
-    </div>
-
-    <div class="qwebr-calc-row">
-      <label for="qcalc-prob-on-time-08-confidence-pct">Confidence you want</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-prob-on-time-08-confidence-pct" data-var="confidence_pct" value="90" min="50" max="99" step="1">
-        <span class="qwebr-calc-suffix">%</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-prob-on-time-08-mu">Project mean duration <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-mu" data-prefix="" data-suffix="days" id="qcalc-prob-on-time-08-mu-readout">83days</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-prob-on-time-08-mu" data-var="mu" value="83" min="70" max="100" step="0.5">
     </div>
 
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-prob-on-time-08-target-day">Target finish day <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-target-day" id="qcalc-prob-on-time-08-target-day-readout">86</span></label>
+      <label for="qcalc-prob-on-time-08-sigma">Project standard deviation <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-sigma" data-prefix="" data-suffix="days" id="qcalc-prob-on-time-08-sigma-readout">2.42days</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-prob-on-time-08-sigma" data-var="sigma" value="2.42" min="1" max="8" step="0.01">
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-prob-on-time-08-confidence-pct">Confidence you want <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-confidence-pct" data-prefix="" data-suffix="%" id="qcalc-prob-on-time-08-confidence-pct-readout">90%</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-prob-on-time-08-confidence-pct" data-var="confidence_pct" value="90" min="50" max="99" step="1">
+    </div>
+
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-prob-on-time-08-target-day">Target finish day <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-prob-on-time-08-target-day" data-prefix="" data-suffix="" id="qcalc-prob-on-time-08-target-day-readout">86</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-prob-on-time-08-target-day" data-var="target_day" value="86" min="60" max="120" step="1">
     </div>
   </div>
@@ -2671,10 +2665,11 @@ Show the worked solution
 <p><strong>What it means.</strong> The output compares <em>“% of runs on time”</em> (simulation) with the <em>normal-curve formula</em>. They agree because adding several independent activities makes the total close to normal. The simulation is the proof that the shortcut formula is trustworthy, and it also gives an honest picture of the range: the “middle 90 %” line tells you how wide the real uncertainty is.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="schedule-sim-08" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="schedule-sim-08" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-dice qwebr-calc-icon"></i>
     <h4 class="anchored">Schedule Simulation</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row">
@@ -2685,7 +2680,7 @@ Show the worked solution
     </div>
 
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-schedule-sim-08-target-day">Target finish day <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-schedule-sim-08-target-day" id="qcalc-schedule-sim-08-target-day-readout">80</span></label>
+      <label for="qcalc-schedule-sim-08-target-day">Target finish day <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-schedule-sim-08-target-day" data-prefix="" data-suffix="" id="qcalc-schedule-sim-08-target-day-readout">80</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-schedule-sim-08-target-day" data-var="target_day" value="80" min="60" max="110" step="1">
     </div>
     <button type="button" class="qwebr-calc-rerun" data-seed-var="seed">Run again with new random numbers</button>
@@ -2752,18 +2747,23 @@ Figure&nbsp;8.2: Time-cost trade-off for one activity. Between the normal and cr
 <p><strong>What it means.</strong> The cost of each extra day jumps as cheaper options run out, which is the time-cost curve in the figure above. The cheapest-first rule gives the minimum cost for the days you need; any other order costs more. The tool assumes each activity stays critical. In a real project you re-check the network after each cut, as the next exercise reminds you. <strong>Link.</strong> If the probability exercise says your date is too risky, this is how you buy days back.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="crash-sequence-08" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="crash-sequence-08" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-bolt qwebr-calc-icon"></i>
     <h4 class="anchored">Crash-Cost Calculator</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-crash-sequence-08-target-reduction">Days to remove from the project <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-crash-sequence-08-target-reduction" id="qcalc-crash-sequence-08-target-reduction-readout">4</span></label>
+      <label for="qcalc-crash-sequence-08-target-reduction">Days to remove from the project <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-crash-sequence-08-target-reduction" data-prefix="" data-suffix="" id="qcalc-crash-sequence-08-target-reduction-readout">4</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-crash-sequence-08-target-reduction" data-var="target_reduction" value="4" min="1" max="8" step="1">
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="remaining == 0 &amp;&amp; total_cost < 10000 &amp;&amp; target_reduction >= 6">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> The sponsor will release under $10 000 of crash budget. What is the largest cut in days you can buy for that, and is the last day worth it?</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2845,7 +2845,7 @@ Show the worked solution
 </section>
 <section id="case-study-meridian-rc-week-8" class="level2" data-number="8.10">
 <h2 data-number="8.10" class="anchored" data-anchor-id="case-study-meridian-rc-week-8"><span class="header-section-number">8.10</span> Case Study: Meridian R/C — Week 8</h2>
-<div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 8: Can the Schedule Be Pulled In?">
+<div class="case-study callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -3036,7 +3036,8 @@ Discussion points
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -3045,8 +3046,69 @@ Discussion points
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -3060,6 +3122,7 @@ Discussion points
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -3222,44 +3285,54 @@ Discussion points
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -3358,7 +3431,10 @@ Discussion points
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="./07-Risk-Management.html" class="pagination-link" aria-label="Risk Management">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Risk Management</span></span>

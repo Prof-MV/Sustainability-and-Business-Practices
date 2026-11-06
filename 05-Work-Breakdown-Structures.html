@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -41,14 +41,15 @@ ul.task-list li input[type="checkbox"] {
 <link href="./04-Leadership-and-the-Project-Manager.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-fa39313ee0ae67082205aa4c05164dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-4c5e755a3bfe43f3706dcc37cc2065fe.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -377,7 +378,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"parent_hours <- 340\nh_outer  <- 120   # 1.1.1 Outer body design\nh_inner  <- 90    # 1.1.2 Inner frame design\nh_select <- 70    # 1.1.3 Material selection\nh_review <- 60    # 1.1.4 Design review & release\n\nchildren_hours <- c(\"1.1.1 Outer body design\" = h_outer,\n                    \"1.1.2 Inner frame design\" = h_inner,\n                    \"1.1.3 Material selection\" = h_select,\n                    \"1.1.4 Design review & release\" = h_review)\n\nchild_sum <- sum(children_hours)\n\n# Chart: the four children stacked beside the parent estimate\nstack <- rbind(cbind(children_hours, 0), c(0, parent_hours))\ncolnames(stack) <- c(\"Children\", \"Parent\")\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack, col = c(\"#2980b9\", \"#16a085\", \"#8e44ad\", \"#e67e22\", \"#34495e\"), ylim = c(0, max(child_sum, parent_hours) * 1.1), ylab = \"Hours\",\n        main = \"Do the children add up to the parent?\")\nabline(h = parent_hours, lty = 2, lwd = 3, col = \"#e74c3c\")\n\nif (child_sum == parent_hours) {\n  cat(\"OK: the children account for exactly 100% of the parent\\n\")\n} else if (child_sum < parent_hours) {\n  cat(sprintf(\"!!GAP: %g h of the parent's scope is in no work package!!\\n\", parent_hours - child_sum))\n} else {\n  cat(sprintf(\"!!OVER: the children exceed the parent by %g h (scope crept in)!!\\n\", child_sum - parent_hours))\n}\ncat(sprintf(\"Sum of children  %g h\\n\", child_sum))\ncat(sprintf(\"Parent estimate  %g h\\n\", parent_hours))\ncat(sprintf(\"Children as share of parent  %.1f%%\\n\", 100 * child_sum / parent_hours))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-rollup-example-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"packages <- data.frame(\n  id    = c(\"1.1.1\", \"1.2.1\", \"1.3.1\", \"1.3.4\", \"1.4.2\"),\n  name  = c(\"Outer body design\", \"Motor/controller procurement\",\n            \"Prototype assembly\", \"Tighten one fastener\",\n            \"Full regulatory approval campaign\"),\n  hours = c(64, 40, 72, 1.5, 260)\n)\n\nflag <- ifelse(packages$hours > 80, \"TOO BIG (> 80 h, split it)\",\n        ifelse(packages$hours < 8,  \"TOO SMALL (< 8 h, roll it up)\",\n               \"ok\"))\n\nn_bad <- sum(flag != \"ok\")\ncat(sprintf(\"%s%d of %d packages need re-sizing%s\\n\",\n            ifelse(n_bad > 0, \"!!\", \"\"), n_bad, nrow(packages), ifelse(n_bad > 0, \"!!\", \"\")))\nfor (i in seq_len(nrow(packages)))\n  cat(sprintf(\"%s %s  %s\\n\", packages$id[i], packages$name[i],\n              ifelse(flag[i] == \"ok\", \"ok\", paste0(\"!!\", flag[i], \"!!\"))))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-decomp-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"reporting_cycle_days <- 14   # biweekly status reports\n\nspan_concept <- 10    # 1.1.1 Concept CAD\nspan_motor   <- 25    # 1.2.1 Motor/controller procurement\nspan_drop    <- 5     # 1.5.1 Drop/durability test\nspan_cert    <- 12    # 1.5.2 Toy-safety certification\n\npackages <- data.frame(\n  id        = c(\"1.1.1\", \"1.2.1\", \"1.5.1\", \"1.5.2\"),\n  name      = c(\"Concept CAD\", \"Motor/controller procurement\",\n               \"Drop/durability test\", \"Toy-safety certification\"),\n  span_days = c(span_concept, span_motor, span_drop, span_cert)\n)\npackages$too_long <- packages$span_days > reporting_cycle_days\nn_bad <- sum(packages$too_long)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(packages$span_days, names.arg = packages$id, col = ifelse(packages$too_long, \"#e74c3c\", \"#16a085\"),\n        ylim = c(0, max(packages$span_days, reporting_cycle_days) * 1.15),\n        ylab = \"Span (days)\", main = \"Work-package span vs. reporting cycle\")\nabline(h = reporting_cycle_days, lty = 2, lwd = 3, col = \"#2c3e50\")\n\nif (n_bad > 0) {\n  cat(sprintf(\"!!%d of %d packages need attention!!\\n\", n_bad, nrow(packages)))\n} else {\n  cat(sprintf(\"All %d packages fit within one reporting cycle\\n\", nrow(packages)))\n}\ncat(sprintf(\"Reporting cadence  every %d days\\n\", reporting_cycle_days))\nfor (i in seq_len(nrow(packages))) {\n  verdict <- if (packages$too_long[i]) {\n    sprintf(\"!!%g days: split or report %% complete!!\", packages$span_days[i])\n  } else {\n    sprintf(\"%g days: fits within one cycle\", packages$span_days[i])\n  }\n  cat(sprintf(\"%s %s  %s\\n\", packages$id[i], packages$name[i], verdict))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-reporting-period-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Work-package costs (direct), grouped by Level-2 deliverable.\nwp <- data.frame(\n  deliverable = c(rep(\"1.1 Body & Frame\", 3),\n                  rep(\"1.2 Drive & Controls\", 2),\n                  rep(\"1.3 Assembly & Test\", 3),\n                  rep(\"1.4 Launch\", 2)),\n  package = c(\"Outer body\", \"Inner frame\", \"Material selection\",\n              \"Motor/controller\", \"Wiring harness\",\n              \"Prototype assembly\", \"Drop test\", \"EMC test\",\n              \"Packaging design\", \"Approvals\"),\n  cost = c(18000, 14000, 6000, 140000, 9000, 21000, 12000, 15000, 8000, 6000)\n)\n\nmoney <- function(x) paste0(\"$\", format(x, big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nby_deliverable <- tapply(wp$cost, wp$deliverable, sum)\ncat(\"Level 1 (total project direct cost): \", money(sum(wp$cost)), \"\\n\", sep = \"\")\nfor (d in names(by_deliverable))\n  cat(sprintf(\"Level 2: %s  %s\\n\", d, money(by_deliverable[[d]])))\ncat(\"Every dollar is counted once, and all of them, because the WBS obeys the 100% and mutually-exclusive rules.\\n\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-cost-rollup-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"parent_hours <- 340\nh_outer  <- 120   # 1.1.1 Outer body design\nh_inner  <- 90    # 1.1.2 Inner frame design\nh_select <- 70    # 1.1.3 Material selection\nh_review <- 60    # 1.1.4 Design review & release\n\nchildren_hours <- c(\"1.1.1 Outer body design\" = h_outer,\n                    \"1.1.2 Inner frame design\" = h_inner,\n                    \"1.1.3 Material selection\" = h_select,\n                    \"1.1.4 Design review & release\" = h_review)\n\nchild_sum <- sum(children_hours)\n\n# Chart: the four children stacked beside the parent estimate\nstack <- rbind(cbind(children_hours, 0), c(0, parent_hours))\ncolnames(stack) <- c(\"Children\", \"Parent\")\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(stack, col = c(\"#2980b9\", \"#16a085\", \"#8e44ad\", \"#e67e22\", \"#34495e\"), ylim = c(0, 1300), ylab = \"Hours\",\n        main = \"Do the children add up to the parent?\")\nabline(h = parent_hours, lty = 2, lwd = 3, col = \"#e74c3c\")\n\nif (child_sum == parent_hours) {\n  cat(\"OK: the children account for exactly 100% of the parent\\n\")\n} else if (child_sum < parent_hours) {\n  cat(sprintf(\"!!GAP: %g h of the parent's scope is in no work package!!\\n\", parent_hours - child_sum))\n} else {\n  cat(sprintf(\"!!OVER: the children exceed the parent by %g h (scope crept in)!!\\n\", child_sum - parent_hours))\n}\ncat(sprintf(\"Sum of children  %g h\\n\", child_sum))\ncat(sprintf(\"Parent estimate  %g h\\n\", parent_hours))\ncat(sprintf(\"Children as share of parent  %.1f%%\\n\", 100 * child_sum / parent_hours))","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-rollup-example-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"packages <- data.frame(\n  id    = c(\"1.1.1\", \"1.2.1\", \"1.3.1\", \"1.3.4\", \"1.4.2\"),\n  name  = c(\"Outer body design\", \"Motor/controller procurement\",\n            \"Prototype assembly\", \"Tighten one fastener\",\n            \"Full regulatory approval campaign\"),\n  hours = c(64, 40, 72, 1.5, 260)\n)\n\nflag <- ifelse(packages$hours > 80, \"TOO BIG (> 80 h, split it)\",\n        ifelse(packages$hours < 8,  \"TOO SMALL (< 8 h, roll it up)\",\n               \"ok\"))\n\nn_bad <- sum(flag != \"ok\")\ncat(sprintf(\"%s%d of %d packages need re-sizing%s\\n\",\n            ifelse(n_bad > 0, \"!!\", \"\"), n_bad, nrow(packages), ifelse(n_bad > 0, \"!!\", \"\")))\nfor (i in seq_len(nrow(packages)))\n  cat(sprintf(\"%s %s  %s\\n\", packages$id[i], packages$name[i],\n              ifelse(flag[i] == \"ok\", \"ok\", paste0(\"!!\", flag[i], \"!!\"))))","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-decomp-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"reporting_cycle_days <- 14   # biweekly status reports\n\nspan_concept <- 10    # 1.1.1 Concept CAD\nspan_motor   <- 25    # 1.2.1 Motor/controller procurement\nspan_drop    <- 5     # 1.5.1 Drop/durability test\nspan_cert    <- 12    # 1.5.2 Toy-safety certification\n\npackages <- data.frame(\n  id        = c(\"1.1.1\", \"1.2.1\", \"1.5.1\", \"1.5.2\"),\n  name      = c(\"Concept CAD\", \"Motor/controller procurement\",\n               \"Drop/durability test\", \"Toy-safety certification\"),\n  span_days = c(span_concept, span_motor, span_drop, span_cert)\n)\npackages$too_long <- packages$span_days > reporting_cycle_days\nn_bad <- sum(packages$too_long)\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(packages$span_days, names.arg = packages$id, col = ifelse(packages$too_long, \"#e74c3c\", \"#16a085\"),\n        ylim = c(0, max(packages$span_days, reporting_cycle_days) * 1.15),\n        ylab = \"Span (days)\", main = \"Work-package span vs. reporting cycle\")\nabline(h = reporting_cycle_days, lty = 2, lwd = 3, col = \"#2c3e50\")\n\nif (n_bad > 0) {\n  cat(sprintf(\"!!%d of %d packages need attention!!\\n\", n_bad, nrow(packages)))\n} else {\n  cat(sprintf(\"All %d packages fit within one reporting cycle\\n\", nrow(packages)))\n}\ncat(sprintf(\"Reporting cadence  every %d days\\n\", reporting_cycle_days))\nfor (i in seq_len(nrow(packages))) {\n  verdict <- if (packages$too_long[i]) {\n    sprintf(\"!!%g days: split or report %% complete!!\", packages$span_days[i])\n  } else {\n    sprintf(\"%g days: fits within one cycle\", packages$span_days[i])\n  }\n  cat(sprintf(\"%s %s  %s\\n\", packages$id[i], packages$name[i], verdict))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-reporting-period-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Work-package costs (direct), grouped by Level-2 deliverable.\nwp <- data.frame(\n  deliverable = c(rep(\"1.1 Body & Frame\", 3),\n                  rep(\"1.2 Drive & Controls\", 2),\n                  rep(\"1.3 Assembly & Test\", 3),\n                  rep(\"1.4 Launch\", 2)),\n  package = c(\"Outer body\", \"Inner frame\", \"Material selection\",\n              \"Motor/controller\", \"Wiring harness\",\n              \"Prototype assembly\", \"Drop test\", \"EMC test\",\n              \"Packaging design\", \"Approvals\"),\n  cost = c(18000, 14000, 6000, 140000, 9000, 21000, 12000, 15000, 8000, 6000)\n)\n\nmoney <- function(x) paste0(\"$\", format(x, big.mark = \" \", scientific = FALSE, trim = TRUE))\n\nby_deliverable <- tapply(wp$cost, wp$deliverable, sum)\ncat(\"Level 1 (total project direct cost): \", money(sum(wp$cost)), \"\\n\", sep = \"\")\nfor (d in names(by_deliverable))\n  cat(sprintf(\"Level 2: %s  %s\\n\", d, money(by_deliverable[[d]])))\ncat(\"Every dollar is counted once, and all of them, because the WBS obeys the 100% and mutually-exclusive rules.\\n\")","id":4,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"wbs-cost-rollup-05","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1635,17 +1636,17 @@ globalThis.qwebrExecuteCode = async function (
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="nav-sidebar floating quarto-light">
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-Work-Breakdown-Structures.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Work Breakdown Structures (WBS)</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-Work-Breakdown-Structures.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Work Breakdown Structures (WBS)</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -1656,7 +1657,7 @@ globalThis.qwebrExecuteCode = async function (
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Sustainability and Business Practices</a> 
@@ -1768,7 +1769,7 @@ globalThis.qwebrExecuteCode = async function (
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
@@ -1805,7 +1806,7 @@ globalThis.qwebrExecuteCode = async function (
 <div class="toc-actions"><ul><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/edit/main/05-Work-Breakdown-Structures.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/Prof-MV/Sustainability-and-Business-Practices/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content" tabindex="-1">
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"></script>
 <script type="module" id="qwebr-monaco-editor-init">
 
@@ -2188,50 +2189,36 @@ Figure&nbsp;5.1: A partial WBS for the RC-vehicle project. Level 1 is the projec
 <p>Live cell — change the parent estimate or the work-package hours and watch the 100 % check.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="wbs-rollup-example-05" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="wbs-rollup-example-05" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-sitemap qwebr-calc-icon"></i>
     <h4 class="anchored">WBS 100% Rule Check</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
   </div>
   <div class="qwebr-calc-inputs">
-    <div class="qwebr-calc-row">
-      <label for="qcalc-wbs-rollup-example-05-parent-hours">Parent estimate (1.1 Body &amp; Frame)</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-wbs-rollup-example-05-parent-hours" data-var="parent_hours" value="340" min="50" max="800" step="5">
-        <span class="qwebr-calc-suffix">h</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-wbs-rollup-example-05-parent-hours">Parent estimate (1.1 Body &amp; Frame) <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-rollup-example-05-parent-hours" data-prefix="" data-suffix="h" id="qcalc-wbs-rollup-example-05-parent-hours-readout">340h</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-rollup-example-05-parent-hours" data-var="parent_hours" value="340" min="100" max="600" step="5">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-wbs-rollup-example-05-h-outer">1.1.1 Outer body design</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-wbs-rollup-example-05-h-outer" data-var="h_outer" value="120" min="0" max="400" step="5">
-        <span class="qwebr-calc-suffix">h</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-wbs-rollup-example-05-h-outer">1.1.1 Outer body design <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-rollup-example-05-h-outer" data-prefix="" data-suffix="h" id="qcalc-wbs-rollup-example-05-h-outer-readout">120h</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-rollup-example-05-h-outer" data-var="h_outer" value="120" min="0" max="300" step="5">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-wbs-rollup-example-05-h-inner">1.1.2 Inner frame design</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-wbs-rollup-example-05-h-inner" data-var="h_inner" value="90" min="0" max="400" step="5">
-        <span class="qwebr-calc-suffix">h</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-wbs-rollup-example-05-h-inner">1.1.2 Inner frame design <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-rollup-example-05-h-inner" data-prefix="" data-suffix="h" id="qcalc-wbs-rollup-example-05-h-inner-readout">90h</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-rollup-example-05-h-inner" data-var="h_inner" value="90" min="0" max="300" step="5">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-wbs-rollup-example-05-h-select">1.1.3 Material selection</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-wbs-rollup-example-05-h-select" data-var="h_select" value="70" min="0" max="400" step="5">
-        <span class="qwebr-calc-suffix">h</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-wbs-rollup-example-05-h-select">1.1.3 Material selection <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-rollup-example-05-h-select" data-prefix="" data-suffix="h" id="qcalc-wbs-rollup-example-05-h-select-readout">70h</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-rollup-example-05-h-select" data-var="h_select" value="70" min="0" max="300" step="5">
     </div>
 
-    <div class="qwebr-calc-row">
-      <label for="qcalc-wbs-rollup-example-05-h-review">1.1.4 Design review &amp; release</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-wbs-rollup-example-05-h-review" data-var="h_review" value="60" min="0" max="400" step="5">
-        <span class="qwebr-calc-suffix">h</span>
-      </div>
+    <div class="qwebr-calc-row qwebr-calc-row-slider">
+      <label for="qcalc-wbs-rollup-example-05-h-review">1.1.4 Design review &amp; release <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-rollup-example-05-h-review" data-prefix="" data-suffix="h" id="qcalc-wbs-rollup-example-05-h-review-readout">60h</span></label>
+      <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-rollup-example-05-h-review" data-var="h_review" value="60" min="0" max="300" step="5">
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
@@ -2290,16 +2277,21 @@ Show the live R code behind this calculator
 <h3 data-number="5.5.1" class="anchored" data-anchor-id="try-it-yourself-decomposition-check"><span class="header-section-number">5.5.1</span> Try it yourself: decomposition check</h3>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="wbs-decomp-05" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="wbs-decomp-05" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-list-check qwebr-calc-icon"></i>
     <h4 class="anchored">Work Package Size Check (8/80 rule)</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;packages&quot;,&quot;addRows&quot;:true,&quot;columns&quot;:[{&quot;name&quot;:&quot;id&quot;,&quot;label&quot;:&quot;WBS id&quot;,&quot;values&quot;:[&quot;1.1.1&quot;,&quot;1.2.1&quot;,&quot;1.3.1&quot;,&quot;1.3.4&quot;,&quot;1.4.2&quot;],&quot;type&quot;:&quot;text&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;name&quot;,&quot;label&quot;:&quot;Work package&quot;,&quot;values&quot;:[&quot;Outer body design&quot;,&quot;Motor/controller procurement&quot;,&quot;Prototype assembly&quot;,&quot;Tighten one fastener&quot;,&quot;Full regulatory approval campaign&quot;],&quot;type&quot;:&quot;text&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;hours&quot;,&quot;label&quot;:&quot;Effort (hours)&quot;,&quot;values&quot;:[64,40,72,1.5,260],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:0.5}]}"></div>
     <p class="qwebr-calc-table-note">Change an effort estimate to see when a package crosses the 8-hour floor or the 80-hour ceiling.</p>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="n_bad == 0 &amp;&amp; sum(packages$hours) >= 437.5">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Fix the WBS so no package needs re-sizing, without losing any of the original 437.5 hours of work. (Splitting a package means adding rows.)</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2316,14 +2308,15 @@ Show the live R code behind this card
 <p>The 8/80 rule checks <strong>effort hours</strong>; the one-reporting-period rule checks <strong>calendar span</strong> against how often you report — a different failure mode. A package can be well under 80 hours and still run longer than your reporting cycle if it is thin, spread-out work. Live cell — change the reporting cadence or a package’s span and see which packages need to be split or tracked by percent-complete instead.</p>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="wbs-reporting-period-05" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="wbs-reporting-period-05" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-calendar-check qwebr-calc-icon"></i>
     <h4 class="anchored">Reporting-Cycle Check</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-row qwebr-calc-row-slider">
-      <label for="qcalc-wbs-reporting-period-05-reporting-cycle-days">Reporting cycle <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-reporting-period-05-reporting-cycle-days" id="qcalc-wbs-reporting-period-05-reporting-cycle-days-readout">14</span></label>
+      <label for="qcalc-wbs-reporting-period-05-reporting-cycle-days">Reporting cycle <span class="qwebr-calc-slider-readout" data-readout-for="qcalc-wbs-reporting-period-05-reporting-cycle-days" data-prefix="" data-suffix="days" id="qcalc-wbs-reporting-period-05-reporting-cycle-days-readout">14days</span></label>
       <input type="range" class="qwebr-calc-slider" id="qcalc-wbs-reporting-period-05-reporting-cycle-days" data-var="reporting_cycle_days" value="14" min="3" max="30" step="1">
     </div>
 
@@ -2360,6 +2353,10 @@ Show the live R code behind this card
     </div>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="n_bad == 0 &amp;&amp; reporting_cycle_days <= 14">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Keep the reporting cycle at 14 days or less and still make every package fit inside it. Which package has to be re-planned, and to what span?</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2425,16 +2422,21 @@ Figure&nbsp;5.2: The WBS feeds four downstream planning activities. Get it wrong
 <h3 data-number="5.8.1" class="anchored" data-anchor-id="try-it-yourself-cost-roll-up-from-the-wbs"><span class="header-section-number">5.8.1</span> Try it yourself: cost roll-up from the WBS</h3>
 <script src="js/qwebr-calculator.js"></script>
 
-<div class="qwebr-calc-card" data-qwebr-label="wbs-cost-rollup-05" data-fig-width="1200" data-fig-height="700">
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="wbs-cost-rollup-05" data-fig-width="1200" data-fig-height="700">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-sitemap qwebr-calc-icon"></i>
     <h4 class="anchored">WBS Cost Roll-Up</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
     <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;wp&quot;,&quot;addRows&quot;:true,&quot;columns&quot;:[{&quot;name&quot;:&quot;deliverable&quot;,&quot;label&quot;:&quot;Level-2 deliverable&quot;,&quot;values&quot;:[&quot;1.1 Body &amp; Frame&quot;,&quot;1.1 Body &amp; Frame&quot;,&quot;1.1 Body &amp; Frame&quot;,&quot;1.2 Drive &amp; Controls&quot;,&quot;1.2 Drive &amp; Controls&quot;,&quot;1.3 Assembly &amp; Test&quot;,&quot;1.3 Assembly &amp; Test&quot;,&quot;1.3 Assembly &amp; Test&quot;,&quot;1.4 Launch&quot;,&quot;1.4 Launch&quot;],&quot;type&quot;:&quot;text&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;package&quot;,&quot;label&quot;:&quot;Work package&quot;,&quot;values&quot;:[&quot;Outer body&quot;,&quot;Inner frame&quot;,&quot;Material selection&quot;,&quot;Motor/controller&quot;,&quot;Wiring harness&quot;,&quot;Prototype assembly&quot;,&quot;Drop test&quot;,&quot;EMC test&quot;,&quot;Packaging design&quot;,&quot;Approvals&quot;],&quot;type&quot;:&quot;text&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;cost&quot;,&quot;label&quot;:&quot;Direct cost ($)&quot;,&quot;values&quot;:[18000,14000,6000,140000,9000,21000,12000,15000,8000,6000],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1000}]}"></div>
     <p class="qwebr-calc-table-note">Packages with the same deliverable text are summed together.</p>
   </div>
   <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="by_deliverable[[&quot;1.2 Drive &amp; Controls&quot;]] / sum(wp$cost) < 0.5 &amp;&amp; sum(wp$cost) >= 249000">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> The sponsor says the motor package dominates the budget. Without cutting any cost, add the work packages you forgot until Drive &amp; Controls is under half of the direct cost. What would you add?</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
   <div class="qwebr-calc-graph"></div>
 </div>
 <details class="qwebr-calc-source">
@@ -2477,7 +2479,7 @@ Show the worked solution
 </section>
 <section id="case-study-meridian-rc-week-5" class="level2" data-number="5.10">
 <h2 data-number="5.10" class="anchored" data-anchor-id="case-study-meridian-rc-week-5"><span class="header-section-number">5.10</span> Case Study: Meridian R/C — Week 5</h2>
-<div class="case-study callout callout-style-default callout-tip callout-titled" title="📁 CASE STUDY FILE — Week 5: Cutting the Trailblazer Into Bites">
+<div class="case-study callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -2644,7 +2646,8 @@ Discussion points
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -2653,8 +2656,69 @@ Discussion points
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -2668,6 +2732,7 @@ Discussion points
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -2830,44 +2895,54 @@ Discussion points
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -2966,7 +3041,10 @@ Discussion points
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
       <a href="./04-Leadership-and-the-Project-Manager.html" class="pagination-link" aria-label="Leadership and the Project Manager">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Leadership and the Project Manager</span></span>

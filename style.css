@@ -297,6 +297,40 @@ pre code {
   font-size: 1.3em;
 }
 
+/* Card mode (mode = "demo" | "task" in qwebr_calc_card()): lets the instructor
+   tell at a glance which cards are driven from the front of the room and which
+   are for students to work on. */
+.qwebr-calc-badge {
+  margin-left: auto;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
+  font-size: 0.8em;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.qwebr-calc-demo {
+  border: 2px solid #2980b9;
+  background-color: #f2f8fc;
+}
+
+.qwebr-calc-demo .qwebr-calc-header { border-bottom-color: #2980b9; }
+.qwebr-calc-demo .qwebr-calc-badge { background-color: #2980b9; }
+
+.qwebr-calc-task {
+  border: 2px dashed #e67e22;
+  background-color: #fffaf4;
+}
+
+.qwebr-calc-task .qwebr-calc-header { border-bottom-color: #e67e22; }
+.qwebr-calc-task .qwebr-calc-badge { background-color: #ca6510; }
+
+/* Teaching demos are projected: bigger slider readouts and thumbs. */
+.qwebr-calc-demo .qwebr-calc-row-slider label { font-size: 1.1em; }
+.qwebr-calc-demo .qwebr-calc-slider-readout { font-size: 1.15em; }
+.qwebr-calc-demo input[type="range"].qwebr-calc-slider { height: 1.6em; }
+
 .qwebr-calc-header h4 {
   margin: 0;
   font-size: 1.05em;
