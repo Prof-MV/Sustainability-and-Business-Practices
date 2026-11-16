@@ -413,7 +413,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"running_day12 <- data.frame(\n  task = c(\"D\", \"E\", \"H\", \"J\"),\n  float = c(12, 0, 0, 5),\n  duration = c(6, 6, 7, 3),\n  successors = c(1, 2, 1, 0),\n  people = c(3, 3, 3, 1)\n)\n\n# Only tasks with float can move without extending the project.\nmovable <- running_day12[running_day12$float > 0, ]\n# Among movable tasks, prefer smallest float, then smallest duration.\npick <- movable[order(movable$float, movable$duration), ][1, ]\n\nif (nrow(movable) == 0) {\n  cat(\"!!No task has float: leveling would extend the project!!\\n\")\n} else {\n  cat(sprintf(\"Move first: task %s (float %g, duration %g)\\n\", pick$task, pick$float, pick$duration))\n  cat(sprintf(\"Movable tasks  %s\\n\", paste(movable$task, collapse = \", \")))\n}\ncrit <- running_day12$task[running_day12$float == 0]\nif (length(crit) > 0)\n  cat(sprintf(\"Critical (float 0)  !!%s!!\\n\", paste(crit, collapse = \", \")))\ncat(\"Critical tasks cannot move without extending the project.\\n\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leveling-example-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"# Weekly demand for one resource, and the resource's weekly limit.\nweekly_demand <- c(52, 30, 61, 24, 45, 20, 58)\nlimit <- 45\n\npeak <- max(weekly_demand)\ntotal_work <- sum(weekly_demand)\nweeks <- length(weekly_demand)\nideal_flat <- total_work / weeks\n\nif (ideal_flat <= limit) {\n  cat(\"Smoothing can solve this: the work fits the limit if spread evenly\\n\")\n} else {\n  cat(\"!!Smoothing is not enough: needs leveling or more resource!!\\n\")\n}\ncat(sprintf(\"Peak week demand  %g (limit %g, %g over)\\n\", peak, limit, max(0, peak - limit)))\ncat(sprintf(\"Total work  %g resource-weeks over %d weeks\\n\", total_work, weeks))\ncat(sprintf(\"Perfectly smooth  %.1f per week\\n\", ideal_flat))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbar_col <- ifelse(weekly_demand > limit, \"#c0392b\", \"#2980b9\")\nbarplot(weekly_demand, names.arg = seq_len(weeks), col = bar_col,\n        xlab = \"Week\", ylab = \"Resource demand\",\n        main = \"Red weeks exceed the limit (dashed line)\")\nabline(h = limit, lty = 2, lwd = 2)\nabline(h = ideal_flat, lty = 3, lwd = 2, col = \"#16a085\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"smoothing-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"nominal_hours <- 40\n# Each additional concurrent project imposes a context-switching loss.\nswitch_loss_per_extra_project <- 0.15   # 15% of capacity lost per extra project\nprojects_carried <- 3\n\neffective_hours <- function(projects) {\n  extras <- projects - 1\n  max(nominal_hours * (1 - switch_loss_per_extra_project * extras), 0)\n}\n\ncounts <- 1:6\neff <- sapply(counts, effective_hours)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(eff, names.arg = counts, ylim = c(0, nominal_hours * 1.1),\n              col = ifelse(counts == projects_carried, \"#e74c3c\", \"#2980b9\"),\n              xlab = \"Projects carried at once\", ylab = \"Effective hours per week\",\n              main = \"Nominal hours are not effective hours\")\nabline(h = nominal_hours, lty = 2, lwd = 2, col = \"#7f8c8d\")\n\nnow <- effective_hours(projects_carried)\ncat(sprintf(\"On %g project(s): %.1f effective hours of %g (%.0f%% productive)\\n\",\n            projects_carried, now, nominal_hours, 100 * now / nominal_hours))\nfor (projects in counts) {\n  cat(sprintf(\"On %d project(s)  %.1f effective hours (%.0f%% productive)\\n\",\n              projects, eff[projects], 100 * eff[projects] / nominal_hours))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"multitask-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"crew_plan <- data.frame(\n  task = c(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"),\n  start = c(1, 1, 3, 4, 6, 4),\n  duration = c(4, 5, 4, 3, 4, 3),\n  people = c(1, 3, 4, 1, 4, 1),\n  float = c(2, 3, 0, 0, 0, 2),\n  delay = c(0, 0, 0, 0, 0, 0)\n)\nlimit <- 8\nplanned_finish <- 9\n\nfor (col in c(\"start\", \"duration\", \"people\", \"float\", \"delay\"))\n  crew_plan[[col]] <- as.numeric(crew_plan[[col]])\ndelay <- pmax(round(crew_plan$delay), 0)\nfirst_day <- crew_plan$start + delay\nlast_day <- first_day + crew_plan$duration - 1\n\n# Daily demand: add up the crew of every task running that day.\ndays <- 1:14\nload <- sapply(days, function(d) sum(crew_plan$people[d >= first_day & d <= last_day]))\npeak <- max(load)\nover <- days[load > limit]\n\n# A delay beyond float pushes the finish back by the excess.\nlate_by <- pmax(delay - crew_plan$float, 0)\nfinish <- max(planned_finish + max(late_by), last_day)\n\nif (peak > limit) {\n  cat(sprintf(\"!!Still over the limit on day %s!!\\n\", paste(over, collapse = \", \")))\n} else if (finish > planned_finish) {\n  cat(sprintf(\"Within the limit, finishing on day %g (%g day(s) late)\\n\", finish, finish - planned_finish))\n} else {\n  cat(\"Within the limit and on time\\n\")\n}\ncat(sprintf(\"Peak crew  %g millwrights (limit %g)\\n\", peak, limit))\nif (finish > planned_finish) {\n  cat(sprintf(\"Project finish  !!day %g (planned day %g)!!\\n\", finish, planned_finish))\n} else {\n  cat(sprintf(\"Project finish  day %g (planned day %g)\\n\", finish, planned_finish))\n}\npushed <- crew_plan$task[late_by > 0]\nif (length(pushed) > 0) {\n  cat(sprintf(\"Delayed past float  !!%s!!\\n\",\n              paste0(pushed, \" (+\", late_by[late_by > 0], \")\", collapse = \", \")))\n} else {\n  cat(\"Delayed past float  none\\n\")\n}\ncat(sprintf(\"Crew-days of work  %g (moving tasks never changes this)\\n\", sum(load)))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(load[1:12], names.arg = 1:12, ylim = c(0, 12),\n              col = ifelse(load[1:12] > limit, \"#c0392b\", \"#2980b9\"),\n              xlab = \"Project day\", ylab = \"Millwrights needed\",\n              main = \"Red days exceed the limit (dashed); dotted line = planned finish\")\nabline(h = limit, lty = 2, lwd = 2)\nabline(v = (bp[planned_finish] + bp[planned_finish + 1]) / 2, lty = 3, lwd = 2, col = \"#7f8c8d\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"leveling-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"commissioning <- data.frame(\n  task = c(\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"),\n  start = c(1, 6, 4, 5, 5, 6),\n  duration = c(3, 3, 2, 3, 2, 5),\n  people = c(4, 1, 4, 3, 4, 1),\n  float = c(5, 2, 2, 3, 2, 0),\n  delay = c(0, 0, 0, 0, 0, 0)\n)\nproject_days <- 10\n\nfor (col in c(\"start\", \"duration\", \"people\", \"float\", \"delay\"))\n  commissioning[[col]] <- as.numeric(commissioning[[col]])\ndelay <- pmax(round(commissioning$delay), 0)\nfirst_day <- commissioning$start + delay\nlast_day <- first_day + commissioning$duration - 1\n\ndays <- 1:14\nload <- sapply(days, function(d) sum(commissioning$people[d >= first_day & d <= last_day]))\nin_project <- load[1:project_days]\nswing <- max(in_project) - min(in_project)\nsum_sq <- sum(load^2)\ntoo_far <- commissioning$task[delay > commissioning$float]\n\nif (length(too_far) > 0) {\n  cat(sprintf(\"!!%s moved past its float: the job would run late!!\\n\", paste(too_far, collapse = \", \")))\n} else if (swing <= 1) {\n  cat(\"Smooth: the crew holds steady all job long\\n\")\n} else {\n  cat(sprintf(\"Swing of %g electricians between the busiest and quietest day\\n\", swing))\n}\ncat(sprintf(\"Busiest day  %g electricians\\n\", max(in_project)))\ncat(sprintf(\"Quietest day  %g electricians\\n\", min(in_project)))\ncat(sprintf(\"Sum of squares  %g (lower is smoother)\\n\", sum_sq))\ncat(sprintf(\"Crew-days of work  %g, an average of %.1f per day\\n\", sum(load), sum(load) / project_days))\nif (length(too_far) > 0)\n  cat(sprintf(\"Finish  !!day %g (must stay day %g)!!\\n\", max(last_day), project_days))\n\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbarplot(load[1:12], names.arg = 1:12, ylim = c(0, 12),\n        col = ifelse(seq_len(12) > project_days & load[1:12] > 0, \"#c0392b\", \"#2980b9\"),\n        xlab = \"Project day\", ylab = \"Electricians needed\",\n        main = \"Daily crew (dotted line = average; red = past the finish)\")\nabline(h = sum(load) / project_days, lty = 3, lwd = 2, col = \"#16a085\")","id":2,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"smoothing-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"nominal_hours <- 40\n# Each additional concurrent project imposes a context-switching loss.\nswitch_loss_per_extra_project <- 0.15   # 15% of capacity lost per extra project\nprojects_carried <- 3\n\neffective_hours <- function(projects) {\n  extras <- projects - 1\n  max(nominal_hours * (1 - switch_loss_per_extra_project * extras), 0)\n}\n\ncounts <- 1:6\neff <- sapply(counts, effective_hours)\npar(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)\nbp <- barplot(eff, names.arg = counts, ylim = c(0, nominal_hours * 1.1),\n              col = ifelse(counts == projects_carried, \"#e74c3c\", \"#2980b9\"),\n              xlab = \"Projects carried at once\", ylab = \"Effective hours per week\",\n              main = \"Nominal hours are not effective hours\")\nabline(h = nominal_hours, lty = 2, lwd = 2, col = \"#7f8c8d\")\n\nnow <- effective_hours(projects_carried)\ncat(sprintf(\"On %g project(s): %.1f effective hours of %g (%.0f%% productive)\\n\",\n            projects_carried, now, nominal_hours, 100 * now / nominal_hours))\nfor (projects in counts) {\n  cat(sprintf(\"On %d project(s)  %.1f effective hours (%.0f%% productive)\\n\",\n              projects, eff[projects], 100 * eff[projects] / nominal_hours))\n}","id":3,"options":{"autorun":"true","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"multitask-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1819,7 +1819,10 @@ globalThis.qwebrExecuteCode = async function (
   <li><a href="#worked-example-1-which-task-do-you-move" id="toc-worked-example-1-which-task-do-you-move" class="nav-link" data-scroll-target="#worked-example-1-which-task-do-you-move"><span class="header-section-number">11.4.1</span> Worked Example 1: which task do you move?</a></li>
   <li><a href="#try-it-yourself-which-task-do-you-move-first" id="toc-try-it-yourself-which-task-do-you-move-first" class="nav-link" data-scroll-target="#try-it-yourself-which-task-do-you-move-first"><span class="header-section-number">11.4.2</span> Try it yourself: which task do you move first?</a></li>
   </ul></li>
-  <li><a href="#time-constrained-vs.-resource-constrained" id="toc-time-constrained-vs.-resource-constrained" class="nav-link" data-scroll-target="#time-constrained-vs.-resource-constrained"><span class="header-section-number">11.5</span> Time-constrained vs.&nbsp;resource-constrained</a></li>
+  <li><a href="#time-constrained-vs.-resource-constrained" id="toc-time-constrained-vs.-resource-constrained" class="nav-link" data-scroll-target="#time-constrained-vs.-resource-constrained"><span class="header-section-number">11.5</span> Time-constrained vs.&nbsp;resource-constrained</a>
+  <ul class="collapse">
+  <li><a href="#try-it-yourself-level-a-millwright-crew-to-its-limit" id="toc-try-it-yourself-level-a-millwright-crew-to-its-limit" class="nav-link" data-scroll-target="#try-it-yourself-level-a-millwright-crew-to-its-limit"><span class="header-section-number">11.5.1</span> Try it yourself: level a millwright crew to its limit</a></li>
+  </ul></li>
   <li><a href="#resource-smoothing" id="toc-resource-smoothing" class="nav-link" data-scroll-target="#resource-smoothing"><span class="header-section-number">11.6</span> Resource smoothing</a>
   <ul class="collapse">
   <li><a href="#try-it-yourself-smooth-a-resource-within-its-float" id="toc-try-it-yourself-smooth-a-resource-within-its-float" class="nav-link" data-scroll-target="#try-it-yourself-smooth-a-resource-within-its-float"><span class="header-section-number">11.6.1</span> Try it yourself: smooth a resource within its float</a></li>
@@ -2197,7 +2200,7 @@ Note
 <img src="11-Resource-Management_files/figure-html/fig-histogram-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-histogram-11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11.1: Resource histogram before and after leveling, against a limit of 9 people/day. Leveling shifts a task with float so the peak on day 12 no longer breaches the limit – without extending the project.
+Figure&nbsp;11.1: Resource histogram before and after leveling, against a limit of 9 people/day. Leveling shifts work with float off the peaks on days 10 and 12 into days 11 and 14, so no day breaches the limit – without extending the project or changing the total of 110 person-days.
 </figcaption>
 </figure>
 </div>
@@ -2235,30 +2238,49 @@ Show the worked solution
 <section id="worked-example-1-which-task-do-you-move" class="level3" data-number="11.4.1">
 <h3 data-number="11.4.1" class="anchored" data-anchor-id="worked-example-1-which-task-do-you-move"><span class="header-section-number">11.4.1</span> Worked Example 1: which task do you move?</h3>
 <p>Day 12 needs 10 people against a limit of 9. Four activities are running that day:</p>
-<p>Live cell — change the float, duration, successors, or people for each task.</p>
-<script src="js/qwebr-calculator.js"></script>
-
-<div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="leveling-example-11" data-fig-width="1200" data-fig-height="700">
-  <div class="qwebr-calc-header">
-    <i class="fa-solid fa-arrows-left-right qwebr-calc-icon"></i>
-    <h4 class="anchored">Which Task Do You Move?</h4>
-    <span class="qwebr-calc-badge"><i class="fa-solid fa-chalkboard-user"></i> Teaching demo</span>
-  </div>
-  <div class="qwebr-calc-inputs">
-    <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;running_day12&quot;,&quot;addRows&quot;:false,&quot;columns&quot;:[{&quot;name&quot;:&quot;task&quot;,&quot;label&quot;:&quot;Task&quot;,&quot;values&quot;:[&quot;D&quot;,&quot;E&quot;,&quot;H&quot;,&quot;J&quot;],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;float&quot;,&quot;label&quot;:&quot;Float (days)&quot;,&quot;values&quot;:[12,0,0,5],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1},{&quot;name&quot;:&quot;duration&quot;,&quot;label&quot;:&quot;Duration (days)&quot;,&quot;values&quot;:[6,6,7,3],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:1,&quot;step&quot;:1},{&quot;name&quot;:&quot;successors&quot;,&quot;label&quot;:&quot;Successors&quot;,&quot;values&quot;:[1,2,1,0],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1},{&quot;name&quot;:&quot;people&quot;,&quot;label&quot;:&quot;People&quot;,&quot;values&quot;:[3,3,3,1],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1}]}"></div>
-    <p class="qwebr-calc-table-note">Only tasks with float can move without extending the project.</p>
-  </div>
-  <div class="qwebr-calc-results"></div>
-  <div class="qwebr-calc-graph"></div>
-</div>
-<details class="qwebr-calc-source">
-<summary>
-Show the live R code behind this card
-</summary>
-<p>The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
-<div id="qwebr-insertion-location-1"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
-</details>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Float (days)</th>
+<th>Duration (days)</th>
+<th>Successors</th>
+<th>People</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>D</td>
+<td>12</td>
+<td>6</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>E</td>
+<td>0</td>
+<td>6</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>H</td>
+<td>0</td>
+<td>7</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>J</td>
+<td>5</td>
+<td>3</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>E and H are critical (float 0), so moving either one extends the project. D and J can move. The rule picks the <strong>smallest float first</strong>: J (5 days) comes before D (12 days). Sliding J off day 12 removes one person, and demand drops from 10 to 9, which is exactly the limit. D does not move.</p>
+<p>The rule tells you which task to try first. It does not tell you whether the move worked: J’s three days of work land on other days, and those days can go over the limit instead. After every move, rebuild the histogram and check again. The class task below makes you do exactly that.</p>
 </section>
 <section id="try-it-yourself-which-task-do-you-move-first" class="level3" data-number="11.4.2">
 <h3 data-number="11.4.2" class="anchored" data-anchor-id="try-it-yourself-which-task-do-you-move-first"><span class="header-section-number">11.4.2</span> Try it yourself: which task do you move first?</h3>
@@ -2274,33 +2296,76 @@ Show the live R code behind this card
 <li><strong>Time-constrained</strong>: the end date is fixed; you add or reassign resources to protect it (this is closer to <em>smoothing</em>).</li>
 <li><strong>Resource-constrained</strong>: the resource limit is fixed; if leveling within float is not enough, <strong>the project duration extends</strong> (undesirable, but sometimes unavoidable).</li>
 </ul>
+<section id="try-it-yourself-level-a-millwright-crew-to-its-limit" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="try-it-yourself-level-a-millwright-crew-to-its-limit"><span class="header-section-number">11.5.1</span> Try it yourself: level a millwright crew to its limit</h3>
+<p>The line-install project for the new assembly cell needs millwrights, and production lends the project <strong>8 per day, no more</strong>. The plan finishes on day 9, but on days 4 to 6 it calls for 9 or 10 people. Delay tasks to bring every day down to the limit.</p>
+<p>Two rules apply. A delay <strong>within a task’s float</strong> costs nothing. Every day <strong>beyond</strong> its float pushes the project finish back by one day. (Treat each task as if it sat on its own path to the finish, so a delay in one task does not push any other task.)</p>
+<script src="js/qwebr-calculator.js"></script>
+
+<div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="leveling-11" data-fig-width="1200" data-fig-height="600">
+  <div class="qwebr-calc-header">
+    <i class="fa-solid fa-arrows-left-right qwebr-calc-icon"></i>
+    <h4 class="anchored">Level the Millwright Crew</h4>
+    <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
+  </div>
+  <div class="qwebr-calc-inputs">
+    <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;crew_plan&quot;,&quot;addRows&quot;:false,&quot;columns&quot;:[{&quot;name&quot;:&quot;task&quot;,&quot;label&quot;:&quot;Task&quot;,&quot;values&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;start&quot;,&quot;label&quot;:&quot;Start&quot;,&quot;values&quot;:[1,1,3,4,6,4],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;duration&quot;,&quot;label&quot;:&quot;Days&quot;,&quot;values&quot;:[4,5,4,3,4,3],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;people&quot;,&quot;label&quot;:&quot;Crew&quot;,&quot;values&quot;:[1,3,4,1,4,1],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;float&quot;,&quot;label&quot;:&quot;Float&quot;,&quot;values&quot;:[2,3,0,0,0,2],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;delay&quot;,&quot;label&quot;:&quot;Delay&quot;,&quot;values&quot;:[0,0,0,0,0,0],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;max&quot;:6,&quot;step&quot;:1}]}"></div>
+    <p class="qwebr-calc-table-note">Start = early start day; Days = duration; Crew = millwrights needed each day; Float and Delay are in days. Type a delay for any task, starting with the tasks that have float.</p>
+  </div>
+  <div class="qwebr-calc-results"></div>
+  <div class="qwebr-calc-goal" data-goal-test="peak <= limit &amp;&amp; finish <= 10 &amp;&amp; limit == 8">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Keep the crew at 8 millwrights or fewer on every day, and finish no later than day 10. First try to do it by day 9, within float alone. Why can't you? Which three tasks have to move, and by how much?</span>
+    <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
+  </div>
+  <div class="qwebr-calc-graph"></div>
+</div>
+<details class="qwebr-calc-source">
+<summary>
+Show the live R code behind this card
+</summary>
+<p>The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
+<div id="qwebr-insertion-location-1"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>The plan needs 4, 4, 8, <strong>10</strong>, <strong>9</strong>, <strong>10</strong>, 4, 4, 4 millwrights on days 1–9: days 4 to 6 are over the limit. Tasks C, D and E are critical, so the only free moves are A (2 days), B (3 days) and F (2 days).</p>
+<p>Look at the critical tasks alone before you move anything. On day 6, C (4 people), D (1) and E (4) are all running: 9 millwrights, and none of them has float. No combination of A, B and F can fix that, so the project <strong>has</strong> to finish at least one day late. The rule order (smallest float first) only helps once you know the limit can be met at all.</p>
+<p>Spend that one day where it does the most good:</p>
+<ul>
+<li><strong>E +1</strong> (days 7–10): E leaves day 6, and the finish moves to day 10.</li>
+<li><strong>D +1</strong> (days 5–7): D leaves day 4, where it was the ninth person. It is a day late too, but the finish is already day 10.</li>
+<li><strong>F +2</strong> (days 6–8, within its float): F leaves days 4 and 5.</li>
+</ul>
+<p>Demand becomes 4, 4, 8, 8, 8, 6, 6, 5, 4, 4. No day is over 8, and the project finishes on day 10. F +3 also works: once the finish has moved to day 10, one more day of delay on F costs nothing extra. This is <strong>resource-constrained</strong> scheduling: the limit is fixed, so the date moves.</p>
+</details>
+</section>
 </section>
 <section id="resource-smoothing" class="level2" data-number="11.6">
 <h2 data-number="11.6" class="anchored" data-anchor-id="resource-smoothing"><span class="header-section-number">11.6</span> Resource smoothing</h2>
 <p>Smoothing is done <strong>after</strong> leveling and <strong>never extends the project duration</strong>. It uses available <strong>float</strong> to even out resource usage — filling the valleys from the peaks.</p>
+<p>Why bother, if no day is over the limit? Every swing in demand costs money. Contract electricians are brought in for a two-day peak and sent home again, a crew stands idle on a quiet day, and each change of crew means another handover and another safety briefing. A flat profile uses the same total work with none of that churn.</p>
+<p>The usual yardstick is the <strong>sum of squares</strong> of the daily demand (the Burgess method). Moving work never changes the total, but the sum of the squares falls as the profile flattens: 5 + 5 is 50 in squares, 9 + 1 is 82. The lower the number, the smoother the plan.</p>
 <section id="try-it-yourself-smooth-a-resource-within-its-float" class="level3" data-number="11.6.1">
 <h3 data-number="11.6.1" class="anchored" data-anchor-id="try-it-yourself-smooth-a-resource-within-its-float"><span class="header-section-number">11.6.1</span> Try it yourself: smooth a resource within its float</h3>
+<p>A 10-day controls-commissioning job needs electricians. There is no hard limit this time; the contractor simply wants a steady crew. The current plan swings from 11 people on day 5 down to 1 on day 9. Smoothing never extends the project, so <strong>every delay must stay within its task’s float</strong>.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card qwebr-calc-task" data-qwebr-label="smoothing-11" data-fig-width="1200" data-fig-height="600">
   <div class="qwebr-calc-header">
     <i class="fa-solid fa-chart-column qwebr-calc-icon"></i>
-    <h4 class="anchored">Can Smoothing Fix This Resource Peak?</h4>
+    <h4 class="anchored">Smooth the Electrician Crew</h4>
     <span class="qwebr-calc-badge"><i class="fa-solid fa-pencil"></i> Class task</span>
   </div>
   <div class="qwebr-calc-inputs">
-    <div class="qwebr-calc-row">
-      <label for="qcalc-smoothing-11-limit">Weekly resource limit</label>
-      <div class="qwebr-calc-field">
-        <input type="number" id="qcalc-smoothing-11-limit" data-var="limit" value="45" min="10" max="100" step="1">
-        <span class="qwebr-calc-suffix">per week</span>
-      </div>
-    </div>
-    <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:null,&quot;addRows&quot;:false,&quot;columns&quot;:[{&quot;name&quot;:&quot;week&quot;,&quot;label&quot;:&quot;Week&quot;,&quot;values&quot;:[&quot;Week 1&quot;,&quot;Week 2&quot;,&quot;Week 3&quot;,&quot;Week 4&quot;,&quot;Week 5&quot;,&quot;Week 6&quot;,&quot;Week 7&quot;],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;weekly_demand&quot;,&quot;label&quot;:&quot;Demand&quot;,&quot;values&quot;:[52,30,61,24,45,20,58],&quot;var&quot;:&quot;weekly_demand&quot;,&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;step&quot;:1}]}"></div>
+    <div class="qwebr-calc-table" data-spec="{&quot;frame&quot;:&quot;commissioning&quot;,&quot;addRows&quot;:false,&quot;columns&quot;:[{&quot;name&quot;:&quot;task&quot;,&quot;label&quot;:&quot;Task&quot;,&quot;values&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;,&quot;F&quot;],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;start&quot;,&quot;label&quot;:&quot;Start&quot;,&quot;values&quot;:[1,6,4,5,5,6],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;duration&quot;,&quot;label&quot;:&quot;Days&quot;,&quot;values&quot;:[3,3,2,3,2,5],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;people&quot;,&quot;label&quot;:&quot;Crew&quot;,&quot;values&quot;:[4,1,4,3,4,1],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;float&quot;,&quot;label&quot;:&quot;Float&quot;,&quot;values&quot;:[5,2,2,3,2,0],&quot;type&quot;:&quot;label&quot;,&quot;options&quot;:[]},{&quot;name&quot;:&quot;delay&quot;,&quot;label&quot;:&quot;Delay&quot;,&quot;values&quot;:[0,0,0,0,0,0],&quot;type&quot;:&quot;number&quot;,&quot;options&quot;:[],&quot;min&quot;:0,&quot;max&quot;:5,&quot;step&quot;:1}]}"></div>
+    <p class="qwebr-calc-table-note">Start = early start day; Days = duration; Crew = electricians needed each day; Float and Delay are in days. Type a delay for any task, keeping each one within its float.</p>
   </div>
   <div class="qwebr-calc-results"></div>
-  <div class="qwebr-calc-goal" data-goal-test="max(weekly_demand) <= limit &amp;&amp; sum(weekly_demand) >= 290 &amp;&amp; limit == 45">
-    <span><span class="qwebr-calc-goal-label">Challenge:</span> Keep the weekly limit at 45 and the total of 290 resource-weeks, but re-plan the weekly demand so that no week goes over the limit. Which weeks give up work, and which absorb it?</span>
+  <div class="qwebr-calc-goal" data-goal-test="swing <= 1 &amp;&amp; all(delay <= commissioning$float)">
+    <span><span class="qwebr-calc-goal-label">Challenge:</span> Without moving any task past its float, get every day of the 10-day job to 4 or 5 electricians (a swing of 1). One move cannot get the swing below 6, and two moves reach 2. Finding the last step takes three.</span>
     <span class="qwebr-calc-goal-status" role="status" aria-live="polite"></span>
   </div>
   <div class="qwebr-calc-graph"></div>
@@ -2312,6 +2377,19 @@ Show the live R code behind this card
 <p>The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press <strong>Run Code</strong> to experiment further.</p>
 <div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</details>
+<details class="tryit-solution">
+<summary>
+Show the worked solution
+</summary>
+<p>The plan needs 4, 4, 4, 4, <strong>11</strong>, 9, 5, 2, 1, 1 electricians: 45 crew-days, 4.5 per day on average, so 4 or 5 every day is the best any plan can reach. The sum of squares is 297.</p>
+<p>The peak on days 5–6 is C, D and E running together, with B and F joining on day 6. F is critical and cannot move.</p>
+<ol type="1">
+<li><strong>D +3</strong> (days 8–10) moves 3 people from the peak into the empty tail.</li>
+<li><strong>E +1</strong> (days 6–7) takes E off day 5. Demand is now 4, 4, 4, 4, 4, 6, 6, 5, 4, 4: a swing of 2.</li>
+<li><strong>B +2</strong> (days 8–10) takes the last extra person off days 6 and 7.</li>
+</ol>
+<p>Demand becomes 4, 4, 4, 4, 4, 5, 5, 5, 5, 5. The sum of squares falls from 297 to 205, the project still ends on day 10, and the total is still 45 crew-days. Only the shape of the curve has changed.</p>
 </details>
 </section>
 </section>
@@ -2394,6 +2472,8 @@ Figure&nbsp;11.2: Resource utilization across a project. The shaded area is capa
 </section>
 <section id="try-it-yourself-40-hours-is-not-one-weeks-work" class="level3" data-number="11.8.3">
 <h3 data-number="11.8.3" class="anchored" data-anchor-id="try-it-yourself-40-hours-is-not-one-weeks-work"><span class="header-section-number">11.8.3</span> Try it yourself: “40 hours is not one week’s work”</h3>
+<p>Switching between projects costs time: you have to remember where you left off, find the files again, and get back up to speed. How much each switch costs depends a lot on <strong>experience</strong>. A new engineer is still learning the organization: who to ask, where the drawings live, how a change request moves through the system. Every project they add costs them a large share of their week, perhaps 25 %. After a year or two that loss drops towards 10 % or less, and the same person can carry three or four projects without grinding to a halt.</p>
+<p>On the projector, start the card at a 25 % loss and step “Projects carried” from 1 to 4. Then lower the loss to about 10 % and run the same steps again. The new hire was not lazy. Giving them four projects in their first month leaves them barely 10 effective hours a week, so ramp up their load as their loss falls.</p>
 <script src="js/qwebr-calculator.js"></script>
 
 <div class="qwebr-calc-card qwebr-calc-demo" data-qwebr-label="multitask-11" data-fig-width="1200" data-fig-height="700">
@@ -2456,10 +2536,11 @@ Show the worked solution
 <li>A <strong>resource histogram</strong> exposes <strong>over-allocation</strong> (against a 100 %-availability assumption).</li>
 <li><strong>Leveling</strong> shifts tasks within their <strong>float</strong> to respect a resource limit; move tasks in order of <strong>smallest float → smallest duration → lowest ID → most successors → most resources</strong>. Critical-path tasks have no float, so moving them extends the project.</li>
 <li><strong>Time-constrained</strong> protects the date with resources; <strong>resource-constrained</strong> may extend the date.</li>
-<li><strong>Smoothing</strong> happens after leveling, uses float, and <strong>never</strong> extends duration.</li>
+<li>Check the <strong>critical tasks alone</strong> first: if they already breach the limit on some day, no amount of float will fix it, and the date must move.</li>
+<li><strong>Smoothing</strong> happens after leveling, uses float, and <strong>never</strong> extends duration; the <strong>sum of squares</strong> of daily demand measures how smooth the result is.</li>
 <li><strong>Splitting</strong> helps only when start-up/shutdown costs are low and the task can be split.</li>
 <li>Multi-project sharing creates <strong>bottlenecks, ripple effects, and multitasking pressure</strong>; minimize <strong>slippage, utilization loss, and WIP</strong>, and pick a <strong>priority rule</strong> deliberately.</li>
-<li><strong>Multitasking is not free</strong> — “40 hours” of nominal capacity is far less once someone carries several projects.</li>
+<li><strong>Multitasking is not free</strong> — “40 hours” of nominal capacity is far less once someone carries several projects, and far less again for a new hire who is still learning the organization.</li>
 </ul>
 </section>
 <section id="case-study-meridian-rc-week-11" class="level2" data-number="11.11">
@@ -2476,7 +2557,8 @@ Show the worked solution
 <div class="callout-body-container callout-body">
 <p>By Week 11 the tooling phase is in full swing, and two activities are running side by side: C (body tooling build, 20 days) and D (frame tooling build, 15 days), both released from B (detailed design release) on day 18. Priya Nandakumar, Meridian’s Manufacturing Engineer, is the only person qualified to supervise both dies at once — the matrix organization never gave her a dedicated tooling team, just herself and two die-shop technicians who report through her for the duration of the project.</p>
 <p>You pull the resource histogram for the tooling window and the number jumps out immediately: Priya is booked at 100% on C and 60% on D at the same time — 160% of one person’s capacity, a 60-percentage-point overallocation that no amount of overtime coffee is going to fix on its own.</p>
-<p>Before moving anything, you go back to the CPM table. C has 5 days of float (LS day 23, LF day 43). D has 10 days of float (LS day 28, LF day 43). Neither is on the critical path A–B–E–F–H–I–J, so neither move threatens the 67-day finish — but D gives you twice the room to work with. You shift D’s start later, inside its own float, so Priya’s two commitments no longer collide the way they did on paper. C keeps running on its original clock; D slides toward its late-start date of day 28 and still lands exactly on its late-finish date of day 43, precisely when F (prototype assembly) needs both dies ready. The overallocation is resolved, and the 67-day project finish never moves.</p>
+<p>Before moving anything, you go back to the CPM table. C has 5 days of float (LS day 23, LF day 43). D has 10 days of float (LS day 28, LF day 43). Neither is on the critical path A–B–E–F–H–I–J, so neither move threatens the 67-day finish — but D gives you twice the room to work with. You shift D’s start to its late-start date of day 28: C keeps running on its original clock (days 18–38), D still lands exactly on its late-finish date of day 43, precisely when F (prototype assembly) needs both dies ready, and the overlap shrinks from all 15 of D’s days to 10.</p>
+<p>Float cannot do more than that. C and D need 35 days of Priya’s time between them, but only 25 days lie between day 18 and day 43, so at least 10 days of overlap remain whichever way you slide them. For those 10 days you change the work, not the dates: the senior die-shop technician runs D’s daily checks and Priya keeps only the sign-offs, about 20 % of her time. She is at 120 % for two weeks, covered by planned overtime she agrees to, instead of 160 % for three. The 67-day project finish never moves.</p>
 <p>While you’re in the histogram, you also pull the underlying weekly team-hours demand for the whole tooling phase against the department’s 45-hour/week capacity ceiling: 30, 48, 44, 52, and 38 hours across five consecutive weeks. Weeks 2 and 4 breach the limit, by 3 and 7 hours respectively — week 4 is the single worst overallocation — while weeks 1, 3, and 5 sit under capacity. Averaged out, the phase demands 42.4 hours per week, comfortably under the 45-hour limit. That average is the tell: there is enough slack in the valley weeks to absorb the peak weeks’ extra hours using float alone, which makes this a smoothing problem rather than a leveling one — no added headcount, no extended schedule, just a better-shaped curve.</p>
 <p><strong>Weekly team-hours demand, tooling phase (capacity limit: 45 hrs/week)</strong></p>
 <table class="caption-top table">
@@ -2592,7 +2674,7 @@ Solution
 Fits if spread evenly -&gt; smoothing (shift within float) can solve it.</code></pre>
 </div>
 </div>
-<p>35 h/week average is under the 40 h limit, so <strong>smoothing</strong> within float can solve it without extending the project.</p>
+<p>35 h/week average is under the 40 h limit, so <strong>smoothing</strong> within float can solve it without extending the project — provided the tasks behind the peak weeks have enough float to move into the valleys.</p>
 </details>
 </details>
 <details>
@@ -2611,7 +2693,7 @@ Discussion points
 <section id="further-resources" class="level2" data-number="11.13">
 <h2 data-number="11.13" class="anchored" data-anchor-id="further-resources"><span class="header-section-number">11.13</span> Further Resources</h2>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
-<p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/iSGWSGfG65U" title="What Is Resource Leveling in Project Management?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
+<p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/IvN6kyMUe3Q" title="What Is Resource Levelling, and How Does It Differ from Resource Smoothing? (Online PM Courses - Mike Clayton)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
 </div>
 
 

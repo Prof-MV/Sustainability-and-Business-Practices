@@ -2214,7 +2214,7 @@ Note
 </div>
 </div>
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
-<p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/4oDLMs11Exs" title="Forward and Backward Pass -> Project Duration and Critical Path (Engineer4Free)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
+<p><iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/4oDLMs11Exs" title="Forward and Backward Pass: Project Duration and Critical Path (Engineer4Free)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""> </iframe></p>
 </div>
 </section>
 <section id="from-wbs-to-precedence-table" class="level2" data-number="6.3">
@@ -2370,7 +2370,7 @@ Show the live R code behind this card
 <img src="06-Network-Diagrams-and-AON_files/figure-html/fig-cpm-float-06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cpm-float-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.2: Total float per activity. The zero-float bars (A, B, C, E, G, I, J) are the critical path; D has 12 days of slack, F and H have 2.
+Figure&nbsp;6.2: Total float per activity. The zero-float activities (A, B, C, E, G, I, J), marked red under the axis, are the critical path; D has 12 days of slack, F and H have 2.
 </figcaption>
 </figure>
 </div>
@@ -3102,7 +3102,7 @@ Show the live R code behind this calculator
 <img src="06-Network-Diagrams-and-AON_files/figure-html/fig-gantt-main-06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gantt-main-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.3: The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float.
+Figure&nbsp;6.3: The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float, drawn as the grey extension from EF to LF.
 </figcaption>
 </figure>
 </div>
@@ -3118,13 +3118,13 @@ Figure&nbsp;6.3: The ten-activity sub-project network, redrawn as a Gantt chart 
 <img src="06-Network-Diagrams-and-AON_files/figure-html/fig-gantt-reno-06-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gantt-reno-06-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.4: The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark; C and E (light) carry the float visible as the gap between where they finish and where F can actually start.
+Figure&nbsp;6.4: The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark. C and E (light) share 4 days of float: the grey gap between E’s finish on day 11 and F’s start on day 15.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Notice the gap between C’s bar ending and F’s bar starting — that gap <em>is</em> C’s float, drawn as empty space instead of a number in a box. A Gantt chart is the natural format for tracking progress against the plan once the project is under way, for assigning resources to specific calendar days, and for showing a sponsor the schedule without making them read a network diagram. <a href="./08-Project-Scheduling.html">Chapter 8</a> builds on this: precedence relationships beyond simple finish-to-start, leads and lags, and turning the single-number duration into a probability of finishing on time.</p>
+<p>Notice the grey gap between E’s bar ending (day 11) and F’s bar starting (day 15) — those 4 days <em>are</em> the float, drawn as space instead of a number in a box. C and E share it: C feeds only E, so if C slips 4 days, E has no float left. A Gantt chart is the natural format for tracking progress against the plan once the project is under way, for assigning resources to specific calendar days, and for showing a sponsor the schedule without making them read a network diagram. <a href="./08-Project-Scheduling.html">Chapter 8</a> builds on this: precedence relationships beyond simple finish-to-start, leads and lags, and turning the single-number duration into a probability of finishing on time.</p>
 </section>
 <section id="the-downside-of-network-diagrams" class="level2" data-number="6.9">
 <h2 data-number="6.9" class="anchored" data-anchor-id="the-downside-of-network-diagrams"><span class="header-section-number">6.9</span> The downside of network diagrams</h2>
@@ -3161,7 +3161,7 @@ Figure&nbsp;6.4: The seven-activity renovation network as a Gantt chart. Critica
 </div>
 <div class="callout-body-container callout-body">
 <p>Daniel Cho has been asking the same question in every steering call since the charter was signed: when does the Trailblazer prototype actually ship to Kestrel? This week you have a real answer, because you and Priya Nandakumar finally turned the “Prototype Build &amp; Qualification” branch of the WBS into an activity-on-node network instead of a list of jobs on a whiteboard.</p>
-<p>Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches — Priya’s body and frame tooling builds, and Marcus Webb’s motor-and-controller procurement from MCS — which all have to finish before Sofia Reyes’s team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the <em>slowest</em> of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full weeks after Marcus’s frame tooling and five days after Priya’s body tooling — which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.</p>
+<p>Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches — Priya’s body and frame tooling builds, and Marcus Webb’s motor-and-controller procurement from MCS — which all have to finish before Sofia Reyes’s team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the <em>slowest</em> of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full working weeks after Priya’s frame tooling and five days after her body tooling — which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.</p>
 <p>The backward pass confirms it: activities A, B, E, F, H, I, and J all land with zero float. That chain — concept CAD through detailed design, motor procurement, assembly, toy-safety certification, packaging, and your sign-off report to Renata Ford — is the critical path, and it sets the whole prototype phase at 67 working days, just under 13.5 weeks. Body tooling (C) has 5 days of cushion, frame tooling (D) has 10, and the durability test (G) has 7 — comfortable float today, but float that Priya and Sofia will need to manage carefully once resource assignments get made in a few weeks.</p>
 <p>You flag one thing for the team before the meeting ends: activity E is both the longest single activity on the critical path and completely outside Meridian’s control once the purchase order is placed. Anything that slows MCS down slows the whole project down. That single line in the network diagram is the reason procurement risk is going to dominate next week’s risk-identification session.</p>
 <table class="caption-top table">
@@ -3430,7 +3430,7 @@ Problem 3 (discussion): which task do you crash?
 <summary>
 Discussion points
 </summary>
-<p>You need 4 days. Cheapest first: E for 2 days ($600), then B for 2 days ($1 000) — total $1 600 for 4 days. Avoid G at $1 200/day. <strong>Then re-run the network</strong>: after removing 4 days from this chain, another path (e.g.&nbsp;A–B–C–F–H–J) may now be critical or co-critical, and crashing further would have to shorten <em>both</em>.</p>
+<p>You need 4 days. Cheapest first: E for 2 days ($600), then B for 2 days ($1 000) — total $1 600 for 4 days. Avoid G at $1 200/day. <strong>Then re-run the network</strong>: crashing B also shortens A–B–C–F–H–J, from 36 to 34 days, so that path is now co-critical with the crashed main chain. Any further crashing would have to shorten <em>both</em> paths.</p>
 </details>
 </details>
 </section>

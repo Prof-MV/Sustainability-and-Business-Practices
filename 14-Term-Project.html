@@ -398,7 +398,7 @@ Important
 <section id="how-to-upload" class="level3" data-number="14.3.4">
 <h3 data-number="14.3.4" class="anchored" data-anchor-id="how-to-upload"><span class="header-section-number">14.3.4</span> How to upload</h3>
 <ul>
-<li>Upload the <strong>original files</strong> (<code>.docx</code>, <code>.xlsx</code>, <code>.mpp</code>) <strong>and</strong> a <strong><code>.pdf</code> printout of every document</strong>.</li>
+<li>Upload the <strong>original files</strong> (<code>.docx</code>, <code>.xlsx</code>, and <code>.mpp</code> or <code>.pod</code>) <strong>and</strong> a <strong><code>.pdf</code> printout of every document</strong>.</li>
 <li>Upload <strong>individual files</strong>. Do <strong>not</strong> upload <code>.zip</code> files.</li>
 </ul>
 </section>
@@ -427,7 +427,7 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>Your company specializes in manufacturing remote-controlled vehicles for the toy industry. Because your products are lifelike replicas of real-world vehicles, you have been selected to supply a <em>Project Management Package</em> and to manage a project that will create <strong>one new vehicle replica</strong> for the coming holiday season.</p>
-<p>If selected, your company has the discretion to choose an <strong>aircraft</strong> (civilian or military), a <strong>yacht</strong>, or a <strong>road vehicle</strong> (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of <strong>1/18, or 9–12 inches (24–30 cm)</strong>. The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.</p>
+<p>If selected, your company has the discretion to choose an <strong>aircraft</strong> (civilian or military), a <strong>yacht</strong>, or a <strong>road vehicle</strong> (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of <strong>1/18, or 9–12 inches (23–30 cm)</strong>. The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.</p>
 <p>You will purchase the motor and control systems from one of two Canadian suppliers. If your replica is accepted and signed off by the client, your company is awarded a contract to manufacture <strong>100,000+ replicas</strong> of the accepted prototype for the next holiday season.</p>
 <p>You need a firm design choice, materials list, resources, and assembly decision to show Senior Management. You are expected to start production immediately after approval of the Scope and Charter, so the replica can be delivered to your client.</p>
 <p><strong>The suppliers.</strong> Two Canadian suppliers produce the motor and the control systems. <strong>You must use one of them.</strong></p>
@@ -668,8 +668,8 @@ Tip
 <td><a href="project-files/Risk-Brainstorming-Worksheet.docx">Risk-Brainstorming-Worksheet.docx</a></td>
 </tr>
 <tr class="odd">
-<td>Gantt chart (Excel)</td>
-<td><a href="project-files/Gantt-Chart-Template.xlsx">Gantt-Chart-Template.xlsx</a></td>
+<td>Gantt chart</td>
+<td>Built in Microsoft Project or ProjectLibre (see <em>Gantt chart</em> below)</td>
 </tr>
 </tbody>
 </table>
@@ -699,11 +699,34 @@ Tip
 </section>
 <section id="gantt-chart" class="level3" data-number="14.6.4">
 <h3 data-number="14.6.4" class="anchored" data-anchor-id="gantt-chart"><span class="header-section-number">14.6.4</span> Gantt chart</h3>
+<p>Build the Gantt chart in scheduling software, not by hand or in Excel. Use either:</p>
 <ul>
-<li><strong>Chart:</strong> a simple Gantt chart in Excel. Activities match your WBS and AON. Leave every activity at <strong>0 % complete</strong> for Phase B.</li>
-<li><strong>Format:</strong> the unit of time is days. Dates can be real dates or start at “Week 1”. Show relationships with arrows. Corner-to-corner tasks can imply Finish-to-Start without an arrow. All relationships can be Finish-to-Start, and they must match your AON.</li>
-<li><strong>Milestones:</strong> mark the end of the activities that match your charter milestones with a diamond. You may also mark the planned milestone dates with a different symbol.</li>
-<li><strong>Comparison paragraph:</strong> compare the milestones in your Charter with the milestone dates in your Gantt chart. They do not need to be the same.</li>
+<li><strong>Microsoft Project</strong>, installed in all computer labs on campus, or</li>
+<li><strong>ProjectLibre</strong>, free and open-source for Windows, Mac and Linux. Download it from <a href="https://www.projectlibre.com">projectlibre.com</a> and install it on your own computer.</li>
+</ul>
+<p><a href="./08-Project-Scheduling.html">Chapter 8</a> (<em>Scheduling software: Microsoft Project and ProjectLibre</em>) shows the buttons you need and walks through a first schedule.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Pick one program for the whole team.</strong> ProjectLibre can open a Microsoft Project <code>.mpp</code> file, but it saves as <code>.pod</code>, and Microsoft Project cannot open <code>.pod</code> files. If one member works in the lab and another at home, agree on the program first.</p>
+</div>
+</div>
+<ul>
+<li><strong>Set-up:</strong> set the project start date to the start of your assigned timeframe. The unit of time is days. The default calendar treats weekends as non-working days, so a 5-day task takes one work week.</li>
+<li><strong>Tasks:</strong> enter your WBS as the task list. Use <strong>Indent</strong> so the WBS levels become summary tasks and the work packages sit underneath them. Every activity in your AON appears in the Gantt chart with the same name and duration.</li>
+<li><strong>Links:</strong> link the tasks with <strong>predecessors</strong>. Do not type start or finish dates; the software calculates them. All relationships can be Finish-to-Start, and they must match your AON. The software draws the arrows for you.</li>
+<li><strong>Critical path:</strong> turn on the critical-path display (Microsoft Project: Format tab → <em>Critical Tasks</em>; ProjectLibre shows critical tasks in red). Check that it matches the critical path from your AON forward and backward passes. If the two disagree, find out why before you submit.</li>
+<li><strong>Progress:</strong> leave every activity at <strong>0 % complete</strong> for Phase B.</li>
+<li><strong>Milestones:</strong> add each Charter milestone as a task with a duration of <strong>0</strong>. The software draws it as a diamond. Link it to the activity that completes it.</li>
+<li><strong>Comparison paragraph:</strong> compare the milestone dates in your Charter with the milestone dates the software calculated. They do not need to be the same, but explain the differences.</li>
+<li><strong>Files:</strong> upload the project file (<code>.mpp</code> from Microsoft Project or <code>.pod</code> from ProjectLibre) <strong>and</strong> a PDF of the Gantt chart. Zoom the timescale so the whole chart is readable. Print it across several pages if that is what it takes to keep the text readable.</li>
 </ul>
 </section>
 </section>
@@ -795,7 +818,7 @@ Tip
 <li>Group report completed from the phase templates.</li>
 <li>Diagrams and charts readable, with legends where required.</li>
 <li>Your evaluation survey for the phase completed on FOL, in the version for your role (PM or Team Member). A missed survey means a grade of 0 for the phase.</li>
-<li>Original files (<code>.docx</code>, <code>.xlsx</code>, <code>.mpp</code>) <strong>and</strong> a <code>.pdf</code> printout of every document uploaded as <strong>individual files, no <code>.zip</code></strong>.</li>
+<li>Original files (<code>.docx</code>, <code>.xlsx</code>, and <code>.mpp</code> or <code>.pod</code>) <strong>and</strong> a <code>.pdf</code> printout of every document uploaded as <strong>individual files, no <code>.zip</code></strong>.</li>
 <li>Everything uploaded to FOL <strong>before the deadline</strong>. Remember the 15 % per day late deduction.</li>
 </ol>
 

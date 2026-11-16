@@ -2753,6 +2753,10 @@ Why quote a range at all — why not just give “the number”?
 <h3 data-number="9.6.1" class="anchored" data-anchor-id="the-cost-of-padding"><span class="header-section-number">9.6.1</span> The cost of padding</h3>
 <p>Padding feels prudent per task. Watch what it does across a whole project.</p>
 <div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
+(`geom_bar()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div id="fig-padding-compounding-09" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2760,7 +2764,7 @@ Why quote a range at all — why not just give “the number”?
 <img src="09-Cost-Estimation-and-Budgeting_files/figure-html/fig-padding-compounding-09-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-padding-compounding-09-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.2: A 15 % ‘just to be safe’ pad added to every one of 40 tasks does not add 15 % to the project — it adds 15 % to the mean, but the padded total sits far above any realistic outcome because the pads do not all get used.
+Figure&nbsp;9.2: Why per-task padding misleads. Each of 40 tasks is padded 15 %, about one standard deviation of that task’s own uncertainty. Summed, the pads add 240 h, but because over- and under-runs partly cancel, the project total varies by only about ±38 h. The padded total sits some six standard deviations above the likely outcome, while one project-level reserve of about 50 h already gives 90 % confidence.
 </figcaption>
 </figure>
 </div>
@@ -3020,7 +3024,7 @@ Warning
 <img src="09-Cost-Estimation-and-Budgeting_files/figure-html/fig-s-curve-09-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-s-curve-09-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.3: Time-phased budget for the six-activity project of the ABC table (total $38,500). Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.
+Figure&nbsp;9.3: Time-phased budget for the six-activity project of the ABC table (total $38 500). Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.
 </figcaption>
 </figure>
 </div>
@@ -3228,7 +3232,7 @@ How would top-down vs.&nbsp;bottom-up change this number?
 <p>Six weeks after Daniel Cho signed off on the $800,000 charter ceiling, you owe him something more defensible than a ballpark: a definitive, bottom-up budget built activity by activity off the WBS you cut with Priya Nandakumar, Marcus Webb, and Sofia Reyes back in Week 5. This week you assembled it, work package by work package, and sat down with Daniel for sign-off.</p>
 <p>You started with labour, costing each team member’s time against the prototype phase: yourself as PM at $72,000, Priya (tooling) at $42,000, Marcus (procurement) at $38,000, and Sofia (quality and test) at $36,000 — a labour subtotal of <strong>$188,000</strong>. Then you rolled up the direct-cost line items Marcus, Priya, and Sofia had been pricing with suppliers all along: the motor and controller package MCS had quoted at $145,000, the aluminium for the body and frame (the Week 1 material decision) at $95,000, the body and frame tooling dies at $150,000, testing and certification fees at $60,000, government and toy-safety approval fees at $6,000, and packaging and shipping for the client sample run at $18,000 — a direct-cost subtotal of <strong>$474,000</strong>.</p>
 <p>Labour plus direct costs gives total direct costs of <strong>$662,000</strong>. Following the course’s Costs Chart convention — and remembering that contingency is never buried inside an activity-based budget, only added on top once every line item is identified — you applied a <strong>15% contingency on the full $662,000 direct-cost total</strong>, not just the material-and-vendor subtotal. That adds <strong>$99,300</strong>, for a <strong>Budget at Completion (BAC) of $761,300</strong>.</p>
-<p>Daniel did the arithmetic you knew he would: $761,300 against his $800,000 ceiling leaves <strong>$38,700 of headroom</strong> — about 4.8% of the ceiling. Comfortable, but not so much that he waved it through without questions. He pressed hardest on the $150,000 tooling line (largest single item after labour) and on why testing and certification, at $60,000, was priced near the top of the brief’s original $25,000–$100,000 range rather than the middle. You walked him through the WBS lineage of each number — 1.2 Tooling &amp; Fabrication, 1.5 Testing &amp; Certification — and he signed off. The bottom-up number now becomes the baseline you will track against once the S-curve is time-phased and, later, once Earned Value tracking begins in Week 12.</p>
+<p>Daniel did the arithmetic you knew he would: $761,300 against his $800,000 ceiling leaves <strong>$38,700 of headroom</strong> — about 4.8% of the ceiling. Comfortable, but not so much that he waved it through without questions. He pressed hardest on the $150,000 tooling line (largest single item after labour) and on why testing and certification, at $60,000, was priced in the middle of the brief’s original $25,000–$100,000 range rather than near its low end. You walked him through the WBS lineage of each number — 1.2 Tooling &amp; Fabrication, 1.5 Testing &amp; Certification — and he signed off. The bottom-up number now becomes the baseline you will track against once the S-curve is time-phased and, later, once Earned Value tracking begins in Week 12.</p>
 </div>
 </div>
 </section>
@@ -3244,22 +3248,22 @@ Problem 1: Fully-burdened labour and an indirect-rate swing
 Solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>techs <span class="ot">&lt;-</span> <span class="dv">2</span>; weeks <span class="ot">&lt;-</span> <span class="dv">3</span>; hrs_week <span class="ot">&lt;-</span> <span class="fl">37.5</span>; rate <span class="ot">&lt;-</span> <span class="dv">34</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>consumables <span class="ot">&lt;-</span> <span class="dv">6200</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>direct_labour <span class="ot">&lt;-</span> techs <span class="sc">*</span> weeks <span class="sc">*</span> hrs_week <span class="sc">*</span> rate</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>direct_cost   <span class="ot">&lt;-</span> direct_labour <span class="sc">+</span> consumables</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ir <span class="cf">in</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.45</span>)) {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> direct_cost <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> ir)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Indirect %2.0f%%:  direct $%s  +  indirect $%s  =  $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              ir <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(direct_cost, <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> ir), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(total), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Swing from the indirect-rate assumption alone: $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> (<span class="fl">0.45</span> <span class="sc">-</span> <span class="fl">0.25</span>)), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>techs <span class="ot">&lt;-</span> <span class="dv">2</span>; weeks <span class="ot">&lt;-</span> <span class="dv">3</span>; hrs_week <span class="ot">&lt;-</span> <span class="fl">37.5</span>; rate <span class="ot">&lt;-</span> <span class="dv">34</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>consumables <span class="ot">&lt;-</span> <span class="dv">6200</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>direct_labour <span class="ot">&lt;-</span> techs <span class="sc">*</span> weeks <span class="sc">*</span> hrs_week <span class="sc">*</span> rate</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>direct_cost   <span class="ot">&lt;-</span> direct_labour <span class="sc">+</span> consumables</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ir <span class="cf">in</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.45</span>)) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  total <span class="ot">&lt;-</span> direct_cost <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> ir)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"Indirect %2.0f%%:  direct $%s  +  indirect $%s  =  $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>              ir <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(direct_cost, <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> ir), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">format</span>(<span class="fu">round</span>(total), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Swing from the indirect-rate assumption alone: $%s</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">round</span>(direct_cost <span class="sc">*</span> (<span class="fl">0.45</span> <span class="sc">-</span> <span class="fl">0.25</span>)), <span class="at">big.mark =</span> <span class="st">" "</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Indirect 25%:  direct $13 850  +  indirect $3 462  =  $17 312
 Indirect 45%:  direct $13 850  +  indirect $6 232  =  $20 082
@@ -3267,7 +3271,7 @@ Indirect 45%:  direct $13 850  +  indirect $6 232  =  $20 082
 Swing from the indirect-rate assumption alone: $2 770</code></pre>
 </div>
 </div>
-<p>The direct cost is fixed at $21 500, but the burdened total moves by $4 300 — 20 % of direct — purely on the overhead assumption. Always state the indirect rate you used.</p>
+<p>The direct cost is fixed at $13 850 ($7 650 of labour plus $6 200 of consumables), but the burdened total moves from about $17 310 to about $20 080 — a swing of $2 770, or 20 % of direct — purely on the overhead assumption. Always state the indirect rate you used.</p>
 </details>
 </details>
 <details>
@@ -3307,23 +3311,23 @@ Problem 3: Variance analysis on the ABC budget
 Solution
 </summary>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>planned <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Survey =</span> <span class="dv">4000</span>, <span class="at">Design =</span> <span class="dv">8000</span>, <span class="st">`</span><span class="at">Clear site</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">4000</span>,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">Foundation =</span> <span class="dv">7500</span>, <span class="at">Framing =</span> <span class="dv">10000</span>, <span class="st">`</span><span class="at">Plumb &amp; wire</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">5000</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>actual  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4250</span>, <span class="dv">8000</span>, <span class="dv">3500</span>, <span class="dv">8500</span>, <span class="dv">11250</span>, <span class="dv">5150</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> planned <span class="sc">-</span> actual            <span class="co"># + = under budget</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Activity =</span> <span class="fu">names</span>(planned),</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Planned =</span> <span class="fu">as.integer</span>(planned),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Actual =</span> <span class="fu">as.integer</span>(actual),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Variance =</span> <span class="fu">as.integer</span>(variance),</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Pct =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> variance <span class="sc">/</span> planned, <span class="dv">1</span>))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tab, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">TOTAL planned $%s  actual $%s  variance $%s (%.1f%%)</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(planned), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(actual),  <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(variance), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sum</span>(variance) <span class="sc">/</span> <span class="fu">sum</span>(planned)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>planned <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Survey =</span> <span class="dv">4000</span>, <span class="at">Design =</span> <span class="dv">8000</span>, <span class="st">`</span><span class="at">Clear site</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">4000</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">Foundation =</span> <span class="dv">7500</span>, <span class="at">Framing =</span> <span class="dv">10000</span>, <span class="st">`</span><span class="at">Plumb &amp; wire</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">5000</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>actual  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4250</span>, <span class="dv">8000</span>, <span class="dv">3500</span>, <span class="dv">8500</span>, <span class="dv">11250</span>, <span class="dv">5150</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">&lt;-</span> planned <span class="sc">-</span> actual            <span class="co"># + = under budget</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Activity =</span> <span class="fu">names</span>(planned),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Planned =</span> <span class="fu">as.integer</span>(planned),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Actual =</span> <span class="fu">as.integer</span>(actual),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Variance =</span> <span class="fu">as.integer</span>(variance),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Pct =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> variance <span class="sc">/</span> planned, <span class="dv">1</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tab, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">TOTAL planned $%s  actual $%s  variance $%s (%.1f%%)</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(planned), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(actual),  <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">sum</span>(variance), <span class="at">big.mark =</span> <span class="st">" "</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sum</span>(variance) <span class="sc">/</span> <span class="fu">sum</span>(planned)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Activity Planned Actual Variance   Pct
        Survey    4000   4250     -250  -6.2
@@ -3336,7 +3340,7 @@ Solution
 TOTAL planned $38 500  actual $40 650  variance $-2 150 (-5.6%)</code></pre>
 </div>
 </div>
-<p>Design and (roughly) Survey held. <strong>Foundation (-13 %)</strong> and <strong>Framing (-13 %)</strong> blew through and drove the whole project $2 150 (5.6 %) over — those two get the post-mortem.</p>
+<p>Design and (roughly) Survey held. <strong>Foundation (-13.3 %)</strong> and <strong>Framing (-12.5 %)</strong> blew through and drove the whole project $2 150 (5.6 %) over — those two get the post-mortem.</p>
 </details>
 </details>
 <details>
