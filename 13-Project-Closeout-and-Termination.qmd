@@ -67,18 +67,18 @@ embed_youtube("0HVtpstAT7M", "Unlock the Secrets to Easy Project Closure (Associ
 tt <- data.frame(
   type = c("Extinction", "Addition", "Integration", "Starvation"),
   x = 1:4,
-  desc = c("Stopped -- success or failure.\nBudget audited, team\nreassigned, assets dispersed.",
-           "Institutionalized as a\npermanent part of the\norganization (project team\n-> production support team).",
+  desc = c("Stopped \u2014 success or failure.\nBudget audited, team\nreassigned, assets dispersed.",
+           "Institutionalized as a\npermanent part of the\norganization (project team\n\u2192 production support team).",
            "Resources and team\nreabsorbed into the existing\nstructure / functional\ndepartments.",
-           "Budget quietly cut until\nthe project cannot survive.\nOften political -- a 'pet\nproject' kept on the books.")
+           "Budget quietly cut until\nthe project cannot survive.\nOften political \u2014 a 'pet\nproject' kept on the books.")
 )
 ggplot(tt, aes(x, 0)) +
-  geom_label(aes(label = type), nudge_y = 0.55, size = 3.6 * diagram_text_scale,
+  geom_label(aes(label = type), nudge_y = 0.22, size = 3.6 * diagram_text_scale,
              fontface = "bold", fill = c("#A9DFBF", "#A9DFBF", "#A9DFBF", "#F5B7B1"),
              linewidth = 0) +
   geom_text(aes(label = desc), size = 2.6 * chart_text_scale, lineheight = 0.95,
             vjust = 1) +
-  coord_cartesian(xlim = c(0.4, 4.6), ylim = c(-1.1, 1)) +
+  coord_cartesian(xlim = c(0.4, 4.6), ylim = c(-0.75, 0.35)) +
   theme_void()
 ```
 
@@ -412,16 +412,17 @@ ov <- data.frame(
 ov$project <- factor(ov$project, levels = rev(ov$project))
 ggplot(ov, aes(multiple, project)) +
   geom_col(fill = "#C0392B", width = 0.6) +
-  geom_text(aes(label = paste0(multiple, "x")), hjust = -0.2,
+  geom_text(aes(label = paste0(multiple, "\u00d7")), hjust = -0.2,
             size = 3.8 * chart_text_scale) +
   scale_x_continuous(trans = "log10", limits = c(1, 300),
                      breaks = c(1, 2, 5, 10, 30, 100, 300),
                      expand = expansion(mult = c(0, 0.05))) +
-  labs(title = "Final cost as a multiple of the original budget (log scale)",
+  labs(title = "Final cost \u00f7 original budget (log scale)",
        x = "Overrun multiple", y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 13 * chart_text_scale, face = "bold"),
+    plot.title.position = "plot",
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
   )
@@ -430,7 +431,7 @@ ggplot(ov, aes(multiple, project)) +
 - **Bank of America "MasterNet"** (1984) --- trust-department automation. Over budget by \$35M, rising toward \$80M; a 1988 failure meant loss of control over billions in trust accounts, all eventually recovered, but the **entire 255-person department was let go** as depositors fled. *Cause: scope and complexity understood far too late.*
 - **Future Imagery Architecture** (US spy satellites, 1997) --- bid won by a contractor that had never built an imaging satellite; internal estimate already predicted a \$4B overrun. **Testing was cut to save money**; a subcontractor's undisclosed manufacturing change caused gyroscope defects undiscovered for three years; costs reached ~\$18B by 2005. *Cause: unqualified bidder, cut testing, uncontrolled change.*
 - **Canadian Firearms Registry** (1995) --- estimated at \$119M to implement; a 2002 audit projected ~**\$1B**. *Causes: scope not understood, no plan for inter-agency cooperation, inconsistent data criteria, cost cover-up, no measurement of whether the registry actually worked.*
-- **Channel Tunnel** (budgeted 1979, opened 1994, one year late) --- final cost roughly **double** the original budget.
+- **Channel Tunnel** (approved 1986, opened 1994, about a year late) --- construction cost came in roughly **80 % over** the original budget.
 - **Project Taurus** (London Stock Exchange paperless settlement, 1983) --- abandoned after **11 years** at ~**132 times** its original budget after switching to an incompatible US system that clashed with British finance law.
 
 **The recurring threads:** scope not truly understood; optimism and cost
@@ -522,7 +523,7 @@ cat(sprintf("Next step  %s\n", if (success) "document the causes in the history 
 
 ::: {.callout-tip .case-study title="📁 CASE STUDY FILE — Week 13: The Trailblazer Ships"}
 
-Thirteen weeks after Daniel Cho signed a $800,000 charter for a single
+Ten weeks after Daniel Cho signed a $800,000 charter for a single
 prototype, you close the file on the Meridian Trailblazer with a phone call
 from Renata Ford. The drop/durability test (activity G) and the toy-safety
 certification (activity H) — the two milestones every other decision this
@@ -547,9 +548,11 @@ Closing the history file, three lessons learned carry forward into the
 production program. First, the **$9,000 MCS negotiation saving** from Week
 10: using the Paragon quote as leverage, without ever intending to switch
 suppliers, protected both the proven vendor relationship and the schedule.
-Second, **Priya's Week 11 overallocation**, resolved by shifting frame
-tooling (activity D) inside its own ten days of float rather than adding
-headcount — proof that a resource conflict is not always a hiring problem.
+Second, **Priya's Week 11 overallocation**, cut from 160 % to a short
+120 % stretch by shifting frame tooling (activity D) inside its own ten days
+of float and handing D's daily checks to a die-shop technician, rather than
+adding headcount — proof that a resource conflict is not always a hiring
+problem.
 Third, the **Week 2 communication near-miss**, where a spec change missed
 Kestrel's Vancouver buyer and cost three days and $4,000 — the RACI matrix
 adopted afterward is the reason the Week 13 sign-off reached every

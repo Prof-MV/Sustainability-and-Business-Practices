@@ -44,7 +44,7 @@ embed_youtube("7V8oFI4GYMY", "What Is Sustainable Development? (FN-sambandet)")
 
 ## Course map {-}
 
-```{r fig-course-map, echo=FALSE, fig.cap="How the thirteen chapters of this book track the MGMT-3105 lecture sequence, grouped by project phase.", fig.align='center', fig.width=10, fig.height=6}
+```{r fig-course-map, echo=FALSE, fig.cap="How the thirteen lecture chapters of this book track the MGMT-3105 lecture sequence, grouped by project phase. Chapter 14 describes the term project.", fig.align='center', fig.width=10, fig.height=6}
 phases <- data.frame(
   chapter = 1:13,
   title = c(

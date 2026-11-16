@@ -139,7 +139,7 @@ The same story as a picture: the balance starts at \$0, is spent down to
 of Production (SOP)**, then turns upward once production starts, as
 \$180 000/year of net cash flow closes the gap until it crosses breakeven.
 
-```{r fig-payback-curve-03, fig.cap="Cumulative cash position for the RC-vehicle tooling investment. The balance starts at $0 and is spent down to -$450,000 by Start of Production (SOP); once production begins, $180,000/year of net cash flow closes the gap, crossing breakeven at 2.5 years.", fig.align='center', fig.width=9, fig.height=5.5}
+```{r fig-payback-curve-03, fig.cap="Cumulative cash position for the RC-vehicle tooling investment. The balance starts at $0 and is spent down to -$450 000 by Start of Production (SOP); once production begins, $180 000/year of net cash flow closes the gap, crossing breakeven at 2.5 years.", fig.align='center', fig.width=9, fig.height=5.5}
 initial   <- 450000
 annual_cf <- 180000
 horizon   <- 5
@@ -162,7 +162,7 @@ ggplot(curve_df, aes(t, balance)) +
   geom_line(color = "#1B4F72", linewidth = 1.2) +
   geom_point(data = data.frame(t = payback_t, balance = 0),
              color = "#186A3B", size = 3.5) +
-  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450,000\n(tooling outlay, at SOP)",
+  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450 000\n(tooling outlay, at SOP)",
            hjust = 0, vjust = 1, size = 3.2 * chart_text_scale, color = "#C0392B") +
   annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
            hjust = 0, size = 3.2 * chart_text_scale, color = "grey30", fontface = "bold") +
@@ -277,7 +277,7 @@ ggplot(curve_df, aes(t, balance)) +
   geom_line(color = "#1B4F72", linewidth = 1.2) +
   geom_point(data = data.frame(t = payback_pv_t, balance = 0),
              color = "#186A3B", size = 3.5) +
-  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450,000\n(tooling outlay, at SOP)",
+  annotate("text", x = 0.08, y = -initial * 1.02, label = "-$450 000\n(tooling outlay, at SOP)",
            hjust = 0, vjust = 1, size = 3.2 * chart_text_scale, color = "#C0392B") +
   annotate("text", x = 0.08, y = -initial * 0.3, label = "SOP",
            hjust = 0, size = 3.2 * chart_text_scale, color = "grey30", fontface = "bold") +
@@ -356,8 +356,10 @@ cat(sprintf("Less outlay  %s\n", money(initial)))
 <summary>What happens to NPV if the hurdle rate rises to 18 %?</summary>
 
 Raise `r` in the cell and re-run. Higher discount rates punish cash flows that
-arrive later, so NPV falls --- a project that clears a 12 % hurdle may fail an
-18 % one. This is why a company with expensive capital (or a risky project that
+arrive later, so NPV falls. For Example 1 it drops from \$198 860 at 12 % to
+about \$112 900 at 18 % --- still positive; it reaches zero only at about
+28.6 %, the project's internal rate of return. A project with thinner margins
+that clears a 12 % hurdle may well fail an 18 % one. This is why a company with expensive capital (or a risky project that
 demands a risk premium) is choosier about which projects it starts. Course
 Learning Outcome 1 is exactly this: *communicate the philosophy of project
 selection using the NPV method.*
@@ -479,12 +481,14 @@ listening, informing, and helping stakeholders along.
 
 ```{r fig-stakeholder-grid-03, fig.cap="Power-interest grid for the RC-vehicle project. Effort goes where power and interest are both high; low-low stakeholders are monitored, not managed.", fig.align='center', fig.width=9, fig.height=6.5}
 sh <- data.frame(
-  who = c("Senior mgmt / sponsor", "Retailer (client)", "Motor supplier",
-          "Carbon-fibre supplier", "Compliance officer", "Assembly team",
-          "Accountant", "Competitors", "Local community"),
-  power    = c(0.92, 0.80, 0.55, 0.45, 0.70, 0.40, 0.50, 0.30, 0.20),
-  interest = c(0.75, 0.85, 0.60, 0.55, 0.65, 0.90, 0.55, 0.65, 0.35)
+  who = c("Senior mgmt / sponsor", "Retailer (client)", "Compliance officer",
+          "Motor supplier", "Assembly team", "Accountant",
+          "Carbon-fibre trim supplier", "Competitors", "Local community"),
+  power    = c(0.92, 0.80, 0.72, 0.40, 0.28, 0.36, 0.20, 0.33, 0.10),
+  interest = c(0.70, 0.86, 0.28, 0.74, 0.90, 0.58, 0.30, 0.40, 0.22),
+  hj       = c(1, 1, 0, 0, 1, 0, 0, 0, 0)
 )
+sh$lx <- sh$interest + ifelse(sh$hj == 0, 0.018, -0.018)
 
 ggplot(sh, aes(interest, power)) +
   annotate("rect", xmin = 0.5, xmax = 1, ymin = 0.5, ymax = 1.12, fill = "#27AE60", alpha = 0.10) +
@@ -492,10 +496,7 @@ ggplot(sh, aes(interest, power)) +
   annotate("rect", xmin = 0.5, xmax = 1, ymin = 0, ymax = 0.5, fill = "#5DADE2", alpha = 0.10) +
   annotate("rect", xmin = 0, xmax = 0.5, ymin = 0, ymax = 0.5, fill = "grey70", alpha = 0.12) +
   geom_point(color = "#1B4F72", size = 3) +
-  geom_text(aes(label = who), size = 2.9 * chart_text_scale,
-            vjust = ifelse(sh$power > 0.85, 1.8, -0.8),
-            hjust = c(0.5, 0.5, 0, 1, 0.5, 0.5, 1, 0.5, 0.5),
-            nudge_x = c(0, 0, 0.015, -0.015, 0, 0, -0.015, 0, 0)) +
+  geom_text(aes(x = lx, label = who, hjust = hj), size = 2.9 * chart_text_scale) +
   annotate("text", x = 0.75, y = 1.08, label = "MANAGE CLOSELY",
            fontface = "bold", size = 3 * chart_text_scale, color = "#186A3B") +
   annotate("text", x = 0.25, y = 1.08, label = "KEEP SATISFIED",
@@ -532,11 +533,11 @@ qwebr_calc_card(
     columns = list(
       qwebr_calc_col("who", c("Kestrel Retail Group", "Daniel Cho (sponsor)", "MCS (motor supplier)",
                               "Internal QA", "Fibro Source (trim supplier)"), type = "text", label = "Stakeholder"),
-      qwebr_calc_col("power", c(9, 9, 5, 5, 2), label = "Power (1-10)", min = 1, max = 10, step = 1),
-      qwebr_calc_col("interest", c(8, 8, 7, 5, 2), label = "Interest (1-10)", min = 1, max = 10, step = 1)),
+      qwebr_calc_col("power", c(9, 9, 4, 7, 2), label = "Power (1-10)", min = 1, max = 10, step = 1),
+      qwebr_calc_col("interest", c(8, 8, 8, 4, 2), label = "Interest (1-10)", min = 1, max = 10, step = 1)),
     note = "Scores of 5 or more count as high. Add rows for your own project's stakeholders.")),
-  goal = "Add a stakeholder of your own who lands in 'Keep satisfied' (high power, low interest). Who on a real project fits that box?",
-  goal_test = "any(stakeholders$quadrant == \"Keep satisfied\")"
+  goal = "Change one score so that MCS (row 3) moves into 'Manage closely'. What would have to happen on a real project for a motor supplier to gain that much power?",
+  goal_test = "stakeholders$quadrant[3] == \"Manage closely\""
 )
 ```
 
@@ -550,8 +551,8 @@ The card above re-runs this exact webR code every time you change a value in its
 stakeholders <- data.frame(
   who      = c("Kestrel Retail Group", "Daniel Cho (sponsor)", "MCS (motor supplier)",
                "Internal QA", "Fibro Source (trim supplier)"),
-  power    = c(9, 9, 5, 5, 2),
-  interest = c(8, 8, 7, 5, 2)
+  power    = c(9, 9, 4, 7, 2),
+  interest = c(8, 8, 8, 4, 2)
 )
 
 stakeholders$quadrant <- with(stakeholders, ifelse(
@@ -627,7 +628,8 @@ though not forbidden.*
 ### The scope management processes
 
 **Plan scope → collect requirements → define scope → create WBS → validate scope
-(at closing) → control scope (throughout).** The scope management plan is often
+(formal customer acceptance of each completed deliverable, as it is finished) →
+control scope (throughout).** The scope management plan is often
 run as an extension of **Management by Objectives (MBO)**: set unambiguous,
 realistic objectives; check periodically whether they are being met; take
 corrective action.
@@ -726,20 +728,21 @@ Culture affects projects through:
 How the lines of authority and communication are arranged decides **when people
 are available** and **how you get them**.
 
-```{r fig-org-authority-03, fig.cap="Project manager authority across organizational structures. It rises from almost none in a functional organization to near-total in a projectized one, with the matrix band in between.", fig.align='center', fig.width=10, fig.height=4.5}
+```{r fig-org-authority-03, fig.cap="Project manager authority across organizational structures, using the PMBOK Guide's qualitative bands. It rises from little or none in a functional organization to high or almost total in a projectized one, with the matrix forms in between.", fig.align='center', fig.width=10, fig.height=4.5}
 org <- data.frame(
   type = factor(c("Functional", "Weak matrix", "Balanced matrix",
                   "Strong matrix", "Projectized"),
                 levels = c("Functional", "Weak matrix", "Balanced matrix",
                            "Strong matrix", "Projectized")),
-  authority = c(0.08, 0.28, 0.5, 0.72, 0.95)
+  authority = c(0.08, 0.28, 0.5, 0.72, 0.95),
+  band = c("Little or none", "Low", "Low to\nmoderate", "Moderate\nto high", "High to\nalmost total")
 )
 ggplot(org, aes(type, authority, fill = authority)) +
   geom_col(width = 0.65) +
-  geom_text(aes(label = scales::percent(authority, accuracy = 1)),
-            vjust = -0.4, size = 3.6 * chart_text_scale) +
+  geom_text(aes(label = band), vjust = -0.25, lineheight = 0.9,
+            size = 3.2 * chart_text_scale) +
   scale_fill_gradient(low = "#AED6F1", high = "#1B4F72", guide = "none") +
-  scale_y_continuous(labels = scales::percent, limits = c(0, 1.05),
+  scale_y_continuous(limits = c(0, 1.25), breaks = NULL,
                      expand = expansion(mult = c(0, 0.02))) +
   labs(title = "How much authority does the PM actually have?",
        x = NULL, y = "PM authority over resources") +
@@ -852,17 +855,19 @@ decide where your attention goes this quarter:
 |---|---|---|---|
 | Kestrel Retail Group | High | High | Manage closely |
 | Daniel Cho (sponsor) | High | High | Manage closely |
-| MCS (motor supplier) | Medium | High | Keep informed |
-| Paragon (motor supplier) | Medium | High | Keep informed |
-| Internal QA department | Medium | Medium | Keep satisfied |
+| MCS (motor supplier) | Low--medium | High | Keep informed |
+| Paragon (motor supplier) | Low--medium | High | Keep informed |
+| Internal QA department | High | Low | Keep satisfied |
 | Fibro Source (trim supplier) | Low | Low | Monitor |
 
 Kestrel and Cho land in the top-right corner --- high power, high interest ---
 because either one can stall or kill the project. MCS and Paragon, your two
-candidate motor suppliers, sit at medium power but high interest: they care
+candidate motor suppliers, have high interest but limited power: they care
 intensely about winning the contract, so you keep them informed even though
-neither can unilaterally derail you. Internal QA, medium on both axes, gets
-kept satisfied: not a daily conversation, but not ignored either. Fibro
+neither can unilaterally derail you while the other is still in the running.
+Internal QA has real power --- it can refuse to sign off certification --- but
+your project is one of many on its plate, so its interest is low. It gets kept
+satisfied: not a daily conversation, but never surprised either. Fibro
 Source, supplying only the optional carbon-fibre trim package, is low power
 and low interest --- worth monitoring, nothing more.
 

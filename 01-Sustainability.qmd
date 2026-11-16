@@ -81,11 +81,17 @@ embed_youtube("9GorqroigqM", "The Story of Stuff (Annie Leonard) - the materials
 
 ## What sustainability means
 
-The most quoted definition comes from the 1987 Brundtland report and is used
-almost word-for-word by the U.S. Environmental Protection Agency:
+The most quoted definition comes from the 1987 Brundtland report, *Our Common
+Future*, of the UN World Commission on Environment and Development:
 
-> Sustainability is *"meeting the needs of the present without compromising the
-> ability of future generations to meet their own needs."*
+> *"Sustainable development is development that meets the needs of the present
+> without compromising the ability of future generations to meet their own
+> needs."*
+
+The U.S. Environmental Protection Agency says the same thing in different
+words, borrowing from the 1969 National Environmental Policy Act: to *create and
+maintain the conditions under which humans and nature can exist in productive
+harmony, to support present and future generations.*
 
 The idea is older than the word. Thomas Jefferson expressed the same principle
 in financial terms: **do not leave a debt for future generations to pay.**
@@ -105,12 +111,12 @@ Sustainability is usually drawn as three overlapping domains. A decision is
 sustainable only where all three overlap: it has to be **socially** acceptable,
 **economically** viable, and **ecologically** sound at the same time.
 
-```{r fig-three-pillars-01, fig.cap="The three pillars of sustainability. Only decisions in the central overlap are genuinely sustainable; the pairwise overlaps (bearable, equitable, viable) each miss one dimension.", fig.align='center', fig.width=9, fig.height=6.5}
+```{r fig-three-pillars-01, fig.cap="The three pillars of sustainability. Only decisions in the central overlap are genuinely sustainable; the pairwise overlaps each miss one dimension: social + economic is equitable, social + ecological is bearable, economic + ecological is viable.", fig.align='center', fig.width=9, fig.height=6.5}
 circles <- data.frame(
   x0 = c(-0.55, 0.55, 0),
   y0 = c(0.35, 0.35, -0.6),
   r  = rep(1.05, 3),
-  pillar = c("Social\n(bearable)", "Economic\n(viable)", "Ecological\n(sound)"),
+  pillar = c("Social", "Economic", "Ecological"),
   fill = c("#2E86C1", "#F39C12", "#27AE60")
 )
 
@@ -124,9 +130,9 @@ ggplot(circles) +
            fontface = "bold", size = 4.5 * diagram_text_scale, color = "#9C640C") +
   annotate("text", x = 0, y = -1.3, label = "ECOLOGICAL",
            fontface = "bold", size = 4.5 * diagram_text_scale, color = "#186A3B") +
-  annotate("text", x = 0, y = 0.55, label = "bearable",
+  annotate("text", x = 0, y = 0.55, label = "equitable",
            size = 3.2 * diagram_text_scale, fontface = "italic") +
-  annotate("text", x = -0.7, y = -0.35, label = "equitable",
+  annotate("text", x = -0.7, y = -0.35, label = "bearable",
            size = 3.2 * diagram_text_scale, fontface = "italic") +
   annotate("text", x = 0.7, y = -0.35, label = "viable",
            size = 3.2 * diagram_text_scale, fontface = "italic") +
@@ -411,9 +417,9 @@ cat(sprintf("Cradle-to-gate CO2e avoided  %s kg (~%.1f t)\n", fmt(co2_saved), co
 
 </details>
 
-A 7 g decision, taken once on a screen, moves almost a tonne of material and
-several tonnes of CO2e once it is multiplied by the production run --- before
-counting the lighter shipping weight.
+A 7 g decision, taken once on a screen, saves 840 kg of material, about
+76 000 MJ of production energy and nearly 3 t of CO2e once it is multiplied by
+the production run --- before counting the lighter shipping weight.
 
 ### Try it yourself: material reduction by hand
 
@@ -584,7 +590,7 @@ for **next life**: what can this material become *after* its first use?
 <summary>Try it: redesign the RC-car battery door for recyclability</summary>
 
 **Current design:** ABS door, two stainless M2 screws, a printed polyester
-label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.
+label, a bonded silicone-rubber gasket (a thermoset), a steel spring.
 
 <details>
 <summary>One redesign</summary>
@@ -592,7 +598,7 @@ label, a moulded-in TPE gasket (thermoset-like behaviour), a steel spring.
 - Replace the two screws with a **living hinge + snap latch** moulded into the door (same ABS) --- removes two dissimilar-metal fasteners and a driver operation on the line.
 - Replace the adhesive polyester label with **in-mould labelling** in an ABS-compatible film, or mould the text into the part.
 - Replace the steel spring with a **moulded ABS cantilever spring** if the cycle life allows.
-- Keep the TPE gasket but make it a **removable press-in** part in a recycling-compatible grade, or switch to a moulded-in flexible ABS lip if the seal spec allows.
+- Replace the bonded silicone gasket with a **two-shot moulded or press-in TPE** gasket (a thermoplastic elastomer, so it can be reprocessed), or a moulded flexible lip if the seal spec allows.
 
 Result: the door goes from five materials and two fasteners to essentially one
 polymer, snaps apart by hand, and carries no adhesive.
@@ -609,7 +615,7 @@ consistent on two points:
 1. Environmentally conscious consumers **will pay marginally more** and **accept marginally lower fit and finish** for a product that is genuinely more environmentally friendly.
 2. They have **zero tolerance** for a drop in **performance/functionality** or in **service life**. They bought the product to do a job. If a "sustainable" design wears out sooner, it just gets replaced sooner --- consuming more resources and defeating the purpose.
 
-```{r fig-consumer-tolerance-01, fig.cap="Consumer tolerance for trade-offs made in the name of sustainability: some room on price and cosmetics, essentially none on how well the product works or how long it lasts.", fig.align='center', fig.width=9, fig.height=5}
+```{r fig-consumer-tolerance-01, fig.cap="Consumer tolerance for trade-offs made in the name of sustainability: some room on price and cosmetics, essentially none on how well the product works or how long it lasts. Illustrative values that show the pattern, not survey data.", fig.align='center', fig.width=9, fig.height=5}
 tol <- data.frame(
   attribute = c("Higher price", "Cosmetic fit & finish",
                 "Core performance", "Service life / durability"),
@@ -626,8 +632,8 @@ ggplot(tol, aes(x = tolerance, y = attribute, fill = kind)) +
                      expand = expansion(mult = c(0, 0.05))) +
   scale_fill_manual(values = c("Some tolerance" = "#27AE60",
                                "Near-zero tolerance" = "#C0392B")) +
-  labs(title = "Where consumers will --- and will not --- give ground",
-       x = "Approximate share of consumers willing to accept a trade-off",
+  labs(title = "Where consumers will \u2014 and will not \u2014 give ground",
+       x = "Share of consumers willing to accept the trade-off (illustrative)",
        y = NULL, fill = NULL) +
   theme_minimal() +
   theme(
@@ -802,35 +808,64 @@ dispose** model. Instead, material is kept in use through loops of increasing
 size: maintain and reuse first, then refurbish and remanufacture, then recycle,
 with disposal as the last resort.
 
-```{r fig-circular-economy-01, fig.cap="The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.", fig.align='center', fig.width=9, fig.height=7}
-stages <- data.frame(
-  label = stringr::str_wrap(c("Design", "Make", "Distribute", "Use", "Maintain / Reuse",
-            "Refurbish / Remanufacture", "Recycle"), width = 11),
-  angle = seq(90, 90 - 360 + 360/7, length.out = 7) * pi / 180
+```{r fig-circular-economy-01, fig.cap="The circular economy: keep materials circulating through the tightest loop that still works. Inner loops (maintain, reuse) retain the most value; recycling is the outermost loop before disposal.", fig.align='center', fig.width=10, fig.height=5}
+# Linear chain along the bottom; return loops drawn as rectangular-ish arcs
+# above it. The tighter the loop (the closer it returns to the user), the more
+# of the product's value it keeps.
+box_w <- 1.5; box_h <- 0.7
+nodes <- data.frame(
+  x = c(0, 2.4, 4.8, 7.2, 9.6),
+  label = c("Materials", "Make parts\n& products", "Distribute", "Use", "Landfill /\nincineration"),
+  fill = c("lightsteelblue", "lightsteelblue", "lightsteelblue", "lightsteelblue", "#F5B7B1"),
+  edge = c("steelblue", "steelblue", "steelblue", "steelblue", "red")
 )
-stages$x <- cos(stages$angle)
-stages$y <- sin(stages$angle)
+nodes$xmin <- nodes$x - box_w / 2; nodes$xmax <- nodes$x + box_w / 2
+nodes$ymin <- -box_h / 2;          nodes$ymax <- box_h / 2
 
-seg <- data.frame(
-  x    = stages$x,
-  y    = stages$y,
-  xend = stages$x[c(2:7, 1)],
-  yend = stages$y[c(2:7, 1)]
+fwd <- data.frame(x = nodes$xmax[1:4], xend = nodes$xmin[2:5], y = 0, yend = 0,
+                  col = c(rep("steelblue", 3), "red"))
+
+# Return loops leave the top of "Use" and land on the top of their target box
+arc <- function(x_from, x_to, h, n = 60) {
+  t <- seq(0, pi, length.out = n)
+  xc <- (x_from + x_to) / 2; a <- (x_from - x_to) / 2
+  data.frame(x = xc + a * cos(t), y = box_h / 2 + h * sin(t))
+}
+loops <- data.frame(
+  name = c("Maintain / reuse", "Refurbish / remanufacture", "Recycle"),
+  from = c(7.2 - 0.3, 7.2 + 0.15, 7.2 + 0.6),   # nested: wider loops start further right
+  to   = c(4.8, 2.4, 0),
+  h    = c(0.9, 1.7, 2.5),
+  col  = c("darkgreen", "#27AE60", "#82C99A")
 )
+loop_paths <- do.call(rbind, lapply(seq_len(nrow(loops)), function(i) {
+  d <- arc(loops$from[i], loops$to[i], loops$h[i]); d$id <- i; d$col <- loops$col[i]; d
+}))
+loop_labels <- data.frame(x = (loops$from + loops$to) / 2,
+                          y = box_h / 2 + loops$h, label = loops$name)
 
 ggplot() +
-  geom_curve(data = seg, aes(x = x, y = y, xend = xend, yend = yend),
-             curvature = -0.25, linewidth = 0.9, color = "#27AE60",
-             arrow = arrow(length = unit(0.18, "cm"), type = "closed")) +
-  geom_point(data = stages, aes(x = x, y = y), size = 31, color = "#EAF6EC") +
-  geom_point(data = stages, aes(x = x, y = y), size = 31, shape = 1, color = "#27AE60") +
-  geom_text(data = stages, aes(x = x, y = y, label = label),
-            size = 2.5 * diagram_text_scale, fontface = "bold",
-            lineheight = 0.9, color = "grey15") +
-  annotate("text", x = 0, y = 0, label = "keep materials\nin use",
-           size = 3.2 * diagram_text_scale, fontface = "italic", color = "grey40") +
-  coord_equal(xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4)) +
-  labs(title = "Design out waste; circulate materials") +
+  geom_path(data = loop_paths, aes(x = x, y = y, group = id, colour = col),
+            linewidth = 1.6, lineend = "round",
+            arrow = arrow(length = unit(0.25, "cm"), type = "closed")) +
+  geom_segment(data = fwd, aes(x = x, xend = xend, y = y, yend = yend, colour = col),
+               linewidth = 1, arrow = arrow(length = unit(0.22, "cm"), type = "closed")) +
+  geom_rect(data = nodes, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
+                              fill = fill, colour = edge), linewidth = 0.8) +
+  geom_text(data = nodes, aes(x = x, y = 0, label = label),
+            size = 3.2 * diagram_text_scale, fontface = "bold", lineheight = 0.9,
+            colour = "grey15") +
+  annotate("label", x = loop_labels$x, y = loop_labels$y, label = loop_labels$label,
+           size = 3.3 * diagram_text_scale, fontface = "bold", fill = "white",
+           linewidth = 0, colour = "darkgreen") +
+  annotate("text", x = 8.4, y = -0.75, label = "last resort",
+           size = 3 * diagram_text_scale, fontface = "italic", colour = "red") +
+  annotate("text", x = 3.6, y = -1.15,
+           label = "Tighter loop = more of the product's value kept;  wider loop = only the material is kept",
+           size = 3.1 * diagram_text_scale, fontface = "italic", colour = "grey30") +
+  scale_fill_identity() + scale_colour_identity() +
+  coord_equal(xlim = c(-0.9, 10.5), ylim = c(-1.35, 3.4)) +
+  labs(title = "Design out waste; keep materials circulating") +
   theme_void() +
   theme(plot.title = element_text(size = 14 * chart_text_scale,
                                   face = "bold", hjust = 0.5))
@@ -933,9 +968,10 @@ and end-of-life number that follows: what is the Trailblazer's body and
 frame made of?
 
 Priya frames it as a three-way trade study. Steel bodies would weigh about
-140 g each and cost roughly $1.20/kg in raw material — cheap, but steel is
-the heaviest of the three candidates and, for this die-cast toy geometry,
-the least attractive to recycle back into value. Carbon-fibre composite is
+140 g each and cost roughly $1.20/kg in raw material — the cheapest option
+and easy to recycle, but twice the mass of aluminium in a battery-powered
+toy. That mass costs run time, speed and drop-test margin, and every
+stamped steel body needs paint or plating to keep it from rusting. Carbon-fibre composite is
 the opposite extreme: a 38 g body, the best strength-to-weight ratio by
 far, but at roughly $28/kg in material alone — and once a thermoset
 carbon-fibre part reaches end of life in a child's toy box, there is no
@@ -945,16 +981,19 @@ scale.
 
 | Candidate | Body mass | Material cost | End-of-life recyclability |
 |---|---|---|---|
-| Steel | 140 g | $1.20/kg | Heavy; low recyclate value for this design |
-| **Aluminium (chosen)** | 70 g | $3.00/kg | High — genuinely recyclable |
+| Steel | 140 g | $1.20/kg | High, but the heaviest body by far (run time, freight) |
+| **Aluminium (chosen)** | 70 g | $3.00/kg | High — genuinely recyclable, half the mass of steel |
 | Carbon fibre | 38 g | $28.00/kg | Very poor — thermoset, effectively unrecyclable |
 
 You, Priya, procurement lead **Marcus Webb**, and quality engineer **Sofia
 Reyes** agree: aluminium is the call for both the body and the frame. It is
 not the lightest option and it is not the cheapest raw material, but it is
-the only one that clears the bar on cost *and* recyclability at once —
+the only one that is acceptable on mass, cost *and* recyclability at once —
 exactly the kind of "no pillar loses" decision the sustainability framework
-asks for. Carbon fibre does not disappear from the story, though. **Fibro
+asks for. Priya adds one condition: made from primary aluminium, the
+production run carries more cradle-to-gate carbon than steel would, so the
+purchase specification calls for recycled-content stock (see Practice
+Problem 2). Carbon fibre does not disappear from the story, though. **Fibro
 Source**, a carbon-fibre supplier in Sherbrooke, Quebec that is
 mid-restructuring after a recent French acquisition, stays on the supplier
 list — not for the core prototype, but as an optional carbon-fibre trim and
@@ -1003,9 +1042,11 @@ material because PP costs more per gram here and the 3 g saving does not fully
 offset it.
 
 (b) *For:* the natural-coloured PP is actually recovered by the recycler
-(black CPET usually is not), and PP trays tolerate reheating better. *Against:*
-higher material spend, and a tooling change is needed --- capital plus a
-qualification run.
+(black CPET usually is not), and 3 g less plastic per tray means less freight
+and less waste even where trays are not recycled. *Against:* higher material
+spend; PP is microwave-safe but not oven-safe, whereas CPET is dual-ovenable,
+so check how the client's customers reheat the meals; and a tooling change
+is needed --- capital plus a qualification run.
 
 </details>
 

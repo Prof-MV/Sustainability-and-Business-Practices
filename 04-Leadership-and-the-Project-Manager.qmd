@@ -129,26 +129,37 @@ Effective PMs switch styles to fit the person and the situation.
 | **Coaching** | Long-term development; asking questions that lead people to their own solutions | Slow for short-term objectives --- but it is the style most managers most need to build |
 
 ```{r fig-situational-04, fig.cap="Situational leadership: match the style to how ready the team is. New or struggling teams need direction; capable, committed teams need delegation.", fig.align='center', fig.width=9, fig.height=6}
-sl <- data.frame(
-  x = c(0.8, 0.35, 0.65, 0.2),
-  y = c(0.8, 0.8, 0.3, 0.3),
-  label = c("COACHING\n(high direction,\nhigh support)",
-            "SUPPORTING\n(low direction,\nhigh support)",
-            "DIRECTING\n(high direction,\nlow support)",
-            "DELEGATING\n(low direction,\nlow support)")
+# Four quadrant tiles built from coordinates; directive behaviour on x,
+# supportive behaviour on y (Hersey-Blanchard S1-S4).
+q <- data.frame(
+  xmin = c(0.5, 0.5, 0, 0), xmax = c(1, 1, 0.5, 0.5),
+  ymin = c(0.5, 0, 0.5, 0), ymax = c(1, 0.5, 1, 0.5),
+  label = c("S2  COACHING\nhigh direction,\nhigh support",
+            "S1  DIRECTING\nhigh direction,\nlow support",
+            "S3  SUPPORTING\nlow direction,\nhigh support",
+            "S4  DELEGATING\nlow direction,\nlow support"),
+  who = c("learner losing confidence", "keen beginner",
+          "capable but hesitant", "capable and committed"),
+  fill = c("#D6EAF8", "#AED6F1", "#D5F5E3", "#A9DFBF")
 )
-ggplot(sl, aes(x, y)) +
-  geom_point(size = 42, shape = 21, fill = "#D6EAF8", color = "#2E86C1") +
-  geom_text(aes(label = label), size = 2.6 * chart_text_scale, lineheight = 0.9) +
-  annotate("segment", x = 0, xend = 1, y = 0, yend = 0,
-           arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
-  annotate("segment", x = 0, xend = 0, y = 0, yend = 1,
-           arrow = arrow(length = unit(0.2, "cm")), color = "grey40") +
-  annotate("text", x = 0.5, y = -0.08, label = "Directive behaviour  ->",
+q$cx <- (q$xmin + q$xmax) / 2; q$cy <- (q$ymin + q$ymax) / 2
+ggplot(q) +
+  geom_rect(aes(xmin = xmin + 0.01, xmax = xmax - 0.01, ymin = ymin + 0.01, ymax = ymax - 0.01,
+                fill = fill), colour = "#2E86C1", linewidth = 0.6) +
+  geom_text(aes(cx, cy + 0.04, label = label), size = 2.9 * diagram_text_scale,
+            lineheight = 0.95, fontface = "bold") +
+  geom_text(aes(cx, cy - 0.15, label = paste0("(", who, ")")), size = 2.7 * diagram_text_scale,
+            fontface = "italic", colour = "grey30") +
+  scale_fill_identity() +
+  annotate("segment", x = 0, xend = 1.06, y = -0.03, yend = -0.03,
+           arrow = arrow(length = unit(0.2, "cm"), type = "closed"), color = "grey40") +
+  annotate("segment", x = -0.03, xend = -0.03, y = 0, yend = 1.06,
+           arrow = arrow(length = unit(0.2, "cm"), type = "closed"), color = "grey40") +
+  annotate("text", x = 0.5, y = -0.09, label = "Directive behaviour",
            size = 3 * chart_text_scale) +
-  annotate("text", x = -0.06, y = 0.5, label = "Supportive behaviour  ->",
+  annotate("text", x = -0.09, y = 0.5, label = "Supportive behaviour",
            angle = 90, size = 3 * chart_text_scale) +
-  coord_equal(xlim = c(-0.12, 1.05), ylim = c(-0.12, 1.05)) +
+  coord_equal(xlim = c(-0.13, 1.08), ylim = c(-0.13, 1.08)) +
   labs(title = "Match the style to team readiness") +
   theme_void() +
   theme(plot.title = element_text(size = 14 * chart_text_scale,
@@ -201,8 +212,10 @@ tryit_sort(
 
 Rate the person's **competence** on the specific task and their **commitment**
 to doing it, both 0--1, and the situational-leadership quadrant above follows
-directly. Live cell --- try Owen from the case study below, then a veteran who
-is skilled but burning out.
+directly. Live cell --- try Owen from the case study below as he arrives (keen
+but new: commitment 0.8), then after a senior colleague brushes off his first
+idea and his confidence drops (commitment 0.3). Then try a veteran who is
+skilled but burning out.
 
 ```{r calc-situational-quadrant-04, echo=FALSE, results='asis'}
 qwebr_calc_card(
@@ -226,7 +239,7 @@ The card above re-runs this exact webR code every time you change an input, subs
 #| label: situational-quadrant-04
 team_member <- "Owen (co-op student, mounting-tab idea)"
 competence  <- 0.3   # 0-1: skill/experience on this specific task
-commitment  <- 0.8   # 0-1: confidence and motivation to do it
+commitment  <- 0.8   # 0-1: confidence and motivation (try 0.3 after the put-down)
 
 # Readiness model: a newcomer who is keen but unskilled needs direction;
 # one who is losing confidence as the work gets hard needs coaching.
@@ -309,15 +322,15 @@ cat("Remember: the best PMs deliberately use all three depending on the situatio
 Teams develop through predictable stages, and the leader's job changes with each:
 
 ```{r fig-tuckman-04, fig.cap="Team performance through Tuckman's stages. Performance dips during storming before rising; a leader who expects the dip manages it instead of panicking.", fig.align='center', fig.width=10, fig.height=5}
-stage_x <- seq(0, 10, length.out = 200)
-perf <- 0.4 + 0.15 * sin(stage_x) +
-        pmin(0.5, 0.06 * stage_x) -
-        0.22 * exp(-((stage_x - 2.2)^2) / 0.6)
-df <- data.frame(x = stage_x, perf = pmin(pmax(perf, 0.1), 1))
+# Smooth curve through illustrative control points (shape only, no data)
+ctrl <- data.frame(x = c(0, 0.9, 1.7, 2.6, 3.5, 4.8, 6.0, 7.3, 8.6, 9.3, 10),
+                   y = c(0.38, 0.42, 0.40, 0.26, 0.32, 0.52, 0.72, 0.86, 0.88, 0.78, 0.55))
+sp <- spline(ctrl$x, ctrl$y, n = 300, method = "fmm")
+df <- data.frame(x = sp$x, perf = sp$y)
 
 ggplot(df, aes(x, perf)) +
   geom_line(color = "#2E86C1", linewidth = 1.2) +
-  annotate("text", x = c(1, 2.4, 4.6, 7.2, 9.4), y = 1.1,
+  annotate("text", x = c(0.85, 2.6, 4.75, 7.3, 9.3), y = 1.1,
            label = c("Forming", "Storming", "Norming", "Performing", "Adjourning"),
            fontface = "bold", size = 3.1 * chart_text_scale) +
   annotate("segment", x = c(1.7, 3.5, 6, 8.6), xend = c(1.7, 3.5, 6, 8.6),
@@ -588,7 +601,7 @@ Four weeks into the Meridian Trailblazer prototype, the team gathers for its reg
 
 Into that tension, Owen raises a hand and offers an idea about the frame's mounting-tab geometry, something he saw work on a project during a previous rotation. Priya, mid-argument with Marcus and not really listening, cuts him off --- "that's not how we do it here" --- and moves straight back to the supplier debate. The room goes quiet for a beat. The mounting-tab idea was not the real loss; what a new team member just learned is that raising a suggestion here costs something.
 
-You do not correct it in the room. You address it afterward, with each person separately, because the two problems call for two different tools. With Owen, you use a coaching style: you ask him to walk you through the mounting-tab idea in full, help him sharpen it into two concrete questions, and set aside five minutes at the next stand-up for him to raise it himself, in front of the team. With Priya, whose tooling judgment has been sound since the Week 1 material call and who does not need you supervising her every interaction, you use a delegating style: a short, low-drama flag that new voices need room to speak in these early weeks, then trust her to follow up with Owen in her own way. Neither conversation is a lecture. Both are sized to how ready each person already is --- direction for the newcomer still finding his footing, room for the veteran who already knows how to lead.
+You do not correct it in the room. You address it afterward, with each person separately, because the two problems call for two different tools. With Owen, you use a coaching style: you ask him to walk you through the mounting-tab idea in full, help him sharpen it into two concrete questions, and set aside five minutes at the next stand-up for him to raise it himself, in front of the team. With Priya, whose tooling judgment has been sound since the Week 1 material call and who does not need you supervising her every interaction, you use a delegating style: a short, low-drama flag that new voices need room to speak in these early weeks, then trust her to follow up with Owen in her own way. Neither conversation is a lecture. Both are sized to how ready each person already is. Owen arrived as a keen beginner who needed direction; after being brushed off, his confidence has dropped, and a newcomer who is still learning *and* losing heart needs coaching --- direction plus support. Priya, the veteran who already knows how to lead, gets room.
 
 :::
 

@@ -61,7 +61,7 @@ contractual event.
 :::
 
 ```{r video-cpm-06, echo=FALSE, results='asis'}
-embed_youtube("4oDLMs11Exs", "Forward and Backward Pass -> Project Duration and Critical Path (Engineer4Free)")
+embed_youtube("4oDLMs11Exs", "Forward and Backward Pass: Project Duration and Critical Path (Engineer4Free)")
 ```
 
 ## From WBS to precedence table
@@ -297,19 +297,27 @@ cpm <- function(df) {
 res <- cpm(acts)
 ```
 
-```{r fig-cpm-float-06, echo=FALSE, fig.cap="Total float per activity. The zero-float bars (A, B, C, E, G, I, J) are the critical path; D has 12 days of slack, F and H have 2.", fig.align='center', fig.width=10, fig.height=4.5}
+```{r fig-cpm-float-06, echo=FALSE, fig.cap="Total float per activity. The zero-float activities (A, B, C, E, G, I, J), marked red under the axis, are the critical path; D has 12 days of slack, F and H have 2.", fig.align='center', fig.width=10, fig.height=4.5}
 res$onCP <- res$Float == 0
-ggplot(res, aes(x = Activity, y = Float, fill = onCP)) +
-  geom_col(width = 0.7) +
-  geom_text(aes(label = Float), vjust = -0.4, size = 3.6 * chart_text_scale) +
+res$i <- seq_len(nrow(res))
+ggplot(res) +
+  geom_rect(aes(xmin = i - 0.35, xmax = i + 0.35, ymin = 0, ymax = Float, fill = onCP)) +
+  geom_rect(data = subset(res, onCP),
+            aes(xmin = i - 0.35, xmax = i + 0.35, ymin = -1.1, ymax = -0.35, fill = onCP)) +
+  geom_text(aes(x = i, y = Float, label = Float, colour = onCP), vjust = -0.4,
+            size = 3.6 * chart_text_scale, show.legend = FALSE) +
+  geom_hline(yintercept = 0, colour = "grey50", linewidth = 0.4) +
   scale_fill_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
                     labels = c("TRUE" = "Critical (float = 0)", "FALSE" = "Has float"),
                     name = NULL) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  scale_colour_manual(values = c("TRUE" = "#C0392B", "FALSE" = "black")) +
+  scale_x_continuous(breaks = res$i, labels = res$Activity) +
+  scale_y_continuous(breaks = seq(0, 12, 4), expand = expansion(mult = c(0.02, 0.12))) +
   labs(title = "Where the slack is", x = "Activity", y = "Total float (days)") +
   theme_minimal() +
   theme(
     legend.position = "top",
+    panel.grid.minor = element_blank(),
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
@@ -917,22 +925,29 @@ and plot each activity as a bar running from its early start to its early
 finish on a day axis, and you get a **Gantt chart**: the identical schedule,
 now readable at a glance.
 
-```{r fig-gantt-main-06, echo=FALSE, fig.cap="The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float.", fig.align='center', fig.width=10, fig.height=5.5}
+```{r fig-gantt-main-06, echo=FALSE, fig.cap="The ten-activity sub-project network, redrawn as a Gantt chart from the same ES/EF/float numbers as the float chart above. Dark bars (A, B, C, E, G, I, J) are the critical path; light bars (D, F, H) carry float, drawn as the grey extension from EF to LF.", fig.align='center', fig.width=10, fig.height=5.5}
 gantt_main <- res
-gantt_main$Activity <- factor(gantt_main$Activity, levels = rev(gantt_main$Activity))
+gantt_main$row <- rev(seq_len(nrow(gantt_main)))
+gantt_main$kind <- ifelse(gantt_main$onCP, "Critical path", "Has float")
+flt_main <- subset(gantt_main, Float > 0)
+flt_main$kind <- "Float"
 
-ggplot(gantt_main) +
-  geom_segment(aes(x = ES, xend = EF, y = Activity, yend = Activity, color = onCP),
-               linewidth = 8, lineend = "butt") +
-  geom_text(aes(x = (ES + EF) / 2, y = Activity, label = paste0(Dur, "d")),
+ggplot() +
+  geom_rect(data = flt_main, aes(xmin = EF, xmax = LF, ymin = row - 0.15, ymax = row + 0.15,
+                                 fill = kind)) +
+  geom_rect(data = gantt_main, aes(xmin = ES, xmax = EF, ymin = row - 0.3, ymax = row + 0.3,
+                                   fill = kind)) +
+  geom_text(data = gantt_main, aes(x = (ES + EF) / 2, y = row, label = paste0(Dur, "d")),
             color = "white", fontface = "bold", size = 3.1 * chart_text_scale) +
-  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
-                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
-                     name = NULL) +
+  scale_fill_manual(values = c("Critical path" = "#C0392B", "Has float" = "#5DADE2",
+                               "Float" = "grey80"),
+                    breaks = c("Critical path", "Has float", "Float"), name = NULL) +
+  scale_y_continuous(breaks = gantt_main$row, labels = gantt_main$Activity) +
   labs(title = "Sub-project schedule on a calendar axis", x = "Project day", y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "top",
+    panel.grid.minor = element_blank(),
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
@@ -949,31 +964,40 @@ together, instead of arrows you have to trace.
 The same trick works on the small renovation network from the node-fill
 exercise:
 
-```{r fig-gantt-reno-06, echo=FALSE, fig.cap="The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark; C and E (light) carry the float visible as the gap between where they finish and where F can actually start.", fig.align='center', fig.width=9, fig.height=4.5}
+```{r fig-gantt-reno-06, echo=FALSE, fig.cap="The seven-activity renovation network as a Gantt chart. Critical path A-B-D-F-G is dark. C and E (light) share 4 days of float: the grey gap between E's finish on day 11 and F's start on day 15.", fig.align='center', fig.width=9, fig.height=4.5}
 gantt_reno <- aon6_solved
 gantt_reno$onCP <- gantt_reno$Float == 0
-gantt_reno$Activity <- factor(gantt_reno$Activity, levels = rev(gantt_reno$Activity))
+gantt_reno$row <- rev(seq_len(nrow(gantt_reno)))
+gantt_reno$kind <- ifelse(gantt_reno$onCP, "Critical path", "Has float")
+flt_reno <- subset(gantt_reno, Float > 0)
+flt_reno$kind <- "Float"
 
-ggplot(gantt_reno) +
-  geom_segment(aes(x = ES, xend = EF, y = Activity, yend = Activity, color = onCP),
-               linewidth = 8, lineend = "butt") +
-  geom_text(aes(x = (ES + EF) / 2, y = Activity, label = paste0(Dur, "d")),
+ggplot() +
+  geom_rect(data = flt_reno, aes(xmin = EF, xmax = LF, ymin = row - 0.15, ymax = row + 0.15,
+                                 fill = kind)) +
+  geom_rect(data = gantt_reno, aes(xmin = ES, xmax = EF, ymin = row - 0.3, ymax = row + 0.3,
+                                   fill = kind)) +
+  geom_text(data = gantt_reno, aes(x = (ES + EF) / 2, y = row, label = paste0(Dur, "d")),
             color = "white", fontface = "bold", size = 3.1 * chart_text_scale) +
-  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
-                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
-                     name = NULL) +
+  scale_fill_manual(values = c("Critical path" = "#C0392B", "Has float" = "#5DADE2",
+                               "Float" = "grey80"),
+                    breaks = c("Critical path", "Has float", "Float"), name = NULL) +
+  scale_y_continuous(breaks = gantt_reno$row, labels = gantt_reno$Activity) +
   labs(title = "Renovation sub-project schedule", x = "Project day", y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "top",
+    panel.grid.minor = element_blank(),
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
   )
 ```
 
-Notice the gap between C's bar ending and F's bar starting --- that gap *is*
-C's float, drawn as empty space instead of a number in a box. A Gantt chart is
+Notice the grey gap between E's bar ending (day 11) and F's bar starting
+(day 15) --- those 4 days *are* the float, drawn as space instead of a number in
+a box. C and E share it: C feeds only E, so if C slips 4 days, E has no float
+left. A Gantt chart is
 the natural format for tracking progress against the plan once the project is
 under way, for assigning resources to specific calendar days, and for showing
 a sponsor the schedule without making them read a network diagram. [Chapter
@@ -1005,7 +1029,7 @@ duration into a probability of finishing on time.
 
 Daniel Cho has been asking the same question in every steering call since the charter was signed: when does the Trailblazer prototype actually ship to Kestrel? This week you have a real answer, because you and Priya Nandakumar finally turned the "Prototype Build & Qualification" branch of the WBS into an activity-on-node network instead of a list of jobs on a whiteboard.
 
-Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches --- Priya's body and frame tooling builds, and Marcus Webb's motor-and-controller procurement from MCS --- which all have to finish before Sofia Reyes's team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the *slowest* of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full weeks after Marcus's frame tooling and five days after Priya's body tooling --- which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.
+Ten activities, in the sequence the tooling, procurement, and testing work actually has to happen: concept CAD and detailed design release feed three parallel branches --- Priya's body and frame tooling builds, and Marcus Webb's motor-and-controller procurement from MCS --- which all have to finish before Sofia Reyes's team can assemble a prototype to test and certify. You run the forward pass first, activity by activity, and the merge at Prototype Assembly (F) is the one that matters: it cannot start until the *slowest* of tooling and procurement finishes, not the fastest. Motor and controller procurement (E) turns out to be the long pole at 25 days, arriving at the merge two full working weeks after Priya's frame tooling and five days after her body tooling --- which is exactly why the MCS relationship is worth protecting rather than swapping out on price alone.
 
 The backward pass confirms it: activities A, B, E, F, H, I, and J all land with zero float. That chain --- concept CAD through detailed design, motor procurement, assembly, toy-safety certification, packaging, and your sign-off report to Renata Ford --- is the critical path, and it sets the whole prototype phase at 67 working days, just under 13.5 weeks. Body tooling (C) has 5 days of cushion, frame tooling (D) has 10, and the durability test (G) has 7 --- comfortable float today, but float that Priya and Sofia will need to manage carefully once resource assignments get made in a few weeks.
 
@@ -1103,9 +1127,10 @@ combination gets you to 34 days at least cost, and what do you check afterward?
 
 You need 4 days. Cheapest first: E for 2 days
 (\$600), then B for 2 days (\$1 000) --- total \$1 600 for 4 days. Avoid G at
-\$1 200/day. **Then re-run the network**: after removing 4 days from this chain,
-another path (e.g. A--B--C--F--H--J) may now be critical or co-critical, and
-crashing further would have to shorten *both*.
+\$1 200/day. **Then re-run the network**: crashing B also shortens
+A--B--C--F--H--J, from 36 to 34 days, so that path is now co-critical with
+the crashed main chain. Any further crashing would have to shorten *both*
+paths.
 
 </details>
 

@@ -366,8 +366,9 @@ power early); *"What are you looking for in these negotiations?"* (make them ope
 first); *"Do you have the authority to commit to that?"* (probe their authority);
 *"Let's set that aside and come back to it"* (avoid a hard no).
 
-And listen past the words. *"To be brutally honest..."* and *"To tell you the
-truth..."* often precede a lie. *"Off the record..."* --- nothing is off the
+And listen past the words. Negotiation trainers treat *"To be brutally
+honest..."* and *"To tell you the truth..."* as warning signs: they can signal
+that what follows is less than the whole truth. *"Off the record..."* --- nothing is off the
 record; the negotiation is always on. Watch **congruence**: when words and body
 language disagree, believe the body language.
 
@@ -432,7 +433,7 @@ tryit_sort(
 
 ### Sources, ranked by intensity
 
-```{r fig-conflict-sources-10, fig.cap="Sources of project conflict ranked by typical intensity (from PMBOK data). Schedules, priorities, and resources dominate; personality is last -- it is usually the first thing blamed and rarely the real cause.", fig.align='center', fig.width=9.5, fig.height=5}
+```{r fig-conflict-sources-10, fig.cap="Sources of project conflict ranked by typical intensity over the project life cycle (after Thamhain and Wilemon's 1975 study of project managers). Schedules, priorities, and resources dominate; personality is last -- it is usually the first thing blamed and rarely the real cause.", fig.align='center', fig.width=9.5, fig.height=5}
 cs <- data.frame(
   source = c("Schedules", "Project priorities", "Resources", "Technical opinions",
              "Administrative procedures", "Cost", "Personality"),
@@ -444,7 +445,7 @@ ggplot(cs, aes(intensity, source)) +
   geom_text(aes(label = intensity), hjust = -0.4, size = 3.6 * chart_text_scale) +
   scale_x_continuous(limits = c(0, 8), expand = expansion(mult = c(0, 0.02))) +
   labs(title = "What project teams actually fight about",
-       x = "Relative intensity (7 = highest)", y = NULL) +
+       x = "Rank by intensity (7 = most intense)", y = NULL) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
@@ -659,9 +660,12 @@ a **\$9,000 (6.2%)** reduction from its original quote, while holding its
 The outcome resolves both negotiations at once. Meridian keeps its proven
 supplier and captures real, verified savings, with no new qualification risk
 introduced. And the Marcus/Sofia conflict is settled not by forcing one side
-to lose, but through **compromising**: Marcus gets the lower price he wanted,
-Sofia keeps the proven supplier she insisted on. Neither gets everything;
-both get enough.
+to lose, nor by splitting the difference between "switch" and "stay", but by
+**confronting** (problem-solving): you worked on the interests underneath the
+two positions --- Marcus's need for a lower cost, Sofia's need for low
+qualification risk --- and found an option that serves both. Marcus does not
+get Paragon's \$118,000, but he gets \$9,000 back; Sofia gets the proven
+supplier. That is why the fix is likely to hold.
 
 :::
 

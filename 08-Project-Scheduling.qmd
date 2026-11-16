@@ -45,8 +45,8 @@ a probability you can actually stand behind.
 The AON network from [Chapter 6](06-Network-Diagrams-and-AON.qmd) tells you the
 project takes *N* days. The **schedule** puts those days on a calendar, assigns
 resources, and gives you something to track progress against. The classic tool
-is the **Gantt chart**, developed by Henry Gantt between 1910 and 1915 and used
-at scale for the first time on the **Hoover Dam** (1931--1936).
+is the **Gantt chart**, developed by Henry Gantt between 1910 and 1915 and
+later used on major works such as the **Hoover Dam** (1931--1936).
 
 ::: {.callout-note}
 **Industry snapshot.** An automotive program's master schedule is a Gantt with
@@ -67,30 +67,42 @@ calendar. Linked to a schedule, it also **tracks progress against the plan**.
 Benefits: easy to read; shows the network *and* the schedule together; supports
 updating and control; useful for assigning resources; and easy to create.
 
-```{r fig-gantt-08, fig.cap="A Gantt chart for the RC-vehicle sub-project. Bars are activities; the dark segments show the critical path. Arrows (implied by stacking) show that assembly cannot start until design finishes.", fig.align='center', fig.width=10, fig.height=5.5}
+```{r fig-gantt-08, fig.cap="A Gantt chart for the RC-vehicle sub-project, computed from the precedence logic in brackets. Dark bars are the critical path (A-C-D-F-H, 42 days); the grey extension on each light bar is its float.", fig.align='center', fig.width=10, fig.height=5.5}
 g <- data.frame(
-  task = c("A Design outer body", "B Design inner frame", "C Material selection",
-           "D Procure motor/controller", "E Wiring harness",
-           "F Prototype assembly", "G Drop & EMC test", "H Packaging & approvals"),
-  start = c(0, 5, 5, 8, 15, 20, 30, 30),
-  dur   = c(5, 8, 3, 12, 5, 10, 8, 12),
-  crit  = c(TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE)
+  id   = LETTERS[1:8],
+  task = c("Design outer body", "Design inner frame", "Material selection",
+           "Procure motor/controller", "Wiring harness",
+           "Prototype assembly", "Drop & EMC test", "Packaging & approvals"),
+  dur  = c(5, 8, 3, 12, 5, 10, 8, 12),
+  pred = c("", "A", "A", "C", "B", "D,E", "F", "F"),
+  stringsAsFactors = FALSE
 )
-g$end <- g$start + g$dur
-g$task <- factor(g$task, levels = rev(g$task))
+# forward and backward pass
+pl <- strsplit(g$pred, ","); names(pl) <- g$id
+ES <- EF <- setNames(numeric(8), g$id)
+for (i in seq_len(8)) { p <- pl[[i]]; ES[i] <- if (length(p) == 0) 0 else max(EF[p]); EF[i] <- ES[i] + g$dur[i] }
+LF <- LS <- setNames(numeric(8), g$id)
+for (i in 8:1) { s <- g$id[sapply(pl, function(pp) g$id[i] %in% pp)]
+  LF[i] <- if (length(s) == 0) max(EF) else min(LS[s]); LS[i] <- LF[i] - g$dur[i] }
+g$ES <- ES; g$EF <- EF; g$LF <- LF; g$float <- LS - ES
+g$kind <- ifelse(g$float == 0, "Critical path", "Has float")
+g$row <- rev(seq_len(8))
+g$lab <- paste0(g$id, " ", g$task, ifelse(g$pred == "", "", paste0("  (after ", gsub(",", ", ", g$pred), ")")))
+fl <- subset(g, float > 0); fl$kind <- "Float"
 
-ggplot(g) +
-  geom_segment(aes(x = start, xend = end, y = task, yend = task, color = crit),
-               linewidth = 8, lineend = "butt") +
-  geom_text(aes(x = start + dur / 2, y = task, label = paste0(dur, "d")),
+ggplot() +
+  geom_rect(data = fl, aes(xmin = EF, xmax = LF, ymin = row - 0.15, ymax = row + 0.15, fill = kind)) +
+  geom_rect(data = g, aes(xmin = ES, xmax = EF, ymin = row - 0.3, ymax = row + 0.3, fill = kind)) +
+  geom_text(data = g, aes(x = (ES + EF) / 2, y = row, label = paste0(dur, "d")),
             color = "white", fontface = "bold", size = 3.1 * chart_text_scale) +
-  scale_color_manual(values = c("TRUE" = "#C0392B", "FALSE" = "#5DADE2"),
-                     labels = c("TRUE" = "Critical path", "FALSE" = "Has float"),
-                     name = NULL) +
+  scale_fill_manual(values = c("Critical path" = "#C0392B", "Has float" = "#5DADE2", "Float" = "grey80"),
+                    breaks = c("Critical path", "Has float", "Float"), name = NULL) +
+  scale_y_continuous(breaks = g$row, labels = g$lab) +
   labs(title = "RC-vehicle sub-project schedule", x = "Project day", y = NULL) +
   theme_minimal() +
   theme(
     legend.position = "top",
+    panel.grid.minor = element_blank(),
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
@@ -683,7 +695,7 @@ Every activity has a **crash cost slope** --- the cost to buy back one time unit
 
 $$\text{slope} = \frac{\text{crash cost} - \text{normal cost}}{\text{normal time} - \text{crash time}}$$
 
-```{r fig-time-cost-08, fig.cap="Time-cost trade-off for one activity. Between the normal and crash points, buying time gets steadily more expensive per day; past the crash point you cannot buy any more.", fig.align='center', fig.width=9, fig.height=5}
+```{r fig-time-cost-08, fig.cap="Time-cost trade-off for one activity, with the usual straight-line assumption: every week bought between the normal and crash points costs the same ($3 000); past the crash point no amount of money buys more time.", fig.align='center', fig.width=9, fig.height=5}
 normal_t <- 8; normal_c <- 14000
 crash_t  <- 5; crash_c  <- 23000
 line <- data.frame(
@@ -722,8 +734,9 @@ To shorten the project, crash **critical-path** activities in **cheapest-slope-
 first** order, one time unit at a time, until you hit the target or run out of
 crashable critical tasks.
 
-**What to try.** The calculator uses the three critical activities A, F and H
-of the RC-vehicle schedule (the dark bars in the Gantt chart).
+**What to try.** The calculator uses three activities, A, F and H, that are on
+the critical path of the RC-vehicle schedule (dark bars in the Gantt chart),
+with illustrative normal and crash times and costs.
 
 1. Set the slider to 1--4 days: only the cheapest activity (H, about \$1 013 per
    day) is crashed, and the bar chart marks it in blue.
@@ -914,8 +927,9 @@ sooner.
 Daniel Cho, sitting in on the Friday steering call, asks the question you knew
 was coming: with Kestrel's 100,000-unit holiday-season order riding on this
 prototype, can the 67-day timeline be pulled in? You walk the team through the
-two realistic levers, both of which only work because E and H --- and nothing
-else in the network --- are actually critical.
+two realistic levers. Both work because E and H sit on the critical path;
+crashing C, D or G would buy nothing, because their float would simply absorb
+the saving.
 
 **Crashing E** (motor & controls procurement) buys up to 5 days, at **$1,200
 per day** for air freight and expedited customs --- a maximum of $6,000 to
@@ -1030,7 +1044,7 @@ crash the rest, and hold a contingency for the rework risk you accepted.
 
 ```{r video-resources-08, echo=FALSE, results='asis'}
 embed_youtube("6B7Qtc3rrQ4", "PERT / Three-Point Estimation Technique")
-embed_youtube("4oDLMs11Exs", "Forward and Backward Pass -> Project Duration and Critical Path")
+embed_youtube("4oDLMs11Exs", "Forward and Backward Pass: Project Duration and Critical Path (Engineer4Free)")
 ```
 
 Longer software courses, if you want to go deeper than the quick-start videos

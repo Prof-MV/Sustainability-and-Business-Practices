@@ -44,10 +44,11 @@ different coat. Keep that example in mind.
 
 ## Introduction: only one project in four
 
-Here is a sobering number that opens this course: by common industry estimates,
-only about **26 % of projects** are delivered successfully while respecting the
-triple constraint --- on scope, on time, on budget. The other three in four slip,
-overspend, descope, or fail outright.
+Here is a sobering number that opens this course: in the Standish Group's
+long-running CHAOS surveys of (mostly IT) projects, only about **26--31 % of
+projects** are delivered successfully while respecting the triple constraint ---
+on scope, on time, on budget. Roughly two in three slip, overspend, descope, or
+fail outright.
 
 That is why project management exists as a discipline. Running the RC-vehicle
 launch from the last chapter is not the same as running a production line. A
@@ -95,13 +96,17 @@ tri <- data.frame(
   x = c(0, 2, 4, 0),
   y = c(0, 3.4, 0, 0)
 )
+# Side labels sit just outside each edge (offset along the outward normal)
+edge_ang <- atan2(3.4, 2) * 180 / pi
+off <- 0.32
+nrm <- c(-3.4, 2) / sqrt(3.4^2 + 2^2)
 ggplot(tri, aes(x, y)) +
   geom_polygon(fill = "#5DADE2", alpha = 0.25, color = "#2E86C1", linewidth = 1.1) +
-  annotate("text", x = 1, y = 1.9, label = "SCOPE", angle = 60,
-           fontface = "bold", size = 4.2 * chart_text_scale, color = "#1B4F72") +
-  annotate("text", x = 3, y = 1.9, label = "TIME", angle = -60,
-           fontface = "bold", size = 4.2 * chart_text_scale, color = "#1B4F72") +
-  annotate("text", x = 2, y = -0.28, label = "COST",
+  annotate("text", x = 1 + off * nrm[1], y = 1.7 + off * nrm[2], label = "SCOPE",
+           angle = edge_ang, fontface = "bold", size = 4.2 * chart_text_scale, color = "#1B4F72") +
+  annotate("text", x = 3 - off * nrm[1], y = 1.7 + off * nrm[2], label = "TIME",
+           angle = -edge_ang, fontface = "bold", size = 4.2 * chart_text_scale, color = "#1B4F72") +
+  annotate("text", x = 2, y = -0.32, label = "COST",
            fontface = "bold", size = 4.2 * chart_text_scale, color = "#1B4F72") +
   annotate("text", x = 2, y = 1.15, label = "QUALITY",
            fontface = "bold", size = 4 * chart_text_scale, color = "#B03A2E") +
@@ -196,20 +201,28 @@ cat(sprintf("Option C risk  %.0f%% chance of a $%s failure\n",
 
 ## The five process phases
 
-```{r fig-project-lifecycle-02, fig.cap="Effort and resource use across the project life cycle. Little happens during initiation, effort peaks through execution and control, and it falls away at closing.", fig.align='center', fig.width=10, fig.height=5}
+```{r fig-project-lifecycle-02, fig.cap="Effort and resource use across the project life cycle. Little happens during initiation, effort peaks during execution and falls away at closing. Monitoring and controlling is not a separate step in time: it runs alongside execution.", fig.align='center', fig.width=10, fig.height=5}
 phase_x <- seq(0, 10, length.out = 200)
-effort  <- dnorm(phase_x, mean = 6, sd = 2.2)
+effort  <- dnorm(phase_x, mean = 5.6, sd = 1.9)
 df <- data.frame(x = phase_x, effort = effort / max(effort))
+bounds <- c(1.6, 3.6, 8.6)
 
 ggplot(df, aes(x, effort)) +
   geom_area(fill = "#5DADE2", alpha = 0.4) +
   geom_line(color = "#2E86C1", linewidth = 1.1) +
-  annotate("segment", x = c(2, 4, 8, 9.2), xend = c(2, 4, 8, 9.2),
-           y = 0, yend = 1.05, linetype = "dotted", color = "grey55") +
-  annotate("text", x = c(1, 3, 6, 8.6, 9.7), y = 1.12,
-           label = c("Initiating", "Planning", "Executing", "Controlling", "Closing"),
+  annotate("segment", x = bounds, xend = bounds,
+           y = 0, yend = 1.22, linetype = "dotted", color = "grey55") +
+  annotate("text", x = c(0.8, 2.6, 6.1, 9.3), y = 1.3,
+           label = c("Initiating", "Planning", "Executing", "Closing"),
            size = 3.2 * chart_text_scale, fontface = "bold") +
-  coord_cartesian(ylim = c(0, 1.2)) +
+  # Monitoring & controlling spans execution rather than following it
+  annotate("segment", x = bounds[2], xend = bounds[3], y = 1.12, yend = 1.12,
+           colour = "#B03A2E", linewidth = 0.9,
+           arrow = arrow(ends = "both", length = unit(0.18, "cm"), type = "closed")) +
+  annotate("label", x = 6.1, y = 1.12, label = "Monitoring & controlling",
+           size = 2.8 * chart_text_scale, fontface = "bold", colour = "#B03A2E",
+           fill = "white", linewidth = 0) +
+  coord_cartesian(ylim = c(0, 1.35)) +
   labs(title = "Project management process life cycle",
        x = "Project timeline", y = "Resources and effort") +
   theme_minimal() +
@@ -247,7 +260,7 @@ professional standing at risk.
 
 Communication is not a side task. **About 90 % of a project manager's time is
 spent communicating.** The three communication processes are **plan**, **manage**,
-and **control**.
+and **monitor** (called *control* in older editions of the PMBOK Guide).
 
 ### The communication plan
 
@@ -300,6 +313,7 @@ ggplot(df, aes(n, ch)) +
   geom_col(fill = "#5DADE2", width = 0.7) +
   geom_text(aes(label = ch), vjust = -0.4, size = 3.3 * chart_text_scale) +
   scale_x_continuous(breaks = n) +
+  scale_y_continuous(expand = expansion(mult = c(0.02, 0.12))) +
   labs(title = "Communication channels = n(n - 1) / 2",
        x = "People on the team (n)", y = "Two-way channels") +
   theme_minimal() +
@@ -457,9 +471,16 @@ are scientifically understood:
 | Reading | ~13 % | |
 | Writing | ~9 % | |
 
-And most of the meaning is **nonverbal**: roughly **93 %** of person-to-person
-communication is carried by body language (~55 %) and tone of voice (~38 %) ---
-and tone's share rises toward 86 % on the phone, where body language is gone.
+You will often hear that **93 %** of communication is **nonverbal** --- 55 %
+body language, 38 % tone of voice, 7 % words. Treat that figure with care. It
+comes from Albert Mehrabian's 1967 experiments, and he has stressed that it
+applies only to one narrow case: a speaker expressing a *feeling or attitude*
+while the words and the tone or face disagree. Then listeners believe the tone
+and the face. For a requirement, a specification or a deadline, the words carry
+the meaning. The lesson for a PM is narrower but real: when your tone or body
+language contradicts your words, people believe the tone --- and on the phone
+or in email that channel is weakened or gone, so misreadings like Orion Tech's
+become more likely.
 
 - **Active listening:** the receiver signals engagement --- agreeing, asking for clarification.
 - **Effective listening:** watching the speaker for gesture and expression, thinking before responding, asking questions, repeating back, giving feedback.
@@ -647,13 +668,13 @@ tryit_sort(
 
 ## Key Takeaways
 
-- A **project** is temporary and unique; a **process** is permanent and repetitive. Only ~26 % of projects hit the full triple constraint --- which is why the discipline exists.
+- A **project** is temporary and unique; a **process** is permanent and repetitive. Only about a quarter to a third of projects hit the full triple constraint --- which is why the discipline exists.
 - The **triple constraint** is scope--time--cost, enclosing **quality**. Move one side and another must move, or quality pays.
-- Five phases: **initiating, planning, executing, controlling, closing.** Planning decides the outcome; closing is the hardest to finish.
+- Five phases: **initiating, planning, executing, controlling, closing.** Controlling runs alongside execution rather than after it. Planning decides the outcome; closing is the hardest to finish.
 - Decisions are weighed **safety → company → sponsor → customer → suppliers**; ethics rest on **responsibility, respect, fairness, honesty**.
 - ~**90 %** of a PM's time is communication. Build a written **communication plan** from stakeholder needs, and close every loop with **feedback**.
 - Channels grow as $n(n-1)/2$ --- faster than headcount. Plan routes; don't let everyone talk to everyone.
-- **Listening** is ~55 % of communication and the least trained; ~93 % of meaning is nonverbal. Watch for the **selective attention/interpretation/retention** filters and the de-railers.
+- **Listening** is ~55 % of communication and the least trained. When tone and words disagree, people believe the tone (Mehrabian's 93 % applies only to that case). Watch for the **selective attention/interpretation/retention** filters and the de-railers.
 - Match the **method** (formal/informal × written/verbal) to the message, and the **report** (status/progress/trend/forecast/variance/EVM) to the stakeholder's question.
 
 ## Case Study: Meridian R/C — Week 2
@@ -664,8 +685,9 @@ Three weeks after Daniel Cho green-lit the Meridian Trailblazer prototype, Sofia
 Reyes flagged a durability concern in the early drop-test data: the die-cast
 aluminium body and frame were flexing more than expected at the wheel-well
 corners. Priya Nandakumar's fix was straightforward --- thicken the aluminium
-wall from **1.2 mm to 1.5 mm**, a change that would not touch the tooling
-budget but would add a fraction of a gram per unit. You approved it the same
+wall at the four wheel-well corners from **1.2 mm to 1.5 mm**, a change that
+would not touch the tooling budget (thickening a wall only removes steel from
+the die) but would add about a gram per unit. You approved it the same
 afternoon and asked Marcus Webb to notify everyone downstream who depended on
 the old spec sheet.
 
@@ -730,9 +752,10 @@ cat(sprintf("Headcount up %.0f%%, channels up %.0f%%\n",
             100 * (ch(after) / ch(before) - 1)))
 ```
 
-Headcount rises 50 %, channels rise 125 %. Merging them in as full members
-triples the coordination load of those three people; a defined liaison route
-would add far less.
+Headcount rises 50 %, channels rise 140 % (15 to 36). A defined liaison
+route --- one supplier engineer who talks to the PM, with the other two
+reached through that person --- adds only one person to the core team and
+6 channels (15 to 21).
 
 </details>
 

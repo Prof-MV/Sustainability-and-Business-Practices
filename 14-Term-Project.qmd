@@ -61,7 +61,7 @@ Raise problems early, while there is still time to fix them.
 
 ### How to upload
 
-- Upload the **original files** (`.docx`, `.xlsx`, `.mpp`) **and** a **`.pdf` printout of every document**.
+- Upload the **original files** (`.docx`, `.xlsx`, and `.mpp` or `.pod`) **and** a **`.pdf` printout of every document**.
 - Upload **individual files**. Do **not** upload `.zip` files.
 
 ### Where the marks come from
@@ -81,7 +81,7 @@ The shaded box below is the **background** for the project: the situation your c
 
 Your company specializes in manufacturing remote-controlled vehicles for the toy industry. Because your products are lifelike replicas of real-world vehicles, you have been selected to supply a *Project Management Package* and to manage a project that will create **one new vehicle replica** for the coming holiday season.
 
-If selected, your company has the discretion to choose an **aircraft** (civilian or military), a **yacht**, or a **road vehicle** (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of **1/18, or 9--12 inches (24--30 cm)**. The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.
+If selected, your company has the discretion to choose an **aircraft** (civilian or military), a **yacht**, or a **road vehicle** (sport, ATV, or RV type). Your company designs the outer body style and the inner frame that supports the motor, drive, and control systems, at an approximate scale of **1/18, or 9--12 inches (23--30 cm)**. The body can be made from steel, aluminum, or carbon fibre. The inner frame is either aluminum or carbon fibre.
 
 You will purchase the motor and control systems from one of two Canadian suppliers. If your replica is accepted and signed off by the client, your company is awarded a contract to manufacture **100,000+ replicas** of the accepted prototype for the next holiday season.
 
@@ -185,7 +185,7 @@ Complete every area with enough detail, in the format used in lecture. The docum
 |---|---|
 | AON / critical path diagram (Excel) | [AON-Critical-Path-Template.xlsx](project-files/AON-Critical-Path-Template.xlsx) |
 | Risk brainstorming worksheet | [Risk-Brainstorming-Worksheet.docx](project-files/Risk-Brainstorming-Worksheet.docx) |
-| Gantt chart (Excel) | [Gantt-Chart-Template.xlsx](project-files/Gantt-Chart-Template.xlsx) |
+| Gantt chart | Built in Microsoft Project or ProjectLibre (see *Gantt chart* below) |
 
 : Phase B templates {tbl-colwidths="[40,60]"}
 
@@ -209,10 +209,25 @@ Complete every area with enough detail, in the format used in lecture. The docum
 
 ### Gantt chart
 
-- **Chart:** a simple Gantt chart in Excel. Activities match your WBS and AON. Leave every activity at **0 % complete** for Phase B.
-- **Format:** the unit of time is days. Dates can be real dates or start at "Week 1". Show relationships with arrows. Corner-to-corner tasks can imply Finish-to-Start without an arrow. All relationships can be Finish-to-Start, and they must match your AON.
-- **Milestones:** mark the end of the activities that match your charter milestones with a diamond. You may also mark the planned milestone dates with a different symbol.
-- **Comparison paragraph:** compare the milestones in your Charter with the milestone dates in your Gantt chart. They do not need to be the same.
+Build the Gantt chart in scheduling software, not by hand or in Excel. Use either:
+
+- **Microsoft Project**, installed in all computer labs on campus, or
+- **ProjectLibre**, free and open-source for Windows, Mac and Linux. Download it from [projectlibre.com](https://www.projectlibre.com) and install it on your own computer.
+
+[Chapter 8](08-Project-Scheduling.qmd) (*Scheduling software: Microsoft Project and ProjectLibre*) shows the buttons you need and walks through a first schedule.
+
+::: {.callout-tip}
+**Pick one program for the whole team.** ProjectLibre can open a Microsoft Project `.mpp` file, but it saves as `.pod`, and Microsoft Project cannot open `.pod` files. If one member works in the lab and another at home, agree on the program first.
+:::
+
+- **Set-up:** set the project start date to the start of your assigned timeframe. The unit of time is days. The default calendar treats weekends as non-working days, so a 5-day task takes one work week.
+- **Tasks:** enter your WBS as the task list. Use **Indent** so the WBS levels become summary tasks and the work packages sit underneath them. Every activity in your AON appears in the Gantt chart with the same name and duration.
+- **Links:** link the tasks with **predecessors**. Do not type start or finish dates; the software calculates them. All relationships can be Finish-to-Start, and they must match your AON. The software draws the arrows for you.
+- **Critical path:** turn on the critical-path display (Microsoft Project: Format tab → *Critical Tasks*; ProjectLibre shows critical tasks in red). Check that it matches the critical path from your AON forward and backward passes. If the two disagree, find out why before you submit.
+- **Progress:** leave every activity at **0 % complete** for Phase B.
+- **Milestones:** add each Charter milestone as a task with a duration of **0**. The software draws it as a diamond. Link it to the activity that completes it.
+- **Comparison paragraph:** compare the milestone dates in your Charter with the milestone dates the software calculated. They do not need to be the same, but explain the differences.
+- **Files:** upload the project file (`.mpp` from Microsoft Project or `.pod` from ProjectLibre) **and** a PDF of the Gantt chart. Zoom the timescale so the whole chart is readable. Print it across several pages if that is what it takes to keep the text readable.
 
 ## Phase C: Costs {#sec-phase-c}
 
@@ -255,5 +270,5 @@ Your marks come from three things: the **accuracy** of your costs, the **identif
 4. Group report completed from the phase templates.
 5. Diagrams and charts readable, with legends where required.
 6. Your evaluation survey for the phase completed on FOL, in the version for your role (PM or Team Member). A missed survey means a grade of 0 for the phase.
-7. Original files (`.docx`, `.xlsx`, `.mpp`) **and** a `.pdf` printout of every document uploaded as **individual files, no `.zip`**.
+7. Original files (`.docx`, `.xlsx`, and `.mpp` or `.pod`) **and** a `.pdf` printout of every document uploaded as **individual files, no `.zip`**.
 8. Everything uploaded to FOL **before the deadline**. Remember the 15 % per day late deduction.

@@ -427,8 +427,8 @@ ggplot(cone, aes(x = x)) +
   geom_line(aes(y = point_estimate * (1 - err)), linewidth = 1, color = "#2E86C1") +
   annotate("segment", x = 0.7, xend = 4.3, y = point_estimate, yend = point_estimate,
            linetype = "dashed", color = "grey30") +
-  annotate("text", x = 4.3, y = point_estimate, label = "point estimate  $1.0M",
-           hjust = 1, vjust = -1, size = 3.3 * chart_text_scale) +
+  annotate("label", x = 0.72, y = point_estimate, label = "point estimate  $1.0M",
+           hjust = 0, size = 3.1 * chart_text_scale, fill = "white", linewidth = 0) +
   geom_point(aes(y = point_estimate * (1 + err)), size = 2.5, color = "#1B4F72") +
   geom_point(aes(y = point_estimate * (1 - err)), size = 2.5, color = "#1B4F72") +
   geom_text(aes(y = point_estimate * (1 + err),
@@ -437,7 +437,7 @@ ggplot(cone, aes(x = x)) +
   geom_text(aes(y = point_estimate * (1 - err),
                 label = paste0("-", scales::percent(err, accuracy = 1))),
             vjust = 1.6, size = 3.2 * chart_text_scale) +
-  scale_x_continuous(breaks = 1:4, labels = levels(cone$stage)) +
+  scale_x_continuous(breaks = 1:4, labels = levels(cone$stage), expand = expansion(add = c(0.6, 0.3))) +
   scale_y_continuous(labels = scales::dollar_format(suffix = "M", big.mark = " "),
                      expand = expansion(mult = c(0.06, 0.1))) +
   labs(title = "The cone of uncertainty", x = NULL, y = "Estimated project cost") +
@@ -603,36 +603,39 @@ tryit_sort(
 
 Padding feels prudent per task. Watch what it does across a whole project.
 
-```{r fig-padding-compounding-09, fig.cap="A 15 % 'just to be safe' pad added to every one of 40 tasks does not add 15 % to the project --- it adds 15 % to the mean, but the padded total sits far above any realistic outcome because the pads do not all get used.", fig.align='center', fig.width=10, fig.height=5}
+```{r fig-padding-compounding-09, fig.cap="Why per-task padding misleads. Each of 40 tasks is padded 15 %, about one standard deviation of that task's own uncertainty. Summed, the pads add 240 h, but because over- and under-runs partly cancel, the project total varies by only about ±38 h. The padded total sits some six standard deviations above the likely outcome, while one project-level reserve of about 50 h already gives 90 % confidence.", fig.align='center', fig.width=10, fig.height=5}
 set.seed(2025)
 n_tasks <- 40
-true_mean <- 40           # hours, honest most-likely per task
-# Honest estimates vary around the truth; padded estimates add 15% on top.
-honest  <- rnorm(n_tasks, true_mean, 6)
-padded  <- honest * 1.15
+est <- rep(40, n_tasks)          # honest most-likely estimate per task, hours
+cv  <- 0.15                      # each task's actual varies by about 15 % (one SD)
+runs <- 5000
+totals <- replicate(runs, sum(est * (1 + rnorm(n_tasks, 0, cv))))
+honest_total <- sum(est)
+padded_total <- sum(est * 1.15)
+sd_total     <- sd(totals)
+p90          <- quantile(totals, 0.90)
 
-df <- data.frame(
-  task = 1:n_tasks,
-  honest_cum = cumsum(honest),
-  padded_cum = cumsum(padded)
-)
-
-ggplot(df, aes(x = task)) +
-  geom_line(aes(y = honest_cum, color = "Honest estimate"), linewidth = 1.1) +
-  geom_line(aes(y = padded_cum, color = "Every task padded 15%"), linewidth = 1.1) +
-  annotate("text", x = n_tasks, y = df$padded_cum[n_tasks],
-           label = paste0("+", round(100 * (df$padded_cum[n_tasks] /
-                          df$honest_cum[n_tasks] - 1)), "% on the total"),
-           hjust = 1, vjust = -0.6, size = 3.4 * chart_text_scale) +
-  scale_color_manual(values = c("Honest estimate" = "#27AE60",
-                                "Every task padded 15%" = "#C0392B")) +
-  scale_y_continuous(expand = expansion(mult = c(0.05, 0.12))) +
-  labs(title = "Per-task padding compounds into a meaningless total",
-       x = "Cumulative task count", y = "Cumulative estimated hours",
-       color = NULL) +
+ggplot(data.frame(total = totals), aes(total)) +
+  geom_histogram(binwidth = 8, fill = "#A9CCE3", colour = "white") +
+  geom_vline(xintercept = honest_total, colour = "#27AE60", linewidth = 1.1) +
+  geom_vline(xintercept = p90, colour = "#1B4F72", linewidth = 1.1, linetype = "dashed") +
+  geom_vline(xintercept = padded_total, colour = "#C0392B", linewidth = 1.1) +
+  annotate("label", x = honest_total, y = Inf, vjust = 1.3,
+           label = paste0("Honest total\n", honest_total, " h"),
+           colour = "#27AE60", fill = "white", linewidth = 0, size = 3.1 * chart_text_scale) +
+  annotate("label", x = p90 + 6, y = Inf, vjust = 2.9, hjust = 0,
+           label = paste0("90 % confident\n", round(p90), " h (+", round(p90 - honest_total), " h)"),
+           colour = "#1B4F72", fill = "white", linewidth = 0, size = 3.1 * chart_text_scale) +
+  annotate("label", x = padded_total, y = Inf, vjust = 1.3,
+           label = paste0("Every task padded 15 %\n", round(padded_total), " h (+",
+                          round(padded_total - honest_total), " h)"),
+           colour = "#C0392B", fill = "white", linewidth = 0, size = 3.1 * chart_text_scale) +
+  scale_x_continuous(limits = c(1450, 1900)) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.45))) +
+  labs(title = "Per-task padding overstates the total",
+       x = "Simulated project total (hours, 5 000 runs)", y = "Runs") +
   theme_minimal() +
   theme(
-    legend.position = "top",
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
     axis.title = element_text(size = 11 * chart_text_scale),
     axis.text = element_text(size = 10 * chart_text_scale)
@@ -814,7 +817,7 @@ periods when it will actually be spent. Summing down the columns gives
 baseline** --- the S-curve you will track the project against in
 [Chapter 12](12-Project-Control-Systems.qmd).
 
-```{r fig-s-curve-09, fig.cap="Time-phased budget for the six-activity project of the ABC table (total $38,500). Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.", fig.align='center', fig.width=10, fig.height=6}
+```{r fig-s-curve-09, fig.cap="Time-phased budget for the six-activity project of the ABC table (total $38 500). Bars are planned spend per month; the line is the cumulative baseline (the S-curve). Spend is slow at first, steepest mid-project, and tapers at the end.", fig.align='center', fig.width=10, fig.height=6}
 phased <- data.frame(
   month = factor(c("Jan", "Feb", "Mar", "Apr", "May", "Jun"),
                  levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun")),
@@ -1141,8 +1144,8 @@ Daniel did the arithmetic you knew he would: $761,300 against his $800,000
 ceiling leaves **$38,700 of headroom** — about 4.8% of the ceiling. Comfortable,
 but not so much that he waved it through without questions. He pressed
 hardest on the $150,000 tooling line (largest single item after labour) and
-on why testing and certification, at $60,000, was priced near the top of the
-brief's original $25,000–$100,000 range rather than the middle. You walked him
+on why testing and certification, at $60,000, was priced in the middle of the
+brief's original $25,000–$100,000 range rather than near its low end. You walked him
 through the WBS lineage of each number — 1.2 Tooling & Fabrication, 1.5
 Testing & Certification — and he signed off. The bottom-up number now becomes
 the baseline you will track against once the S-curve is time-phased and,
@@ -1182,9 +1185,10 @@ cat(sprintf("\nSwing from the indirect-rate assumption alone: $%s\n",
             format(round(direct_cost * (0.45 - 0.25)), big.mark = " ")))
 ```
 
-The direct cost is fixed at \$21 500, but the burdened total moves by \$4 300 ---
-20 % of direct --- purely on the overhead assumption. Always state the indirect
-rate you used.
+The direct cost is fixed at \$13 850 (\$7 650 of labour plus \$6 200 of
+consumables), but the burdened total moves from about \$17 310 to about \$20 080 --- a swing
+of \$2 770, or 20 % of direct --- purely on the overhead assumption. Always state
+the indirect rate you used.
 
 </details>
 
@@ -1245,9 +1249,9 @@ cat(sprintf("\nTOTAL planned $%s  actual $%s  variance $%s (%.1f%%)\n",
             100 * sum(variance) / sum(planned)))
 ```
 
-Design and (roughly) Survey held. **Foundation (-13 %)** and **Framing (-13 %)**
-blew through and drove the whole project \$2 150 (5.6 %) over --- those two get
-the post-mortem.
+Design and (roughly) Survey held. **Foundation (-13.3 %)** and **Framing
+(-12.5 %)** blew through and drove the whole project \$2 150 (5.6 %) over ---
+those two get the post-mortem.
 
 </details>
 

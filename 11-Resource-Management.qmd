@@ -74,10 +74,10 @@ Stack each activity's demand day by day and the over-allocations jump out ---
 provided you remember the chart assumes each person is available **100 % of the
 time**, which is rarely true.
 
-```{r fig-histogram-11, fig.cap="Resource histogram before and after leveling, against a limit of 9 people/day. Leveling shifts a task with float so the peak on day 12 no longer breaches the limit -- without extending the project.", fig.align='center', fig.width=10, fig.height=5}
+```{r fig-histogram-11, fig.cap="Resource histogram before and after leveling, against a limit of 9 people/day. Leveling shifts work with float off the peaks on days 10 and 12 into days 11 and 14, so no day breaches the limit -- without extending the project or changing the total of 110 person-days.", fig.align='center', fig.width=10, fig.height=5}
 days <- 1:14
 before <- c(6,6,6,6,6, 9,9,9,9,10, 8,10,9,7)
-after  <- c(6,6,6,6,6, 9,9,9,9,9,  9,9,9,7)
+after  <- c(6,6,6,6,6, 9,9,9,9,9,  9,9,9,8)   # same 110 person-days as before
 df <- data.frame(
   day = rep(days, 2),
   people = c(before, after),
@@ -88,8 +88,8 @@ df$state <- factor(df$state, levels = c("Before leveling", "After leveling"))
 ggplot(df, aes(day, people)) +
   geom_col(aes(fill = people > 9), width = 0.75) +
   geom_hline(yintercept = 9, linetype = "dashed", color = "#C0392B", linewidth = 0.9) +
-  annotate("text", x = 0.7, y = 9, label = "limit = 9/day",
-           color = "#C0392B", size = 3 * chart_text_scale, hjust = 0, vjust = -0.5) +
+  annotate("label", x = 0.6, y = 9, label = "limit = 9/day", fill = "white", linewidth = 0,
+           color = "#C0392B", size = 3 * chart_text_scale, hjust = 0) +
   scale_fill_manual(values = c("FALSE" = "#5DADE2", "TRUE" = "#C0392B"), guide = "none") +
   facet_wrap(~state, ncol = 1) +
   scale_x_continuous(breaks = days) +
@@ -180,59 +180,22 @@ When you must choose which activity to move, work through them in this order:
 Day 12 needs 10 people against a limit of 9. Four activities are running that
 day:
 
-Live cell --- change the float, duration, successors, or people for each task.
+| Task | Float (days) | Duration (days) | Successors | People |
+|---|---|---|---|---|
+| D | 12 | 6 | 1 | 3 |
+| E | 0 | 6 | 2 | 3 |
+| H | 0 | 7 | 1 | 3 |
+| J | 5 | 3 | 0 | 1 |
 
-```{r calc-leveling-example-11, echo=FALSE, results='asis'}
-qwebr_calc_card(
-  label = "leveling-example-11",
-  title = "Which Task Do You Move?",
-  icon = "arrows-left-right",
-  mode = "demo",
-  tables = list(qwebr_calc_table(
-    frame = "running_day12",
-    columns = list(
-      qwebr_calc_col("task", c("D", "E", "H", "J"), type = "label", label = "Task"),
-      qwebr_calc_col("float", c(12, 0, 0, 5), label = "Float (days)", min = 0, step = 1),
-      qwebr_calc_col("duration", c(6, 6, 7, 3), label = "Duration (days)", min = 1, step = 1),
-      qwebr_calc_col("successors", c(1, 2, 1, 0), label = "Successors", min = 0, step = 1),
-      qwebr_calc_col("people", c(3, 3, 3, 1), label = "People", min = 0, step = 1)),
-    note = "Only tasks with float can move without extending the project."))
-)
-```
+E and H are critical (float 0), so moving either one extends the project.
+D and J can move. The rule picks the **smallest float first**: J (5 days)
+comes before D (12 days). Sliding J off day 12 removes one person, and
+demand drops from 10 to 9, which is exactly the limit. D does not move.
 
-<details class="qwebr-calc-source">
-<summary>Show the live R code behind this card</summary>
-
-The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
-
-```{webr-r}
-#| label: leveling-example-11
-running_day12 <- data.frame(
-  task = c("D", "E", "H", "J"),
-  float = c(12, 0, 0, 5),
-  duration = c(6, 6, 7, 3),
-  successors = c(1, 2, 1, 0),
-  people = c(3, 3, 3, 1)
-)
-
-# Only tasks with float can move without extending the project.
-movable <- running_day12[running_day12$float > 0, ]
-# Among movable tasks, prefer smallest float, then smallest duration.
-pick <- movable[order(movable$float, movable$duration), ][1, ]
-
-if (nrow(movable) == 0) {
-  cat("!!No task has float: leveling would extend the project!!\n")
-} else {
-  cat(sprintf("Move first: task %s (float %g, duration %g)\n", pick$task, pick$float, pick$duration))
-  cat(sprintf("Movable tasks  %s\n", paste(movable$task, collapse = ", ")))
-}
-crit <- running_day12$task[running_day12$float == 0]
-if (length(crit) > 0)
-  cat(sprintf("Critical (float 0)  !!%s!!\n", paste(crit, collapse = ", ")))
-cat("Critical tasks cannot move without extending the project.\n")
-```
-
-</details>
+The rule tells you which task to try first. It does not tell you whether the
+move worked: J's three days of work land on other days, and those days can
+go over the limit instead. After every move, rebuild the histogram and check
+again. The class task below makes you do exactly that.
 
 ### Try it yourself: which task do you move first?
 
@@ -261,32 +224,179 @@ tryit_order(
 - **Time-constrained**: the end date is fixed; you add or reassign resources to protect it (this is closer to *smoothing*).
 - **Resource-constrained**: the resource limit is fixed; if leveling within float is not enough, **the project duration extends** (undesirable, but sometimes unavoidable).
 
+### Try it yourself: level a millwright crew to its limit
+
+The line-install project for the new assembly cell needs millwrights, and
+production lends the project **8 per day, no more**. The plan finishes on day
+9, but on days 4 to 6 it calls for 9 or 10 people. Delay tasks to bring
+every day down to the limit.
+
+Two rules apply. A delay **within a task's float** costs nothing. Every day
+**beyond** its float pushes the project finish back by one day. (Treat each
+task as if it sat on its own path to the finish, so a delay in one task does
+not push any other task.)
+
+```{r calc-leveling-11, echo=FALSE, results='asis'}
+qwebr_calc_card(
+  label = "leveling-11",
+  title = "Level the Millwright Crew",
+  icon = "arrows-left-right",
+  mode = "task",
+  tables = list(qwebr_calc_table(
+    frame = "crew_plan",
+    columns = list(
+      qwebr_calc_col("task", c("A", "B", "C", "D", "E", "F"), type = "label", label = "Task"),
+      qwebr_calc_col("start", c(1, 1, 3, 4, 6, 4), type = "label", label = "Start"),
+      qwebr_calc_col("duration", c(4, 5, 4, 3, 4, 3), type = "label", label = "Days"),
+      qwebr_calc_col("people", c(1, 3, 4, 1, 4, 1), type = "label", label = "Crew"),
+      qwebr_calc_col("float", c(2, 3, 0, 0, 0, 2), type = "label", label = "Float"),
+      qwebr_calc_col("delay", c(0, 0, 0, 0, 0, 0), label = "Delay", min = 0, max = 6, step = 1)),
+    note = "Start = early start day; Days = duration; Crew = millwrights needed each day; Float and Delay are in days. Type a delay for any task, starting with the tasks that have float."))
+  ,
+  fig_width = 1200, fig_height = 600,
+  goal = "Keep the crew at 8 millwrights or fewer on every day, and finish no later than day 10. First try to do it by day 9, within float alone. Why can't you? Which three tasks have to move, and by how much?",
+  goal_test = "peak <= limit && finish <= 10 && limit == 8"
+)
+```
+
+<details class="qwebr-calc-source">
+<summary>Show the live R code behind this card</summary>
+
+The card above re-runs this exact webR code every time you change a value in its table, substituting your values for the data at the top. Edit the code directly and press **Run Code** to experiment further.
+
+```{webr-r}
+#| label: leveling-11
+crew_plan <- data.frame(
+  task = c("A", "B", "C", "D", "E", "F"),
+  start = c(1, 1, 3, 4, 6, 4),
+  duration = c(4, 5, 4, 3, 4, 3),
+  people = c(1, 3, 4, 1, 4, 1),
+  float = c(2, 3, 0, 0, 0, 2),
+  delay = c(0, 0, 0, 0, 0, 0)
+)
+limit <- 8
+planned_finish <- 9
+
+for (col in c("start", "duration", "people", "float", "delay"))
+  crew_plan[[col]] <- as.numeric(crew_plan[[col]])
+delay <- pmax(round(crew_plan$delay), 0)
+first_day <- crew_plan$start + delay
+last_day <- first_day + crew_plan$duration - 1
+
+# Daily demand: add up the crew of every task running that day.
+days <- 1:14
+load <- sapply(days, function(d) sum(crew_plan$people[d >= first_day & d <= last_day]))
+peak <- max(load)
+over <- days[load > limit]
+
+# A delay beyond float pushes the finish back by the excess.
+late_by <- pmax(delay - crew_plan$float, 0)
+finish <- max(planned_finish + max(late_by), last_day)
+
+if (peak > limit) {
+  cat(sprintf("!!Still over the limit on day %s!!\n", paste(over, collapse = ", ")))
+} else if (finish > planned_finish) {
+  cat(sprintf("Within the limit, finishing on day %g (%g day(s) late)\n", finish, finish - planned_finish))
+} else {
+  cat("Within the limit and on time\n")
+}
+cat(sprintf("Peak crew  %g millwrights (limit %g)\n", peak, limit))
+if (finish > planned_finish) {
+  cat(sprintf("Project finish  !!day %g (planned day %g)!!\n", finish, planned_finish))
+} else {
+  cat(sprintf("Project finish  day %g (planned day %g)\n", finish, planned_finish))
+}
+pushed <- crew_plan$task[late_by > 0]
+if (length(pushed) > 0) {
+  cat(sprintf("Delayed past float  !!%s!!\n",
+              paste0(pushed, " (+", late_by[late_by > 0], ")", collapse = ", ")))
+} else {
+  cat("Delayed past float  none\n")
+}
+cat(sprintf("Crew-days of work  %g (moving tasks never changes this)\n", sum(load)))
+
+par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
+bp <- barplot(load[1:12], names.arg = 1:12, ylim = c(0, 12),
+              col = ifelse(load[1:12] > limit, "#c0392b", "#2980b9"),
+              xlab = "Project day", ylab = "Millwrights needed",
+              main = "Red days exceed the limit (dashed); dotted line = planned finish")
+abline(h = limit, lty = 2, lwd = 2)
+abline(v = (bp[planned_finish] + bp[planned_finish + 1]) / 2, lty = 3, lwd = 2, col = "#7f8c8d")
+```
+
+</details>
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+The plan needs 4, 4, 8, **10**, **9**, **10**, 4, 4, 4 millwrights on days
+1--9: days 4 to 6 are over the limit. Tasks C, D and E are critical, so the
+only free moves are A (2 days), B (3 days) and F (2 days).
+
+Look at the critical tasks alone before you move anything. On day 6, C
+(4 people), D (1) and E (4) are all running: 9 millwrights, and none of
+them has float. No combination of A, B and F can fix that, so the project
+**has** to finish at least one day late. The rule order (smallest float
+first) only helps once you know the limit can be met at all.
+
+Spend that one day where it does the most good:
+
+- **E +1** (days 7--10): E leaves day 6, and the finish moves to day 10.
+- **D +1** (days 5--7): D leaves day 4, where it was the ninth person. It is
+  a day late too, but the finish is already day 10.
+- **F +2** (days 6--8, within its float): F leaves days 4 and 5.
+
+Demand becomes 4, 4, 8, 8, 8, 6, 6, 5, 4, 4. No day is over 8, and the
+project finishes on day 10. F +3 also works: once the finish has moved to
+day 10, one more day of delay on F costs nothing extra. This is
+**resource-constrained** scheduling: the limit is fixed, so the date moves.
+
+</details>
+
 ## Resource smoothing
 
 Smoothing is done **after** leveling and **never extends the project duration**.
 It uses available **float** to even out resource usage --- filling the valleys
 from the peaks.
 
+Why bother, if no day is over the limit? Every swing in demand costs money.
+Contract electricians are brought in for a two-day peak and sent home
+again, a crew stands idle on a quiet day, and each change of crew means
+another handover and another safety briefing. A flat profile uses the same
+total work with none of that churn.
+
+The usual yardstick is the **sum of squares** of the daily demand (the
+Burgess method). Moving work never changes the total, but the sum of the
+squares falls as the profile flattens: 5 + 5 is 50 in squares, 9 + 1 is 82.
+The lower the number, the smoother the plan.
+
 ### Try it yourself: smooth a resource within its float
+
+A 10-day controls-commissioning job needs electricians. There is no hard
+limit this time; the contractor simply wants a steady crew. The current plan
+swings from 11 people on day 5 down to 1 on day 9. Smoothing never extends
+the project, so **every delay must stay within its task's float**.
 
 ```{r calc-smoothing-11, echo=FALSE, results='asis'}
 qwebr_calc_card(
   label = "smoothing-11",
-  title = "Can Smoothing Fix This Resource Peak?",
+  title = "Smooth the Electrician Crew",
   icon = "chart-column",
   mode = "task",
-  inputs = list(
-    qwebr_calc_input("limit", "Weekly resource limit", value = 45, min = 10, max = 100, step = 1, suffix = "per week")
-  ),
   tables = list(qwebr_calc_table(
+    frame = "commissioning",
     columns = list(
-      qwebr_calc_col("week", paste("Week", 1:7), type = "label", label = "Week"),
-      qwebr_calc_col("weekly_demand", c(52, 30, 61, 24, 45, 20, 58), var = "weekly_demand",
-                     label = "Demand", min = 0, step = 1)))
-  ),
+      qwebr_calc_col("task", c("A", "B", "C", "D", "E", "F"), type = "label", label = "Task"),
+      qwebr_calc_col("start", c(1, 6, 4, 5, 5, 6), type = "label", label = "Start"),
+      qwebr_calc_col("duration", c(3, 3, 2, 3, 2, 5), type = "label", label = "Days"),
+      qwebr_calc_col("people", c(4, 1, 4, 3, 4, 1), type = "label", label = "Crew"),
+      qwebr_calc_col("float", c(5, 2, 2, 3, 2, 0), type = "label", label = "Float"),
+      qwebr_calc_col("delay", c(0, 0, 0, 0, 0, 0), label = "Delay", min = 0, max = 5, step = 1)),
+    note = "Start = early start day; Days = duration; Crew = electricians needed each day; Float and Delay are in days. Type a delay for any task, keeping each one within its float."))
+  ,
   fig_width = 1200, fig_height = 600,
-  goal = "Keep the weekly limit at 45 and the total of 290 resource-weeks, but re-plan the weekly demand so that no week goes over the limit. Which weeks give up work, and which absorb it?",
-  goal_test = "max(weekly_demand) <= limit && sum(weekly_demand) >= 290 && limit == 45"
+  goal = "Without moving any task past its float, get every day of the 10-day job to 4 or 5 electricians (a swing of 1). One move cannot get the swing below 6, and two moves reach 2. Finding the last step takes three.",
+  goal_test = "swing <= 1 && all(delay <= commissioning$float)"
 )
 ```
 
@@ -297,32 +407,70 @@ The card above re-runs this exact webR code every time you change a value in its
 
 ```{webr-r}
 #| label: smoothing-11
-# Weekly demand for one resource, and the resource's weekly limit.
-weekly_demand <- c(52, 30, 61, 24, 45, 20, 58)
-limit <- 45
+commissioning <- data.frame(
+  task = c("A", "B", "C", "D", "E", "F"),
+  start = c(1, 6, 4, 5, 5, 6),
+  duration = c(3, 3, 2, 3, 2, 5),
+  people = c(4, 1, 4, 3, 4, 1),
+  float = c(5, 2, 2, 3, 2, 0),
+  delay = c(0, 0, 0, 0, 0, 0)
+)
+project_days <- 10
 
-peak <- max(weekly_demand)
-total_work <- sum(weekly_demand)
-weeks <- length(weekly_demand)
-ideal_flat <- total_work / weeks
+for (col in c("start", "duration", "people", "float", "delay"))
+  commissioning[[col]] <- as.numeric(commissioning[[col]])
+delay <- pmax(round(commissioning$delay), 0)
+first_day <- commissioning$start + delay
+last_day <- first_day + commissioning$duration - 1
 
-if (ideal_flat <= limit) {
-  cat("Smoothing can solve this: the work fits the limit if spread evenly\n")
+days <- 1:14
+load <- sapply(days, function(d) sum(commissioning$people[d >= first_day & d <= last_day]))
+in_project <- load[1:project_days]
+swing <- max(in_project) - min(in_project)
+sum_sq <- sum(load^2)
+too_far <- commissioning$task[delay > commissioning$float]
+
+if (length(too_far) > 0) {
+  cat(sprintf("!!%s moved past its float: the job would run late!!\n", paste(too_far, collapse = ", ")))
+} else if (swing <= 1) {
+  cat("Smooth: the crew holds steady all job long\n")
 } else {
-  cat("!!Smoothing is not enough: needs leveling or more resource!!\n")
+  cat(sprintf("Swing of %g electricians between the busiest and quietest day\n", swing))
 }
-cat(sprintf("Peak week demand  %g (limit %g, %g over)\n", peak, limit, max(0, peak - limit)))
-cat(sprintf("Total work  %g resource-weeks over %d weeks\n", total_work, weeks))
-cat(sprintf("Perfectly smooth  %.1f per week\n", ideal_flat))
+cat(sprintf("Busiest day  %g electricians\n", max(in_project)))
+cat(sprintf("Quietest day  %g electricians\n", min(in_project)))
+cat(sprintf("Sum of squares  %g (lower is smoother)\n", sum_sq))
+cat(sprintf("Crew-days of work  %g, an average of %.1f per day\n", sum(load), sum(load) / project_days))
+if (length(too_far) > 0)
+  cat(sprintf("Finish  !!day %g (must stay day %g)!!\n", max(last_day), project_days))
 
 par(mar = c(5, 5, 3, 1), cex.main = 1.3, cex.lab = 1.2, cex.axis = 1.1)
-bar_col <- ifelse(weekly_demand > limit, "#c0392b", "#2980b9")
-barplot(weekly_demand, names.arg = seq_len(weeks), col = bar_col,
-        xlab = "Week", ylab = "Resource demand",
-        main = "Red weeks exceed the limit (dashed line)")
-abline(h = limit, lty = 2, lwd = 2)
-abline(h = ideal_flat, lty = 3, lwd = 2, col = "#16a085")
+barplot(load[1:12], names.arg = 1:12, ylim = c(0, 12),
+        col = ifelse(seq_len(12) > project_days & load[1:12] > 0, "#c0392b", "#2980b9"),
+        xlab = "Project day", ylab = "Electricians needed",
+        main = "Daily crew (dotted line = average; red = past the finish)")
+abline(h = sum(load) / project_days, lty = 3, lwd = 2, col = "#16a085")
 ```
+
+</details>
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+The plan needs 4, 4, 4, 4, **11**, 9, 5, 2, 1, 1 electricians: 45 crew-days,
+4.5 per day on average, so 4 or 5 every day is the best any plan can reach.
+The sum of squares is 297.
+
+The peak on days 5--6 is C, D and E running together, with B and F joining
+on day 6. F is critical and cannot move.
+
+1. **D +3** (days 8--10) moves 3 people from the peak into the empty tail.
+2. **E +1** (days 6--7) takes E off day 5. Demand is now 4, 4, 4, 4, 4, 6, 6, 5, 4, 4: a swing of 2.
+3. **B +2** (days 8--10) takes the last extra person off days 6 and 7.
+
+Demand becomes 4, 4, 4, 4, 4, 5, 5, 5, 5, 5. The sum of squares falls from
+297 to 205, the project still ends on day 10, and the total is still 45
+crew-days. Only the shape of the curve has changed.
 
 </details>
 
@@ -425,6 +573,21 @@ tryit_sort(
 ```
 
 ### Try it yourself: "40 hours is not one week's work"
+
+Switching between projects costs time: you have to remember where you left
+off, find the files again, and get back up to speed. How much each switch
+costs depends a lot on **experience**. A new engineer is still learning the
+organization: who to ask, where the drawings live, how a change request
+moves through the system. Every project they add costs them a large share of
+their week, perhaps 25 %. After a year or two that loss drops towards 10 %
+or less, and the same person can carry three or four projects without
+grinding to a halt.
+
+On the projector, start the card at a 25 % loss and step "Projects carried"
+from 1 to 4. Then lower the loss to about 10 % and run the same steps again.
+The new hire was not lazy. Giving them four projects in their first month
+leaves them barely 10 effective hours a week, so ramp up their load as their
+loss falls.
 
 ```{r calc-multitask-11, echo=FALSE, results='asis'}
 qwebr_calc_card(
@@ -534,10 +697,11 @@ energy as managed resources with their own KPIs --- not just labour and money.
 - A **resource histogram** exposes **over-allocation** (against a 100 %-availability assumption).
 - **Leveling** shifts tasks within their **float** to respect a resource limit; move tasks in order of **smallest float → smallest duration → lowest ID → most successors → most resources**. Critical-path tasks have no float, so moving them extends the project.
 - **Time-constrained** protects the date with resources; **resource-constrained** may extend the date.
-- **Smoothing** happens after leveling, uses float, and **never** extends duration.
+- Check the **critical tasks alone** first: if they already breach the limit on some day, no amount of float will fix it, and the date must move.
+- **Smoothing** happens after leveling, uses float, and **never** extends duration; the **sum of squares** of daily demand measures how smooth the result is.
 - **Splitting** helps only when start-up/shutdown costs are low and the task can be split.
 - Multi-project sharing creates **bottlenecks, ripple effects, and multitasking pressure**; minimize **slippage, utilization loss, and WIP**, and pick a **priority rule** deliberately.
-- **Multitasking is not free** --- "40 hours" of nominal capacity is far less once someone carries several projects.
+- **Multitasking is not free** --- "40 hours" of nominal capacity is far less once someone carries several projects, and far less again for a new hire who is still learning the organization.
 
 ## Case Study: Meridian R/C — Week 11
 
@@ -547,7 +711,9 @@ By Week 11 the tooling phase is in full swing, and two activities are running si
 
 You pull the resource histogram for the tooling window and the number jumps out immediately: Priya is booked at 100% on C and 60% on D at the same time — 160% of one person's capacity, a 60-percentage-point overallocation that no amount of overtime coffee is going to fix on its own.
 
-Before moving anything, you go back to the CPM table. C has 5 days of float (LS day 23, LF day 43). D has 10 days of float (LS day 28, LF day 43). Neither is on the critical path A–B–E–F–H–I–J, so neither move threatens the 67-day finish — but D gives you twice the room to work with. You shift D's start later, inside its own float, so Priya's two commitments no longer collide the way they did on paper. C keeps running on its original clock; D slides toward its late-start date of day 28 and still lands exactly on its late-finish date of day 43, precisely when F (prototype assembly) needs both dies ready. The overallocation is resolved, and the 67-day project finish never moves.
+Before moving anything, you go back to the CPM table. C has 5 days of float (LS day 23, LF day 43). D has 10 days of float (LS day 28, LF day 43). Neither is on the critical path A–B–E–F–H–I–J, so neither move threatens the 67-day finish — but D gives you twice the room to work with. You shift D's start to its late-start date of day 28: C keeps running on its original clock (days 18–38), D still lands exactly on its late-finish date of day 43, precisely when F (prototype assembly) needs both dies ready, and the overlap shrinks from all 15 of D's days to 10.
+
+Float cannot do more than that. C and D need 35 days of Priya's time between them, but only 25 days lie between day 18 and day 43, so at least 10 days of overlap remain whichever way you slide them. For those 10 days you change the work, not the dates: the senior die-shop technician runs D's daily checks and Priya keeps only the sign-offs, about 20 % of her time. She is at 120 % for two weeks, covered by planned overtime she agrees to, instead of 160 % for three. The 67-day project finish never moves.
 
 While you're in the histogram, you also pull the underlying weekly team-hours demand for the whole tooling phase against the department's 45-hour/week capacity ceiling: 30, 48, 44, 52, and 38 hours across five consecutive weeks. Weeks 2 and 4 breach the limit, by 3 and 7 hours respectively — week 4 is the single worst overallocation — while weeks 1, 3, and 5 sit under capacity. Averaged out, the phase demands 42.4 hours per week, comfortably under the 45-hour limit. That average is the tell: there is enough slack in the valley weeks to absorb the peak weeks' extra hours using float alone, which makes this a smoothing problem rather than a leveling one — no added headcount, no extended schedule, just a better-shaped curve.
 
@@ -615,7 +781,8 @@ cat(ifelse(flat <= limit,
 ```
 
 35 h/week average is under the 40 h limit, so **smoothing** within float can
-solve it without extending the project.
+solve it without extending the project --- provided the tasks behind the peak
+weeks have enough float to move into the valleys.
 
 </details>
 
@@ -646,5 +813,5 @@ time is used only for what truly needs it.
 ## Further Resources
 
 ```{r video-resources-11, echo=FALSE, results='asis'}
-embed_youtube("iSGWSGfG65U", "What Is Resource Leveling in Project Management?")
+embed_youtube("IvN6kyMUe3Q", "What Is Resource Levelling, and How Does It Differ from Resource Smoothing? (Online PM Courses - Mike Clayton)")
 ```

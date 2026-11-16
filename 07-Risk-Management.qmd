@@ -67,9 +67,9 @@ a *positive* outcome, handled with the same tools for the opposite end.
 ::: {.callout-note}
 **Industry snapshot.** Aircraft makers such as Bombardier **minimize** part risk
 by forcing every significant supplier into direct contact with their quality
-department and auditing their processes. The European Space Agency and Airbus
-**share** the risk of a new airframe across nations because no one country can
-carry it. A fixed-price defense contract **transfers** budget-overrun risk to
+department and auditing their processes. Airbus began as a consortium of
+French, German, British and Spanish firms formed to **share** the risk of a new
+airliner that no one country's industry could carry alone. A fixed-price defense contract **transfers** budget-overrun risk to
 the vendor.
 :::
 
@@ -115,9 +115,9 @@ risks <- data.frame(
   risk = c("Unproven supplier can't deliver", "Carbon-fibre plant disruption",
            "New line learning curve overruns", "Labour action at supplier",
            "Steel price spike", "Minor drawing errors"),
-  prob = c(3, 3, 4, 2, 3, 4),
+  prob = c(3, 4, 4, 2, 3, 4),
   impact = c(5, 4, 3, 5, 2, 1),
-  label_nudge = c(0.65, 0, 0, -0.65, 0, 0)
+  label_nudge = c(0.3, 0, 0, -0.45, 0, 0)
 )
 
 ggplot(grid, aes(prob, impact)) +
@@ -126,11 +126,12 @@ ggplot(grid, aes(prob, impact)) +
                     name = "Zone") +
   geom_point(data = risks, aes(prob, impact), inherit.aes = FALSE,
              size = 3, color = "#1B4F72") +
-  geom_text(data = risks, aes(prob + label_nudge, impact, label = risk), inherit.aes = FALSE,
-            size = 2.7 * chart_text_scale, vjust = -1, hjust = 0.5) +
+  geom_label(data = risks, aes(prob + label_nudge, impact + 0.27, label = risk), inherit.aes = FALSE,
+             size = 2.6 * chart_text_scale, hjust = 0.5, fill = "white", linewidth = 0,
+             label.padding = unit(0.12, "lines")) +
   scale_x_continuous(breaks = 1:5, labels = c("Very low", "Low", "Medium", "High", "Very high")) +
   scale_y_continuous(breaks = 1:5, labels = c("Negligible", "Minor", "Moderate", "Major", "Severe")) +
-  labs(title = "Probability x Impact", x = "Probability", y = "Impact") +
+  labs(title = "Probability \u00d7 Impact", x = "Probability", y = "Impact") +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 14 * chart_text_scale, face = "bold"),
@@ -290,11 +291,13 @@ cat(sprintf("Price if low (%.0f%%)  $%s\n", 100 * p_low, fmt2(price_low * lb)))
 <details>
 <summary>What would flip the decision?</summary>
 
-Raise the probability of the low summer price, widen the price gap, or cut the
-storage cost toward zero and "buy later" wins by more. Push storage cost up
-(a bonded warehouse, insurance, spoilage) or make the high price nearly
-certain and "buy now" wins. A decision tree makes the tipping point explicit
-instead of leaving it to gut feel.
+Raise the probability of the low summer price, widen the price gap, or push
+the storage cost up (a bonded warehouse, insurance, spoilage) and "buy later"
+wins by more. Cutting storage toward zero or making the high price nearly
+certain narrows the gap --- but even with both, buying now only *ties*,
+because the high summer price equals today's. "Buy now" wins only if summer
+prices are expected to rise *above* today's \$5.58/lb. A decision tree makes
+the tipping point explicit instead of leaving it to gut feel.
 
 </details>
 
@@ -359,8 +362,12 @@ tool-steel slip is the most likely of the large risks.
 | **Contingency reserve** | Set aside funds/time for the risk if it hits | 10--15 % reserve against the carbon-fibre and learning-curve risks |
 | **Other** | Anything else fit for the situation | Dual-source the motor; pre-qualify a backup |
 
-For **opportunities**, the mirror strategies are **exploit, share, enhance,** and
-**accept**.
+The PMBOK Guide's list for threats is slightly different: **avoid** (change the
+plan so the risk cannot happen --- for example, drop the unproven supplier),
+**transfer**, **mitigate** (the "minimize" above), **accept**, and **escalate**
+(the risk is outside the project's authority, so hand it to the level that
+owns it). For **opportunities**, the mirror strategies are **exploit, share,
+enhance,** and **accept**.
 
 ### Try it yourself: choose the response
 
