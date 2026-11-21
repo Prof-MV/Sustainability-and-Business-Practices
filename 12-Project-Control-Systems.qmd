@@ -231,60 +231,257 @@ cat(sprintf("CPI  %.3f (%.0f cents of work per dollar spent)\n", CPI, CPI * 100)
 The project is **behind schedule and over cost** --- and this is visible in week 8,
 while there is still time to act, instead of as a surprise at the end.
 
-### Try it yourself: earned value by work package
+## PV, EV and AC are running totals from day 0
 
-Each work package has its budget, how much of it was planned to be done by
-now, how much is actually done, and what it has cost. Work out PV, EV, CV and
-SV for each package, then the project indices and forecast. Each team picks
-its own **data set**.
+The three numbers in Worked Example 1 are not "this week's" numbers, and they
+are not the numbers for one task. Each one is a **running total for the whole
+project, from the first day up to the status date**:
 
-```{r tryit-evm-12, echo=FALSE, results='asis'}
-ev_names <- c("Design", "Tooling", "Assembly", "Testing")
-ev_sets <- list(
-  data.frame(bac = c(80000, 150000, 60000, 40000), plan = c(100, 80, 50, 25), done = c(100, 60, 40, 10), ac = c(84000, 100000, 28000, 5000)),
-  data.frame(bac = c(120000, 200000, 90000, 50000), plan = c(100, 70, 40, 10), done = c(100, 75, 30, 0), ac = c(125000, 150000, 40000, 2000)),
-  data.frame(bac = c(60000, 180000, 120000, 30000), plan = c(100, 100, 50, 20), done = c(100, 85, 60, 25), ac = c(58000, 175000, 70000, 9000)),
-  data.frame(bac = c(90000, 110000, 140000, 60000), plan = c(100, 60, 30, 0), done = c(90, 70, 20, 0), ac = c(95000, 70000, 36000, 0)))
-ev_table <- function(s) {
-  pv <- s$bac * s$plan / 100; ev <- s$bac * s$done / 100
-  data.frame(`Work package` = ev_names, `BAC ($)` = s$bac, `Planned %` = s$plan, `Complete %` = s$done,
-             `AC ($)` = s$ac, `PV ($)` = pv, `EV ($)` = ev, `CV ($)` = ev - s$ac, `SV ($)` = ev - pv,
-             check.names = FALSE)
+- **PV** adds up the budget of *all* the work the plan said would be done
+  between week 0 and the status date --- including work packages that were
+  planned to finish weeks ago.
+- **EV** adds up the budget value of *all* the work actually completed since
+  week 0, finished packages included.
+- **AC** adds up *all* the money actually spent since week 0.
+
+A work package that finished in week 2 still counts in PV, EV and AC at week
+8. That is why the curves in the figure above only ever go up.
+
+The project's **SPI** and **CPI** are then the ratios of those project totals:
+$SPI = \sum EV / \sum PV$ and $CPI = \sum EV / \sum AC$. You may work out the
+variance of each work package to find *where* the trouble is, but the project
+status always comes from the totals.
+
+::: {.callout-warning}
+**Common mistake: averaging the task indices.** Never work out a CPI or SPI for
+each task and then average them. An average treats a \$4 000 decal job the
+same as a \$250 000 tooling package, and a task that has only just started
+(EV still 0) drags the average towards zero. The project CPI weights every
+task by its dollars automatically, because it divides the totals.
+:::
+
+```{r tbl-evm-average-trap-12, echo=FALSE}
+trap <- data.frame(Package = c("Tooling", "Labels and decals"),
+                   EV = c(200000, 6000), AC = c(250000, 4000))
+trap$CPI <- trap$EV / trap$AC
+avg_cpi <- mean(trap$CPI)
+prj_cpi <- sum(trap$EV) / sum(trap$AC)
+trap_show <- rbind(
+  data.frame(Package = trap$Package,
+             `EV ($)` = format(trap$EV, big.mark = " "), `AC ($)` = format(trap$AC, big.mark = " "),
+             CPI = sprintf("%.2f", trap$CPI), check.names = FALSE),
+  data.frame(Package = "WRONG: average of the two CPIs", `EV ($)` = "", `AC ($)` = "",
+             CPI = sprintf("%.2f  (looks under budget)", avg_cpi), check.names = FALSE),
+  data.frame(Package = "RIGHT: project totals", `EV ($)` = format(sum(trap$EV), big.mark = " "),
+             `AC ($)` = format(sum(trap$AC), big.mark = " "),
+             CPI = sprintf("%.2f  (over budget)", prj_cpi), check.names = FALSE))
+knitr::kable(trap_show, align = c("l", "r", "r", "l"),
+             caption = "Averaging task CPIs hides an overrun. The project CPI comes from the totals.") |>
+  kableExtra::kable_styling(bootstrap_options = c("striped", "condensed"), full_width = FALSE) |>
+  kableExtra::row_spec(3, color = "#C0392B") |>
+  kableExtra::row_spec(4, bold = TRUE, color = "#186A3B")
+```
+
+The average says the project earns \$1.15 of work for every dollar spent. In
+fact it earns only `r sprintf("%.2f", prj_cpi)`: about
+`r round(100 * (1 - prj_cpi))` cents of every dollar spent so far bought no
+work.
+
+### Class exercise: PV, EV and AC from the time-phased plan
+
+This exercise builds the three numbers from scratch, the way a project control
+system does. A four-package project has a **time-phased budget**: the planned
+spend of each work package in each week (the S-curve data from
+[Chapter 9](09-Cost-Estimation-and-Budgeting.qmd)). The status date is the
+**end of week 6**.
+
+**What to do.**
+
+1. In the first table, add across each row to get the **planned spend for that
+   week**, then keep a **running total** from week 1. The running total at
+   the status date is the project's **PV**.
+2. In the second table, find each package's **PV to the end of week 6** (the
+   sum of its planned spend in weeks 1 to 6) and check that the four add up to
+   the PV from step 1. Then find each package's **EV = BAC x % complete**.
+   The actual costs are given: they are everything booked to each package
+   since week 1.
+3. Add each column for the **project totals**, then compute the project SPI,
+   CPI and EAC from those totals.
+
+**What it means.** Design finished in week 4, but its full budget still
+counts in PV, EV and AC at week 6: completed work never drops out of the
+totals. Assembly was planned to start in week 6 and has not started, so it
+adds to PV but nothing to EV --- that is part of why the project is behind.
+
+```{r tryit-evm-timephased-12, echo=FALSE, results='asis'}
+tp_pkgs <- c("Design", "Tooling", "Assembly", "Testing")
+tp_plan_table <- function(m) {
+  d <- data.frame(Week = 1:10)
+  for (i in seq_along(tp_pkgs)) d[[paste0(tp_pkgs[i], " ($)")]] <- m[i, ]
+  d[["Planned this week ($)"]] <- colSums(m)
+  d[["Cumulative PV ($)"]] <- cumsum(colSums(m))
+  d
 }
-ev_answers <- function(s) {
-  t <- ev_table(s); bac <- sum(s$bac); pv <- sum(t$`PV ($)`); ev <- sum(t$`EV ($)`); ac <- sum(s$ac)
-  list(tryit_answer("Project SPI", ev / pv, tol = 0.005),
-       tryit_answer("Project CPI", ev / ac, tol = 0.005),
-       tryit_answer("EAC = BAC / CPI", bac / (ev / ac), tol = 1, tol_pct = 0.2, prefix = "$"))
+tp_status_table <- function(m, wk, pct, ac) {
+  bac <- rowSums(m)
+  d <- data.frame(`Work package` = tp_pkgs, `BAC ($)` = bac, check.names = FALSE)
+  d[[sprintf("PV to end of week %d ($)", wk)]] <- rowSums(m[, 1:wk, drop = FALSE])
+  d[["Complete %"]] <- pct
+  d[["EV ($)"]] <- bac * pct / 100
+  d[[sprintf("AC to end of week %d ($)", wk)]] <- ac
+  d
 }
-ev_cols <- c("PV ($)", "EV ($)", "CV ($)", "SV ($)")
-tryit_grid(
-  "evm-by-package", "Earned value by work package",
-  data = ev_table(ev_sets[[1]]), blank = ev_cols, tol = 1, digits = 0,
-  answers = ev_answers(ev_sets[[1]]),
-  teams = lapply(ev_sets[-1], function(s) list(data = ev_table(s), answers = ev_answers(s))),
-  hints = c(`PV ($)` = "BAC x planned %.", `EV ($)` = "BAC x complete %.",
-            `CV ($)` = "EV - AC.", `SV ($)` = "EV - PV."),
-  intro = "SPI and CPI use the project totals. Three decimals for the indices.")
+tp_answers <- function(m, wk, pct, ac) {
+  pv <- sum(m[, 1:wk]); ev <- sum(rowSums(m) * pct / 100); a <- sum(ac)
+  list(tryit_answer(sprintf("Project PV at the end of week %d", wk), pv, tol = 1, prefix = "$"),
+       tryit_answer("Project EV", ev, tol = 1, prefix = "$"),
+       tryit_answer("Project AC", a, tol = 1, prefix = "$"),
+       tryit_answer("Project SPI = total EV / total PV", ev / pv, tol = 0.005),
+       tryit_answer("Project CPI = total EV / total AC", ev / a, tol = 0.005),
+       tryit_answer("EAC = BAC / CPI", sum(m) / (ev / a), tol = 1, tol_pct = 0.2, prefix = "$"))
+}
+tp_hints_plan <- c(`Planned this week ($)` = "Add the four packages' planned spend for that week.",
+                   `Cumulative PV ($)` = "Running total from week 1: this week's plan plus last week's cumulative PV.")
 
-ev_twin <- data.frame(bac = c(70000, 130000, 100000, 45000), plan = c(100, 90, 40, 0),
-                      done = c(100, 80, 35, 5), ac = c(66000, 118000, 46000, 3000))
+# Class data set: status at the end of week 6.
+tp_m <- rbind(c(rep(10, 4), rep(0, 6)),          # Design, weeks 1-4
+              c(0, 0, rep(15, 6), 0, 0),         # Tooling, weeks 3-8
+              c(rep(0, 5), rep(12, 4), 0),       # Assembly, weeks 6-9
+              c(rep(0, 7), 6, 8, 8)) * 1000      # Testing, weeks 8-10
+tp_wk <- 6; tp_pct <- c(100, 55, 0, 0); tp_ac <- c(44000, 58000, 0, 0)
+
 tryit_grid(
-  "evm-twin", "Earned value by work package (graded)", show = FALSE,
-  data = ev_table(ev_twin), blank = ev_cols, tol = 1, digits = 0, answers = ev_answers(ev_twin),
-  question = paste0("<p>A project has four work packages with the budget (BAC), planned % complete, ",
-    "actual % complete and actual cost (AC) shown. For each package calculate PV, EV, CV and SV. Then ",
-    "for the whole project give SPI, CPI (three decimals) and the estimate at completion BAC / CPI.</p>"))
+  "evm-timephased-plan", "Step 1: the time-phased budget and cumulative PV",
+  data = tp_plan_table(tp_m), blank = c("Planned this week ($)", "Cumulative PV ($)"),
+  tol = 1, digits = 0, hints = tp_hints_plan,
+  answers = list(tryit_answer("PV at the end of week 6", sum(tp_m[, 1:tp_wk]), tol = 1, prefix = "$")),
+  intro = "Planned spend in dollars for each package in each week. The status date is the end of week 6.")
+
+tryit_grid(
+  "evm-timephased-status", "Step 2: PV, EV and AC by package, then the project status",
+  data = tp_status_table(tp_m, tp_wk, tp_pct, tp_ac),
+  blank = c("PV to end of week 6 ($)", "EV ($)"), tol = 1, digits = 0,
+  hints = c(`PV to end of week 6 ($)` = "Add that package's planned spend for weeks 1 to 6 in the first table.",
+            `EV ($)` = "BAC x % complete."),
+  answers = tp_answers(tp_m, tp_wk, tp_pct, tp_ac),
+  intro = "Status at the end of week 6. SPI and CPI come from the project totals, never from averaging the packages.")
+
+# Graded twin: a different plan, status at the end of week 5.
+tw_m <- rbind(c(rep(10, 3), rep(0, 7)),          # Design, weeks 1-3
+              c(0, rep(20, 6), 0, 0, 0),         # Tooling, weeks 2-7
+              c(rep(0, 4), rep(15, 4), 0, 0),    # Assembly, weeks 5-8
+              c(rep(0, 7), 10, 10, 10)) * 1000   # Testing, weeks 8-10
+tw_wk <- 5; tw_pct <- c(100, 60, 10, 0); tw_ac <- c(32000, 75000, 9000, 0)
+tryit_grid(
+  "evm-timephased-twin", "PV, EV and AC from a time-phased budget (graded)", show = FALSE,
+  data = tp_plan_table(tw_m), blank = c("Planned this week ($)", "Cumulative PV ($)"),
+  tol = 1, digits = 0,
+  answers = tp_answers(tw_m, tw_wk, tw_pct, tw_ac),
+  question = paste0("<p>A project has four work packages with the planned spend per week shown ",
+    "(dollars). The status date is the end of week 5. At that date Design is 100 % complete, ",
+    "Tooling 60 %, Assembly 10 % and Testing 0 %. The actual costs booked since week 1 are ",
+    "Design $32 000, Tooling $75 000, Assembly $9 000 and Testing $0. Complete the weekly and ",
+    "cumulative planned spend, then give the project PV, EV and AC at the end of week 5, the ",
+    "project SPI and CPI (three decimals, from the project totals) and the EAC = BAC / CPI.</p>"))
 ```
 
 <details class="tryit-solution">
 <summary>Show the worked solution</summary>
 
-PV = BAC x planned %, EV = BAC x actual %, CV = EV - AC, SV = EV - PV. For data
-set 1 the totals are BAC \$330 000, PV \$240 000, EV \$198 000 and AC \$217 000,
-so SPI = 198 / 240 = **0.825**, CPI = 198 / 217 = **0.912** and EAC = 330 000 /
-0.912 = **about \$361 700**. Tooling is the package doing the damage: it is both
-behind (SV = -\$30 000) and over (CV = -\$10 000).
+**Step 1.** The weekly planned spend is \$10 000, \$10 000, \$25 000,
+\$25 000, \$15 000, \$27 000, \$27 000, \$33 000, \$20 000 and \$8 000. The
+running total is \$10 000, \$20 000, \$45 000, \$70 000, \$85 000,
+**\$112 000**, \$139 000, \$172 000, \$192 000 and \$200 000 (the BAC). PV at
+the end of week 6 is **\$112 000**.
+
+**Step 2.** PV by package to the end of week 6: Design \$40 000 (all four of
+its weeks), Tooling \$60 000 (weeks 3 to 6), Assembly \$12 000 (week 6),
+Testing \$0. They add up to the same \$112 000. EV: Design 100 % of \$40 000
+= \$40 000, Tooling 55 % of \$90 000 = \$49 500, Assembly and Testing \$0, so
+EV = **\$89 500**. AC = \$44 000 + \$58 000 = **\$102 000**.
+
+**Project status.** SPI = 89 500 / 112 000 = **0.799** (behind schedule),
+CPI = 89 500 / 102 000 = **0.877** (over cost), and EAC = 200 000 / 0.877 =
+**about \$227 900**. Assembly has not started on time: it carries \$12 000 of
+PV and no EV, and that is a schedule warning even though it has cost nothing
+yet.
+
+</details>
+
+### Try it yourself: earned value by work package
+
+Each work package has its budget, how much of it was planned to be done **by
+now, counting from the start of the project**, how much is actually done, and
+everything it has cost since the start. Design was planned to finish weeks
+ago, so its whole budget is in PV. Work out PV, EV, CV and SV for each
+package, add the columns to get the **project totals**, and only then compute
+the project SPI, CPI and forecast from those totals. Each team picks its own
+**data set**.
+
+```{r tryit-evm-12, echo=FALSE, results='asis'}
+ev_names <- c("Design", "Tooling", "Assembly", "Testing")
+# Every set has BAC = $620 000, as in Worked Example 1. "Planned %" and "AC" are
+# cumulative from the start of the project, so finished packages carry their
+# whole budget in PV.
+ev_sets <- list(
+  data.frame(bac = c(120000, 260000, 150000, 90000), plan = c(100, 90, 40, 10), done = c(100, 70, 30, 0), ac = c(126000, 205000, 52000, 3000)),
+  data.frame(bac = c(150000, 220000, 160000, 90000), plan = c(100, 80, 35, 5), done = c(100, 85, 25, 0), ac = c(148000, 196000, 45000, 2000)),
+  data.frame(bac = c(100000, 280000, 170000, 70000), plan = c(100, 100, 50, 20), done = c(100, 90, 55, 15), ac = c(97000, 262000, 90000, 9000)),
+  data.frame(bac = c(130000, 240000, 180000, 70000), plan = c(100, 75, 30, 0), done = c(95, 80, 20, 0), ac = c(140000, 185000, 40000, 0)))
+ev_table <- function(s) {
+  pv <- s$bac * s$plan / 100; ev <- s$bac * s$done / 100
+  data.frame(`Work package` = ev_names, `BAC ($)` = s$bac, `Planned % to date` = s$plan,
+             `Complete % to date` = s$done, `AC to date ($)` = s$ac, `PV to date ($)` = pv,
+             `EV to date ($)` = ev, `CV ($)` = ev - s$ac, `SV ($)` = ev - pv, check.names = FALSE)
+}
+ev_answers <- function(s) {
+  t <- ev_table(s); bac <- sum(s$bac); pv <- sum(t$`PV to date ($)`); ev <- sum(t$`EV to date ($)`); ac <- sum(s$ac)
+  list(tryit_answer("Project PV (all packages, since the start)", pv, tol = 1, prefix = "$"),
+       tryit_answer("Project EV (all packages, since the start)", ev, tol = 1, prefix = "$"),
+       tryit_answer("Project AC (all packages, since the start)", ac, tol = 1, prefix = "$"),
+       tryit_answer("Project SPI = total EV / total PV", ev / pv, tol = 0.005),
+       tryit_answer("Project CPI = total EV / total AC", ev / ac, tol = 0.005),
+       tryit_answer("EAC = BAC / CPI", bac / (ev / ac), tol = 1, tol_pct = 0.2, prefix = "$"))
+}
+ev_cols <- c("PV to date ($)", "EV to date ($)", "CV ($)", "SV ($)")
+tryit_grid(
+  "evm-by-package", "Earned value by work package",
+  data = ev_table(ev_sets[[1]]), blank = ev_cols, tol = 1, digits = 0,
+  answers = ev_answers(ev_sets[[1]]),
+  teams = lapply(ev_sets[-1], function(s) list(data = ev_table(s), answers = ev_answers(s))),
+  hints = c(`PV to date ($)` = "BAC x planned % to date: everything this package should have done since the project began.",
+            `EV to date ($)` = "BAC x complete % to date.",
+            `CV ($)` = "EV - AC.", `SV ($)` = "EV - PV."),
+  intro = "Add up PV, EV and AC over all four packages first. SPI and CPI come from those totals, never from averaging the packages. Three decimals for the indices.")
+
+ev_twin <- data.frame(bac = c(140000, 250000, 150000, 80000), plan = c(100, 85, 40, 0),
+                      done = c(100, 75, 35, 5), ac = c(135000, 200000, 58000, 4000))
+tryit_grid(
+  "evm-twin", "Earned value by work package (graded)", show = FALSE,
+  data = ev_table(ev_twin), blank = ev_cols, tol = 1, digits = 0, answers = ev_answers(ev_twin),
+  question = paste0("<p>A project has four work packages with the budget (BAC), planned % complete, ",
+    "actual % complete and actual cost (AC), all counted from the start of the project. For each package ",
+    "calculate PV, EV, CV and SV. Then give the project totals of PV, EV and AC, the project SPI and CPI ",
+    "from those totals (three decimals), and the estimate at completion BAC / CPI.</p>"))
+```
+
+<details class="tryit-solution">
+<summary>Show the worked solution</summary>
+
+PV = BAC x planned %, EV = BAC x actual %, CV = EV - AC, SV = EV - PV, all
+counted from the start of the project. For data set 1 the project totals are
+BAC \$620 000, PV **\$423 000**, EV **\$347 000** and AC **\$386 000**, so
+SPI = 347 / 423 = **0.820**, CPI = 347 / 386 = **0.899** and EAC = 620 000 /
+0.899 = **about \$689 700**. Design finished long ago, yet its full
+\$120 000 is still in PV, EV and AC. Tooling is the package doing the damage:
+it is both behind (SV = -\$52 000) and over (CV = -\$23 000).
+
+Now try the wrong way. The four package CPIs are 0.952, 0.888, 0.865 and 0
+(Testing has spent \$3 000 and earned nothing yet). Their average is 0.676,
+which says the project is losing a third of every dollar. It is not: weighted
+by the dollars, the true project CPI is 0.899. In data set 3 the trap runs the
+other way: the package CPIs average 1.05 ("under budget") while the project
+CPI is 0.996. Always divide the totals.
 
 </details>
 
